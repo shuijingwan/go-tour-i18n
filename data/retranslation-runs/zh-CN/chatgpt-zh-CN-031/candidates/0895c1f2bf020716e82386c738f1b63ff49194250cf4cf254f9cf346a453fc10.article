@@ -1,0 +1,168 @@
+<!--{
+    "Title": "返回随机问候语",
+    "Breadcrumb": true
+}-->
+
+<p>
+  本节将修改代码，使它不再每次都返回同一条
+  问候语，而是从几条预定义的问候消息中返回一条。
+</p>
+
+<aside class="Note">
+  <strong>注意：</strong> 本节属于一个多部分教程，该教程从
+  <a href="/doc/tutorial/create-module.html">创建 Go 模块</a>开始。
+</aside>
+
+<p>
+  为此，你将使用 Go 切片。切片类似数组，但它的
+  大小会随着元素的添加和删除动态变化。切片是 Go 中
+  最实用的类型之一。
+</p>
+
+<p>
+  你将添加一个包含三条问候消息的小切片，然后让
+  代码随机返回其中一条。有关切片的更多信息，
+  请参阅 Go 博客中的 <a href="/blog/slices-intro">Go 切片</a>。
+  
+</p>
+
+<ol>
+  <li>
+    在 greetings/greetings.go 中修改代码，使其如下所示。
+
+    <pre>
+package greetings
+
+import (
+    "errors"
+    "fmt"
+    <ins>"math/rand"</ins>
+)
+
+// Hello returns a greeting for the named person.
+func Hello(name string) (string, error) {
+    // If no name was given, return an error with a message.
+    if name == "" {
+        return name, errors.New("empty name")
+    }
+    // Create a message using a random format.
+    message := fmt.Sprintf(<ins>randomFormat()</ins>, name)
+    return message, nil
+}
+
+<ins>// randomFormat 从一组问候消息中随机返回一条。
+// 每次返回的消息都会随机选择。
+func randomFormat() string {
+    // formats 是保存消息格式的切片。
+    formats := []string{
+        "Hi, %v. Welcome!",
+        "Great to see you, %v!",
+        "Hail, %v! Well met!",
+    }
+
+    // 通过随机索引选择并返回一种消息格式；索引取自
+    // formats 切片。
+    return formats[rand.Intn(len(formats))]
+}</ins>
+</pre>
+
+    <p>
+      在这段代码中，你将：
+    </p>
+
+    <ul>
+      <li>
+        添加一个 <code>randomFormat</code> 函数，返回随机
+        选择的问候消息格式。请注意，
+        <code>randomFormat</code>以小写字母开头，因此
+        只能被同一包中的代码访问（也就是说，它没有
+        导出）。
+      </li>
+      <li>
+        在 <code>randomFormat</code> 中声明一个 <code>formats</code> 切片，包含
+        三种消息格式。声明切片时，方括号中不写大小，
+        例如：<code>[]string</code>。这告诉 Go，
+        切片底层数组的大小可以动态变化。
+      </li>
+      <li>
+        使用
+        <a href="https://pkg.go.dev/math/rand/"
+          ><code>math/rand</code>包</a
+        >
+        生成随机数，用来从切片中选择元素。
+      </li>
+      <li>
+        在 <code>Hello</code> 中调用 <code>randomFormat</code> 函数，
+        获取要返回消息的格式，然后将该格式与
+        <code>name</code>值一起用于生成消息。
+      </li>
+      <li>像之前一样返回消息（或错误）。</li>
+    </ul>
+
+  </li>
+
+  <li>
+    在 hello/hello.go 中修改代码，使其如下所示。
+
+    <p>只需在 hello.go 中，把 Gladys 的名字（或你喜欢的其他名字）
+      作为实参传给 <code>Hello</code> 函数调用。</p>
+
+    <pre>package main
+
+import (
+    "fmt"
+    "log"
+
+    "example.com/greetings"
+)
+
+func main() {
+    // Set properties of the predefined Logger, including
+    // the log entry prefix and a flag to disable printing
+    // the time, source file, and line number.
+    log.SetPrefix("greetings: ")
+    log.SetFlags(0)
+
+    // Request a greeting message.
+    <ins>message, err := greetings.Hello("Gladys")</ins>
+    // If an error was returned, print it to the console and
+    // exit the program.
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // If no error was returned, print the returned message
+    // to the console.
+    fmt.Println(message)
+}</pre>
+  </li>
+
+  <li>
+    在命令行的 hello 目录中运行 hello.go，确认
+    代码可以正常工作。多运行几次，观察问候语会发生变化。
+
+    <pre>
+$ go run .
+Great to see you, Gladys!
+
+$ go run .
+Hi, Gladys. Welcome!
+
+$ go run .
+Hail, Gladys! Well met!
+</pre>
+  </li>
+</ol>
+
+<p>
+  接下来，你将使用切片向多人问候。
+</p>
+
+<p class="Navigation">
+  <a class="Navigation-prev" href="/doc/tutorial/handle-errors.html"
+    >&lt; 返回并处理错误</a
+  >
+  <a class="Navigation-next" href="/doc/tutorial/greetings-multiple-people.html"
+    >为多人返回问候语 &gt;</a
+  >
+</p>

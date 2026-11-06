@@ -111,6 +111,9 @@ func LoadCourseMetadata(root, locale string, catalog *Catalog) (*CourseMetadata,
 	if catalog == nil {
 		return nil, fmt.Errorf("catalog is required")
 	}
+	if err := CheckCourseRefreshTransactionState(root, locale); err != nil {
+		return nil, err
+	}
 	metadataPath := filepath.Join(root, "locales", locale, "course-metadata.json")
 	data, err := os.ReadFile(metadataPath)
 	if err != nil {
@@ -238,6 +241,11 @@ func AssembleCourseMetadata(root string, catalog *Catalog, options CourseMetadat
 // requiring new AI descriptions only for Pages whose existing metadata
 // identity is stale. It never treats the previous description as new output.
 func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadataRefreshOptions) ([]byte, []string, error) {
+	return refreshCourseMetadataWithCompatibilityStats(root, catalog, options, nil)
+}
+
+// Stats are invocation-local test instrumentation, not workflow state.
+func refreshCourseMetadataWithCompatibilityStats(root string, catalog *Catalog, options CourseMetadataRefreshOptions, stats *glossaryCompatibilityPrepareStats) ([]byte, []string, error) {
 	if catalog == nil {
 		return nil, nil, fmt.Errorf("catalog is required")
 	}
@@ -246,6 +254,12 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 	if err != nil {
 		return nil, nil, fmt.Errorf("read course metadata refresh base: %w", err)
 	}
+	return refreshCourseMetadataFromBase(root, catalog, options, baseData, nil, stats)
+}
+
+// The history verifier uses the same refresh contract with exact archived base
+// bytes and a reconstructed, verified pre-refresh compatibility world.
+func refreshCourseMetadataFromBase(root string, catalog *Catalog, options CourseMetadataRefreshOptions, baseData []byte, compatibility func(CoursePageMetadata) bool, stats *glossaryCompatibilityPrepareStats) ([]byte, []string, error) {
 	base, err := decodeCourseMetadata(baseData)
 	if err != nil {
 		return nil, nil, fmt.Errorf("parse course metadata refresh base: %w", err)
@@ -281,14 +295,14 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 		}
 		sourceByID = courseSourceDescriptionsByID(sourceDescriptions)
 	}
-	stale := make([]string, 0)
 	staleByID := make(map[string]bool, len(catalog.Pages))
-	for _, page := range catalog.Pages {
-		entry := baseByID[page.ID]
-		if courseMetadataEntryIsStale(base, entry, page, targets[page.ID], glossaryHash, sourceByID, courseGlossaryCompatibility(root, options.Locale, catalog, glossaryHash)(entry)) {
-			stale = append(stale, page.ID)
-			staleByID[page.ID] = true
-		}
+	// Share the lazy compatibility world across every Page and final validation.
+	if compatibility == nil {
+		compatibility = courseGlossaryCompatibilityWithStats(root, options.Locale, catalog, glossaryHash, stats)
+	}
+	stale := selectStaleCourseMetadataPages(base, catalog, baseByID, targets, glossaryHash, sourceByID, compatibility)
+	for _, id := range stale {
+		staleByID[id] = true
 	}
 	descriptionByID, err := parseCourseDescriptions(options.Descriptions)
 	if err != nil {
@@ -329,7 +343,7 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 		return nil, nil, fmt.Errorf("encode refreshed course metadata: %w", err)
 	}
 	data = append(data, '\n')
-	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions, courseGlossaryCompatibility(root, options.Locale, catalog, sum(glossary))); err != nil {
+	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions, compatibility); err != nil {
 		return nil, nil, fmt.Errorf("validate refreshed course metadata: %w", err)
 	}
 	return data, stale, nil

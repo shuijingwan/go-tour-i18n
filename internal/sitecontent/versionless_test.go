@@ -140,7 +140,7 @@ func TestVersionlessPageRegistry(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(r.Pages) != 49 {
+	if len(r.Pages) != 51 {
 		t.Fatal(len(r.Pages))
 	}
 	next := append([]StablePage{}, r.Pages...)
@@ -149,10 +149,10 @@ func TestVersionlessPageRegistry(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if n.Pages[49].Index != 50 {
+	if n.Pages[51].Index != 52 {
 		t.Fatal("new Page not appended")
 	}
-	for i := 0; i < 49; i++ {
+	for i := 0; i < 51; i++ {
 		if n.Pages[i] != r.Pages[i] {
 			t.Fatal("renumbered")
 		}
@@ -188,7 +188,7 @@ func TestVersionlessPageRegistry(t *testing.T) {
 			nextSources = append(nextSources, s)
 		}
 	}
-	for i := 0; i < 12; i++ {
+	for i := 0; i < 10; i++ {
 		path := fmt.Sprintf("_content/doc/tutorial/aaa-future-%02d.md", i)
 		b := []byte("# Future Page\n\nTeaching context.\n")
 		raw[path] = b
@@ -200,7 +200,7 @@ func TestVersionlessPageRegistry(t *testing.T) {
 	if _, err := ReconcilePageSources(*r, nextSources, raw, nil); err == nil || !strings.Contains(err.Error(), "source_sha256=") || !strings.Contains(err.Error(), "context_bytes=") || !strings.Contains(err.Error(), "active=61 occupancy=30/30") {
 		t.Fatal("index61 source-bound diagnostic", err)
 	}
-	t.Logf("registry identity=%s active=49 fixed membership=30/19", r.Identity)
+	t.Logf("registry identity=%s active=51 fixed membership=30/21", r.Identity)
 }
 func TestVersionlessPageProtectionAndFixedPlan(t *testing.T) {
 	root := repositoryRoot(t)
@@ -212,14 +212,14 @@ func TestVersionlessPageProtectionAndFixedPlan(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(docs) != 49 {
+	if len(docs) != 51 {
 		t.Fatal(len(docs))
 	}
 	p, err := PlanPageWorkingSets(docs, raw, selectAll(docs), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(p.Sets) != 2 || len(p.Sets[0].Selected) != 30 || len(p.Sets[1].Selected) != 19 {
+	if len(p.Sets) != 2 || len(p.Sets[0].Selected) != 30 || len(p.Sets[1].Selected) != 21 {
 		t.Fatal(p)
 	}
 	for _, d := range docs {
@@ -231,7 +231,7 @@ func TestVersionlessPageProtectionAndFixedPlan(t *testing.T) {
 			t.Fatalf("%s roundtrip: %v", d.Path, err)
 		}
 	}
-	t.Logf("fixed Page batches contexts=%d/%d bytes; Page=49 embedded Example=0", p.Sets[0].ContextBytes, p.Sets[1].ContextBytes)
+	t.Logf("fixed Page batches contexts=%d/%d bytes; Page=51 embedded Example=0", p.Sets[0].ContextBytes, p.Sets[1].ContextBytes)
 	source := []byte("## Create a folder for your code {#create_folder}\n\nFor other tutorials, see [Tutorials](/doc/tutorial/index).\n\nUse `go mod tidy` to update the module.\n\n```go\nfunc main() {\n // Create a Context with a timeout.\n Context()\n}\n```\n")
 	s := Source{Path: "_content/doc/tutorial/test.md", Kind: "page", SHA256: digest(source)}
 	d, err := ParseDocument(s, source)
@@ -533,9 +533,10 @@ func TestVersionlessIntegratedTourExpansion(t *testing.T) {
 	}
 	t.Logf("integrated scope: old Tour TU=122 carried, new Docs=56 reviewed; structured pending=9, scope bytes=%d", len(encoded))
 }
-func importStructuredFixture(t *testing.T, root string) (*StructuredGeneration, Reference) {
+func importStructuredFixture(t *testing.T, root string, locales ...string) (*StructuredGeneration, Reference) {
 	t.Helper()
-	b, m, err := ExportStructuredAssets(root, "zh-CN")
+	locale := fixtureLocale(locales)
+	b, m, err := ExportStructuredAssets(root, locale)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -568,8 +569,8 @@ func importStructuredFixture(t *testing.T, root string) (*StructuredGeneration, 
 			if err != nil {
 				t.Fatal(err)
 			}
-			data = strings.Replace(string(b), `"locale": "en"`, `"locale": "zh-CN"`, 1)
-			data = strings.Replace(data, `"html_lang": "en"`, `"html_lang": "zh-CN"`, 1)
+			data = strings.Replace(string(b), `"locale": "en"`, `"locale": "`+locale+`"`, 1)
+			data = strings.Replace(data, `"html_lang": "en"`, `"html_lang": "`+locale+`"`, 1)
 		} else {
 			cs, err := i18n.LoadUnifiedGlossaryCorpus(root)
 			if err != nil {
@@ -585,7 +586,7 @@ func importStructuredFixture(t *testing.T, root string) (*StructuredGeneration, 
 			b, _ := Encode(struct {
 				Locale   string                 `json:"locale"`
 				Articles []i18n.ArticleMetadata `json:"articles"`
-			}{"zh-CN", entries})
+			}{locale, entries})
 			data = string(b)
 		}
 		o.Outputs = append(o.Outputs, StructuredTarget{Path: path, Data: data, Slots: []Target{}})
@@ -600,7 +601,7 @@ func importStructuredFixture(t *testing.T, root string) (*StructuredGeneration, 
 	return r, ref
 }
 func TestVersionlessStructuredAtomicSurface(t *testing.T) {
-	root := siteFixture(t)
+	root := siteFixture(t, "current-authorization-fresh-fixture")
 	if err := os.Remove(root + "/" + LocalePath("zh-CN")); err != nil {
 		t.Fatal(err)
 	}
@@ -727,9 +728,9 @@ func TestVersionlessDeltaReuseAndUnrelatedPage(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	affected, _ := i18n.ParsedGlossaryImpact("A function returns a value.", "函数返回一个值。", delta)
-	if affected || ClassifyLanguageWork(true, true, true, affected, false, false) != "stale/reopen" {
-		t.Fatal("affected core term carried")
+	compatible, reasons := i18n.ParsedGlossaryImpact("A function returns a value.", "函数返回一个值。", delta)
+	if !compatible || len(reasons) != 1 || reasons[0] != "preferred_target_already_present" || ClassifyLanguageWork(true, true, true, compatible, false, false) != "carry" {
+		t.Fatalf("existing compliant preferred term did not carry: compatible=%v reasons=%v", compatible, reasons)
 	}
 	if ClassifyLanguageWork(false, true, true, true, false, false) != "stale/reopen" || ClassifyLanguageWork(true, false, false, true, false, false) != "generation-required" || ClassifyLanguageWork(true, true, false, true, false, false) != "review-required" {
 		t.Fatal("scope classification")
@@ -812,7 +813,7 @@ func TestVersionlessReviewerWholePagesDedup(t *testing.T) {
 	t.Logf("30 full Page Reviewer bundle ZIP=%d manifest=%d bytes", len(b), len(fs["manifest.json"]))
 }
 func TestVersionlessSurfaceExactRevision(t *testing.T) {
-	root := siteFixture(t)
+	root := siteFixture(t, "current-authorization-fresh-fixture")
 	_, gr := importStructuredFixture(t, root)
 	_, name, err := FinalizePackageClosure(root, "zh-CN", "site-v2-shell", nil, []Reference{gr})
 	if err != nil {

@@ -1,0 +1,64 @@
+---
+title: 在 IDE 中扫描漏洞
+layout: article
+---
+
+[返回 Go 安全](/security)
+
+集成了 [Go 语言服务器](https://pkg.go.dev/golang.org/x/tools/cmd/gopls)的编辑器，例如安装 Go 扩展的 [VS Code](https://marketplace.visualstudio.com/items?itemName=golang.go)，可以检测依赖项中的漏洞。
+
+检测依赖项漏洞有两种模式。二者都以 [Go 漏洞数据库](https://vuln.go.dev)为基础，并且互为补充。
+
+* 基于导入的分析：在这种模式下，编辑器会扫描工作区中导入的包集合来报告漏洞，并把发现的问题以诊断信息形式显示在 `go.mod` 文件中。这种方式速度很快，但如果代码导入了包含易受攻击符号的包，而存在漏洞的函数实际上不可达，就可能产生假阳性。可以通过 gopls 的 [`"vulncheck": "Imports"`](https://github.com/golang/tools/blob/master/gopls/doc/settings.md#vulncheck-enum) 设置启用该模式。
+* `Govulncheck` 分析：该模式基于 [`govulncheck`](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) 命令行工具，该工具嵌入在 `gopls` 中。它提供了一种低噪声、可靠的方法，用于确认代码是否实际调用了存在漏洞的函数。由于这种分析的计算成本可能较高，需要手动触发：可以使用基于导入分析诊断报告所关联的“Run govulncheck to verify”代码操作，或者使用 [`"codelenses.run_govulncheck"`](https://github.com/golang/tools/blob/master/gopls/doc/settings.md#run-govulncheck) 在 `go.mod` 文件上提供的 code lens。
+
+<div style="text-align: center;"><img src="vscode.gif" alt="Vulncheck">
+
+<em>Go: Toggle Vulncheck</em> <a
+href="https://user-images.githubusercontent.com/4999471/206977512-a821107d-9ffb-4456-9b27-6a6a4f900ba6.mp4">（vulncheck.mp4）</a>
+</div>
+
+这些功能在 `gopls` v0.11.0 或更高版本中可用。欢迎在 [go.dev/s/vsc-vulncheck-feedback](/s/vsc-vulncheck-feedback) 提供反馈。
+
+## 各编辑器的具体说明
+
+### VS Code
+
+[Go 扩展](https://marketplace.visualstudio.com/items?itemName=golang.go)提供与 gopls 的集成。要启用漏洞扫描功能，需要以下设置：
+
+```
+"go.diagnostic.vulncheck": "Imports", // enable the imports-based analysis by default.
+"gopls": {
+  "ui.codelenses": {
+    "run_govulncheck": true  // "Run govulncheck" code lens on go.mod file.
+  }
+}
+```
+
+可以使用 [“Go Toggle Vulncheck”](https://github.com/golang/vscode-go/wiki/Commands#go-toggle-vulncheck)命令，为当前工作区打开或关闭基于导入的分析。
+
+### Vim/NeoVim
+
+使用 [coc.nvim](https://www.vim.org/scripts/script.php?script_id=5779) 时，可以通过以下设置启用基于导入的分析。
+
+```
+{
+    "codeLens.enable": true,
+    "languageserver": {
+        "go": {
+            "command": "gopls",
+            ...
+            "initializationOptions": {
+                "vulncheck": "Imports",
+            }
+        }
+    }
+}
+```
+
+## 注意事项与限制
+
+- 该扩展不会扫描私有包，也不会发送任何关于私有模块的信息。所有分析都通过从 Go 漏洞数据库获取已知存在漏洞的模块列表，然后在本地计算交集完成。
+- 基于导入的分析使用工作区模块中的包列表；这个列表可能与 `go.mod` 文件中看到的内容不同，尤其是在使用了 `go.work` 或模块 `replace`/`exclude` 时。
+- 随着代码修改或 Go 漏洞数据库更新，govulncheck 分析结果可能变得陈旧。若要手动使分析结果失效，请使用 `"Reset go.mod diagnostics"` codelens，它显示在 `go.mod` 文件顶部。否则，结果会在一小时后自动失效。
+- 这些功能目前不会报告标准库或工具链中的漏洞。我们仍在研究 UX，以确定在哪里显示这些发现，以及如何帮助用户处理相关问题。

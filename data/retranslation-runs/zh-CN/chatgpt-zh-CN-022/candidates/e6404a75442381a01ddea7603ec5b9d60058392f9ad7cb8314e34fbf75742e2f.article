@@ -1,0 +1,515 @@
+<!--{
+  "Title": "教程：泛型入门",
+  "Breadcrumb": true
+}-->
+
+本教程介绍 Go 泛型的基础知识。借助泛型，可以
+声明并使用能够处理调用代码所提供的一组不同
+类型中的任意一种的函数或类型。
+
+在本教程中，你将先声明两个简单的非泛型函数，然后把
+相同的逻辑合并到一个泛型函数中。
+
+你将依次完成以下部分：
+
+1. 为代码创建文件夹。
+2. 添加非泛型函数。
+3. 添加一个可处理多种类型的泛型函数。
+4. 调用泛型函数时省略类型实参。
+5. 声明类型约束。
+
+**注意：**其他教程请参阅 [教程](/doc/tutorial/index.html)。
+
+## 先决条件
+
+*   **Go。**建议使用最新版 Go 学习本教程。
+    有关安装说明，请参阅 [安装 Go](/doc/install)。
+*   **用于编辑代码的工具。**任意文本编辑器都可以。
+*   **命令行终端。**Go 可以在 Linux 和 Mac 上的任意终端中良好运行，
+    在 Windows 上则可以使用 PowerShell 或 cmd。
+
+## 为代码创建文件夹 {#create_folder}
+
+首先，为即将编写的代码创建一个文件夹。
+
+1. 打开命令提示符并切换到主目录。
+
+    在 Linux 或 Mac 上：
+
+    ```
+    $ cd
+    ```
+
+    在 Windows 上：
+
+    ```
+    C:\> cd %HOMEPATH%
+    ```
+
+    本教程余下部分会用 $ 表示命令提示符。你使用的命令
+    在 Windows 上也同样适用。
+
+2. 在命令提示符中，为代码创建名为 generics 的目录。
+
+    ```
+    $ mkdir generics
+    $ cd generics
+    ```
+
+3. 创建用于存放代码的模块。
+
+    运行 `go mod init` 命令，并为新代码指定模块路径。
+
+    ```
+    $ go mod init example/generics
+    go: creating new go.mod: module example/generics
+    ```
+
+    **注意：**对于生产代码，你应指定一个更符合自身需求的具体模块路径
+    。更多信息请务必参阅
+    [管理依赖项](/doc/modules/managing-dependencies)。
+
+接下来，你将添加一些处理映射的简单代码。
+
+## 添加非泛型函数 {#non_generic_functions}
+
+这一步将添加两个函数，它们分别把一个
+映射中的值相加并返回总和。
+
+之所以声明两个函数而不是一个，是因为要处理两种
+不同类型的映射：一种存储 `int64` 值，另一种存储 `float64` 值。
+
+#### 编写代码
+
+1. 使用文本编辑器，在 generics
+    目录中创建名为 main.go 的文件。Go 代码将写在这个文件中。
+2. 在 main.go 文件顶部粘贴下面的包
+    声明。
+
+    ```
+    package main
+    ```
+
+    独立程序（相对于库而言）始终位于 `main` 包中。
+
+3. 在包声明下方粘贴下面两个函数
+    声明。
+
+    ```
+    // SumInts 把以下值相加： m.
+    func SumInts(m map[string]int64) int64 {
+    	var s int64
+    	for _, v := range m {
+    		s += v
+    	}
+    	return s
+    }
+
+    // SumFloats 把以下值相加： m.
+    func SumFloats(m map[string]float64) float64 {
+    	var s float64
+    	for _, v := range m {
+    		s += v
+    	}
+    	return s
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   声明两个函数，用于把映射中的值相加并返回
+        总和。
+        *   `SumFloats` 接收一个从 `string` 到 `float64` 值的映射。
+        *   `SumInts` 接收一个从 `string` 到 `int64` 值的映射。
+
+4. 在 main.go 顶部、包声明下方粘贴下面的
+    `main` 函数，用它初始化两个映射，并在调用前一步声明的函数时
+    把它们作为实参传入。
+
+    ```
+    func main() {
+    	// 初始化保存整数值的映射
+    	ints := map[string]int64{
+    		"first":  34,
+    		"second": 12,
+    	}
+
+    	// 初始化保存浮点值的映射
+    	floats := map[string]float64{
+    		"first":  35.98,
+    		"second": 26.99,
+    	}
+
+    	fmt.Printf("Non-Generic Sums: %v and %v\n",
+    		SumInts(ints),
+    		SumFloats(floats))
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   初始化一个 `float64` 值映射和一个 `int64` 值映射，每个
+        映射都包含两个条目。
+    *   调用之前声明的两个函数，分别计算每个
+        映射中值的总和。
+    *   打印结果。
+
+5. 在 main.go 顶部附近、包声明下方，导入
+    支持刚才代码所需的包。
+
+    文件开头几行代码应如下所示：
+
+    ```
+    package main
+
+    import "fmt"
+    ```
+
+6. 保存 main.go。
+
+#### 运行代码
+
+在包含 main.go 的目录中通过命令行运行代码。
+
+```
+$ go run .
+Non-Generic Sums: 46 and 62.97
+```
+
+借助泛型，这里可以只写一个函数而不是两个。接下来，你将
+添加一个泛型函数，用来处理包含整数值或浮点值的映射。
+
+## 添加可处理多种类型的泛型函数 {#add_generic_function}
+
+本节将添加一个泛型函数，它既可以接收包含整数值的映射，
+也可以接收包含浮点值的映射，从而用一个函数替代刚才
+编写的两个函数。
+
+为了支持这两种类型，单个函数需要一种方式来
+声明它所支持的类型。另一方面，调用代码也需要一种
+方式来说明传入的是整数映射还是浮点映射。
+
+为此，你将编写一个函数：除了普通函数参数外，它还声明_类型参数_。
+这些类型参数使
+函数成为泛型函数，从而能够处理不同类型的实参。
+调用函数时，你会传入_类型实参_以及普通函数实参。
+
+每个类型参数都有一个_类型约束_，它相当于该类型参数的一种元类型。
+每个类型约束都规定调用代码可以为相应类型参数使用哪些类型
+实参。
+
+虽然类型参数的约束通常表示一组类型，但在
+编译时，类型参数只代表一个类型——也就是调用代码作为类型实参提供的类型
+。如果类型实参的类型不在类型参数约束允许的范围内，代码将无法编译
+。
+
+请记住，类型参数必须支持泛型
+代码对它执行的所有操作。例如，如果函数代码试图
+对一个约束中包含数值类型的类型参数执行 `string` 操作（例如索引）
+，代码就无法编译。
+
+接下来编写的代码将使用一个允许
+整数类型或浮点类型的约束。
+
+#### 编写代码
+
+1. 在之前添加的两个函数下方，粘贴下面的泛型
+    函数。
+
+    ```
+    // SumIntsOrFloats 对映射  m 中的值求和。它支持  int64  和  float64
+    //  作为映射值的类型。
+    func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
+        var s V
+        for _, v := range m {
+            s += v
+        }
+        return s
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   声明一个 `SumIntsOrFloats` 函数，其中有两个类型参数（位于
+        方括号内）`K` 和 `V`，以及一个使用这些类型参数的普通参数，即
+        类型为 `map[K]V` 的 `m`。函数返回
+        类型为 `V` 的值。
+    *   为 `K` 类型参数指定类型约束 `comparable`。
+        `comparable` 约束正是为此类情况设计的，
+        并且在 Go 中已经预声明。它允许任何其值可用于
+        比较运算符 `==` 和 `!=` 的类型。Go 要求映射
+        的键必须可比较。因此，把 `K` 声明为 `comparable` 是必要的，这样才能
+        把 `K` 用作映射变量中的键。同时也能保证调用
+        代码为映射键使用允许的类型。
+    *   为 `V` 类型参数指定一个由两种
+        类型组成的联合约束：`int64` 和 `float64`。使用 `|` 表示这两种
+        类型的联合，也就是该约束允许其中任意一种。编译器会允许调用代码使用任意一种类型
+        作为实参。
+    *   指定 `m` 参数的类型为 `map[K]V`，其中 `K` 和 `V`
+        就是之前为类型参数指定的类型。请注意，我们
+        知道 `map[K]V` 是合法的映射类型，因为 `K` 是可比较类型。如果
+        没有把 `K` 声明为可比较，编译器就会拒绝
+        对 `map[K]V` 的引用。
+
+2. 在 main.go 中现有代码下方粘贴下面的代码。
+
+    ```
+    fmt.Printf("Generic Sums: %v and %v\n",
+    	SumIntsOrFloats[string, int64](ints),
+    	SumIntsOrFloats[string, float64](floats))
+    ```
+
+    在这段代码中，你将：
+
+    *   调用刚才声明的泛型函数，并依次传入已经创建的两个映射
+        。
+    *   指定类型实参——也就是方括号中的类型名称——以明确
+        调用的函数中应该用哪些类型替换类型参数
+        。
+
+        下一节会看到，函数调用中通常可以省略类型
+        实参，因为 Go 往往能根据代码推断它们。
+    *   打印函数返回的总和。
+
+#### 运行代码
+
+在包含 main.go 的目录中通过命令行运行代码。
+
+```
+$ go run .
+Non-Generic Sums: 46 and 62.97
+Generic Sums: 46 and 62.97
+```
+
+为了运行代码，编译器会在每次调用中用该调用所指定的具体类型替换类型参数
+。
+
+调用你编写的泛型函数时，你指定了类型实参，
+告诉编译器应使用哪些类型替代函数的类型参数。
+下一节会看到，在很多情况下可以省略这些类型
+实参，因为编译器能够推断它们。
+
+## 调用泛型函数时省略类型实参 {#remove_type_arguments}
+
+本节将添加一个修改后的泛型函数调用，
+只做一个小改动来简化调用代码：移除本例中不需要的类型
+实参。
+
+当 Go 编译器能够推断你要使用的类型时，调用代码可以省略类型实参
+。编译器会根据函数实参的类型推断类型实参
+。
+
+请注意，这并非总是可行。例如，如果需要调用一个
+没有任何实参的泛型函数，就必须在函数调用中包含类型
+实参。
+
+#### 编写代码
+
+*   在 main.go 中现有代码下方粘贴下面的代码。
+
+    ```
+    fmt.Printf("Generic Sums, type parameters inferred: %v and %v\n",
+    	SumIntsOrFloats(ints),
+    	SumIntsOrFloats(floats))
+    ```
+
+    在这段代码中，你将：
+
+    *   调用泛型函数，并省略类型实参。
+
+#### 运行代码
+
+在包含 main.go 的目录中通过命令行运行代码。
+
+```
+$ go run .
+Non-Generic Sums: 46 and 62.97
+Generic Sums: 46 and 62.97
+Generic Sums, type parameters inferred: 46 and 62.97
+```
+
+接下来，你将进一步简化函数，把整数与浮点类型的联合
+提取为一个可复用的类型约束，供其他代码等场景使用。
+
+## 声明类型约束 {#declare_type_constraint}
+
+在最后这一节中，你将把之前定义的约束移入它自己的
+接口，以便在多个位置复用。以这种方式声明
+约束可以简化代码，尤其是在约束较复杂时
+。
+
+你将_类型约束_声明为接口。该约束允许任何
+实现该接口的类型。例如，如果声明一个包含三个方法的类型约束
+接口，并将其用于泛型
+函数的类型参数，那么用于调用该函数的类型实参必须具有这三个
+方法。
+
+约束接口还可以引用具体类型，本节就会演示这一点
+。
+
+#### 编写代码
+
+1. 在 `main` 正上方、import 语句之后，粘贴
+    下面的代码来声明类型约束。
+
+    ```
+    type Number interface {
+        int64 | float64
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   声明 `Number` 接口类型，用作类型约束。
+    *   在接口中声明 `int64` 和 `float64` 的联合。
+
+        本质上，你只是把联合从函数声明
+        移动到了新的类型约束中。这样，当希望把类型
+        参数约束为 `int64` 或 `float64` 时，就可以使用这个 `Number`
+        类型约束，而不必写出 `int64 | float64`。
+
+2. 在现有函数下方粘贴下面的泛型
+    `SumNumbers` 函数。
+
+    ```
+    // SumNumbers 对映射  m 中的值求和。它支持整数
+    // 和浮点数作为映射值。
+    func SumNumbers[K comparable, V Number](m map[K]V) V {
+        var s V
+        for _, v := range m {
+            s += v
+        }
+        return s
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   声明一个泛型函数，其逻辑与之前声明的泛型函数
+        相同，但使用新的接口类型而不是
+        联合来作为类型约束。与之前一样，类型参数
+        用于实参和返回值类型。
+
+3. 在 main.go 中现有代码下方粘贴下面的代码。
+
+    ```
+    fmt.Printf("Generic Sums with Constraint: %v and %v\n",
+    	SumNumbers(ints),
+    	SumNumbers(floats))
+    ```
+
+    在这段代码中，你将：
+
+    *   分别使用两个映射调用 `SumNumbers`，并打印各自值的总和
+        。
+
+        与上一节一样，调用泛型函数时省略类型实参（方括号中的类型
+        名称）。Go
+        编译器可以根据其他实参推断类型实参。
+
+#### 运行代码
+
+在包含 main.go 的目录中通过命令行运行代码。
+
+```
+$ go run .
+Non-Generic Sums: 46 and 62.97
+Generic Sums: 46 and 62.97
+Generic Sums, type parameters inferred: 46 and 62.97
+Generic Sums with Constraint: 46 and 62.97
+```
+
+## 总结 {#conclusion}
+
+做得不错！你已经初步了解了 Go 中的泛型。
+
+建议接下来学习：
+
+*   [Go 语言之旅](/tour/)是循序渐进学习
+    Go 基础知识的好去处。
+*   你还可以在
+    [Effective Go](/doc/effective_go) 和
+    [如何编写 Go 代码](/doc/code)中了解实用的 Go 最佳实践。
+
+## 完整代码 {#completed_code}
+
+可以在
+[Go 语言演练场](/play/p/apNmfVwogK0)运行这个程序。在
+演练场中，只需点击 **运行** 按钮。
+
+```
+package main
+
+import "fmt"
+
+type Number interface {
+	int64 | float64
+}
+
+func main() {
+	// Initialize a map for the integer values
+	ints := map[string]int64{
+		"first": 34,
+		"second": 12,
+	}
+
+	// Initialize a map for the float values
+	floats := map[string]float64{
+		"first": 35.98,
+		"second": 26.99,
+	}
+
+	fmt.Printf("Non-Generic Sums: %v and %v\n",
+		SumInts(ints),
+		SumFloats(floats))
+
+	fmt.Printf("Generic Sums: %v and %v\n",
+		SumIntsOrFloats[string, int64](ints),
+		SumIntsOrFloats[string, float64](floats))
+
+	fmt.Printf("Generic Sums, type parameters inferred: %v and %v\n",
+		SumIntsOrFloats(ints),
+		SumIntsOrFloats(floats))
+
+	fmt.Printf("Generic Sums with Constraint: %v and %v\n",
+		SumNumbers(ints),
+		SumNumbers(floats))
+}
+
+// SumInts adds together the values of m.
+func SumInts(m map[string]int64) int64 {
+	var s int64
+	for _, v := range m {
+		s += v
+	}
+	return s
+}
+
+// SumFloats adds together the values of m.
+func SumFloats(m map[string]float64) float64 {
+	var s float64
+	for _, v := range m {
+		s += v
+	}
+	return s
+}
+
+// SumIntsOrFloats sums the values of map m. It supports both floats and integers
+// as map values.
+func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
+	var s V
+	for _, v := range m {
+		s += v
+	}
+	return s
+}
+
+// SumNumbers sums the values of map m. It supports both integers
+// and floats as map values.
+func SumNumbers[K comparable, V Number](m map[K]V) V {
+	var s V
+	for _, v := range m {
+		s += v
+	}
+	return s
+}

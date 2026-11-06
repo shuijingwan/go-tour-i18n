@@ -1,0 +1,1040 @@
+{
+  "report_type": "engineering-diagnostic-only",
+  "stage": "protected-representation-sys08-closure",
+  "formal_mutation": "none",
+  "count_semantics": "Multi-label counts overlap. Unique set = prior 39 exposures union exact input identity changes this round. Reconciliation means explicit mapping when formally consumed, not automatic retranslation/reopen. Unknown marks observed unresolved baseline reuse; not a language rating. This is not a full authority-migration readiness audit.",
+  "unique_affected_unit_count": 45,
+  "counts": {
+    "representation_reconciliation_required": 45,
+    "reattest_only": 0,
+    "true_language_defect": 1,
+    "unaffected": 0,
+    "unknown": 3
+  },
+  "confirmed_sys08_pages": 11,
+  "representation_changes_this_round": 39,
+  "units": [
+    {
+      "source_path": "_content/doc/database/cancel-operations.md",
+      "route": "/doc/database/cancel-operations",
+      "entry_unit_id": "d799614a9f1efd848505c615a88f2fb0f092ac22f743b3da042e12de1127fd8b",
+      "current_unit_id": "d799614a9f1efd848505c615a88f2fb0f092ac22f743b3da042e12de1127fd8b",
+      "snapshot_representation_unit_id": "00bcbeef62b7348b1d93580ddcc4cccdff4c14d5cfdde94a6523f92c4926ac5e",
+      "source_sha256": "c71ef831003d93f55e7ffb503aadb883797e574b21d905caa42c783cf02ff683",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": false
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/database/change-data.md",
+      "route": "/doc/database/change-data",
+      "entry_unit_id": "710755b7111a6d99c424ec6d345cbbe68672a3dab3ba998432cd28fd258b42ce",
+      "current_unit_id": "710755b7111a6d99c424ec6d345cbbe68672a3dab3ba998432cd28fd258b42ce",
+      "snapshot_representation_unit_id": "a34a5c04d189c15899084d16cb42017f5f7b25a6658261eb7b0533cd8791f137",
+      "source_sha256": "7d33ffb1904495008147b115fbace5f82640e209c492b13f406363a61837bb55",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": false
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/database/execute-transactions.md",
+      "route": "/doc/database/execute-transactions",
+      "entry_unit_id": "5c8b1c7db8652d2d81884d1f5627123ded32be50cb8f035b2c344ceb909bc003",
+      "current_unit_id": "d61aeba25412a5486456e3e5f2d3910e0bf27381f71b37eba29853d462174a1b",
+      "snapshot_representation_unit_id": "6aea6756a6e2e8960a6b3eb8cd1c35ce6dec89cf1b78558feac894d25bb0a767",
+      "source_sha256": "3e8e4ee1071772b796cf0e467f4a2cc8065e866385604116a6ddd3d0b07ee59f",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/database/index.md",
+      "route": "/doc/database/",
+      "entry_unit_id": "68ed711bf3de79594a69b34f6ff4983817e0f555fb29e8b52486ad983144aaf1",
+      "current_unit_id": "4708d52292821a7a838084e4407ab41f240bcfb3d77fc173497374f0e4788b70",
+      "snapshot_representation_unit_id": "3d5986d66404f4530a5dd3976653b256f62fb2231cb58a19502a4be455b57093",
+      "source_sha256": "8335626ef100c20d927f52d02c60850eca7b0e9d4c097c796484529a7f3dd3c9",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/database/manage-connections.md",
+      "route": "/doc/database/manage-connections",
+      "entry_unit_id": "b7143dcc012031b322d49e7e712a228e0e0835d16594af76040b8b6ba47650cb",
+      "current_unit_id": "e1fb550acbf722fc3146f3acdf97ea9fc2a9bb5bfbef7742a40e0a02090d56c2",
+      "snapshot_representation_unit_id": "e7629170860f831e59d329f5d51042b6ab6399eea782c6d142bd8dcd79ae443b",
+      "source_sha256": "c0af88c4644c5118003126a32219fd786b47ae719f267d9b22cbc4954628ee0d",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/database/open-handle.md",
+      "route": "/doc/database/open-handle",
+      "entry_unit_id": "83c9fbae8e9441bebef9cee7a7247b2306c21afa9fcb15d5452a6caa08a3a871",
+      "current_unit_id": "872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983",
+      "snapshot_representation_unit_id": "e9374ce4c3a09a205ebe3c943ef6405286703f2d0ba2f92063f2b0abf3fbceb7",
+      "source_sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/database/prepared-statements.md",
+      "route": "/doc/database/prepared-statements",
+      "entry_unit_id": "dd353848a883a0ce4efa4a6c72b49d08551f13701c8b98b35520092d45c6ebbe",
+      "current_unit_id": "dd353848a883a0ce4efa4a6c72b49d08551f13701c8b98b35520092d45c6ebbe",
+      "snapshot_representation_unit_id": "3111096562c8eefbefc8af2f1b2fd5d56583aa990de823606b5d228d5ce4d428",
+      "source_sha256": "37854cb2a8e7ef640129566162422472821faadcbab8dd2a7514513d40eff004",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": false
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/database/querying.md",
+      "route": "/doc/database/querying",
+      "entry_unit_id": "21946bff61d8f7c52c444edcd122ea398ba80574a8095c37befa936541a9cd4c",
+      "current_unit_id": "21946bff61d8f7c52c444edcd122ea398ba80574a8095c37befa936541a9cd4c",
+      "snapshot_representation_unit_id": "6fd0d36e7073cb6ef85352612edcb9ecb1bb3b2e7e7482a2b91a54259f9d9e2f",
+      "source_sha256": "02e399c4e8b9895689676f976ce052da6d6efa6f6bed3c7368314a47e3314864",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": false
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/database/sql-injection.md",
+      "route": "/doc/database/sql-injection",
+      "entry_unit_id": "ca5a4ed9af214836a5b317eb6961c46caa4daf529a5434b12251e58b94b36b16",
+      "current_unit_id": "ca5a4ed9af214836a5b317eb6961c46caa4daf529a5434b12251e58b94b36b16",
+      "snapshot_representation_unit_id": "73f43581dde77f8784659cb40fe4bea604200de89c3cb1ff98f58cdeb3807231",
+      "source_sha256": "b8dac8aa9f02e71bd0b5dda8f6e26706ff22e19c0a3149aae53946b2b10f864a",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": false
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/modules/developing.md",
+      "route": "/doc/modules/developing",
+      "entry_unit_id": "83847dd2c9d2c76a864241e435e527d39c8697366d30bed775f4a77d2da50d9a",
+      "current_unit_id": "83847dd2c9d2c76a864241e435e527d39c8697366d30bed775f4a77d2da50d9a",
+      "snapshot_representation_unit_id": "6ffc24b4617c1441364ad2fa27e3f9528ab0e50f43c7388f588df91e84bb79ff",
+      "source_sha256": "b536e09618906a025e579d4715c3218dd4cc32ba4b1a4554d8dd6e582a7f8ed8",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": false
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/modules/gomod-ref.md",
+      "route": "/doc/modules/gomod-ref",
+      "entry_unit_id": "d59438118c0d9582ea85100f0507c624ef054c119f46c575546bd8302399cb9c",
+      "current_unit_id": "61c3a8166079f2411ded5981623c0e2c7945ee164f8ac11b17d4f956b214174b",
+      "snapshot_representation_unit_id": "375db21a6686ad848034672a6fa7c9f297627bc303c7822d2d293125a72b4578",
+      "source_sha256": "f2d3e578640d2a9522a9667b8a203e6a14d60509df1e5c04ad54ca14a6c3d8bd",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/modules/layout.md",
+      "route": "/doc/modules/layout",
+      "entry_unit_id": "34e86af2019571892a4433f65dc7686541ba48c64a4e64bc7c13754c5a312246",
+      "current_unit_id": "1f0b19526793895c0674f7c3c1e0dafd9f37247b4aa215d0e8be1c0b8c79de8f",
+      "snapshot_representation_unit_id": "b490dbaa9904c807b80d7df512293e4cfc00599d940f6a3dba415295ee15e820",
+      "source_sha256": "3cf064a34e84e48dc66ffdf9277fea2b2c9fdc52d0b5dd7d4de506fb8eeba4a5",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": true,
+        "candidate_sha256": "22c50c9700c84228b900a1a08e72ad0008bb4073373e81bd311520f2756775d3",
+        "current_unit_id": "1f0b19526793895c0674f7c3c1e0dafd9f37247b4aa215d0e8be1c0b8c79de8f",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "c75a031523f8c4e690fbe054738ef637f36ae7ef51444d66d73fb429a01c0892",
+        "snapshot_unit_id": "b490dbaa9904c807b80d7df512293e4cfc00599d940f6a3dba415295ee15e820",
+        "source_path": "_content/doc/modules/layout.md"
+      }
+    },
+    {
+      "source_path": "_content/doc/modules/major-version.md",
+      "route": "/doc/modules/major-version",
+      "entry_unit_id": "e52af5d3c60d2ddb879954a9207a5aadbb57b4abf10e766dfa094c1181c68578",
+      "current_unit_id": "7eb8c6d141170074062064dfc1367ae28002c16a1cd825ee5666fc73c0e3b8b5",
+      "snapshot_representation_unit_id": "f9605236482e038cf24f79175012037cff96503019f9073626c69c20886fd2b1",
+      "source_sha256": "7d052c1b96c1d537cfede56c69dc92684344172ff03ef2bc87c33d2271c5d36c",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/modules/managing-dependencies.md",
+      "route": "/doc/modules/managing-dependencies",
+      "entry_unit_id": "533b4f63254a2b2f80d8d4bcddb04027df9deb1b12d17cc1724955df3e3dcea8",
+      "current_unit_id": "82a1f9b16b20d60a538c1873daf9afb5c446aded1d2bff16e3b5650ed6bafb1e",
+      "snapshot_representation_unit_id": "2a2116ee48edd06f9ddac08c7b54b05422d8a34dbae7387166ea1f9de4686bf0",
+      "source_sha256": "0d0ba363e0214a23116f0d4e6e016968a31412674970839d0caa7957e17b1ee7",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": true
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": false,
+        "candidate_sha256": "c325efcb972c18b7f0699d262f7ffcb7bdd205f646591cda11222d0b8f3351f3",
+        "current_unit_id": "82a1f9b16b20d60a538c1873daf9afb5c446aded1d2bff16e3b5650ed6bafb1e",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "69ff0b2c6fd57f7a467c6f5bb21926336ed16398623dfc48673f26ef52864af8",
+        "introduced_machine_identity": [
+          "404"
+        ],
+        "rebase_blocker": "replacement introduces protection outside historical source atoms",
+        "snapshot_unit_id": "2a2116ee48edd06f9ddac08c7b54b05422d8a34dbae7387166ea1f9de4686bf0",
+        "source_path": "_content/doc/modules/managing-dependencies.md"
+      },
+      "unknown_blocker": "Current baseline reuse unresolved: newly protected technical identity was outside old protected atoms; existing rebaser refuses target inference. Old raw/candidate/Snapshot interpretation PASS. Requires explicit migration proof before this Unit is consumed; no language defect inferred."
+    },
+    {
+      "source_path": "_content/doc/modules/managing-source.md",
+      "route": "/doc/modules/managing-source",
+      "entry_unit_id": "e64fbb000bb1a079ee933d913e6ba191b747966b94df1eca035042fb823788f5",
+      "current_unit_id": "cb44a567ce61c076973f88f9dd2bbc98f7cc3bcff87106924270bdc9be6f78a6",
+      "snapshot_representation_unit_id": "db818202d18edbc2ab1e9935a9c2fd46588bb83d2eb19cb233bf46ce28dae1c6",
+      "source_sha256": "9edc5cfdd586954d36a2851147eff163cf3e71aaebf3c3499a1a3934245b6a5b",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/modules/publishing.md",
+      "route": "/doc/modules/publishing",
+      "entry_unit_id": "a9a05c2df3a5b51634d5170863ed433d39eec02bbc7db8ffd934ca5799828e1c",
+      "current_unit_id": "5ee7bd778685db6b3885a35a607b0af28a81437f1677a05fdf55b659db33212f",
+      "snapshot_representation_unit_id": "e99db54999fdb6c5822fd6f05b7e666611c25a3eb60572a916af049cc9cc9b68",
+      "source_sha256": "b01eeb7a552c865ef4333be351060487e835185b1345b6d378e26f4e46c46b9f",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/modules/release-workflow.md",
+      "route": "/doc/modules/release-workflow",
+      "entry_unit_id": "90cdc9cf88fc8ee1770be1c7d098fa10520a6b9f586059587b5a4f9db9b408a0",
+      "current_unit_id": "886f502d9e4128efdf2e9582a3ec0cc0c0cd99e8135ecd7bb4452a1bc759894e",
+      "snapshot_representation_unit_id": "8a428c4d4268d85836f07a17aaccc3f02f3de97c23f92e6c49984432465c3e9a",
+      "source_sha256": "27cf24c2eb872b60acadfd57f3a39fffdd3bb01ef35880cb640a6724864b6b6d",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/modules/version-numbers.md",
+      "route": "/doc/modules/version-numbers",
+      "entry_unit_id": "91d09434de0e88d4f39afdcff94f8d988801ee62a704f8c3bd5bb97024d0eb52",
+      "current_unit_id": "9386cbdb9abcc5044d6c66064f00ff3d2fcc864b8def7a63fdebf81e3a62980e",
+      "snapshot_representation_unit_id": "1c9e97df216590ac0051b3ee84ae95752390b25eb02eb9761b61492566568790",
+      "source_sha256": "43668bda4143e7107f12dc3b3d9a49a1b15f96e1ba1c93c1a6a464b7fbfabbd5",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/security/best-practices.md",
+      "route": "/doc/security/best-practices",
+      "entry_unit_id": "4ad247a052e9d56ab392b3ba3157eac8510cf7cf163b311da5fd77b574ecd918",
+      "current_unit_id": "6ad2588c209947883baa68e81fcba2269136e3292b0f5aedd83b1923ad20192a",
+      "snapshot_representation_unit_id": "a8d233408d36f1d3cf05b4436f6af6afadd1bb8615edcd0bedcaa0ec194091ed",
+      "source_sha256": "9f1184cde64388824a4d5cb19ee5938b3fe75ce5b5378ee2475552b8da6dcbe4",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/security/decisions.md",
+      "route": "/doc/security/decisions",
+      "entry_unit_id": "77960e09ed39fcc24d27af727da68461b1b8f48cd0bfa7142fe544a7d903cd21",
+      "current_unit_id": "fc2d2f432e4c29e9438fbd05a98ef10e50076d18aa8717e60fef48bd12357d1e",
+      "snapshot_representation_unit_id": "e9dc82ff7a64e06c1828e963d99e24a346d1776ffb3ca419328ab03c6bfc156a",
+      "source_sha256": "6c15e82b42de1a7fa6b2984144570d2ded12f1b7df86e15a82fb54226be487b4",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/security/fips140.md",
+      "route": "/doc/security/fips140",
+      "entry_unit_id": "44845108fd3435c133326735b1a7ad66dfb6c816e5fe9774e0e6f8c9ff14ae46",
+      "current_unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+      "snapshot_representation_unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+      "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": true,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": true,
+        "candidate_sha256": "7a5918b50ba49440f12023cc37746b1a69d54a8e24d196f727b337a822ede9ba",
+        "current_unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "ccb9d81ae5a03a89e7b533d5d825cc21a88ee1dcac25e2d570fc0fa60b6b24a2",
+        "snapshot_unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+        "source_path": "_content/doc/security/fips140.md"
+      },
+      "language_authority": {
+        "snapshot": "learn-docs-v1-qc-014",
+        "rating": "B",
+        "review_id": "20261015-zh-CN-learn-docs-qc-014-re-qc-page-001",
+        "finding_sha256": "8a2398c8c393194f0d7942f78283a7dae58f6aa8baab10fdd7c3808a538d444c"
+      }
+    },
+    {
+      "source_path": "_content/doc/security/fuzz/index.md",
+      "route": "/doc/security/fuzz/",
+      "entry_unit_id": "237f0cbfcf8ca3f82c2c20fe04d3510e118cf26ad1615147a882c084c857c06f",
+      "current_unit_id": "8042e585ed8b19f87a6b95c1e1a71bc43a9ab550e6308731005694a0dd6d061d",
+      "snapshot_representation_unit_id": "417ea58ad7ce7a29dc422fe90eed8070553bbe3f81c2304444305c5eb043feca",
+      "source_sha256": "69bd18d0702cab7d9f3a9a4e1fb20f316cbefc518d0e804c7e753a538bd15bbb",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": true,
+        "candidate_sha256": "0a8b626249d6325e1dc289159942ba9e966cb2cf6c36845373c3dbdc22cf2747",
+        "current_unit_id": "8042e585ed8b19f87a6b95c1e1a71bc43a9ab550e6308731005694a0dd6d061d",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "10ce84b7c9225e21f7fadc9a0ebe0f8bad31ddd2e2c18f2e64c8e0ab76e4be37",
+        "snapshot_unit_id": "417ea58ad7ce7a29dc422fe90eed8070553bbe3f81c2304444305c5eb043feca",
+        "source_path": "_content/doc/security/fuzz/index.md"
+      }
+    },
+    {
+      "source_path": "_content/doc/security/fuzz/technical.md",
+      "route": "/doc/security/fuzz/technical",
+      "entry_unit_id": "a796ab7961b9231e68eedf6094115229e5f2b707a03e186b2b9944ca8634b9d8",
+      "current_unit_id": "950eb43dcbeff65a683ee58307184e4e75652f9ee881cd046f1c4cf7529498d0",
+      "snapshot_representation_unit_id": "43da2736fe7fb24ef7db2e50e005f823099b3f08c6575e3cedc1eb4f362fea3f",
+      "source_sha256": "30f0008d41be96f888cf08aaa8b7cf9101b93d1438ad17d8838016f74fc263b6",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": true,
+        "candidate_sha256": "afa9e265f129ec041d1469c9c42c18291b38926c789080d93608ea2071b555e5",
+        "current_unit_id": "950eb43dcbeff65a683ee58307184e4e75652f9ee881cd046f1c4cf7529498d0",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "428052a5362090b96383dff9f8af530bc951a744783c87beaeb0aa012c88f1e4",
+        "snapshot_unit_id": "43da2736fe7fb24ef7db2e50e005f823099b3f08c6575e3cedc1eb4f362fea3f",
+        "source_path": "_content/doc/security/fuzz/technical.md"
+      }
+    },
+    {
+      "source_path": "_content/doc/security/index.md",
+      "route": "/doc/security/",
+      "entry_unit_id": "6a4e78468a28920e7f97bc670477cc3b8c6d8de27ae8b4040e8ac4e85627aebb",
+      "current_unit_id": "af62754d826787432e6e62938ba1239da4705c0a9912b24f7fe0567949595dc8",
+      "snapshot_representation_unit_id": "03f7c8e1e4556661c7537927828036e3424c2f1bdf88762c2eaead63d4c5376d",
+      "source_sha256": "272aa1d0fb5c22f687b747955f1927a78be8ad0f19169096cb0437e9f7fb1b45",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": true,
+        "candidate_sha256": "d2d0d76292a2960b81a5ccbe1600678aaec207d5cecc8089e8f3bc051f68b019",
+        "current_unit_id": "af62754d826787432e6e62938ba1239da4705c0a9912b24f7fe0567949595dc8",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "f4413fb7c402d8627cd1364dcebfcae540025f3aad276157492bbfb68e5f7e7f",
+        "snapshot_unit_id": "03f7c8e1e4556661c7537927828036e3424c2f1bdf88762c2eaead63d4c5376d",
+        "source_path": "_content/doc/security/index.md"
+      }
+    },
+    {
+      "source_path": "_content/doc/security/policy.md",
+      "route": "/doc/security/policy",
+      "entry_unit_id": "549230ee4e82bf64884aa0a988a4b995d27ae2fac0fd549f79074ff4aea0624d",
+      "current_unit_id": "78bb61869a1d012f449488964d8282dda51c0664f2cc8b65c00eec2054f1d166",
+      "snapshot_representation_unit_id": "126f2e430e4ad62ded97b90668a9621eb8f9b1b9bd9d316643afd1211cc6a9e6",
+      "source_sha256": "a5b5e3a901c57743ad9f6da63e0f73668273b1ca17cacd865e7becc32bc69d28",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": true,
+        "candidate_sha256": "936a011db96381e5c39367d00284d8d5ae4b9c9d10da72302a20b4e1160de995",
+        "current_unit_id": "78bb61869a1d012f449488964d8282dda51c0664f2cc8b65c00eec2054f1d166",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "cc77c454223dd81d17f10b08102b9853fbcd248272e76f68458be5894d67f746",
+        "snapshot_unit_id": "126f2e430e4ad62ded97b90668a9621eb8f9b1b9bd9d316643afd1211cc6a9e6",
+        "source_path": "_content/doc/security/policy.md"
+      }
+    },
+    {
+      "source_path": "_content/doc/security/threat-model.md",
+      "route": "/doc/security/threat-model",
+      "entry_unit_id": "fdd6895a0dd72317c83c73fcc23fcba19d3c220c0843cf2f1e607addd3d69689",
+      "current_unit_id": "18ee595e74730a6b822cd823b13063baa820dfdceeadaf41927406ff529314ff",
+      "snapshot_representation_unit_id": "3b1b400ea7db47c5a226df85cebf94837417e2264f2ef4d8008f711ab61ab845",
+      "source_sha256": "c58e1f16eb682643adc1d6a74502920aa1700b02463eca04f26949a0a6fd0b9d",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/security/vuln/cna.md",
+      "route": "/doc/security/vuln/cna",
+      "entry_unit_id": "628f7df61177ffed02349d46554b8bc355fa9e6237d92416dc178aae70868faf",
+      "current_unit_id": "970d9162f36489ed1cea186c70428d536fe1f9485b2e255537b735e3c275cb00",
+      "snapshot_representation_unit_id": "d87ca1767f1739882e4dbd08643e0b1573c52554747f68ab15a3e57a94e84ec6",
+      "source_sha256": "baeefa9cc4fcf4983062a2012ebdf4940357d7084333bf470a27a7d00f6e1a73",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": true,
+        "candidate_sha256": "a0ae9709c0bf139773658b3f6bed77e9e30c0083207be42bedc981d5b3cc6c53",
+        "current_unit_id": "970d9162f36489ed1cea186c70428d536fe1f9485b2e255537b735e3c275cb00",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "9b035b7dca0f7d05204ebe4825a696d83ed957b6f949a588aba2ea1555398ad6",
+        "snapshot_unit_id": "d87ca1767f1739882e4dbd08643e0b1573c52554747f68ab15a3e57a94e84ec6",
+        "source_path": "_content/doc/security/vuln/cna.md"
+      }
+    },
+    {
+      "source_path": "_content/doc/security/vuln/database.md",
+      "route": "/doc/security/vuln/database",
+      "entry_unit_id": "84351bfd1ab59bd8d2c8afbb6af6fd09d98badabd135504da92e06e8660adb95",
+      "current_unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+      "snapshot_representation_unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+      "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": true
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": false,
+        "candidate_sha256": "44645064a026f2b5e25e92f925ca91ee386e5140ce06ec4aa9cfd932c128469f",
+        "current_unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "05193d04e83729e6e9006154dbcd61a39b877152a1b7e12793e2d6c16536b57b",
+        "introduced_machine_identity": [
+          "A",
+          "B",
+          "A"
+        ],
+        "rebase_blocker": "replacement introduces protection outside historical source atoms",
+        "snapshot_unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+        "source_path": "_content/doc/security/vuln/database.md"
+      },
+      "unknown_blocker": "Current baseline reuse unresolved: newly protected technical identity was outside old protected atoms; existing rebaser refuses target inference. Old raw/candidate/Snapshot interpretation PASS. Requires explicit migration proof before this Unit is consumed; no language defect inferred."
+    },
+    {
+      "source_path": "_content/doc/security/vuln/editor.md",
+      "route": "/doc/security/vuln/editor",
+      "entry_unit_id": "c7d52034f766cdc440ffd5e9fae3239df41096dcc0ca7f9ec5263fefb4103aeb",
+      "current_unit_id": "8eb5e9ea7af00232ebd029ae5dd0682a2c956167f69d073d0bf16de21668e689",
+      "snapshot_representation_unit_id": "8ec984658f343516692029836d613a227a0bb0760411a23bcbd8cbf5ed56a27c",
+      "source_sha256": "0b494da11a9af83183ed913e3c72f4bd8e9a7b7a9359a3b5d66a1abbf6145363",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/security/vuln/index.md",
+      "route": "/doc/security/vuln/",
+      "entry_unit_id": "35db6d49d15518298f73c49f9efa0c40fe5f2842bf34ab4b85a9a59229b7a5e2",
+      "current_unit_id": "ff777d1f41091a8b8269f4787a6aa78f2097263412b0e01ba0c7cdd73fcf6775",
+      "snapshot_representation_unit_id": "aa80c16e03ba1b5a11c8f81678c8d3bdf7e4b27e6ef81663565acbfbfdd2251c",
+      "source_sha256": "67c5adf783fd88accf098042728568e8c9ad3e2a04fb390ba147678a38a2a823",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": true,
+        "candidate_sha256": "3a7766f5e5ac320791f5a722d37a8915570c17ea281a2bdb2fd46490c7ad191f",
+        "current_unit_id": "ff777d1f41091a8b8269f4787a6aa78f2097263412b0e01ba0c7cdd73fcf6775",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "a0b6a85a4d2d700b38ed5c24eccee45323e2097ca1ba384378dd7301643343dd",
+        "snapshot_unit_id": "aa80c16e03ba1b5a11c8f81678c8d3bdf7e4b27e6ef81663565acbfbfdd2251c",
+        "source_path": "_content/doc/security/vuln/index.md"
+      }
+    },
+    {
+      "source_path": "_content/doc/tutorial/add-a-test.html",
+      "route": "/doc/tutorial/add-a-test",
+      "entry_unit_id": "e993fec2454ba4fe82ff89cc33b82fba5c836acfeb9bbe23ce160fdc07e12ece",
+      "current_unit_id": "393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c",
+      "snapshot_representation_unit_id": "e993fec2454ba4fe82ff89cc33b82fba5c836acfeb9bbe23ce160fdc07e12ece",
+      "source_sha256": "d5ea155f25736df5051fddc35df81af3600b57700972d8fde4c344345c9a0ca0",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/call-module-code.html",
+      "route": "/doc/tutorial/call-module-code",
+      "entry_unit_id": "d6a0464cbe1d4843c82810dfac96d42c621065f81c56c1f63fb8af589abcc748",
+      "current_unit_id": "69b4a569a5bf08fc858a3aee621392dcb718a11e39e1e53842b1dabf25de8a59",
+      "snapshot_representation_unit_id": "d6a0464cbe1d4843c82810dfac96d42c621065f81c56c1f63fb8af589abcc748",
+      "source_sha256": "e15097929f143836d6b0ba6f7ed56b1a6f61fec64d8e4fbab78407af439a2460",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/create-module.html",
+      "route": "/doc/tutorial/create-module",
+      "entry_unit_id": "2cf2207a4cf54f3b5ef344d2c02198f70a6b513a4ccf323424dea35e2e338d8d",
+      "current_unit_id": "704fb9e2968f11379508a1f22a9837e154dd94ef14e4f781ecd7d7ed701a13a3",
+      "snapshot_representation_unit_id": "2cf2207a4cf54f3b5ef344d2c02198f70a6b513a4ccf323424dea35e2e338d8d",
+      "source_sha256": "e86bbbcbb07dbd6aa9a5e3e00ddf7525888f8f4298299818b9c7cf7b2407d144",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/database-access.md",
+      "route": "/doc/tutorial/database-access",
+      "entry_unit_id": "6211fdd099014cbd73cb57439adb225b547ebcb7ee0b3eff956b90ac7b0479b7",
+      "current_unit_id": "36346dcd0f2901eadeb8f4ec8c70dc4c0e709457e72ed30880c9e471e18c398a",
+      "snapshot_representation_unit_id": "51f3462b599aba4267be310f3954e51e7d0c4fd4230460ac0eb4eb64c9ee5628",
+      "source_sha256": "006b82bedadb9fbf37ab24e3e7e09ae8f86abc8870d0b1df45e67b4d6ea337e1",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/fuzz.md",
+      "route": "/doc/tutorial/fuzz",
+      "entry_unit_id": "f1b43d3da73db49e6c52f0659ebefdbe8d3bb289074bf1b9019640594ced3d36",
+      "current_unit_id": "0ecf62b07a368ffb8b06193d58be2c23e812fcbb51bf4f5810c67ef31107d3ff",
+      "snapshot_representation_unit_id": "483944fc286965a89e6977332a877957cb15e3ba1171361a517d862bdc50f858",
+      "source_sha256": "91f902e95484e8320b35801d1bb22c12b90f08983a3a269ca373cce96c8cc903",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/generics.md",
+      "route": "/doc/tutorial/generics",
+      "entry_unit_id": "26783bdbe84562e8f81e68f33d596b2c4aa9e9a6a31c4dc05e9763d06a5b0fae",
+      "current_unit_id": "044093be1c7e66e84990fe9a66555c6915d8b7218335291cb5cc6badb6888292",
+      "snapshot_representation_unit_id": "e00dd8869bf8155daea7791025b56a0b1c3ad8e691ac7e9ff3347d0b8db023cd",
+      "source_sha256": "c15398a80cb69b1b0d486d14bb35ccb2a807a4fbcac6b7bd5319a997513aa67f",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/getting-started.html",
+      "route": "/doc/tutorial/getting-started",
+      "entry_unit_id": "dffdb70f0db3cd3fc7a18588bf472129cc62957ec7fbf87482f9ee8ad1f2f625",
+      "current_unit_id": "5b475205acbf5bd75bf05d04a110ff6d39bbc4e6b377943170aa2151ce86bed8",
+      "snapshot_representation_unit_id": "dffdb70f0db3cd3fc7a18588bf472129cc62957ec7fbf87482f9ee8ad1f2f625",
+      "source_sha256": "b4794678dc335ab850ceb21bc7b3a9896a401717d906a5242758803b444d45bd",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/govulncheck-ide.md",
+      "route": "/doc/tutorial/govulncheck-ide",
+      "entry_unit_id": "426710375624a0f21ce622d132c1e317788fdd92992272e4006733f9d237fd11",
+      "current_unit_id": "019f0fdcf18ddaffbb42b88a1cd2aae11f9e7f8dddcb0f16916113933357fa5f",
+      "snapshot_representation_unit_id": "d8f9a1931eb5cbf1f5eae5df9648f25b122d758a04472a107fbcf4579a0c60fb",
+      "source_sha256": "b0173a57e407fe2937c85ed434dee7037eee0a9d91f495cb4d43a4e6f7dabd35",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/govulncheck.md",
+      "route": "/doc/tutorial/govulncheck",
+      "entry_unit_id": "a7b0f23343f595f1a3e89c8e34268ea84822e491e2b71165247fe22ce738ab8c",
+      "current_unit_id": "1829c72166fe3d16154c3f36be4e436b51e8d5ff1725c426d2564bf6a4c44275",
+      "snapshot_representation_unit_id": "cf033420e0eaa8551fda291eeeb433e6890ee52f8a5a1593b6037764864a9483",
+      "source_sha256": "6517f5eb2bc73ca2e1befbb643fcc5cd4d381dbbf404acf03bc12395393809f9",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/greetings-multiple-people.html",
+      "route": "/doc/tutorial/greetings-multiple-people",
+      "entry_unit_id": "bceb0b950e9bf9ac6fd4187156327d95019229af6ec9d7bf00a8178edca3272e",
+      "current_unit_id": "b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493",
+      "snapshot_representation_unit_id": "bceb0b950e9bf9ac6fd4187156327d95019229af6ec9d7bf00a8178edca3272e",
+      "source_sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/index.html",
+      "route": "/doc/tutorial/",
+      "entry_unit_id": "d4f137c2ef85c5dd753a9604e8b9ccb20fc758f6b722df889fbbd25898eca2d5",
+      "current_unit_id": "22e2b081cf7eb38b8a4bba0b99a2157e02e96f415f81f81e561b4aa42f15e957",
+      "snapshot_representation_unit_id": "d4f137c2ef85c5dd753a9604e8b9ccb20fc758f6b722df889fbbd25898eca2d5",
+      "source_sha256": "c9ecfeee2bb8e450f8f30e38b997cd663b0d904021299d5cb400796e1b43eb55",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/json.md",
+      "route": "/doc/tutorial/json",
+      "entry_unit_id": "fa0ee575655cf5ea585f42209b0005f3c88f669e537cc7a4ecda68f96a3da454",
+      "current_unit_id": "b49d8e873a0f66f6803077eb534583a155d2bd209a032d7c00fba8fea856da5c",
+      "snapshot_representation_unit_id": "99824b13c26ffe219230ad0171e93d850003d16aa9f780c2f06c41bc46845cb3",
+      "source_sha256": "9bb5bed860a71bdb4dc9776c9eff2e5f4a40f1ca9851851bfd1619c1793970be",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": true
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": true,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted.",
+      "historical_probe": {
+        "byte_exact_rebase": false,
+        "candidate_sha256": "9d978bca55c326a2c24d43684da62383523fe01901c4e22563c3512581dc904d",
+        "current_unit_id": "b49d8e873a0f66f6803077eb534583a155d2bd209a032d7c00fba8fea856da5c",
+        "historical_interpretation": "PASS",
+        "historical_raw_sha256": "6f9ec7c679de88d7c47b649237166b1f89c888daa38332d1d0b2b5097b8a701e",
+        "introduced_machine_identity": [
+          "Marshal"
+        ],
+        "rebase_blocker": "replacement introduces protection outside historical source atoms",
+        "snapshot_unit_id": "99824b13c26ffe219230ad0171e93d850003d16aa9f780c2f06c41bc46845cb3",
+        "source_path": "_content/doc/tutorial/json.md"
+      },
+      "unknown_blocker": "Current baseline reuse unresolved: newly protected technical identity was outside old protected atoms; existing rebaser refuses target inference. Old raw/candidate/Snapshot interpretation PASS. Requires explicit migration proof before this Unit is consumed; no language defect inferred."
+    },
+    {
+      "source_path": "_content/doc/tutorial/web-service-gin.md",
+      "route": "/doc/tutorial/web-service-gin",
+      "entry_unit_id": "ec6dd2d69985f59a29125623b6dea6f4437c6e15c162f5e5a8fc580e709f84a8",
+      "current_unit_id": "c3dfdb3d129df54ca09e79e21054c0afa5d3ec1bbd4e6cbeb227476bd8dcb0c3",
+      "snapshot_representation_unit_id": "da414f5ecd312a539f1ee2f38c60986db5fafccaf41699b454802234b2b5499f",
+      "source_sha256": "3342ff17a8b087b5d5a2a3c03d3fbcf4197eafd943c65a05c62c43df0cf33cf4",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/doc/tutorial/workspaces.md",
+      "route": "/doc/tutorial/workspaces",
+      "entry_unit_id": "ef364e2ad3d8d3fac58d39ed35d5af4a8494003828f20eeac9ba46b74b4493d7",
+      "current_unit_id": "b1d98230ae3df4fc789951b9434cebc92a097caf92e0493eb7d4e81f3135ea7e",
+      "snapshot_representation_unit_id": "a508d39fb57b2d122ca8536e038c6b090df53042c04d433b74d869bfbba2b9f1",
+      "source_sha256": "4991323de780ed74be6286cb07f2b1cfae1c03d27aa80ff864a151782bd293de",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted."
+    },
+    {
+      "source_path": "_content/index.md",
+      "route": "/",
+      "entry_unit_id": "9ac41a98d4f5679a9c7676d46693bb4ef2cb1160557490de7fc21b9ab0530d39",
+      "current_unit_id": "112b210e73082124640e71c3f726b453e9b197edc0c9c80aa53a41dd950856d3",
+      "snapshot_representation_unit_id": "0cd6df6f3e0a9b8284ff503254f46315cbee756c7fc6c1f47a8861c0a6270456",
+      "source_sha256": "7765e289fc5abccf8b786fa408c9d60078e2c27168e66778d060590e3c6ba986",
+      "labels": {
+        "representation_reconciliation_required": true,
+        "reattest_only": false,
+        "true_language_defect": false,
+        "unaffected": false,
+        "unknown": false
+      },
+      "scope": {
+        "confirmed_sys08_natural_language_page": false,
+        "representation_changed_this_round": true
+      },
+      "evidence": "Exact canonical SHA unchanged; current protected input/Unit identity compared with explicit frozen representation. Reconciliation is machine identity mapping when formally consumed, never automatic Generation/reopen or language judgment. No new accepted candidate is asserted. Homepage identity migration is reconciliation-required from exact source/input drift; accepted-candidate reuse is not asserted or needed to establish that machine impact."
+    }
+  ]
+}

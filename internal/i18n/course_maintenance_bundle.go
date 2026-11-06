@@ -20,13 +20,28 @@ type CourseMaintenanceGenerationBundleOptions struct {
 }
 
 type CourseMaintenanceGenerationContext struct {
-	SchemaVersion   int      `json:"schema_version"`
-	Kind            string   `json:"kind"`
-	TaskKind        string   `json:"task_kind"`
-	Locale          string   `json:"locale"`
-	SelectedPageIDs []string `json:"selected_page_ids"`
-	Instruction     string   `json:"instruction"`
-	ExpectedOutput  string   `json:"expected_output"`
+	SchemaVersion     int                               `json:"schema_version"`
+	Kind              string                            `json:"kind"`
+	TaskKind          string                            `json:"task_kind"`
+	Locale            string                            `json:"locale"`
+	SelectedPageIDs   []string                          `json:"selected_page_ids"`
+	Instruction       string                            `json:"instruction"`
+	ExpectedOutput    string                            `json:"expected_output"`
+	BaseSchemaVersion int                               `json:"base_schema_version,omitempty"`
+	GeneratorContract string                            `json:"generator_contract,omitempty"`
+	Constraints       string                            `json:"constraints,omitempty"`
+	Pages             []CourseMaintenanceGenerationPage `json:"pages,omitempty"`
+}
+
+type CourseMaintenanceGenerationPage struct {
+	PageID         string             `json:"page_id"`
+	Route          string             `json:"route"`
+	EnglishSource  string             `json:"english_source"`
+	ReadyTarget    string             `json:"ready_target"`
+	SourceSHA256   string             `json:"source_sha256"`
+	TargetSHA256   string             `json:"target_sha256"`
+	GlossarySHA256 string             `json:"glossary_sha256"`
+	BaseEntry      CoursePageMetadata `json:"base_entry"`
 }
 
 type CourseMaintenanceGenerationBundleManifest struct {
@@ -40,19 +55,17 @@ type CourseMaintenanceGenerationBundleManifest struct {
 	Files               []TransportBundleFile `json:"files"`
 }
 
-// ExportCourseMaintenanceGenerationBundle transports the complete schema-v2
-// localization context plus the current base asset for refresh/revise. The
+// ExportCourseMaintenanceGenerationBundle transports schema-v1 refresh input
+// or the complete schema-v2 localization context with the current base. The
 // existing refresh/revise commands remain the only formal mutation path.
 func ExportCourseMaintenanceGenerationBundle(root string, catalog *Catalog, options CourseMaintenanceGenerationBundleOptions) ([]byte, CourseMaintenanceGenerationBundleManifest, error) {
 	if options.TaskKind != "refresh" && options.TaskKind != "revise" {
 		return nil, CourseMaintenanceGenerationBundleManifest{}, fmt.Errorf("course maintenance generation task must be refresh or revise")
 	}
-	localizationBundle, _, err := ExportCourseLocalizationGenerationBundle(root, options.Locale, catalog)
-	if err != nil {
-		return nil, CourseMaintenanceGenerationBundleManifest{}, err
+	if catalog == nil {
+		return nil, CourseMaintenanceGenerationBundleManifest{}, fmt.Errorf("catalog is required")
 	}
-	localizationFiles, err := ReadTransportBundle(localizationBundle, 512, 256<<20)
-	if err != nil {
+	if err := ValidateLocaleName(options.Locale); err != nil {
 		return nil, CourseMaintenanceGenerationBundleManifest{}, err
 	}
 	baseRepo := filepath.ToSlash(filepath.Join("locales", options.Locale, "course-metadata.json"))
@@ -61,8 +74,35 @@ func ExportCourseMaintenanceGenerationBundle(root string, catalog *Catalog, opti
 		return nil, CourseMaintenanceGenerationBundleManifest{}, fmt.Errorf("read course metadata maintenance base: %w", err)
 	}
 	base, err := decodeCourseMetadata(baseData)
-	if err != nil || base.SchemaVersion != CourseMetadataSchemaVersionV2 || base.Locale != options.Locale {
-		return nil, CourseMaintenanceGenerationBundleManifest{}, fmt.Errorf("course maintenance generation requires a schema-v2 base for %s", options.Locale)
+	if err != nil || base.Locale != options.Locale {
+		return nil, CourseMaintenanceGenerationBundleManifest{}, fmt.Errorf("invalid course maintenance generation base for %s: %v", options.Locale, err)
+	}
+	if _, _, err := courseMetadataContract(base.SchemaVersion); err != nil {
+		return nil, CourseMaintenanceGenerationBundleManifest{}, err
+	}
+	if options.TaskKind == "revise" && base.SchemaVersion != CourseMetadataSchemaVersionV2 {
+		return nil, CourseMaintenanceGenerationBundleManifest{}, fmt.Errorf("course revise generation requires a schema-v2 base for %s", options.Locale)
+	}
+	localizationFiles := map[string][]byte{}
+	if base.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		localizationBundle, _, err := ExportCourseLocalizationGenerationBundle(root, options.Locale, catalog)
+		if err != nil {
+			return nil, CourseMaintenanceGenerationBundleManifest{}, err
+		}
+		localizationFiles, err = ReadTransportBundle(localizationBundle, 512, 256<<20)
+		if err != nil {
+			return nil, CourseMaintenanceGenerationBundleManifest{}, err
+		}
+	} else {
+		if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
+			return nil, CourseMaintenanceGenerationBundleManifest{}, err
+		}
+		if _, err := localeWorkflowDirectory(root, options.Locale); err != nil {
+			return nil, CourseMaintenanceGenerationBundleManifest{}, err
+		}
+		if _, err := LoadGlossary(root, options.Locale); err != nil {
+			return nil, CourseMaintenanceGenerationBundleManifest{}, err
+		}
 	}
 
 	selected := []string{}
@@ -142,6 +182,38 @@ func ExportCourseMaintenanceGenerationBundle(root string, catalog *Catalog, opti
 		ExpectedOutput:  "localized-descriptions.json",
 		Instruction:     "Generate only the selected page_id/description JSON subset. Canonical English description remains the exclusive semantic-scope authority; do not modify formal course metadata or claim review approval.",
 	}
+	if base.SchemaVersion == CourseMetadataSchemaVersion {
+		targets, glossary, err := loadReadyCourseMetadataInputs(root, options.Locale, catalog)
+		if err != nil {
+			return nil, CourseMaintenanceGenerationBundleManifest{}, err
+		}
+		baseByID, err := courseMetadataBaseIndex(base, catalog)
+		if err != nil {
+			return nil, CourseMaintenanceGenerationBundleManifest{}, err
+		}
+		context.BaseSchemaVersion = base.SchemaVersion
+		context.GeneratorContract = CourseMetadataGeneratorContract
+		context.Instruction = "Generate only the exact selected stale Page subset using each Page's complete English source, complete ready canonical locale target, current glossary and base entry under course-seo-description-v1. Do not use canonical source-description authority, change the metadata schema, or claim review approval. Output only {\"pages\":[{\"page_id\":\"...\",\"description\":\"...\"}]}; never output hashes, routes, schema or provenance."
+		context.Constraints = "Each Page independently: faithful to its complete source and ready target, current glossary consistency, 30–200 Unicode code points, plain text, no duplicated descriptions; base descriptions are maintenance context, not an additional semantic authority."
+		wanted := map[string]bool{}
+		for _, id := range selected {
+			wanted[id] = true
+		}
+		for _, page := range catalog.Pages {
+			if wanted[page.ID] {
+				context.Pages = append(context.Pages, CourseMaintenanceGenerationPage{PageID: page.ID, Route: page.Route, EnglishSource: string(page.Source), ReadyTarget: string(targets[page.ID]), SourceSHA256: page.SourceSHA256, TargetSHA256: sum(targets[page.ID]), GlossarySHA256: sum(glossary), BaseEntry: baseByID[page.ID]})
+			}
+		}
+		glossaryRepo := filepath.ToSlash(filepath.Join("locales", options.Locale, "glossary.yaml"))
+		entries = append(entries, entry{"formal/glossary.yaml", glossaryRepo, glossary})
+		for _, name := range courseLocalizationGenerationAuthorityPaths {
+			data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(name)))
+			if err != nil {
+				return nil, CourseMaintenanceGenerationBundleManifest{}, err
+			}
+			entries = append(entries, entry{"authority/" + name, name, data})
+		}
+	}
 	contextData, err := json.MarshalIndent(context, "", "  ")
 	if err != nil {
 		return nil, CourseMaintenanceGenerationBundleManifest{}, err
@@ -220,21 +292,30 @@ func courseMetadataStalePageIDs(root string, catalog *Catalog, locale string, ba
 	if err != nil {
 		return nil, err
 	}
-	sourceDescriptions, err := LoadCourseSourceDescriptions(root, catalog)
-	if err != nil {
-		return nil, err
+	var sourceByID map[string]CourseSourceDescriptionPage
+	if base.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		sourceDescriptions, err := LoadCourseSourceDescriptions(root, catalog)
+		if err != nil {
+			return nil, err
+		}
+		if _, err = RequireCurrentCourseSourceDescriptionReview(root, catalog); err != nil {
+			return nil, err
+		}
+		sourceByID = courseSourceDescriptionsByID(sourceDescriptions)
 	}
-	if _, err := RequireCurrentCourseSourceDescriptionReview(root, catalog); err != nil {
-		return nil, err
-	}
-	sourceByID := courseSourceDescriptionsByID(sourceDescriptions)
+	return selectStaleCourseMetadataPages(base, catalog, baseByID, targets, sum(glossary), sourceByID, courseGlossaryCompatibility(root, locale, catalog, sum(glossary))), nil
+}
+
+// Both refresh execution and maintenance transport select through this same
+// existing entry predicate and prepared glossary compatibility world.
+func selectStaleCourseMetadataPages(base *CourseMetadata, catalog *Catalog, baseByID map[string]CoursePageMetadata, targets map[string][]byte, glossaryHash string, sourceByID map[string]CourseSourceDescriptionPage, compatible func(CoursePageMetadata) bool) []string {
 	stale := []string{}
 	for _, page := range catalog.Pages {
-		if courseMetadataEntryIsStale(base, baseByID[page.ID], page, targets[page.ID], sum(glossary), sourceByID, courseGlossaryCompatibility(root, locale, catalog, sum(glossary))(baseByID[page.ID])) {
+		if courseMetadataEntryIsStale(base, baseByID[page.ID], page, targets[page.ID], glossaryHash, sourceByID, compatible(baseByID[page.ID])) {
 			stale = append(stale, page.ID)
 		}
 	}
-	return stale, nil
+	return stale
 }
 
 func catalogPageIndex(catalog *Catalog, pageID string) int {

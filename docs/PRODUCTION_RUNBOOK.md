@@ -2,11 +2,27 @@
 
 本文档记录当前已验证的 production 基线，并严格区分“新 locale 首次生产部署”和“已有 locale 日常维护部署”。项目进度和部署历史见 [PROJECT_STATE.md](PROJECT_STATE.md)；新增语言的完整阶段导航见 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md)。
 
-本文档中的标准 Production 终端步骤由维护者 Local terminal 执行，并使用相同命令、前置条件、验收标准和停止规则。AI execution environment 可以准备命令、读取维护者回传的终态并诊断 failure evidence，但不把语言 Generation / Reviewer 闭环中的短机械操作自动化扩展到 Production mutation。只有明确标为 **HUMAN GATE** 的 UI 操作仍必须由维护者人工完成；其他步骤虽是 deterministic，也不因此改由 AI 自动运行。
+**Site v2 release/deployment 审计结果：FAILED（2026-10-14）。** 下文现有入口仍是 ACTIVE 的 Tour production 路径；不能据其历史 PASS 或共享 helper 推定 current activated Site v2 Homepage / translation / Learn / Docs、assets-go-dev、batch/repeat、verifier 和 search closeout 已通过。[完整 executable inventory](RELEASE_EXECUTABLE_INVENTORY.json) 与[跨入口审计](SITE_V2_RELEASE_PATH_AUDIT.md)记录当前缺口、逐模式检查和修复合同。Site v2 发布前必须闭合其中阻塞项；本次审计不授权任何 Production mutation，也未改写历史 evidence。
 
-`preview` browser verifier、shared-assets Production、`publish` / prerender、`first-production`、maintenance Production 与 IndexNow closeout 等成组确定性长任务由维护者本地终端执行。ChatGPT / Remote Desktop Commander 提供一条完整可粘贴命令并读取终态，不自行运行，也不得仅为等待任务完成持续轮询。该协作边界不省略任何脚本内部 gate、receipt、bounded retry 或 HUMAN gate；按正式发布顺序需要的最终 Git commit / push 同样由维护者执行。
+本文档中的标准 Production 终端步骤由维护者 Local terminal 执行，并使用相同命令、前置条件、验收标准和停止规则。AI execution environment 准备完整命令并直接消费维护者回传的合法终态，remote 默认 0；真实 failure diagnosis 与明确 remote 请求按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)处理。语言闭环与 Production 的 deterministic repository / shell workflow 均默认 Local terminal，不按耗时授权 AI remote mutation。只有明确标为 **HUMAN GATE** 的 UI 操作仍必须由维护者人工完成；其他步骤虽是 deterministic，也不因此改由 AI 自动运行。
+
+`preview` browser verifier、shared-assets Production、`publish` / prerender、`first-production`、maintenance Production 与 IndexNow closeout 等 deterministic workflow 与所有短步骤同样默认由维护者本地终端执行，与预计耗时无关。ChatGPT / Remote Desktop Commander 提供一条完整可粘贴命令并读取终态，不自行运行，也不得仅为等待任务完成持续轮询。该协作边界不省略任何脚本内部 gate、receipt、bounded retry 或 HUMAN gate；按正式发布顺序需要的最终 Git commit / push 同样由维护者执行。
 
 正式脚本执行失败必须返回非零 exit status，不得关闭、替换或持续污染维护者的交互 shell；本文提供给维护者直接复制的命令不得在当前交互 shell 顶层执行 `set -e`、`set -u`、`set -o pipefail`、`set -euo pipefail` 等会影响后续交互行为的 shell options，也不得包含 `exit`、`logout`、`kill $$`。如需 fail-fast 或临时 shell options，必须放入独立 subshell（例如 `( set -euo pipefail; ... )`）或独立脚本进程，使失败只结束子进程。此规则不禁止脚本自身正常结束，也不禁止 shell wrapper 在自身进程中以正常 `exec` 调用正式子程序。正式脚本应作为独立程序执行，不要求维护者 `source` 一个可能调用 `exit` 的脚本。
+
+## Current Site release contract
+
+当前 build、publish、single/repeat/first/batch/all-live/selected deployment 共用 `internal/sitecontent.LocalCoverage`、completed payload 和同一 sealed release contract。只发布 activated complete local routes；Homepage、translation、Tour、Learn、Docs 按实际 completion 进入，未覆盖请求是真 404，正文导航可以指向 go.dev。历史 `home.html` 不进入任何 current release。canonical、sitemap、browser plan 和 search submission 来自同一 coverage；固定历史 page count 仅可作为历史记录。
+
+`build` 在现有 `_content` projection 中导出 `site/release-content.json`、rendered Site pages、structured bytes、Homepage toys 和 carried browser plan。`build.json`、exact-set `SHA256SUMS` 绑定输入；`release-contract check --current` 验 coverage、source/compiler inputs、public target 与共享 assets 的 exact inventory/bytes。消费已经验收的 build 时，publish 必须使用其完整 `SHA256SUMS` identity，直接复制 sealed payload：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n release-contract check --input <build-dir> --current --json
+go run -mod=readonly ./cmd/tour-i18n publish --locale <locale> --output <release-dir> \
+  --published-at <RFC3339-UTC> --input-build <build-dir> --build-identity <input_identity>
+```
+
+`release.json` schema 3 记录 Site/build content identity、完整 input build SHA 与 shared-assets dependency。bundle 的 `SHA256SUMS` 是 deployment input identity；远端 staging/startup 由同一 `bin/tour -verify-bundle` 检查 exact set、路径、checksum、compiled locale 和完整 contract。`/site-release.json`、current pointer、MainPID executable、origin/public HTTP 与 browser 都绑定这个 exact input。输入 stale、未知 mutation、CAS predecessor 不一致均停止，不 fallback 到旧 bundle。不同生命周期只增加基础设施 gate，不改变 content authority。工程回归不等于实际部署或正式 Preview/browser/HUMAN acceptance。
 
 ## 已验证服务器基线
 
@@ -91,7 +107,7 @@ Google AdSense 使用独立的 `TOUR_AD_HTML`。该变量包含 production AdSen
 EnvironmentFile=/etc/go-tour/go-tour.env
 ```
 
-目标 production service 必须引用正确的 `EnvironmentFile`；该引用可以直接写在 unit 本体中，也可以由既有 drop-in 引入，新 locale 不要求为了形式统一额外创建 drop-in。`Advertising=standard` 且 Tour 广告启用的 locale 必须在该文件中提供有效、非空 `TOUR_AD_HTML`；`GoLocal` / `AdsUnsupported` 不要求非空广告变量，并且 runtime 必须忽略可能残留的值。新增或修改 systemd drop-in 时执行 `systemctl daemon-reload`；仅修改 `EnvironmentFile` 内容时，无需因文件内容变化本身执行 `daemon-reload`，但必须重启相关 production service，使新进程重新读取统计和广告环境变量。修改 `TOUR_AD_HTML` 后同样必须重启相关 production service 才会读取新值。不要在 shell 历史、发布包或其他仓库文件中复制完整统计或广告 HTML。
+目标 production service 必须引用正确的 `EnvironmentFile`；该引用可以直接写在 unit 本体中，也可以由既有 drop-in 引入，新 locale 不要求为了形式统一额外创建 drop-in。`Advertising=standard` 且 Tour 广告启用的 locale 必须在该文件中提供有效、非空 `TOUR_AD_HTML`；`GoLocal` / `AdsUnsupported` 不要求非空广告变量，并且 runtime 必须忽略可能残留的值。新增或修改已批准的 unit/drop-in、EnvironmentFile 或 `TOUR_AD_HTML` 后，必须生成新的 immutable publish bundle并执行普通 maintenance；既有 deploy helper 在 exact current/predecessor/assets gates后负责 daemon-reload、current switch和目标service restart，再执行 hostname purge与machine/browser。可复用 unchanged reviewed build，不重复语言审核。不得把裸 `systemctl daemon-reload`/restart作为独立 Site release入口，也不得重用旧完整PASS来跳过环境更新；新publish timestamp/input identity区分这次runtime更新。不要在 shell 历史、发布包或其他仓库文件中复制完整统计或广告 HTML。
 
 修改 `TOUR_ANALYTICS`、`TOUR_AD_HTML` 或其他影响 HTML shell 的内容后，必须在相关 service restart 后按“Production CDN 缓存策略”刷新对应 language hostname；不要仅根据源站验证或 `deploy-production.sh` 的 public HTTP 200 就判断新 release 已在全部 CDN 边缘节点生效。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
 
@@ -109,7 +125,7 @@ Tour 广告启用的 `Standard` locale 必须在**首次 production release 激�
 
 - 确认目标 locale 的 production service 引用正确 `EnvironmentFile`，并包含有效、非空 `TOUR_AD_HTML`；该文件可由 unit 本体或既有 drop-in 引入，无需为新 locale 额外创建 drop-in；
 - 完成 Auto Ads 所需的 production 配置；
-- 准备并验收课程广告 CSS/JS 的 production asset 来源（zh-CN 为同源历史布局，但 zh-CN 当前属于 GoLocal、不加载广告资源；非中文广告启用 locale 按共享 assets 策略）；
+- 准备并验收课程广告 CSS/JS 的 production asset 来源（所有 locale 使用 sealed shared-assets policy；zh-CN 的 Tour 广告仍由 GoLocal policy 禁用）；
 - 非中文广告启用 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收；这项广告专项检查不能替代完整 shared-assets current-state freshness gate。
 
 `GoLocal` 与 `AdsUnsupported` locale 不接入 Tour 广告 runtime；first-production preflight 仍要求正式 `EnvironmentFile` 本身存在、权限正确，但不得因 `TOUR_AD_HTML` 缺失/为空而失败。即使环境文件残留非空 `TOUR_AD_HTML`，runtime 也必须证明不注入 loader/HTML，不加载课程广告 CSS/JS，不初始化 mount/slot，也不产生本项目广告 request opportunity。`AdsUnsupported` 还要求 Site v2 Learn/Docs/future surfaces 同样保持无广告。
@@ -145,10 +161,11 @@ Tour 广告启用的 `Standard` locale 必须在**首次 production release 激�
 检查并重载配置：
 
 ```sh
-/usr/local/nginx/sbin/nginx -t && service nginx reload
+# current Site release 不以裸 nginx reload 作为独立入口。
+# 配置检查/reload由绑定sealed input的first-production或IndexNow helper执行。
 ```
 
-当前环境中 `service nginx configtest` 不可用；`service nginx reload` 会正常转发到 `systemctl reload nginx.service`。
+历史裸 Nginx reload 命令退役为独立 release path；表中的 test/reload executable值仍供正式helper读取。需要调整已有locale vhost时先停止供维护者制定明确的配置migration/recovery，不用裸reload冒充完整Site release。当前环境中 `service nginx configtest` 不可用；`service nginx reload` 会正常转发到 `systemctl reload nginx.service`。
 
 使用 OneinStack 新建 Tour 反向代理虚拟主机后，应检查自动生成的额外 `location`。不能让 Nginx 本地静态文件规则截获 `/tour/static/` 请求，否则会造成 404。修改后必须验证真实静态资源返回 200。不要根据本手册伪造或恢复具体 `location` 内容。
 
@@ -205,7 +222,7 @@ scripts/first-production.sh \
   /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha>
 ```
 
-脚本从 `release.json.locale` 选择正式 identity，并要求其显式为 `production_state=first-production`；当前 lifecycle 必须以 `production/identity.json` 为准，`live` profile 不能用于 bootstrap。脚本不接受调用者重复传 hostname、port、service、data root、origin IP 或 zone。一个 run 为 aliyun 和 zgocloud 分别建立 invocation-scoped ControlMaster；这些 master 不设置定时 idle `ControlPersist` 截止时间，只由当前编排器在正常、失败和 INT/TERM/HUP 退出时显式关闭并清理 control socket。状态 receipt 写在 release 同级的 `<release>.first-production-receipt.json`，只记录 run/stage/locale/hostname/release/time/result 等非 secret identity。若已完成 deploy 后本地连接中断，重跑同一命令会识别未完成 receipt，重新验证 `current`、service/source health 和全部关键 identity，再从后续幂等阶段继续；已完成 receipt 拒绝重复 bootstrap。
+脚本从 `release.json.locale` 选择正式 identity，并要求其显式为 `production_state=first-production`；当前 lifecycle 必须以 `production/identity.json` 为准，`live` profile 不能用于 bootstrap。脚本不接受调用者重复传 hostname、port、service、data root、origin IP 或 zone。一个 run 为 aliyun 和 zgocloud 分别建立 invocation-scoped ControlMaster；这些 master 不设置定时 idle `ControlPersist` 截止时间，只由当前编排器在正常、失败和 INT/TERM/HUP 退出时显式关闭并清理 control socket。当前 mutable execution state 写在 `<release>.first-production-state.json`，完整成功另存 exclusive `<release>.first-production-result-<input_identity>.json`。历史 receipt 保持 immutable；新 state 绑定 input/content/shared-assets identity、prior state 和 mutation status。ATTEMPTED/UNKNOWN 不允许 replay。若已完成 deploy 后本地连接中断，重跑同一命令会识别未完成 receipt，重新验证 `current`、service/source health 和全部关键 identity，再从后续幂等阶段继续；已完成 receipt 拒绝重复 bootstrap。
 
 正式顺序固定为：
 
@@ -234,11 +251,9 @@ scripts/recover-first-production-health-failure.sh \
   /tmp/go-tour-release-YYYYMMDD-<locale>-<failed-shortsha>
 ```
 
-该命令不是通用解锁器。它只接受 `production_state=first-production`，并严格校验旧 release 的 failed first-production receipt：identity/release 一致、failure stage 为 `deploy`、preflight/infrastructure/Playground Origin 均 PASS，且没有任何 DNS/public/browser post-deploy stage。随后在 aliyun 精确验证 `current` 正指向该 receipt release、release 与 releases root 都是实际目录、`.deploy.lock` 是预期实际目录。若 service 仍不健康，进入原有 failed-release recovery；若 service 已连续恢复为 active + HTTP 200，则额外要求远端 `SHA256SUMS` identity 与完整内容匹配本地不可变 release、MainPID 执行精确 release binary，全部通过后才删除空 lock，并在原 receipt 中机械记录 `deploy: PASS`。任何成功/live、未知 deployment、错误 release/current、缺 lock 或 identity/checksum 不一致均 fail closed。
+该命令只消费 failed current execution state 与 exact sealed input，并要求 failure stage 是 deploy、前置三个阶段完整 PASS、无任何 post-deploy stage。它证明 whole bundle、current、MainPID、连续 health、shared manifest 和属于该 deployment 的 consumer lease；只有同一 release 已恢复健康才释放已证明的两把锁并记录 known deploy PASS，随后对同一 input resume。仍不健康、历史 Tour-only predecessor、checksum/dependency 不一致或 mutation unknown 均保留 current、锁和 evidence，停止供维护者制定明确 recovery；不删除 current，不恢复部分目录或 binary。
 
-仍不健康时，通过全部检查后，命令原子暂存 `current` symlink、删除已验证为空的 lock，再删除暂存 symlink；若 lock 删除或 INT/TERM/HUP 期间失败则恢复 `current`。失败 release 一直保留作 evidence。恢复成功后先重新 publish 新 release，再对**新** release 运行 `scripts/first-production.sh`；旧 failed receipt 不删除、不复用，新 release 会建立新的 receipt 并从完整 preflight 重新开始。已经自行恢复健康时，命令保留 `current` 与同一不可变 release、删除已验证为空的 lock、记录 deploy PASS，并打印对**同一** release 重新运行 `scripts/first-production.sh` 的唯一 resume 命令；编排器会重新执行完整 preflight，然后从 direct-origin 及后续阶段继续。
-
-preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、**唯一** current Surface Review A gate 所指向的 Markdown evidence identity，以及完整唯一且未改写的 first-production finalization placeholder；多个 current A gate 不猜测“最新”而是 fail closed。TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile、shared advertising policy（仅 Tour 广告启用的 `Standard` locale 要求非空 `TOUR_AD_HTML`，不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。placeholder 语义由 `tour-i18n first-production evidence-preflight` 统一实现，编排器不自行解析 Markdown；finalize 还会验证其传入的 review-id 对应 gate 本身仍为 current。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、HTTP 522/525 和 curl exit 28 的 bounded retry、14/14 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
+preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、**唯一** current Surface Review A gate 所指向的 Markdown evidence identity，以及完整唯一且未改写的 first-production finalization placeholder；多个 current A gate 不猜测“最新”而是 fail closed。TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile、shared advertising policy（仅 Tour 广告启用的 `Standard` locale 要求非空 `TOUR_AD_HTML`，不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。placeholder 语义由 `tour-i18n first-production evidence-preflight` 统一实现，编排器不自行解析 Markdown；finalize 还会验证其传入的 review-id 对应 gate 本身仍为 current。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、HTTP 522/525 和 curl exit 28 的 bounded retry、完整 current inventory SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
 
 Cloudflare control-plane 专用网络通道也在 preflight 建立：调用机先以 invocation-scoped SSH `-D 127.0.0.1:<local-port>` 连接 zgocloud，再以 SSH `-R 127.0.0.1:<aliyun-port>:127.0.0.1:<local-port>` 连接 aliyun；两个 listener 都只绑定 loopback，且 `ExitOnForwardFailure=yes`/`GatewayPorts=no`。因此 aliyun 的 curl 经 `--socks5-hostname 127.0.0.1:<aliyun-port>` 从 zgocloud 出口完成 DNS 和 TCP，但 HTTPS/TLS 与 `Authorization: Bearer $CF_Token` 仍只在 aliyun 的 curl 进程和 Cloudflare 之间建立，调用机与 zgocloud 都看不到 token 明文。建链失败立即停止，绝不回退 aliyun 直连；正常、失败、INT、TERM、HUP 都关闭两个 ControlMaster 和转发 socket。该 endpoint、端口、token 和 tunnel 细节不写入 receipt 或日志。
 
@@ -256,11 +271,11 @@ FIRST_DEPLOYMENT 仍严格复用 `deploy-production.sh` 的 upload/current/healt
 
 first-production 不查询或解析 Cloudflare Cache Rule expression，也不修改 account-wide rule；Cache Rule 的实际 eligibility 只由随后从 zgocloud 发起的真实公网 `CF-Cache-Status` machine gate 验证。
 
-Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 bounded public readiness poll：每轮同时请求 `/` 与 `/tour/welcome/1`，两者均须为 HTTP 200 且具有目标 locale 的 `html lang`；连续三轮成功才进入 verifier。readiness 仅等待 DNS/CDN 稳定生效，不承担第二套 production acceptance；它通过后立即且仅一次调用 `scripts/verify-production.sh <release-dir>`。该脚本是 routes、homepage/welcome canonical 与 `html lang`、sitemap 及其 105 URL、普通/Upgrade `/socket` boundary、CDN cache header/eligibility 等通用 machine gate 的唯一正式实现；本机只执行 release identity 与 aliyun remote/source gate，脚本本体以 SSH stdin 的 `--public` 模式直接在正式 shared `zgocloud` runner 执行全部公网 curl，避免 105 个 sitemap URL 经维护者本机↔zgocloud 的 SOCKS 链路。runner 不可用立即 fail closed；curl exit `6`、`7`、`16`、`28`、`35`、`97` 与 HTTP `522`/`525` 只在单一逻辑请求内最多尝试 5 次，单次 15 秒，耗尽后立即停止（尤其不再继续未验证的 sitemap URL），不能将未检查 URL 记为 PASS。Playground Origin 已在其专属阶段完成接口/boundary 验收，shared-assets 已在 preflight 完成 current-state freshness/public verification；二者不在 readiness 重复请求。`verify-production-browser.py` 随后使用仓库既有 `google-chrome`/DevTools 基线，自动覆盖 desktop/mobile、普通与 editor course、`/tour/moretypes/1`、语言列表、Run/Format/Reset、runtime output、Playground endpoint、canonical/lang/SEO、socket、shared assets、course-ad mount/loader/request opportunity 和 SPA 下一页。first-production 会自动将本次 preflight 已建立的 invocation-scoped zgocloud SOCKS endpoint 显式传给 Chrome；该 tunnel 不依赖 `public-machine` 或其独立 verifier 持续产生 multiplex traffic 来续命，browser stage 要求 listener 仍可达，绝不读取或回退到维护者本机默认代理/网络，也不要求维护者修改本机代理设置。该 tunnel 仍随 invocation cleanup。广告 filled/unfilled 均可通过。
+Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 bounded public readiness poll：每轮请求sealed bundle 中的representative covered routes，两者均须为 HTTP 200 且具有目标 locale 的 `html lang`；连续三轮成功才进入 verifier。readiness 仅等待 DNS/CDN 稳定生效，不承担第二套 production acceptance；它通过后立即且仅一次调用 `scripts/verify-production.sh <release-dir>`。该脚本是 current routes、canonical 与 `html lang`、activated sitemap exact URL set、普通/Upgrade `/socket` boundary、CDN cache header/eligibility 等通用 machine gate 的唯一正式实现；本机只执行 release identity 与 aliyun remote/source gate，脚本本体以共享 HTTP model 直接在正式 shared `zgocloud` runner 执行全部 current canonical routes 与 sitemap/404 checks，不通过维护者本机↔zgocloud 的 SOCKS 转发整个清单。runner 不可用立即 fail closed；curl exit `6`、`7`、`16`、`28`、`35`、`97` 与 HTTP `522`/`525` 只在单一逻辑请求内最多尝试 5 次，单次 15 秒，耗尽后立即停止（尤其不再继续未验证的 sitemap URL），不能将未检查 URL 记为 PASS。Playground Origin 已在其专属阶段完成接口/boundary 验收，shared-assets 已在 preflight 完成 current-state freshness/public verification；二者不在 readiness 重复请求。`verify-production-browser.py` 随后使用仓库既有 `google-chrome`/DevTools 基线，自动覆盖 desktop/mobile、普通与 editor course、`/tour/moretypes/1`、语言列表、Run/Format/Reset、runtime output、Playground endpoint、canonical/lang/SEO、socket、shared assets、course-ad mount/loader/request opportunity 和 SPA 下一页。first-production 会自动将本次 preflight 已建立的 invocation-scoped zgocloud SOCKS endpoint 显式传给 Chrome；该 tunnel 不依赖 `public-machine` 或其独立 verifier 持续产生 multiplex traffic 来续命，browser stage 要求 listener 仍可达，绝不读取或回退到维护者本机默认代理/网络，也不要求维护者修改本机代理设置。该 tunnel 仍随 invocation cleanup。广告 filled/unfilled 均可通过。
 
 first-production 的前置 public readiness 每个逻辑请求保持最多 3 次，但单次上限为 25 秒，以覆盖已观察到约 21.8 秒才成功的 cold MISS；外层 readiness 次数和 stage timeout 继续限制总预算。它仍只是 DNS/CDN readiness，不替代随后复用的正式 machine/browser correctness gate。
 
-首次 production finalize 后的 Search-engine closeout 不属于 first-production lifecycle 或第三种 deployment。维护者完成 Google、Bing 和适用 locale-specific Dashboard sitemap submission 后，使用 `scripts/indexnow-closeout.sh --locale <locale>` 作为唯一正式 IndexNow 入口。首次运行会在仓库外的 `${XDG_DATA_HOME:-$HOME/.local/share}/go-tour-indexnow/<locale>/` 生成并保存 locale-specific key，后续重跑只复用同一个有效 key；store/locale directory 为 `0700`，key file 为 `0600`。多个 candidate、symlink、非 regular file、非法 key 或任何造成 identity 不明确的额外条目均 fail closed。已有受保护 key 时可显式传入 `--key-file /secure/path/<key>.txt`，且不会创建默认 key。它从 production identity 取得 Aliyun origin、data root、Nginx vhost 和正式 Nginx command，provision root key/exact location 并 test/reload；config-test 或 reload 明确失败时恢复本轮 vhost/key 修改。该简单单维护者流程不声称 vhost mutation 是 atomic 或 crash-safe transaction。公网验证与 IndexNow submission 由本机直接运行的 Go primitive 执行；没有 failure evidence 不引入代理。probe 只有明确 HTTP 202 才以相同已 provisioned key 和 byte-identical 单 URL payload 最多执行 3 次，backoff 为 1 秒、2 秒；不重新 provisioning，不重试 transport failure 或其他 HTTP semantic failure，耗尽仍 non-zero。bulk HTTP 202 不自动重试。若未来需要境外公网 runner，复用 first-production/verify-production 已验证的 zgocloud direct-runner，不创建本机→SOCKS 的专用架构。IndexNow submission 是第三方 closeout，不修改 production lifecycle，submission failure 不回滚已通过 provisioning 的 key/vhost；明确失败后重跑继续使用同一 key。成功后不周期性重复全站 bootstrap。
+首次 production finalize 后的 Search-engine closeout 不属于 first-production lifecycle 或第三种 deployment。维护者完成 Google、Bing 和适用 locale-specific Dashboard sitemap submission 后，使用 `scripts/indexnow-closeout.sh --locale <locale> --release-dir <current-release-dir>` 作为唯一正式 IndexNow 入口。首次运行会在仓库外的 `${XDG_DATA_HOME:-$HOME/.local/share}/go-tour-indexnow/<locale>/` 生成并保存 locale-specific key，后续重跑只复用同一个有效 key；store/locale directory 为 `0700`，key file 为 `0600`。多个 candidate、symlink、非 regular file、非法 key 或任何造成 identity 不明确的额外条目均 fail closed。已有受保护 key 时可显式传入 `--key-file /secure/path/<key>.txt`，且不会创建默认 key。它从 production identity 取得 Aliyun origin、data root、Nginx vhost 和正式 Nginx command，provision root key/exact location 并 test/reload；config-test 或 reload 明确失败时恢复本轮 vhost/key 修改。该简单单维护者流程不声称 vhost mutation 是 atomic 或 crash-safe transaction。公网验证与 IndexNow submission 由本机直接运行的 Go primitive 执行；没有 failure evidence 不引入代理。probe 只有明确 HTTP 202 才以相同已 provisioned key 和 byte-identical 单 URL payload 最多执行 3 次，backoff 为 1 秒、2 秒；不重新 provisioning，不重试 transport failure 或其他 HTTP semantic failure，耗尽仍 non-zero。bulk HTTP 202 不自动重试。若未来需要境外公网 runner，复用 first-production/verify-production 已验证的 zgocloud direct-runner，不创建本机→SOCKS 的专用架构。IndexNow submission 是第三方 closeout，不修改 production lifecycle，submission failure 不回滚已通过 provisioning 的 key/vhost；明确失败后重跑继续使用同一 key。成功后不周期性重复全站 bootstrap。
 
 编排器对 preflight、infrastructure、Playground Origin、deploy、direct-origin、Cloudflare DNS、public-machine 与 browser 输出 PASS/FAILED 的 wall-clock duration；receipt 仍只保存既有 identity/stage 结果。resume 仅复用 receipt 中已完成的 immutable bootstrap decision（例如同 release 的 unit/vhost baseline），但每次仍重新执行完整 preflight，并重新验证 current、service/source health、DNS identity、shared-assets public freshness 与 CDN/public state；这些 mutable state 不得由历史 PASS 代替。
 
@@ -286,7 +301,7 @@ finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、rele
 [首次生产] 公网验收：PASS
 [首次生产] 浏览器验收：PASS
 [首次生产] READY FOR FINALIZATION
-receipt: /tmp/go-tour-release-....first-production-receipt.json
+receipt: /tmp/go-tour-release-....first-production-state.json
 next: go run -mod=readonly ./cmd/tour-i18n first-production finalize --release-dir ... --review-id ...
 ```
 
@@ -312,298 +327,74 @@ actual: expected HTTP 204, got 403
 
 ### Production release 自动部署
 
-先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。publish 输出 projection/build、production binary build、Chrome prerender、production-equivalent runtime validation、manifest/checksum 的 phase timing，便于识别瓶颈。当前稳定基线保持两个 Chrome worker；每条 route 仍独立启动 Chrome/virtual-time timeout，避免为节省启动成本引入长会话的跨 route state、timeout 或 cleanup 风险。构建会对当前 locale 的全部 103 个正式课程 URL 和 sitemap 中独立的 `/tour/list` 执行 headless Chrome prerender。单条课程 route 与 `/tour/list` 的 Chrome deadline failure，以及 Chrome exit 0 但明确缺少 runtime head、精确 rendered-route 或所需 editor textarea 的 incomplete-render failure，在各自最小粒度内最多执行 3 次总 attempt，并按 1 秒、2 秒 bounded backoff 重试；每次 attempt 使用全新的 Chrome profile。该 mechanism 不重跑整个 locale 或 batch，也不跳过 route 或放宽 rendered-page validation；其他 Chrome failure 和 readiness PASS 后的 sanitize、输出路径、写盘、canonical/title/description/content validation 等确定性失败均立即停止，连续 3 次 transient failure 仍 fail closed。课程页写入 `_content/tour/prerender/<lesson>/<page>.html`；list 写入 `_content/tour/prerender/list.html`，并必须含当前 locale 的 heading、module/lesson 标题与说明、课程链接，以及自身的 canonical、title 和 description。`course-metadata.json` 的正式范围仍严格是 103 个 Page TranslationUnit，不包含 list。Chrome 缺失、任一页面未完成渲染或产物缺少 route metadata、正文、完整示例源码（课程页）或完整目录内容（list）时均 fail closed。
+使用上述 existing build/publish contract。Tour 的 prerender routes 从 parsed lesson/catalog authority 派生，Site pages 在同一个 sealed payload 中；两个 Chrome worker、逐 route bounded retry、rendered metadata/editor/content checks 保持。不得用旧 Tour count 或一套 batch-only renderer。
 
-普通多 locale maintenance release 的推荐顶层入口为：
+普通多 locale maintenance 的顶层入口：
 
 ```sh
 scripts/production-release-batch.sh --all-live
-
-# 或只发布正式 identity 中选定的 live locale
-scripts/production-release-batch.sh \
-  --locale de-DE \
-  --locale fr-FR
+scripts/production-release-batch.sh --locale de-DE --locale fr-FR
 ```
 
-`--all-live` 动态读取 `production/identity.json`，不维护第二份 locale 列表；显式 subset 保持参数顺序。顶层先完成输入、identity 与本地 output preflight，生成并验证当前 shared-assets export，再调用 Go `publish-batch` 严格串行生成全部 bundle。只有全部 publish PASS 后，才复用 maintenance batch 的本地与 CDN read-only authority preflight；随后仅当选中 profile 中存在 `shared_assets_policy=shared-cloudflare` 时运行 shared-assets deploy → automatic exact-URL purge → public verify，最后把 machine summary 中的精确 release dirs 原序交给 `maintenance-production-batch.sh`。maintenance batch 先对 ordered locale set 全部执行 deploy → hostname purge，全部 mutation PASS 后才从第一项重新按相同顺序执行 machine → browser。任一步失败立即停止；publish failure 时 Production mutation 为零，shared-assets failure 时 locale maintenance 不开始，maintenance failure 继续沿用既有 fail-fast/resume 且不回滚已 PASS locale。该入口不执行 first-production、search closeout、IndexNow 或 Production visual gate，正常路径不读取 stdin。
+`--all-live` 动态读取唯一 production identity；selected 保持参数顺序。先导出/validate current shared assets，再由共同 `publishBundle` 串行构建所有 locale；全部本地 publish PASS 才允许共享 assets mutation，随后全部 locale preflight PASS，再逐 locale `deploy → purge → machine → browser → immutable result`。第一项失败立即停止后续 locale；已有成功 result 保留，失败/blocked/unknown 不计 PASS。
 
-这里的 **local publish 不等于 Production deployment**。`publish-batch` 的 `PASS` 只表示本地 projection/build/Chrome prerender、bundle validation 与 release directory 已完成；其后的 `AUTHORITY PREFLIGHT` 也全部是只读检查。只有 `maintenance-production-batch.sh` 实际开始处理某个 locale 后，该 locale 才可能发生 Production deployment。正式 stage 顺序不可调整：
-
-```text
-shared-assets local export/validate
-→ ALL selected locale local publish PASS
-→ ALL required Production read-only authority preflight PASS
-→ shared-assets Production deploy/purge/verify PASS
-→ locale maintenance batch ALL local/CDN authority preflight PASS
-→ Phase A: ALL locale deploy/hostname purge PASS
-→ Phase B: ALL locale machine/browser PASS
-```
-
-不得把 shared-assets Production mutation 提前到全部本地 publish 之前；只要 shared-assets required workflow 尚未完整 PASS，就不得开始任何 locale maintenance deployment。
-
-全部 selected locale publish PASS 后，顶层会在 `--output-root` 中原子建立不可变的 `go-tour-i18n/production-release-batch-state/v1` state，并立即打印路径。state 绑定当前完整 repository HEAD、干净工作树所对应的 production identity 摘要、selection mode 与 ordered locale set、每个 locale 的 `published_at`、精确绝对 `release_dir`、`release.json`/`SHA256SUMS` 摘要，以及精确 shared-assets export 与 manifest 摘要；它不扫描 `/tmp`，也不猜测历史 bundle。post-publish 的 shared-assets、CDN、public verification 或 maintenance transient failure 可使用失败汇总打印的唯一命令恢复：
+顶层 post-publish state 绑定 HEAD、production identity、ordered locale set、exact releases 与 shared export hashes。恢复入口不扫描临时目录，也不重新 publish：
 
 ```sh
-scripts/production-release-batch.sh --resume /tmp/go-tour-production-release-batch-<timestamp>-<pid>.state.json
+scripts/production-release-batch.sh --resume <post-publish-state.json>
+scripts/production-release-batch.sh --resume-maintenance <post-publish-state.json>
 ```
 
-`--resume` 不得与 `--all-live`、`--locale` 或 `--output-root` 混用。恢复在任何新 Production mutation 前重新要求 state schema/self-identity/path 完整、当前 working tree 干净且 HEAD 完全相同、`production/identity.json` 字节 identity 未变化、locale 仍为 live 且顺序一致、release/export 均为原精确真实目录而非 symlink、release metadata 与 state 一致、两个 manifest 未变化，并重新执行正式 assets validation、每个 bundle 的完整 local validation 和全部 read-only CDN authority preflight。任一事实无法证明就 fail closed；不能为了复用旧 prerender 而在新 HEAD 或改写后的工作树上恢复。
+恢复仍检查所有 current sealed input/coverage/asset dependencies。已经成功的 deploy/purge 不重放；已完成 locale 只验证当前 runtime/public/browser，再显示 CARRIED。未知 mutation 停止，不把更换 HEAD/目录、旧 receipt 或旧首次上线 bundle 当作恢复依据。
 
-若 publish 已 PASS 且 shared-assets Production 已有完整 v2 PASS receipt，但 maintenance 因后续 tooling fix 使当前 HEAD 改变而无法普通 `--resume`，使用 failure summary 打印的显式 maintenance-only 入口：
-
-```sh
-scripts/production-release-batch.sh --resume-maintenance /tmp/go-tour-production-release-batch-<timestamp>-<pid>.state.json
-```
-
-`--resume-maintenance` 仍严格验证 state schema/self-identity/path、干净 working tree、未变的 `production/identity.json` identity、ordered live locale selection、每个真实非 symlink release directory 的 `release.json`/`SHA256SUMS` hash 与 locale/`published_at`、shared-assets export manifest 与完整 assets validation，但允许当前 HEAD 与 state 中已冻结的 publish HEAD 不同。它不重新 publish、prerender、export、生成 release bundle 或运行 shared-assets Production；只在 required shared-assets 已有与 state manifest 一致的完整 PASS receipt 时，把 state 中冻结的 release dirs 原序交给现有 `maintenance-production-batch.sh`，由每个 maintenance receipt 在两阶段 batch 中继续既有 strict recovery。maintenance-only recovery 只在顶层读取一次本地 receipt 初始快照供最终 `SKIPPED` 汇总，不提前执行 remote authority preflight；standalone maintenance batch 自身仍完整执行且仅执行一次全部 local/CDN authority preflight，全部 PASS 后才允许 Phase A。任一 artifact、identity、order 或 receipt 无法证明时 fail closed。普通 `--resume` 的 exact HEAD contract 不变。
-
-normal production-release 与普通 `--resume` 在 shared-assets 可能发生 Production mutation 前继续执行顶层 maintenance authority preflight，并在 shared-assets 完成后由 standalone maintenance batch 再执行一次紧邻 locale mutation 的完整 preflight。这两次检查分别保护 shared-assets mutation 前的全局顺序和 locale Phase A 前的独立 batch 安全合同；当前不引入可跨进程伪造或过期的 preflight handoff state。maintenance-only recovery 中间没有 shared-assets mutation，因此不需要这层重复检查。
-
-顶层 state 只保存 post-publish 的精确输入，不另建 deployment 状态机。shared-assets 继续以同一 export sibling v2 receipt 恢复：`DEPLOYED + purge PASS + verification PENDING` 只重跑 verify，不重复 deploy/purge；purge 为 `PENDING` 且将发生新 mutation 时先重新做 shared-assets authority preflight，`ATTEMPTED` 的不确定 mutation 仍拒绝重复。locale maintenance 继续把 state 中原序 release dirs 交给既有 strict receipt：已经完整 PASS 的 locale 为 `SKIP`，未完成 locale 从原 receipt 继续，不重新 publish、不回滚已 PASS locale。顶层 failure summary 明确区分 `publish`、shared-assets 的 `deploy/purge/verify` 和 `locale maintenance: NOT_STARTED/PARTIAL/COMPLETE`，并在 state 仍可验证时打印精确 resume state 与 command。
-
-需要只生成本地 artifacts、供诊断或其他编排使用时，可直接运行正式 Go batch publish：
-
-```sh
-go run -mod=readonly ./cmd/tour-i18n publish-batch \
-  --output-root /tmp \
-  --locale de-DE \
-  --locale fr-FR \
-  --json
-```
-
-batch 开始只检查一次 clean working tree 并读取一次完整 HEAD；每个 locale 在调用既有 `publishBundle` 前分别取得当时的 UTC RFC3339 `published_at`。release 名称为 `go-tour-release-YYYYMMDDTHHMMSSZ-<locale>-<head前12位>`，已存在目录绝不覆盖；`--json` stdout 只输出 `repository_head` 与按输入顺序排列的 `locale`、`published_at`、`release_dir`、`result`，publish phase 日志写 stderr。batch 本身不执行任何 Production mutation。
-
-日常单 locale maintenance 的正式入口保持不变：
-
-```sh
-scripts/maintenance-production.sh \
-  /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha>
-```
-
-它不替代 deployment 状态机或任何验收实现；它严格调用既有 `scripts/deploy-production.sh`、`scripts/verify-production.sh` 与 `scripts/verify-production-browser.py`。单 locale publish/maintenance、`publish-batch`、shared-assets workflow 与 `maintenance-production-batch.sh` 都继续保留，供诊断和安全恢复使用。
-
-脚本严格读取 `release.json` 的 `locale` 作为唯一事实来源，不接受 `--locale`，也不根据目录名猜测语言。profile 集合与全部字段由 `production/identity.json` 提供；不支持、重复、冲突或 schema 不合法的 locale 会在 SSH、上传、远端加锁及任何生产修改之前 fail closed。service user 为 `go-tour`。
-
-本地目录名应遵循 `go-tour-release-YYYYMMDD-<locale>-<shortsha>` 约定，并且必须以 `go-tour-release-` 开头。脚本只删除这个固定前缀，并对剩余名称执行安全字符检查；因此上例对应的远端目录为：
-
-```text
-/data/go-tour/releases/20260813-zh-CN-a4d4dca
-```
-
-脚本固定使用 SSH 别名 `aliyun`。当前生产运维账号为 root；远端 `id -u` 不是 `0` 时会在上传前失败，不使用或依赖 `sudo`。部署过程如下：
-
-一次 `deploy-production.sh` 调用会为 aliyun 建立 invocation-scoped SSH ControlMaster，后续 preflight、rsync、remote validation 与 activation 复用同一连接；使用 BatchMode、连接/keepalive/retry 边界，并在主流程退出时清理 ControlMaster。SSH 中断后状态不确定时仍保留既有 lock/evidence，不能因 multiplex 自动盲目重试 mutation。
-
-1. 本地严格检查 bundle 根结构、symlink、`bin/tour`、`release.json`、`site-metadata.json` 和 `SHA256SUMS`；manifest 必须满足 production 约束，其 locale 必须与由同一 `release.json` 选出的 profile 一致。
-2. 远端在所选 profile 的 data root 中验证 `current`、当前 release、目标名称和对应 systemd service，再为正常新部署原子创建 `.deploy.lock` 防止并发部署。首次 deployment 仅在 `current` 完全不存在时允许继续；已有 locale deployment 则要求其为指向 release root 内当前 release 的合法 symlink。`current` 存在但不是 symlink、或指向 release root 外时均 fail closed。同名非当前 release 已存在时拒绝覆盖；锁已存在表示可能有正在执行或上一次未完成的部署，脚本直接停止，不分析或自动删除该锁。若 live locale 的目标 release 已经精确是 `current`，则只允许进入下述严格的 no-mutation resume，不创建 lock 或 staging。
-3. `rsync` 只上传到所选 profile 的 `releases/.<release>.staging-<token>`，不直接写最终 release 或 `current`，也不使用 `--delete` 覆盖 release。
-4. 上传后无条件执行权限归一化：owner/group 为 `root:root`，所有目录为 `0755`，普通文件为 `0644`，`bin/tour` 为 `0755`。随后在远端重新验证 SHA-256，以及 `go-tour` 用户对二进制和必要内容的访问权限；production manifest 已在本地严格检查，第一版不在远端重复解析。
-5. staging 在同一文件系统内原子重命名为最终 release；脚本创建临时 symlink 后以原子 `mv` 替换 profile 的 `current`，再 restart 对应 service。
-6. 新版本只有在连续 3 次同时满足 profile service 为 `active`、profile localhost health URL 严格返回 HTTP 200 后才算健康。检查最多 12 轮，每轮间隔 3 秒；任何失败都会把连续计数归零，不能用瞬时一次 `active` 判断成功。
-7. 只有在已有 locale 的 `current` 已明确切换到新 release 后，restart 失败或新版本健康检查明确失败，脚本才会自动回滚：`current` 原子切回旧 release、restart 服务，并使用相同的连续 3 次规则验证旧 release。失败的新 release 会保留用于诊断，不自动删除历史 release。首次 deployment 没有旧 release；若首次切换后的 health failure，脚本明确报告 `FIRST_DEPLOYMENT` failure、保留 `current`、lock 与现场并给出人工检查提示，不伪造 rollback。
-
-脚本只区分三类主要结果：在 `current` 原子替换开始前，若脚本能够明确安全清理本次部署资源，会清理 staging/final、临时 symlink 和锁，`current` 保持不变；若远端状态与预期不一致，则保留现场并要求人工检查；新版本明确失败且旧版本恢复健康时会报告已回滚；激活 SSH 中断、current 切换状态无法确认、回滚失败或其他远端状态不确定时会保留 deployment lock 和现场，停止自动处理。遇到最后一种情况不要直接重复部署，应先按日志中所选 profile 的参数人工检查。以下为 `zh-CN` 示例；`ja-JP` 应替换为 `/data/go-tour-ja-JP/current`、`go-tour-ja-JP.service` 和 `http://127.0.0.1:4000/`，`de-DE` 应替换为 `/data/go-tour-de-DE/current`、`go-tour-de-DE.service` 和 `http://127.0.0.1:4001/`：
-
-```sh
-ssh aliyun 'readlink -f /data/go-tour/current'
-ssh aliyun 'systemctl status go-tour.service --no-pager -l'
-ssh aliyun 'curl -sS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:3999/'
-ssh aliyun 'journalctl -u go-tour.service -n 80 --no-pager'
-```
-
-live locale 的同一目标 release 已经精确是 `current` 时，可能是上次 source activation 和 localhost health 已成功、但随后 public acceptance 失败。该状态只在正式 identity 仍为 live、`current` 精确指向 release root 内的目标真实目录、无 deployment lock、远端完整文件集合与逐文件 checksum 均有效、完整 release tree identity 与本地 bundle 相同、service 为 active，且按既有规则连续 3 次 localhost HTTP 200 时才可恢复。此路径不上传、不创建 staging、不切换 `current`、不 restart；任一事实未知或不一致都在 production mutation 前 fail closed。`first-production` 不得使用该恢复路径。
-
-localhost 连续健康后，脚本才检查对应 profile 的 public URL。这个轻量 public acceptance 只请求一个 URL，因此可对 curl transport exit `6`、`7`、`16`、`28`、`35`、`97` 以及 HTTP `522`/`525` 做最多 5 次、单次 15 秒和 1s/2s/3s/4s bounded backoff 的有限重试；每次保留真实 curl exit 和 HTTP status，最终仍只接受 curl exit `0` 且 HTTP `200`，确定性的其他失败立即停止。它不是第二次 `verify-production`。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。底层 deploy 脚本不调用 CDN API；正式 maintenance 编排器在 deploy PASS 后自动刷新 exact hostname，再完成后续 CDN 验收。public HTTP 200 只证明公网入口可用，不能替代 hostname purge 或证明新 release 已在全部边缘节点生效。
-
-`FIRST_DEPLOYMENT` 是例外：连续 localhost health 通过后脚本停止于源站 ready，不要求尚未启用 DNS 的 public URL，也不做无旧 release/cache 可刷新的 hostname purge。下一步必须先从外部主机使用 production hostname + `--resolve <hostname>:443:<origin-ip>` 完成 TLS/SNI、HTTP → HTTPS 和关键 route 的 direct-origin acceptance；通过后再创建/启用 `proxied=true` 的正式 DNS，并执行 public machine/browser acceptance。`EXISTING_DEPLOYMENT` 继续保持 `deploy → hostname purge → verify`。
+底层 `deploy-production.sh <release-dir>` 复用 Go current validator 与 current shared export/origin/public proof，再验证 exact prior pointer/payload/PID。仅向 profile staging 上传，远端 exact binary validator PASS 后，CAS whole-tree rename + current symlink switch + service restart；health 使用本 bundle 的 covered route。activation 持有 shared-assets consumer lease，防止中途替换 dependency。自动 rollback 仅接受 exact predecessor 的完整 sealed Site bundle且 shared dependency 完全相同；whole-tree pointer、routes、sitemap/canonical、assets dependency 和 verifier plan 一起恢复。旧 Tour-only predecessor 或不同 assets identity 不具备自动 rollback eligibility。失败/未知保留锁和现场，停止恢复；不只恢复 binary。
 
 ### Maintenance production orchestration 与 machine acceptance
 
-已有 locale 日常 production 的正式顺序固定为：
+现有 single 与 batch wrappers 转发共同 maintenance implementation：
 
-```text
+```sh
 scripts/maintenance-production.sh <release-dir>
-  → scripts/deploy-production.sh <release-dir>
-→ automatic exact-hostname EdgeOne / Cloudflare purge
-→ scripts/verify-production.sh <release-dir>
-→ scripts/verify-production-browser.py <production-public-url> <locale>
-→ MAINTENANCE PRODUCTION: PASS
-```
-
-编排器从 `release.json.locale` 取得唯一 locale，并从 `production/identity.json` 取得 hostname、CDN 与 public URL；不接受 hostname、port、service 或 CDN 参数，也不从目录名或其他 locale 推导 identity。它只接受 `production_state=live`。
-
-编排器在任何 deployment mutation 前先运行目标 provider 的 credential/read-only authority preflight。deployment 成功后自动刷新 `production/identity.json` 中当前 locale 的 exact hostname；不接受 hostname、Targets、purge method 或 zone CLI 参数。Cloudflare 固定 Custom Purge by Hostname，payload 只有一个 exact host，绝不使用 Purge Everything 或 zone-wide purge；read-only 请求最多三次 bounded retry，purge mutation 只提交一次，若 transport 或响应截断导致结果未知，由于该 API 没有正式 task query，立即 fail closed 且不重复 mutation。Cloudflare API 通过 zgocloud SOCKS 与 Aliyun reverse forwarding 访问；本机临时端口不能证明 Aliyun remote bind 可用，因此只有 OpenSSH 明确返回 `remote port forwarding failed for listen port` 时，才会清理该次 SSH control 并使用新的 candidate remote port，最多 3 次且不增加 sleep；尝试耗尽或认证、网络等其它 SSH failure 均立即 fail closed。EdgeOne 固定 `Type=purge_host`、`Method=delete`、`Targets=[exact hostname]`，并按 JobId 查询到 terminal success；结果未知时先做 bounded time-window reconciliation，只有连续只读查询明确无对应任务时才允许至多一次新的 mutation。purge 未明确 PASS 时不会运行 machine/browser acceptance。
-
-每个 release 在同级写入 `<release>.maintenance-production-receipt.json`，正式 stage 顺序为 `deploy`、`purge`、`machine`、`browser`。非终态 invocation 即使已有 deploy PASS，也必须再次调用 `deploy-production.sh`，由严格 already-current 路径重新证明 remote identity、完整 checksum、service 与 localhost health；随后只复用已明确 PASS 的新式 purge/machine/browser 前缀。完整 PASS receipt 才直接结束且不重复任何 mutation。历史包含 `visual` 与人工 purge 时间的完整 PASS receipt 继续可读并安全 SKIP；历史未完成 receipt 只保留可证明的 deploy PASS，必须进入新的 automatic purge，不能用旧人工确认绕过 purge/machine/browser。
-
-多个 live release 的正式无人值守入口为：
-
-```sh
 scripts/maintenance-production-batch.sh <release-dir>...
+scripts/verify-production.sh <release-dir>
+scripts/verify-production-browser.py <production-public-url> <locale> --release-dir <release-dir>
 ```
 
-batch 在第一次 Production mutation 前完成全部目录、bundle/release、locale 唯一性、lifecycle、identity、receipt 以及各 CDN credential/read-only authority preflight，不得边 preflight 边 mutation。随后采用严格的两阶段串行模型：Phase A 按 ordered locale set 逐项执行或从 receipt 复用 `deploy → hostname purge`，只有全部 locale 均达到 deploy PASS + purge PASS 后，Phase B 才从 ordered set 第一项重新开始并逐项执行或复用 `machine → browser`。Phase A 的首个 failure 会停止后续 mutation，且不会启动任何 Phase B；Phase B 的首个 failure 会停止后续 acceptance。两种 failure 都保留已有 receipt evidence，不回滚其它已健康且正式 PASS 的 locale；完整 PASS receipt 在两阶段中均显示 `SKIPPED`，未完成 locale 继续使用同一 receipt strict resume，不建立第二份 batch state。
+每次重新检查 current activated coverage、exact input build/bundle、target、shared export/origin/public currentness 和 predecessor；历史完整 PASS 仍不能替代本次 current proof。每个 locale state `<release>.maintenance-production-state.json` 独立保存 PREFLIGHT、INPUT_IDENTITY、PRIOR_STATE、ACTION、RESULT、VERIFIER、MUTATION_STATUS，全部阶段成功后 exclusive 写 `<release>.maintenance-production-result-<input_identity>.json`。历史 `.maintenance-production-receipt.json` 不改写或升级为 current proof。
 
-长时间运行的 operator progress 固定包含 phase、locale、ordered index/total、stage、START/PASS/FAILED 与 elapsed；每完成一个 locale 还会输出该 phase 的 completed/remaining。子命令的正常 stdout/stderr 实时透传；顶层 `publish-batch --json` 仅保留机器 JSON stdout 供编排器解析，其 phase 日志 stderr 仍实时透传。由此可直接把 Phase B failure 归因到当前 locale 及 `machine` 或 `browser`，并结合 verifier 紧邻的 stage/check evidence 定位具体 probe；最终表格仍是 receipt 状态的正式汇总，不因 progress 输出改变 gate 或 resume 语义。
+batch 先全体 preflight，然后逐 locale 完成 mutation 与 acceptance；某 locale FAILED/UNKNOWN 后，剩余是 BLOCKED，总结果非 PASS。retry 只处理未完成阶段，成功的 deploy/purge 不重复 apply/POST；CARRIED 仍做只读 current machine/browser verification。CDN POST 前 durable ATTEMPTED，已尝试而无 durable terminal result 时禁止 replay。failed-before-process/mutation 可安全重试，CAS predecessor 保持。
 
-该顺序让较早 purge 的 locale 在后续 locale mutation 期间自然获得间隔，也让较晚 purge 的 locale 在前序 acceptance 期间获得间隔，从而减少 hostname purge 后立即执行 exhaustive cold-MISS acceptance 的压力；它不是 CDN 预热保证，也不增加固定 sleep。等待时间本身不证明缓存已经 `HIT`，Phase B 的 bounded machine/browser verifier 仍是最终 gate；resume 只用于真实 failure recovery，不是正常发布步骤。最终表格固定为 `locale | deploy | purge | machine | browser | result`，其中 result 会区分完整历史 `SKIPPED`、Phase A 已完成但 acceptance 尚未开始、mutation failure、acceptance failure 与后续被阻断项。正常运行不读取 stdin。
+origin machine verifier 证明 exact pointer、bundle、compiled locale 与 MainPID；origin HTTP/public HTTP/direct-origin 使用同一 sealed exact route set，校验 localized Site main content、lang、canonical、sitemap、robots、asset hostname/CSP、public HTTPS/hostname/cache eligibility、family missing routes/socket true 404。没有 current local coverage 的 canonical 永不进入 sitemap。curl 继续 bounded transient retry，确定性 semantic failure 不重试为 PASS。
 
-`scripts/verify-production.sh` 从 release 目录的 `release.json` 读取 locale，并以与部署脚本一致的 fail-closed profile 选择 releases/current/lock、service、loopback origin、production hostname 和 CDN header；支持集合由 `production/identity.json` 动态决定。调用者不得另外传 hostname、port、service 或 remote release name：
+Production browser 直接消费 bundle 中 carried Preview plan 与 shared checks，保留 Tour Run/Format/Reset、语言列表、SPA、socket、广告 policy；同时验证 Homepage interaction、Learn/Docs/translation、canonical、shared asset hostname、console/network。它不维护独立 Site route arrays。本工程 remediation 不重新审计 Preview verifier，也不执行正式 browser acceptance。
 
-```sh
-scripts/verify-production.sh \
-  /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha>
-```
+## Current shared assets / assets-go-dev
 
-脚本只执行只读、机器可确定的验收：本地 release identity；远端 `current` 精确指向目标 release、service active、deployment lock 不存在；7 条 source 与 public 关键路由严格 HTTP 200；首页和 welcome 页精确 `html lang` 与 canonical；公网 sitemap 恰好包含 105 个 HTTPS、正确 production hostname、无重复且逐 URL HTTP 200 的 URL；普通及 WebSocket Upgrade `/socket` 均为 404。公网 GET/HEAD 验收对明确短暂的 curl transport exit `6`、`7`、`16`、`28`、`35`、`97`，以及 Cloudflare HTTP `522`/`525`，最多尝试 5 次，单次仍为 15 秒上限，并使用有限 1s/2s/3s/4s backoff；每次最终仍必须同时满足 curl transfer exit `0` 与正确 HTTP/cache semantics，其他 transport failure 与所有确定的非预期 HTTP status 均立即 fail closed。hostname purge 后，对首页和 welcome 页各请求 3 次并记录由 profile 指定的正式 cache header。每次都必须为 HTTP 200 且 header 存在；`MISS`、`HIT`、`EXPIRED`、`REVALIDATED`、`UPDATING`、`STALE` 均为允许的 observation，顺序不受限制，3 次全为 `MISS` 仍通过并注明 cache 尚未 warm。`BYPASS`、`DYNAMIC`、header 缺失或其他未允许状态表示请求没有进入预期 cache eligibility 路径，必须 fail closed。任一检查失败均输出 stage、URL/check、expected、actual 并以非零状态结束；全部通过时输出 `PRODUCTION MACHINE ACCEPTANCE: PASS`。
+全部 production locales，包括 zh-CN，使用同一 `internal/assets.Paths(root)` exact global static inventory与 `shared-cloudflare` delivery policy。静态 namespace覆盖当前 Homepage/Learn/Docs/translation/Tour 的 CSS、JS、font、image；HTML、locale payload、Tour partial/script.js、lesson/Playground/toy endpoint保持 locale origin。冻结 language renderer之后的共享 delivery adapter采用同一 policy，历史 Surface inputs不改写。
 
-每个明显耗时的 public verifier stage 在开始与完成时输出稳定 progress。transient 中间 attempt 只输出一条 `attempt N/M`、失败类别和下一次 backoff，不重复倾倒相同 curl stderr；后续成功明确输出 `recovered ... PASS`。bounded retry 最终耗尽时仍只打印一次最后一次真实 curl stderr，并保留 curl exit、HTTP status、attempt count、stage/check 与非零退出。该日志去噪不改变 retry 分类、次数、timeout、backoff 或任何 acceptance 条件。
-
-`verify-production.sh` 自身仍不调用 EdgeOne 或 Cloudflare API、不搜索 token、不执行 purge、不修改 DNS/Cache Rule；它只观察 automatic purge 后的实际 cache status，不要求第一次为 `MISS`、后续为 `HIT`，也不要求固定次数内出现 `HIT`。
-
-编排器在 curl machine acceptance 后调用 `scripts/verify-production-browser.py <production-public-url> <locale>` 完成 rendered/interaction 自动验收；首次 production 已由 `first-production.sh` 自动调用。桌面/移动端、语言列表、Run / Format / Reset、runtime message、Playground endpoint、轻量广告 request opportunity、SPA 和长代码 overflow 均由 Chrome 检查。initial navigation 对未达到可检查 DOM 的状态最多执行 3 次，每次 `Page.navigate` 最多 30 秒并另有 10 秒 render-readiness；进入可检查 DOM 后，route path、canonical、title/description、`data-tour-rendered-route`、语言选择器、editor/partial/shared-assets 依赖、Format/Run 结果和 SPA 下一页使用最多 25 秒的 condition-based convergence，不靠固定 sleep 或重复 navigation 使语义偶然正确。只有当前页面的 language/shared-assets origin 出现 `522`/`525`、明确 Chrome transport error，或 required Document/Script/Stylesheet/XHR/Fetch 仍无 response 时，语义检查失败才可在最多 3 个 page attempt 内重新 navigation；第三方广告、字体和统计请求不进入该分类。中间 page transport attempt 只输出一条含 URL、attempt、紧凑 transport reason 与 backoff 的 retry 行，恢复后明确输出 PASS；该可观察性不扩大 retry candidate。Format/Run mutation 不自动重发。`html lang`、origin 等 shell identity 错误立即失败，并从当前已有 CDP Network events 附带主 Document 的 requested/final URL、status、loader/request identity 与 `cf-cache-status`、`age`、`cf-ray`、`content-type`、`cache-control` allowlist，以及同一次既有 DOM snapshot 的 lang/canonical/title/description/heading 有限摘要；不会调用 `Network.getResponseBody`、输出完整 HTML、Cookie/Authorization/Set-Cookie，或为诊断增加 CDP/network request 与 retry。canonical、rendered route、title/description、DOM、Playground、ads policy 等在收敛期限后仍不正确也 fail closed，并保留最后的 semantic/network evidence。Production 不再有 visual blocking stage。
-
-hostname purge 后的正常 cold MISS 和 Cloudflare→中国大陆 origin 的短暂 transport 波动，应由上述 stage-local bounded retry/convergence 在同一次正式运行中吸收；这些机制不放宽最终 identity、SEO、content、cache、browser、Playground 或 ads gate。bounded budget 耗尽仍正式失败，届时 maintenance receipt/state 的 resume 才是恢复机制；手工 `--resume-maintenance` 不是正常 cold-cache 发布流程的固定步骤，也不得用来绕过确定性 semantic failure。
-
-一批 Production 全部完成后，维护者有空时可做非阻塞 post-deploy spot check：各抽样一个中文站、非中文带广告站和非中文不带广告站。该抽样不属于 Production gate，不阻止 maintenance PASS 或 first-production finalize/live，不写 lifecycle receipt、不读取 stdin，也不要求逐 locale 检查；发现问题按正常修复 → publish → maintenance deploy 处理。
-
-## 非中文共享静态资源第一版
-
-所有非中文社区语言的 production 页面使用：
-
-```text
-https://assets-go-dev.shuijingwanwq.com/
-```
-
-zh-CN development 和 production 的既有站点静态资源继续使用 language origin；所有 locale 的 development/preview 也保留完整本地副本。课程页广告自有 CSS/JS 也通过模板 `asset` helper 选择：zh-CN 使用当前 release 的同源路径，非中文 production locale 可使用下列 shared-assets 路径。当前共享清单为：
-
-```text
-tour/static/css/app.css
-tour/static/go-dev/course-ad.css
-tour/static/go-dev/course-ad.js
-tour/static/lib/codemirror/lib/codemirror.css
-tour/static/img/gopher.png
-images/site-logo.png
-images/site-logo-32.png
-images/go-logo-white.svg
-images/icons/brightness_6_gm_grey_24dp.svg
-images/icons/brightness_2_gm_grey_24dp.svg
-images/icons/light_mode_gm_grey_24dp.svg
-images/support/alipay.png
-images/support/wechat.png
-tour/static/js/support.js
-```
-
-使用以下命令把清单导出为可直接作为普通服务器静态目录的 origin tree：
-
-```sh
-go run -mod=readonly ./cmd/tour-i18n assets export \
-  --output /tmp/go-tour-shared-assets
-
-go run -mod=readonly ./cmd/tour-i18n assets validate \
-  --input /tmp/go-tour-shared-assets
-```
-
-目标目录必须不存在。命令通过同级 staging 目录构建，逐字节复制固定 allowlist，生成 `SHA256SUMS`，验证文件集合与校验和后再原子重命名为目标目录。`SHA256SUMS` 只用于部署前后完整性验证，不参与 URL、cache key 或版本选择。不要把完整 `_content` 同步到 assets origin。
-
-共享资产固定使用原逻辑路径，不使用 assets-release-id、content-hash URL、query version、独立 versioned assets release，也不升级 language `release.json`。`/tour/script.js` 明确不拆分、不共享，继续由 language origin 动态拼接并提供。Angular partial、`tree.png`、lesson/footer、HTML、locale 内容、metadata、analytics 和 Playground endpoint 均继续由 language origin 提供；课程页广告自有 CSS/JS 同样由 `asset` helper 按 locale 选择，zh-CN 不依赖 assets origin。未来真实广告所需的 Google 官方脚本仍须直接从 Google 加载，不得代理到 assets origin。Google Fonts 继续使用现有外部 Inconsolata CSS。所有 language bundle 仍保留完整本地静态资源副本，供 projection、preview、rollback 和 CDN 故障排查使用。
-
-`assets-go-dev.shuijingwanwq.com` 已正式部署，Cloudflare 已代理；源站为 `121.40.248.29`，origin root 为 `/data/wwwroot/assets-go-dev.shuijingwanwq.com`，Nginx vhost 为 `/usr/local/nginx/conf/vhost/assets-go-dev.shuijingwanwq.com.conf`。TLS 使用 Let's Encrypt / acme.sh / `dns_cf`，证书和私钥分别位于 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.crt` 与 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.key`；HTTP 80 永久跳转 HTTPS。
-
-Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前正式 allowlist 是完整 14 文件，不只 `course-ad.css` 与 `course-ad.js`；后两者已包含课程页 AdSense integration。
-
-文档中“11/11 已正式部署”记录的是一次历史 production acceptance，不是当前仓库状态的永久保证。判断当前 production 是否最新，必须以当前仓库执行正式 `assets export` / `assets validate` 所代表的完整 allowlist 内容为准，并运行下述 `scripts/shared-assets-production.sh` 完成 origin 比较、必要的 automatic exact-URL purge 与 public verification；不得依赖历史记录、Git 历史、上次部署时间或人工判断文件是否变化。
-
-任一 allowlist 文件都属于此完整比较范围，包括但不限于 `app.css`、`support.js`、支付二维码、`course-ad.css` 与 `course-ad.js`。`DEPLOYED` 只刷新 receipt 中真实 changed paths，`NO_CHANGES` 不执行 purge，但两者都必须完成完整 14/14 公网 SHA-256 与当前 export 的对照。不引入 assets version、query version 或 content-hash URL，也不改变 shared-assets 架构。
-
-历史首次 11 文件 production acceptance 中，对实际变化的 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 已完成精确 URL purge 后的 `MISS → HIT` 验收，公网内容 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。
+`production/identity.json.shared_assets_policy` 保留原部署事实供历史 language evidence reader消费；current consumer须读取sealed `release-content.json.asset_policy/shared_assets_identity`，不得再依此历史字段跳过 zh-CN 或重复部署 freshness。正式hostname仍为 `https://assets-go-dev.shuijingwanwq.com`，固定logical URL，不建立平行 versioned origin。
 
 ### Shared-assets production 发布状态机
 
-shared-assets Production 已是无人值守状态机，不再包含 Cloudflare Dashboard HUMAN gate。确定 current-state freshness 时，必须先完成阶段 A，再把 export 交给唯一正常入口 `scripts/shared-assets-production.sh <export-dir>`；wrapper 严格复用既有 deploy、`production-cdn.py` Cloudflare authority/client 和 verifier，不复制这些实现。任一阶段不满足验收条件时立即停止，不跳过、不把后续结果用于掩盖当前失败。
-
-#### 阶段 A：本地生成
-
-目标目录必须不存在。在仓库根目录执行：
+维护者在已授权发布阶段执行：
 
 ```sh
-go run -mod=readonly ./cmd/tour-i18n assets export \
-  --output /tmp/go-tour-shared-assets
-
-go run -mod=readonly ./cmd/tour-i18n assets validate \
-  --input /tmp/go-tour-shared-assets
+go run -mod=readonly ./cmd/tour-i18n assets export --output <new-export-dir>
+go run -mod=readonly ./cmd/tour-i18n assets validate --input <new-export-dir>
+scripts/shared-assets-production.sh <new-export-dir>
 ```
 
-核对导出恰好包含 `SHA256SUMS` 和上述 14 个 allowlist 文件，不包含完整 `_content`、symlink 或其他文件，并执行：
+single 与 production-release batch使用同一global workflow。validate要求完整 current exact inventory/bytes、安全 paths、无symlink/unsupportedentry；数量从currentinventory派生。origin先锁、完整staging、校验和CAS原始backup，再以Linux `renameat2(RENAME_EXCHANGE)`原子交换整个目录，禁止in-place rsync fallback。失败恢复整个同identity backup；unknown保留origin/staging/backup/锁，停止。静态HTTP请求可继续读取完整old或newtree，localeactivation持有consumerlease绑定准确dependency。
 
-```sh
-cd /tmp/go-tour-shared-assets
-find . -type f -printf '%P\n' | sort
-test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 14
-sha256sum -c --strict SHA256SUMS
-```
+origin mutation前exclusive持久化 `.shared-assets-attempt.json`，无durable result时拒绝retry。成功的`.verification-receipt.json`保持immutable；purge/verification的mutable state为`.shared-assets-execution.json`。NO_CHANGES不purge，DEPLOYED只purge receipt的exact changedURLs。changed URLs 按 API 上限分块；每块独立绑定manifest/URL identity与durable attempt/result，retry carry已成功块，任何partial/unknown不能整体PASS。ATTEMPTED/unknown POST不重试；purge PASS后只重试verification。PUBLIC验证完整currentexport SHA、font CORS、非HTML MIME、boundary true404与changedURL cache semantics。CSS/JS/image/font logical paths均保持一致；CSP必须允许共同assetorigin。
 
-只有文件集合正确且 14/14 校验通过，才能运行正式状态机：
+每次locale first/repeat/batch部署都重新验证currentexport、exact origin manifest与完整publicbytes。历史assetsPASS只作evidence，不是未来currentnessoracle；stale/shareddependency不匹配时localeProduction failclosed。此工程轮不调用上述productionworkflow，不修改CDN/DNS/origin/service。
 
-```sh
-scripts/shared-assets-production.sh /tmp/go-tour-shared-assets
-```
+## Shared-assets 历史 evidence（只读保留）
 
-正常流程不读取 stdin。首次 invocation 先完成 Cloudflare credential/read-only zone authority preflight，再运行既有 deploy；已有 receipt 则从其持久化状态安全恢复。完整 PASS 时输出 deploy、purge、verify 与 receipt summary。
+下列历史观测与原执行记录原样保留，不属于 current command/policy；其中旧数量、非中文限制与旧操作建议不得用于本轮 Site release。当前 contract 以本页 Current shared assets 一节为准。
 
-#### 阶段 B：production origin 更新
-
-production 目标是完整的 shared-assets export tree：
-
-```text
-/data/wwwroot/assets-go-dev.shuijingwanwq.com
-```
-
-底层部署接口为：
-
-```sh
-scripts/deploy-shared-assets.sh \
-  /tmp/go-tour-shared-assets
-```
-
-脚本不运行 assets export；它只接受阶段 A 已生成的目录。脚本先调用仓库的 `assets validate` 复用唯一 Go allowlist，要求输入逐字节等于当前仓库正式资源，并验证顶层真实目录、无 symlink/unsupported entry、`SHA256SUMS` 的安全路径、文件集合与 14/14 SHA-256。用户自行制作一份 checksum 文件不能绕过正式 allowlist 与仓库 source 校验。
-
-固定 production profile 为 SSH alias `aliyun`、origin `/data/wwwroot/assets-go-dev.shuijingwanwq.com`、lock `/data/wwwroot/.assets-go-dev.deploy.lock`。脚本使用唯一 token 在 `/data/wwwroot/` 建立非公开 `.assets-go-dev.staging-*`，上传后在远端重新校验文件集合、SHA-256 和权限；它从当前 origin 读取并要求统一的 owner/group、目录 mode 与普通文件 mode，不修改 `/data/wwwroot/` 中其他站点的权限。
-
-如果 staging 与 origin 逐文件相同，脚本输出 `NO CHANGES`，清理 staging/lock，不创建 backup，也不产生 purge URL；这证明 origin 已与当前 export 一致，但不替代阶段 E 的完整 14/14 公网 SHA-256 对照。如果有变化，脚本在第一次修改 origin 前创建并验证完整非公开备份 `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.<token>`，随后才在服务器端把完整 staging tree 以受限 `rsync --delete` 同步进固定 origin。delete 只作用于该精确 origin 内，确保新增、修改、删除后 production 文件集合与正式 export 完全一致；历史 backup 不自动删除。
-
-preflight、lock、upload、staging validation 或 backup 阶段失败时，origin 不变，脚本只在能确认安全时清理本次 staging/lock。production mutation 开始后若同步或严格验证失败，脚本使用刚创建的完整 backup 恢复并重新验证；回滚明确成功时报告部署失败但旧内容已恢复。如果回滚失败、SSH 中断或状态无法确认，脚本保留 lock、staging、backup 与现场，输出只读人工检查命令，禁止直接自动重试。INT、TERM、HUP 在 mutation 前按安全边界清理，mutation 后保留 evidence。
-
-脚本成功后生成与当前正式 export 的绝对路径和 `SHA256SUMS` identity 绑定的 v1 machine-readable receipt，并打印 `verification receipt: <path>` 与唯一后续命令 `scripts/shared-assets-production.sh <export-dir>`。receipt 包含 deployment result（`NO_CHANGES` 或 `DEPLOYED`）、实际 changed logical paths、固定 production base URL 和固定 boundary 路径，不包含 secret；changed paths 按稳定顺序覆盖 added、modified、deleted，`SHA256SUMS` 如发生变化也属于 changed path。正常 wrapper 随即把 v1 机械升级为 v2，增加 `purge_result` 与 `verification_result`；历史 v1 仍可由 verifier 读取，已有 v1 经 wrapper 恢复时也使用相同机械迁移。
-
-`DEPLOYED` 且 purge 为 `PENDING` 时，CDN coordinator 先原子记录 `ATTEMPTED`，再从正式 `shared_assets_public_origin` 与经过安全验证的 receipt changed paths 构造完整 HTTPS URL，并通过正式 zone name/secret authority 发出一个 Cloudflare `POST /zones/{zone_id}/purge_cache`。payload 只能是 `{"files":[...]}`；禁止 `purge_everything`、`hosts`、`prefixes`、`tags`、任意 hostname、跨 origin、query string 与 path traversal。只有 Cloudflare `success=true` 且正式 response 的 `result.id` 非空才写 `PASS`。明确 API failure 会把状态恢复为 `PENDING`，因此可沿用原 changed paths 重试；transport timeout、响应不完整、SSH 返回不确定或成功后 receipt 落盘失败会保留 `ATTEMPTED` 并 fail closed，后续 invocation 拒绝重复 mutation，必须先依据外部 evidence 处理不确定状态。Cloudflare 正式 contract 参见 [Purge Cached Content API](https://developers.cloudflare.com/api/resources/cache/methods/purge/)。
-
-`NO_CHANGES` 机械记录 `purge_result=SKIPPED`，完全不调用 Cloudflare purge，但仍进入 public verifier。`purge_result=PASS` 且 verification 失败时保留 purge PASS；重跑只重新 verification，不重复 POST。deployment 自身不确定时继续保留现有 lock/staging/backup 与人工只读证据规则，不由 wrapper 降级。
-
-receipt verification 的全部 shared-assets 公网请求使用正式 `production/identity.json` 中 `shared.zgocloud_ssh_alias` 作为 network runner。验证脚本为单次 invocation 建立一个 SSH ControlMaster 与 SOCKS tunnel，所有 `curl` 通过 `--socks5-hostname` 复用该 tunnel，使 DNS 与 TCP 均从 zgocloud 网络出口发起；runner 无法建立即 fail closed，不回退到维护者本机网络，正常、失败和 signal 退出均清理该连接。
-
-Cloudflare 短时 HTTP `522` / `525` 及已有实证的 curl exit `28` 仅在单个逻辑请求内最多尝试三次，每次使用 5 秒 connect timeout 与 15 秒总时限、1s/2s backoff；其他 curl exit、HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。每个 public request 的最终失败 evidence 同时打印完整 URL、curl exit、HTTP status 与实际 attempt count；因此 HTTP `404`、其他确定性 HTTP failure、transport failure 和 transient 重试耗尽可直接区分。成功日志汇总为 `14/14` SHA-256 与 `3/3` boundary，SHA mismatch 还打印 logical path 与 expected/actual digest，且不会重试 logical request。verification retry 不会倒退或重复已经 PASS 的 exact-URL purge。该网络瞬态容忍不降低完整 14/14 freshness gate。
-
-`deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以 receipt 的实际 changed paths 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
-
-origin 更新成功后，脚本已经执行文件集合、SHA-256、与 staging 一致性、无 symlink/unsupported entry 和权限验证。需要人工复核时可执行以下只读命令：
-
-```sh
-ssh aliyun '
-  set -eu
-  cd /data/wwwroot/assets-go-dev.shuijingwanwq.com
-  find . -type f -printf "%P\n" | sort
-  test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 14
-  sha256sum -c --strict SHA256SUMS
-  find . -printf "%u:%g %m %P\n" | sort
-'
-```
-
-文件集合必须只有 `SHA256SUMS` 与 14 个 allowlist 文件，SHA-256 必须为 14/14，权限必须符合脚本从部署前 origin 读取并保持的模型，并且不得存在额外可公开文件。任一条件不满足都停止，不进入缓存刷新。
-
-#### 阶段 C：automatic exact-URL purge
-
-部署脚本比较更新前 origin 与已验证 staging，只在 receipt 和日志中列出内容实际新增、修改或删除的 logical path；wrapper 只从这些 path 机械构造固定 URL，不默认刷新全部 14 个 URL，也不使用 Purge Everything。此前首次课程广告资源部署的 changed paths 包括：
+此前首次课程广告资源部署的 changed paths 包括：
 
 ```text
 tour/static/go-dev/course-ad.css
@@ -612,25 +403,6 @@ tour/static/go-dev/course-ad.js
 
 如果脚本输出其他 changed path，wrapper 会把对应 URL 一并放入同一个正式 API request；删除路径的旧 URL 也必须刷新。`production-cdn.py purge-shared-assets --receipt <receipt>` 是 wrapper 使用的底层接口，只接受 v2 `PENDING` receipt，不接受 URL 或 hostname 参数。Cloudflare Dashboard 不再是本状态机的一部分。
 
-#### 阶段 D：公网缓存验收
-
-由 receipt 指定的 `scripts/verify-shared-assets-production.sh <receipt>` 自动对阶段 C 的每个实际 changed URL 连续请求两次、要求 HTTP 200，并按当前基线验证 `CF-Cache-Status: MISS → HIT`。Cloudflare 实际状态不符合基线时脚本 fail closed；不要手工复制 URL 或猜测、伪造 MISS/HIT 结论。`NO_CHANGES` 没有 changed URL，脚本明确输出 `SKIP CACHE PURGE VERIFICATION: NO CHANGES`，不要求 MISS → HIT。
-
-#### 阶段 E：完整性验收
-
-同一验证脚本自动请求正式 14 个 allowlist URL，要求 HTTP 成功，并逐一将公网内容 SHA-256 与 receipt 绑定的当前 export `SHA256SUMS` 对照；成功只输出汇总 `14/14`，任一失败仍输出具体 path。必须达到 14/14 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。receipt 与当前 export identity 不符、export 不再通过正式 `assets validate`，或任一公网 SHA-256 不符时，脚本 fail closed，必须重新走正式 shared-assets 流程。receipt 可以保留作为本次 execution evidence，但不能作为未来 current-state freshness gate 的替代。
-
-#### 阶段 F：边界验收
-
-同一验证脚本还自动确认以下固定非 allowlist 路径全部返回 HTTP 404：
-
-```text
-/tour/script.js
-/tour/static/img/tree.png
-/tour/static/partials/editor.html
-```
-
-任一路径意外返回共享内容，shared-assets 发布验收失败。固定 URL、Cloudflare Edge Cache TTL 与 Browser Cache TTL 策略保持不变；不引入 hash filename、version directory、query version、loader、manifest 或 assets release ID。
 
 #### 已知网络现象（2026-09-02）
 
@@ -647,7 +419,8 @@ Google 官方 `adsbygoogle.js` 继续直接从 Google 域名加载，不下载�
 
 旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。不要在 zh-CN 的现有 EdgeOne 发布流程中加入 assets 域名依赖。
 
-## ja-JP production 验收状态
+
+## ja-JP production 验收状态（历史 Site v1 evidence）
 
 ja-JP 当前 release `/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd` 已完成源站和 Cloudflare Free 公网验收。sitemap 的 105 个 URL 已全部验证，结果为 105/105、host mismatch=0、HTTP failure=0；`robots.txt` 已确认指向 <https://ja-go-dev.shuijingwanwq.com/sitemap.xml>。
 

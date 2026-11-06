@@ -1,0 +1,90 @@
+---
+title: 安全
+layout: article
+---
+
+本页为 Go 开发者提供相关资源，帮助提升
+项目安全性。
+
+（另请参阅：[Go 开发者安全最佳实践](/security/best-practices)。）
+
+## 发现并修复已知漏洞
+
+Go 的漏洞检测旨在为开发者提供低噪声、可靠的工具，帮助他们
+了解可能影响其项目的已知漏洞。
+如需总体了解，可以先阅读[这份摘要以及关于 Go 漏洞管理架构的 FAQ 页面](/security/vuln)。
+如果希望直接上手实践，请了解下面的工具。
+
+
+### 使用 govulncheck 扫描代码中的漏洞
+
+开发者可以使用 govulncheck 工具判断是否有任何已知漏洞会影响自己的代码，并根据实际调用了哪些存在漏洞的
+函数和方法来确定后续处理的优先级。
+
+
+- [查看 govulncheck 文档](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
+- [教程：开始使用 govulncheck](/doc/tutorial/govulncheck)
+
+### 在编辑器中检测漏洞
+
+VS Code Go 扩展会检查第三方依赖项，并显示与项目相关的漏洞。
+
+- [用户文档](/security/vuln/editor)
+- [下载 VS Code Go](https://marketplace.visualstudio.com/items?itemName=golang.go)
+- [教程：开始使用 VS Code Go](/doc/tutorial/govulncheck-ide)
+
+### 查找可用于构建项目的 Go 模块
+
+[Pkg.go.dev](https://pkg.go.dev/) 是一个用于发现、评估 Go 包和模块并进一步
+了解它们的网站。在 
+pkg.go.dev 上发现和评估包时，如果该版本存在漏洞，
+[页面顶部会显示一个横幅](https://pkg.go.dev/golang.org/x/text@v0.3.7/language)。
+此外，你还可以在版本历史页面查看
+[影响各个包版本的漏洞](https://pkg.go.dev/golang.org/x/text@v0.3.7/language?tab=versions)。
+
+
+### 浏览漏洞数据库
+
+Go 漏洞数据库直接收集来自 Go 包
+维护者的数据，也会收集来自 [MITRE](https://www.cve.org/) 和 [GitHub](https://github.com/) 等外部来源的数据。报告
+由 Go 安全团队整理。
+
+- [浏览 Go 漏洞数据库中的报告](https://pkg.go.dev/vuln/)
+- [查看 Go 漏洞数据库文档](/security/vuln/database)
+- [向数据库贡献公开漏洞信息](/s/vulndb-report-new)
+
+
+## 报告 Go 项目中的安全 bug
+
+### [安全政策](/security/policy)
+
+请查阅安全政策，了解如何
+[报告 Go 项目中的漏洞](/security/policy#reporting-a-security-bug)。
+该页面还详细介绍 Go 安全团队如何跟踪问题
+并向公众披露。有关以往安全修复的详细信息，请参阅
+[发布历史](/doc/devel/release)。按照
+[发布政策](/doc/devel/release#policy)，
+我们会为最新的两个 Go 主要版本发布安全修复。
+
+- [常见漏洞报告的分类决策](/doc/security/decisions)
+
+## 使用模糊测试测试意外输入
+
+Go 原生模糊测试是一种自动化测试，会持续
+操纵程序输入以发现 bug。从 Go 
+1.18 开始，Go 在标准工具链中支持模糊测试。原生 Go 模糊测试
+[受 OSS-Fuzz 支持](https://google.github.io/oss-fuzz/getting-started/new-project-guide/go-lang/#native-go-fuzzing-support)。
+
+- [了解模糊测试基础知识](/security/fuzz)
+- [教程：开始使用模糊测试](/doc/tutorial/fuzz)
+
+## 使用 Go 的密码学库保护服务
+
+Go 的密码学库旨在帮助开发者构建安全的应用程序。
+请参阅 [crypto 包](https://pkg.go.dev/golang.org/x/crypto)
+以及 [golang.org/x/crypto/](https://pkg.go.dev/golang.org/x/crypto) 的文档。
+
+## FIPS 140-3 合规密码学
+
+Go 的密码学库可以在符合 FIPS 140-3 要求的模式下使用，适用于
+受监管环境。有关更多信息，请参阅 [FIPS 140-3 合规性](/doc/security/fips140)文档。

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -13,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/assets"
+	"github.com/shuijingwan/go-tour-i18n/internal/releasecontract"
 )
 
 func exportAssets(root string, args []string) (err error) {
@@ -58,10 +60,16 @@ func exportAssets(root string, args []string) (err error) {
 		}
 	}()
 
-	sharedPaths := assets.SharedPaths()
+	sharedPaths, err := assets.Paths(root)
+	if err != nil {
+		return err
+	}
 	for _, logicalPath := range sharedPaths {
 		source := filepath.Join(root, "_content", filepath.FromSlash(logicalPath))
 		target := filepath.Join(staging, filepath.FromSlash(logicalPath))
+		if _, err := releasecontract.ReadRegular(root, "_content/"+logicalPath); err != nil {
+			return err
+		}
 		if err := copyAssetFile(source, target); err != nil {
 			return fmt.Errorf("export %s: %w", logicalPath, err)
 		}
@@ -73,7 +81,7 @@ func exportAssets(root string, args []string) (err error) {
 	if err := os.WriteFile(filepath.Join(staging, "SHA256SUMS"), checksums, 0644); err != nil {
 		return fmt.Errorf("write SHA256SUMS: %w", err)
 	}
-	if err := validateAssetsExport(staging); err != nil {
+	if err := validateAssetsExport(staging, sharedPaths); err != nil {
 		return err
 	}
 	if err := os.Rename(staging, output); err != nil {
@@ -88,6 +96,7 @@ func exportAssets(root string, args []string) (err error) {
 func validateAssets(root string, args []string) error {
 	fs := flag.NewFlagSet("assets validate", flag.ContinueOnError)
 	inputFlag := fs.String("input", "", "shared assets export directory")
+	jsonOut := fs.Bool("json", false, "exact current shared-assets dependency proof")
 	if err := fs.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			return nil
@@ -111,24 +120,37 @@ func validateAssets(root string, args []string) error {
 	if !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
 		return fmt.Errorf("input must be a real directory, not a symlink: %q", input)
 	}
-	if err := validateAssetsExport(input); err != nil {
+	paths, err := assets.Paths(root)
+	if err != nil {
 		return err
 	}
-	for _, logicalPath := range assets.SharedPaths() {
+	if err := validateAssetsExport(input, paths); err != nil {
+		return err
+	}
+	inventory := map[string]string{}
+	for _, logicalPath := range paths {
 		exported, err := os.ReadFile(filepath.Join(input, filepath.FromSlash(logicalPath)))
 		if err != nil {
 			return err
 		}
-		source, err := os.ReadFile(filepath.Join(root, "_content", filepath.FromSlash(logicalPath)))
+		source, err := releasecontract.ReadRegular(root, "_content/"+logicalPath)
 		if err != nil {
 			return err
 		}
 		if !bytes.Equal(exported, source) {
 			return fmt.Errorf("exported asset differs from repository source: %s", logicalPath)
 		}
+		inventory[logicalPath] = releasecontract.Digest(exported)
+	}
+	if *jsonOut {
+		return json.NewEncoder(os.Stdout).Encode(struct {
+			Result               string            `json:"result"`
+			SharedAssetsIdentity string            `json:"shared_assets_identity"`
+			SharedAssets         map[string]string `json:"shared_assets"`
+		}{"PASS", releasecontract.Identity(inventory), inventory})
 	}
 	fmt.Printf("shared assets valid: %s\n", input)
-	fmt.Printf("files=%d bytes=%d\n", len(assets.SharedPaths()), assetPayloadSize(input))
+	fmt.Printf("files=%d bytes=%d\n", len(paths), assetPayloadSize(input))
 	return nil
 }
 
@@ -160,9 +182,8 @@ func copyAssetFile(source, target string) error {
 	return closeErr
 }
 
-func validateAssetsExport(root string) error {
+func validateAssetsExport(root string, inventories ...[]string) error {
 	want := assets.SharedPaths()
-	sort.Strings(want)
 	var got []string
 	if err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
 		if err != nil {
@@ -184,6 +205,28 @@ func validateAssetsExport(root string) error {
 		return err
 	}
 	sort.Strings(got)
+	if len(inventories) > 0 {
+		want = append([]string{}, inventories[0]...)
+	} else {
+		set := map[string]bool{}
+		for _, p := range want {
+			set[p] = true
+		}
+		for _, p := range got {
+			if p == "SHA256SUMS" {
+				continue
+			}
+			if !assets.StaticPath(p) {
+				return fmt.Errorf("non-static export path %s", p)
+			}
+			set[p] = true
+		}
+		want = nil
+		for p := range set {
+			want = append(want, p)
+		}
+	}
+	sort.Strings(want)
 	wantWithChecksums := append(want, "SHA256SUMS")
 	sort.Strings(wantWithChecksums)
 	if strings.Join(got, "\n") != strings.Join(wantWithChecksums, "\n") {
@@ -219,10 +262,13 @@ func validateAssetsExport(root string) error {
 
 func assetPayloadSize(root string) int64 {
 	var size int64
-	for _, logicalPath := range assets.SharedPaths() {
-		if info, err := os.Stat(filepath.Join(root, filepath.FromSlash(logicalPath))); err == nil {
-			size += info.Size()
+	_ = filepath.WalkDir(root, func(p string, d os.DirEntry, e error) error {
+		if e == nil && !d.IsDir() && d.Name() != "SHA256SUMS" {
+			if i, e := d.Info(); e == nil {
+				size += i.Size()
+			}
 		}
-	}
+		return e
+	})
 	return size
 }

@@ -1,0 +1,111 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "learn-docs-v1-qc-005",
+  "snapshot_manifest_sha256": "a15fed5680e36b0194ecde139453d4ce9d534a15637b62ab1a3c3a4e3acfae0e",
+  "previous_snapshot_id": "learn-docs-v1-qc-004",
+  "rubric": "translation-quality/v1",
+  "result_count": 17,
+  "results": [
+    {
+      "index": 3,
+      "unit_id": "d6a0464cbe1d4843c82810dfac96d42c621065f81c56c1f63fb8af589abcc748",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "dffdb70f0db3cd3fc7a18588bf472129cc62957ec7fbf87482f9ee8ad1f2f625",
+      "rating": "B",
+      "finding": "上一轮关键问题仍未充分修复。current candidate 在“调用外部包中的代码”段落仍存在“这些包会发布在模块中 --例如 rsc.io/quote--，供其他人使用。”该句的英文双连字符与中文句法、模块示例直接拼接，语序及标点仍不自然。Exact revision requirement：只精确处理上述模块示例句，使模块和包的关系及示例范围自然、明确。保留 rsc.io/quote identity、HTML 结构、链接目标及技术含义。不必重新生成整页。"
+    },
+    {
+      "index": 18,
+      "unit_id": "da414f5ecd312a539f1ee2f38c60986db5fafccaf41699b454802234b2b5499f",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "e7629170860f831e59d329f5d51042b6ab6399eea782c6d142bd8dcd79ae443b",
+      "rating": "B",
+      "finding": "上一轮 C 级 Page structure defect 已修复，但仍有多处明显的中文标点与正文断裂：句末标点与正文分离、异常空行，以及 sql.DB、sql.Conn 与中文正文的局部边界问题。Exact revision requirement：仅修复句末标点与正文脱离、异常空行和局部技术标识符边界问题。保留四个连接池参数标题及其锚点，保持 SetMaxOpenConns、SetMaxIdleConns、SetConnMaxIdleTime、SetConnMaxLifetime 和专用连接 API 的原有技术含义。"
+    },
+    {
+      "index": 29,
+      "unit_id": "6ffc24b4617c1441364ad2fa27e3f9528ab0e50f43c7388f588df91e84bb79ff",
+      "rating": "A"
+    },
+    {
+      "index": 31,
+      "unit_id": "b490dbaa9904c807b80d7df512293e4cfc00599d940f6a3dba415295ee15e820",
+      "rating": "B",
+      "finding": "“例如（e.g）”仍保留不必要英文缩写，部分中文句子机械断行且链接引导处空白不自然。Exact revision requirement：精确修复“例如（e.g）”及正文链接前后的不自然表达，保留目录树、模块路径、package 声明、代码示例和 internal 导入规则。"
+    },
+    {
+      "index": 33,
+      "unit_id": "2a2116ee48edd06f9ddac08c7b54b05422d8a34dbae7387166ea1f9de4686bf0",
+      "rating": "B",
+      "finding": "pkg.go.dev 段落仍有破碎断行与孤立标点，GOPRIVATE 说明存在冗余。Exact revision requirement：修复句末标点与异常断行，消除 GOPRIVATE 冗余表达，同时保持 GOPROXY、GONOPROXY 及私有模块前缀匹配规则准确。"
+    },
+    {
+      "index": 35,
+      "unit_id": "e99db54999fdb6c5822fd6f05b7e666611c25a3eb60572a916af049cc9cc9b68",
+      "rating": "B",
+      "finding": "仍有“高级模块开发工作流--也就是包含发布环节的工作流--”等不自然双连字符，末段 go get 链接标签被跨行拆开。Exact revision requirement：只修复工作流引用句中文语序、破折号和末段链接周边表达，保留完整发布步骤及相关命令原始语义。"
+    },
+    {
+      "index": 36,
+      "unit_id": "8a428c4d4268d85836f07a17aaccc3f02f3de97c23f92e6c49984432465c3e9a",
+      "rating": "B",
+      "finding": "仍含 v.0.0.0、主版本号--，以及公共 API--包括函数和方法签名--等版本文字和标点问题。Exact revision requirement：核对版本示例与 source，修复异常版本文字及双连字符/中文标点组合；保持兼容性承诺、路径后缀和预发布规则不变。"
+    },
+    {
+      "index": 37,
+      "unit_id": "00f8aa9a1d858fbb54fd317c1f894a9e205338649d13f647dc62a6308b3f3051",
+      "rating": "B",
+      "finding": "伪版本号结构基本准确，但版本术语如“major.minor.patch 组合”仍不自然，并存在异常断行。Exact revision requirement：修复局部中文语序、版本术语说明和异常断行，保留伪版本结构、HTML 表格、锚点、版本示例及受保护内容。"
+    },
+    {
+      "index": 39,
+      "unit_id": "e9dc82ff7a64e06c1828e963d99e24a346d1776ffb3ca419328ab03c6bfc156a",
+      "rating": "C",
+      "finding": "“构建恶意代码”部分仍存在阻塞性的列表/分类结构问题；“属于漏洞”与“不作为安全问题处理”两组示例边界不完整，后续列表项归属不清，末尾还有孤立列表标记。Exact revision requirement：对照 source 恢复两组示例的明确归属、列表结构和技术判断并清理孤立列表标记；保持其他安全政策语义。"
+    },
+    {
+      "index": 40,
+      "unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+      "rating": "B",
+      "finding": "仍存在“美国政府（U.S）”“注意（NOTE）”及“它默认值为 off”等不自然表达。Exact revision requirement：精确修复局部中文表达，保留 inprocess、certified、only、CMVP 与证书状态技术含义，不更新 frozen source 的版本或认证事实。"
+    },
+    {
+      "index": 41,
+      "unit_id": "b1b2eeb71c293563be3585cd7461d100600ab2907ed45741f3b23097d7ea3bc5",
+      "rating": "B",
+      "finding": "剩余问题主要为多处“（e.g. ...）”混合表达、术语定义空格和标点，以及技术标识符周边句法。Exact revision requirement：只修订允许翻译的正文表达，规范例示用语和术语说明中文句法；不得改动 source 原有受保护 code/link binding 或测试标志语义。"
+    },
+    {
+      "index": 44,
+      "unit_id": "126f2e430e4ad62ded97b90668a9621eb8f9b1b9bd9d316643afd1211cc6a9e6",
+      "rating": "B",
+      "finding": "披露流程第5步仍存在准备修复与后续处理关系重复、不准确的问题。Exact revision requirement：对照 source 明确准备修复、回移植到受支持主版本以及合并至 head/master 的关系；保留时间窗口、PUBLIC/PRIVATE/URGENT 分类、CVE 和安全公告规则。"
+    },
+    {
+      "index": 46,
+      "unit_id": "d87ca1767f1739882e4dbd08643e0b1573c52554747f68ab15a3e57a94e84ec6",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+      "rating": "B",
+      "finding": "仍残留“举例来说（e.g）”、某个internal/、API访问等本地化/排版缺陷。Exact revision requirement：规范中文例示用语、代码/路径周边空格和标点，并检查结构化字段说明指代完整性；保留 JSON schema、API 端点及排除报告分类。"
+    },
+    {
+      "index": 49,
+      "unit_id": "aa80c16e03ba1b5a11c8f81678c8d3bdf7e4b27e6ef81663565acbfbfdd2251c",
+      "rating": "B",
+      "finding": "“注意（NOTE）”仍未自然中文化，资源链接引导句与后续链接存在不必要段落分隔，部分术语和导航文字仍有机械换行。Exact revision requirement：修复提示标签、资源链接引导句和不必要段落断裂；保持 govulncheck、CNA、OSV、漏洞报告入口和严重性政策准确。"
+    }
+  ]
+}

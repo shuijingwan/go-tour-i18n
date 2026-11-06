@@ -1,0 +1,73 @@
+{
+  "authority_source": "quality-check",
+  "replacement_context": {
+    "quality_check": {
+      "snapshot": {
+        "path": "data/quality-check-snapshots/zh-CN/docs-entry-v1-qc-001/manifest.json",
+        "sha256": "c54f5da50ebd91b5d4c36aa7bdc556611270c28c5da704e5a29a1c6d1879f3df"
+      },
+      "results": {
+        "path": "data/quality-check-snapshots/zh-CN/docs-entry-v1-qc-001/quality-check-results.json",
+        "sha256": "c7d1e57fadf6026c9d9833fdc4f728a0f58edc44cd546961dc643989169d1ad6"
+      },
+      "engineering_proof": {
+        "path": "docs/protected-representation-evidence/docs-entry-v1-doc-root-necessity-20261022.json",
+        "sha256": "d411ef02819932fc1beaf61cce8f230acff9fd3709721d4ea772f3bba17c2b7d"
+      }
+    },
+    "predecessor_reopen": {
+      "path": "",
+      "sha256": ""
+    },
+    "historical_documents": {
+      "path": "docs/protected-representation-evidence/docs-entry-v1-doc-root-historical-pages-20261022.json",
+      "sha256": "45ba3063bd0b2834ff9d20b1e2f9c3a6f4efe3ed9421a6b529631df2c8962c82"
+    }
+  },
+  "schema_version": 1,
+  "evidence_type": "quality_check_surface_reopen",
+  "locale": "zh-CN",
+  "reopen_id": "docs-entry-qc001-doc-root-representation",
+  "previous_snapshot_id": "docs-entry-v1-qc-001",
+  "previous_finalization_path": "",
+  "previous_finalization_sha256": "",
+  "surface_review_id": "",
+  "surface_review_path": "",
+  "surface_review_sha256": "",
+  "finding": "",
+  "unit_count": 1,
+  "units": [
+    {
+      "previous_rating": "B",
+      "replacement": {
+        "old_unit_id": "31fea3abbbfefa361e467a9ca5e90c93c07561d619a6e268cce60cf4002fb167",
+        "current_unit_id": "00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866",
+        "package": "docs-entry-v1",
+        "package_sha256": "63058db3ad64e6ab1b61e75e6ad8ee371dbc5454812bb4f4b5b4cd4ce4dc0ca5",
+        "source_path": "_content/doc/index.html",
+        "source_sha256": "1e1ec2ae02d56739bc7491c64cc3d1d3e269423f22566d2a822b06c35c9470e3",
+        "stable_index": 1,
+        "route": "/doc/",
+        "old_input_sha256": "0dbd10c5a2af17655105b539e4d007c711b2cf07e54992d134d2862ce57cf6b1",
+        "current_input_sha256": "bceead97c245ec5d1579042e5e50e5cbe9c6b7f06c87776302f53cecafba89a3",
+        "reconciliation_sha256": "1a0764f09806f6e86db52a74682bf27c6f267d6c3c04e7ad13d7876ced0f7495"
+      },
+      "index": 1,
+      "unit_id": "00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866",
+      "finding": "Finding category: Untranslated natural-language navigation labels\nObserved instances: section#references → h3#pkg: canonical \"Package Documentation\", current candidate \"包 Documentation\"; section#references → h3#cmd: canonical \"Command Documentation\", current candidate \"命令 Documentation\".\nRevision scope: exact two navigation labels in section#references; localize the remaining ordinary English word \"Documentation\" so both labels are complete, natural Chinese navigation labels consistent with the surrounding references section.\nSame-class completeness: complete Page scan found exactly these two instances. Effective Go, RESTful API, Gopls, Wiki, Go Talks and other technical/resource proper names are not the same defect category.\nOut of scope: href, id, HTML structure, resource paths, Go API/command identity, code, protected technical identity, information architecture, navigation ordering, unrelated titles/body text, general polishing.",
+      "snapshot": {
+        "index": 1,
+        "unit_id": "31fea3abbbfefa361e467a9ca5e90c93c07561d619a6e268cce60cf4002fb167",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-056",
+        "source_path": "_content/doc/index.html",
+        "source_sha256": "1e1ec2ae02d56739bc7491c64cc3d1d3e269423f22566d2a822b06c35c9470e3",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-056/candidates/31fea3abbbfefa361e467a9ca5e90c93c07561d619a6e268cce60cf4002fb167.article",
+        "candidate_sha256": "f637df734472c8aa62795b081fda3a3816bd68196c2a77025aa0e57083b50e44",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-056/validation/31fea3abbbfefa361e467a9ca5e90c93c07561d619a6e268cce60cf4002fb167.json",
+        "validation_sha256": "4e4b293d898729026ebbd4006d903b6c4557200b628968866cedfe36d7a8da68",
+        "attempt": 1
+      }
+    }
+  ]
+}

@@ -35,6 +35,7 @@ ORIGIN_GROUP=''
 DIRECTORY_MODE=''
 FILE_MODE=''
 LOCAL_MANIFEST_SHA=''
+LOCAL_ATTEMPT=''
 REMOTE_PREPARED=0
 MUTATION_STARTED=0
 BACKUP_STARTED=0
@@ -101,7 +102,7 @@ validate_local_tools() {
 
 is_safe_logical_path() {
     local path=$1
-    [[ $path =~ ^[A-Za-z0-9._/-]+$ && $path != /* && $path != *'..'* && $path != *'//'* && $path != *'\\'* ]]
+    [[ $path =~ ^[A-Za-z0-9._/\&-]+$ && $path != /* && $path != *'..'* && $path != *'//'* && $path != *'\\'* ]]
 }
 
 write_verification_receipt() {
@@ -153,7 +154,13 @@ PY
         return 1
     }
     chmod 0644 -- "$temporary"
-    mv -f -- "$temporary" "$receipt"
+    # Historical deployed results are immutable. A failed local write after
+    # origin mutation must leave the ATTEMPTED guard for read-only recovery.
+    python3 - "$temporary" "$receipt" <<'PY_RECEIPT_COMMIT'
+import os,sys
+os.link(sys.argv[1],sys.argv[2])
+os.unlink(sys.argv[1])
+PY_RECEIPT_COMMIT
     printf 'verification receipt: %s\n' "$receipt"
     printf 'next command: scripts/shared-assets-production.sh %s\n' "$export_dir"
 }
@@ -206,7 +213,7 @@ validate_tree() {
     [[ -d $root && ! -L $root && -f $root/SHA256SUMS && ! -L $root/SHA256SUMS ]] || return 1
     [[ -z $(find "$root" -type l -print -quit) ]] || return 1
     [[ -z $(find "$root" ! -type d ! -type f -print -quit) ]] || return 1
-    awk 'NF != 2 || length($1) != 64 || $1 !~ /^[0-9a-f]+$/ || $2 !~ /^[A-Za-z0-9._\/-]+$/ || $2 ~ /^\// || $2 ~ /(^|\/)\.\.?($|\/)/ || $2 ~ /\/\// || $2 ~ /\\/ {exit 1}' "$root/SHA256SUMS" || return 1
+    awk 'NF != 2 || length($1) != 64 || $1 !~ /^[0-9a-f]+$/ || $2 !~ /^[A-Za-z0-9._\/&-]+$/ || $2 ~ /^\// || $2 ~ /(^|\/)\.\.?($|\/)/ || $2 ~ /\/\// || $2 ~ /\\/ {exit 1}' "$root/SHA256SUMS" || return 1
     diff -u \
         <(awk '{print $2}' "$root/SHA256SUMS" | LC_ALL=C sort) \
         <(cd -- "$root" && find . -type f ! -name SHA256SUMS -printf '%P\n' | LC_ALL=C sort) >/dev/null || return 1
@@ -223,7 +230,7 @@ validate_tree() {
 [[ $(dirname -- "$lock") == "$wwwroot" && $(dirname -- "$staging") == "$wwwroot" ]] || fail 'lock or staging is outside the fixed wwwroot'
 [[ $(basename -- "$staging") == .assets-go-dev.staging-* ]] || fail 'unsafe staging name'
 [[ ! -e $staging && ! -L $staging ]] || fail "remote staging already exists: $staging"
-for command_name in awk basename chown chmod cmp cp diff dirname find mkdir readlink rm rmdir rsync sha256sum sort stat; do
+for command_name in awk basename chown chmod cmp cp diff dirname find mkdir python3 readlink rm rmdir rsync sha256sum sort stat; do
     command -v "$command_name" >/dev/null || fail "required remote command is missing: $command_name"
 done
 
@@ -278,7 +285,7 @@ validate_tree() {
     [[ -d $root && ! -L $root && -f $root/SHA256SUMS && ! -L $root/SHA256SUMS ]] || return 1
     [[ -z $(find "$root" -type l -print -quit) ]] || return 1
     [[ -z $(find "$root" ! -type d ! -type f -print -quit) ]] || return 1
-    awk 'NF != 2 || length($1) != 64 || $1 !~ /^[0-9a-f]+$/ || $2 !~ /^[A-Za-z0-9._\/-]+$/ || $2 ~ /^\// || $2 ~ /(^|\/)\.\.?($|\/)/ || $2 ~ /\/\// || $2 ~ /\\/ {exit 1}' "$root/SHA256SUMS" || return 1
+    awk 'NF != 2 || length($1) != 64 || $1 !~ /^[0-9a-f]+$/ || $2 !~ /^[A-Za-z0-9._\/&-]+$/ || $2 ~ /^\// || $2 ~ /(^|\/)\.\.?($|\/)/ || $2 ~ /\/\// || $2 ~ /\\/ {exit 1}' "$root/SHA256SUMS" || return 1
     diff -u \
         <(awk '{print $2}' "$root/SHA256SUMS" | LC_ALL=C sort) \
         <(cd -- "$root" && find . -type f ! -name SHA256SUMS -printf '%P\n' | LC_ALL=C sort) >/dev/null || return 1
@@ -311,7 +318,7 @@ staging=$3
 [[ -d $origin && ! -L $origin && $(readlink -f -- "$origin") == "$origin" ]]
 [[ -d $staging && ! -L $staging && $(readlink -f -- "$staging") == "$staging" ]]
 while IFS= read -r -d '' path; do
-    [[ -n $path && $path =~ ^[A-Za-z0-9._/-]+$ && $path != /* && $path != *'..'* && $path != *'//'* && $path != *'\'* ]]
+    [[ -n $path && $path =~ ^[A-Za-z0-9._/\&-]+$ && $path != /* && $path != *'..'* && $path != *'//'* && $path != *'\'* ]]
     if [[ ! -e $origin/$path ]]; then
         printf '%s\n' "$path"
     elif [[ ! -e $staging/$path ]]; then
@@ -413,7 +420,7 @@ validate_tree() {
     [[ -d $root && ! -L $root && -f $root/SHA256SUMS && ! -L $root/SHA256SUMS ]] || return 1
     [[ -z $(find "$root" -type l -print -quit) ]] || return 1
     [[ -z $(find "$root" ! -type d ! -type f -print -quit) ]] || return 1
-    awk 'NF != 2 || length($1) != 64 || $1 !~ /^[0-9a-f]+$/ || $2 !~ /^[A-Za-z0-9._\/-]+$/ || $2 ~ /^\// || $2 ~ /(^|\/)\.\.?($|\/)/ || $2 ~ /\/\// || $2 ~ /\\/ {exit 1}' "$root/SHA256SUMS" || return 1
+    awk 'NF != 2 || length($1) != 64 || $1 !~ /^[0-9a-f]+$/ || $2 !~ /^[A-Za-z0-9._\/&-]+$/ || $2 ~ /^\// || $2 ~ /(^|\/)\.\.?($|\/)/ || $2 ~ /\/\// || $2 ~ /\\/ {exit 1}' "$root/SHA256SUMS" || return 1
     diff -u \
         <(awk '{print $2}' "$root/SHA256SUMS" | LC_ALL=C sort) \
         <(cd -- "$root" && find . -type f ! -name SHA256SUMS -printf '%P\n' | LC_ALL=C sort) >/dev/null || return 1
@@ -431,9 +438,22 @@ normalize_and_validate() {
 rollback() {
     [[ -d $origin && ! -L $origin && $(readlink -f -- "$origin") == "$origin" ]] || return 1
     [[ -d $backup && ! -L $backup && $(readlink -f -- "$backup") == "$backup" ]] || return 1
-    rsync -rlt --delete -- "$backup/" "$origin/" || return 1
+    atomic_exchange "$staging" "$origin" || return 1
     normalize_and_validate "$origin" || return 1
     diff -qr -- "$backup" "$origin" >/dev/null || return 1
+}
+
+atomic_exchange() {
+    python3 - "$1" "$2" <<'PY_ATOMIC_EXCHANGE'
+import ctypes,os,sys
+libc=ctypes.CDLL(None,use_errno=True)
+exchange=getattr(libc,'renameat2',None)
+if exchange is None: raise SystemExit('atomic directory exchange unavailable; no in-place fallback')
+exchange.argtypes=[ctypes.c_int,ctypes.c_char_p,ctypes.c_int,ctypes.c_char_p,ctypes.c_uint]
+exchange.restype=ctypes.c_int
+if exchange(-100,os.fsencode(sys.argv[1]),-100,os.fsencode(sys.argv[2]),2):
+    raise OSError(ctypes.get_errno(),'atomic directory exchange failed')
+PY_ATOMIC_EXCHANGE
 }
 
 [[ $(dirname -- "$origin") == "$wwwroot" && $(dirname -- "$staging") == "$wwwroot" && $(dirname -- "$backup") == "$wwwroot" ]] || exit 21
@@ -443,9 +463,15 @@ rollback() {
 [[ -d $origin && ! -L $origin && $(readlink -f -- "$origin") == "$origin" ]] || exit 21
 [[ -d $staging && ! -L $staging && $(readlink -f -- "$staging") == "$staging" ]] || exit 21
 [[ -d $backup && ! -L $backup && $(readlink -f -- "$backup") == "$backup" ]] || exit 21
+validate_tree "$staging" && validate_tree "$origin" && validate_tree "$backup" || exit 10
+diff -qr -- "$origin" "$backup" >/dev/null || exit 10
 
 printf '[deploy-shared-assets:remote] production mutation starting\n'
-if rsync -rlt --delete -- "$staging/" "$origin/" && normalize_and_validate "$origin"; then
+if ! atomic_exchange "$staging" "$origin"; then
+    printf '[deploy-shared-assets:remote] RESULT=FAILED_BEFORE_MUTATION\n' >&2
+    exit 10
+fi
+if normalize_and_validate "$origin"; then
     rm -rf -- "$staging"
     rmdir -- "$lock"
     printf '[deploy-shared-assets:remote] RESULT=DEPLOYED backup=%s\n' "$backup"
@@ -482,6 +508,15 @@ main() {
     (( $# == 1 )) || { usage; return 2; }
     validate_local_tools
     export_dir=$(validate_local_export "$1")
+    LOCAL_ATTEMPT="$export_dir.shared-assets-attempt.json"
+    [[ ! -e $LOCAL_ATTEMPT && ! -L $LOCAL_ATTEMPT ]] || {
+        error 'asset origin attempt has no durable result; stop for read-only recovery, never replay'
+        return 1
+    }
+    [[ ! -e $export_dir.verification-receipt.json && ! -L $export_dir.verification-receipt.json ]] || {
+        error 'immutable deployed result already exists; use shared-assets-production.sh for currentness verification'
+        return 1
+    }
     setup_ssh_multiplex
     trap cleanup_ssh_multiplex EXIT
     LOCAL_MANIFEST_SHA=$(sha256sum -- "$export_dir/SHA256SUMS")
@@ -560,6 +595,16 @@ main() {
             ;;
     esac
 
+    python3 - "$LOCAL_ATTEMPT" "$LOCAL_MANIFEST_SHA" "$REMOTE_BACKUP" "$REMOTE_STAGING" <<'PY_ATTEMPT'
+import json,sys
+with open(sys.argv[1],'x') as target:
+    json.dump({'schema':'go-learning/shared-assets-attempt/v1','manifest_sha256':sys.argv[2],
+               'backup':sys.argv[3],'staging':sys.argv[4],'MUTATION_STATUS':'ATTEMPTED'},target,sort_keys=True)
+    target.write('\n')
+    target.flush()
+    import os
+    os.fsync(target.fileno())
+PY_ATTEMPT
     MUTATION_STARTED=1
     set +e
     update_origin
@@ -567,8 +612,17 @@ main() {
     set -e
     case $update_status in
         0) ;;
+        10)
+            MUTATION_STARTED=0
+            error 'atomic exchange failed before origin mutation'
+            if cleanup_before_mutation; then rm -f -- "$LOCAL_ATTEMPT"; fi
+            printf 'MUTATION_STATUS=NONE\n' >&2
+            return 1
+            ;;
         20)
             error 'origin deployment failed and rollback succeeded; old production content was restored'
+            rm -f -- "$LOCAL_ATTEMPT"
+            printf 'MUTATION_STATUS=KNOWN\n' >&2
             return 1
             ;;
         *)
@@ -579,6 +633,7 @@ main() {
 
     log 'SHARED ASSETS ORIGIN DEPLOYMENT COMPLETED'
     write_verification_receipt "$export_dir" DEPLOYED "${changed_paths[@]}"
+    rm -f -- "$LOCAL_ATTEMPT"
     for path in "${changed_paths[@]}"; do
         printf 'changed path: %s\n' "$path"
     done

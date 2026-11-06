@@ -84,14 +84,14 @@ class ReleaseBatch:
         self.profiles = profiles
         self.locales = selected
         self.selection_mode = "all-live" if all_live else "explicit"
-        self.needs_shared_assets = any(profile["shared_assets_policy"] == "shared-cloudflare"
-                                       for profile in profiles)
+        self.needs_shared_assets = True
         self.publish_result = None
         self.state_data = None
         self.resume_available = False
         self.publish_status = "NOT_STARTED"
         self.maintenance_status = "NOT_STARTED"
         self.maintenance_started = False
+        self.maintenance_current_result="PENDING"
         self.shared_summary = self._initial_shared_summary()
 
     @classmethod
@@ -111,7 +111,7 @@ class ReleaseBatch:
             raise ReleaseBatchError("resume-state", "production identity changed since publish")
         selected = data["selection"]["locales"]
         profiles = cls._select_profiles(identity, selected)
-        current_shared = any(profile["shared_assets_policy"] == "shared-cloudflare" for profile in profiles)
+        current_shared = True
         if current_shared != data["shared_assets"]["required"]:
             raise ReleaseBatchError("resume-state", "shared-assets requirement changed since publish")
         if data["selection"]["mode"] == "all-live":
@@ -139,6 +139,7 @@ class ReleaseBatch:
         workflow.publish_status = "PASS"
         workflow.maintenance_status = "NOT_STARTED"
         workflow.maintenance_started = False
+        workflow.maintenance_current_result="PENDING"
         workflow.shared_summary = workflow._initial_shared_summary()
         return workflow
 
@@ -289,6 +290,8 @@ class ReleaseBatch:
 
     def _release_state_item(self, item):
         release = pathlib.Path(item["release_dir"])
+        info=MAINTENANCE.CORE.CONTRACT.load(release,current=True)
+        if info["locale"]!=item["locale"]: raise ReleaseBatchError("resume-state","sealed locale mismatch")
         try:
             manifest = json.loads((release / "release.json").read_text(encoding="utf-8"))
         except (OSError, ValueError) as exc:
@@ -355,6 +358,9 @@ class ReleaseBatch:
             raise ReleaseBatchError("resume-state", "shared-assets manifest identity changed")
         for expected, item in zip(current["releases"], self.publish_result["releases"]):
             release = pathlib.Path(expected["release_dir"])
+            info=MAINTENANCE.CORE.CONTRACT.load(release,current=True)
+            if info["input_identity"]!=expected["bundle_manifest_sha256"]:
+                raise ReleaseBatchError("resume-state","sealed current input mismatch")
             if (not release.is_absolute() or not release.is_dir() or release.is_symlink() or
                     release.resolve() != release or release.parent != self.output_root or
                     item["release_dir"] != expected["release_dir"]):
@@ -377,7 +383,7 @@ class ReleaseBatch:
     def _refresh_shared_summary(self):
         if not self.needs_shared_assets:
             return
-        receipt = pathlib.Path(str(self.assets_export) + ".verification-receipt.json")
+        receipt = pathlib.Path(str(self.assets_export) + ".shared-assets-execution.json")
         if not receipt.is_file() or receipt.is_symlink():
             return
         try:
@@ -409,11 +415,14 @@ class ReleaseBatch:
         rows = []
         for item in self.publish_result["releases"]:
             release = pathlib.Path(item["release_dir"])
-            receipt_path = release.parent / (release.name + ".maintenance-production-receipt.json")
+            receipt_path = release.parent / (release.name + ".maintenance-production-state.json")
             try:
                 receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
             except (OSError, ValueError) as exc:
                 raise ReleaseBatchError("maintenance-summary", "%s: %s" % (receipt_path, exc)) from exc
+            orchestrator=MAINTENANCE.CORE.Orchestrator(release)
+            if receipt!=orchestrator.receipt or receipt.get("result")!="passed":
+                raise ReleaseBatchError("maintenance-summary","immutable exact result missing")
             stages = receipt.get("stages") if type(receipt) is dict else None
             required = ("deploy", "purge", "machine", "browser")
             if (type(receipt) is not dict or receipt.get("result") != "passed" or
@@ -422,7 +431,9 @@ class ReleaseBatch:
                 raise ReleaseBatchError("maintenance-summary", "incomplete receipt: %s" % receipt_path)
             rows.append({"locale": item["locale"], "published_at": item["published_at"], "publish": "PASS",
                          "deploy": "PASS", "purge": "PASS", "machine": "PASS", "browser": "PASS",
-                         "result": "SKIPPED" if item["release_dir"] in already_complete else "PASS"})
+                         "result": "CARRIED" if item["release_dir"] in already_complete else "RETRIED" if item["release_dir"] in getattr(self,"retried_releases",set()) else "SUCCEEDED",
+                         **{key:receipt[key] for key in ("PREFLIGHT","INPUT_IDENTITY","PRIOR_STATE","ACTION","RESULT","VERIFIER","MUTATION_STATUS")},
+                         "evidence":str(orchestrator.result_path)})
         return rows
 
     def _maintenance_preflight(self):
@@ -431,7 +442,7 @@ class ReleaseBatch:
             batch = MAINTENANCE.Batch(releases)
             batch.preflight()
         except (MAINTENANCE.BatchError, MAINTENANCE.CORE.MaintenanceProductionError,
-                MAINTENANCE.CORE.IDENTITY.IdentityError) as exc:
+                MAINTENANCE.CORE.IDENTITY.IdentityError,MAINTENANCE.CORE.CONTRACT.ContractError) as exc:
             raise ReleaseBatchError("maintenance-preflight", str(exc)) from exc
         return {str(item.release_dir) for item in batch.items if item.receipt.get("result") == "passed"}
 
@@ -440,16 +451,19 @@ class ReleaseBatch:
         try:
             batch = MAINTENANCE.Batch(releases)
         except (MAINTENANCE.BatchError, MAINTENANCE.CORE.MaintenanceProductionError,
-                MAINTENANCE.CORE.IDENTITY.IdentityError) as exc:
+                MAINTENANCE.CORE.IDENTITY.IdentityError,MAINTENANCE.CORE.CONTRACT.ContractError) as exc:
             raise ReleaseBatchError("maintenance-preflight", str(exc)) from exc
+        self.retried_releases={str(item.release_dir) for item in batch.items if item.receipt.get("result")=="failed"}
         return {str(item.release_dir) for item in batch.items if item.receipt.get("result") == "passed"}
 
     def _refresh_maintenance_status(self):
+        if getattr(self,"maintenance_current_result",None)=="FAILED":
+            self.maintenance_status="FAILED";return
         complete = 0
         seen = 0
         for item in self.publish_result["releases"]:
             release = pathlib.Path(item["release_dir"])
-            receipt_path = release.parent / (release.name + ".maintenance-production-receipt.json")
+            receipt_path = release.parent / (release.name + ".maintenance-production-state.json")
             if not receipt_path.is_file() or receipt_path.is_symlink():
                 continue
             seen += 1
@@ -463,7 +477,7 @@ class ReleaseBatch:
                         for stage in ("deploy", "purge", "machine", "browser"))):
                 complete += 1
         if complete == len(self.publish_result["releases"]):
-            self.maintenance_status = "COMPLETE"
+            self.maintenance_status = "COMPLETE" if getattr(self,"maintenance_current_result",None)=="PASS" else "RECORDED_COMPLETE"
         elif self.maintenance_started or seen:
             self.maintenance_status = "PARTIAL"
         else:
@@ -485,7 +499,10 @@ class ReleaseBatch:
         self._validate_resume_state()
         self._refresh_shared_summary()
         self._refresh_maintenance_status()
-        already_complete = self._maintenance_preflight() or set()
+        # A newly published release may depend on assets which this invocation
+        # must deploy first. Do not require already-current assets before the
+        # sole shared-assets workflow has run.
+        already_complete = self._maintenance_complete_snapshot() or set()
         if self.needs_shared_assets:
             try:
                 self._run("shared-assets", [ROOT / "scripts" / "shared-assets-production.sh", self.assets_export], 3600)
@@ -496,9 +513,12 @@ class ReleaseBatch:
         self.maintenance_started = True
         try:
             self._run("maintenance", [ROOT / "scripts" / "maintenance-production-batch.sh"] + releases, 14400)
+        except ReleaseBatchError:
+            self.maintenance_current_result="FAILED";raise
         finally:
             self._refresh_maintenance_status()
         rows = self._maintenance_rows(already_complete)
+        self.maintenance_current_result="PASS"
         self.maintenance_status = "COMPLETE"
         self.print_summary(rows)
 
@@ -516,9 +536,12 @@ class ReleaseBatch:
         self.maintenance_started = True
         try:
             self._run("maintenance", [ROOT / "scripts" / "maintenance-production-batch.sh"] + releases, 14400)
+        except ReleaseBatchError:
+            self.maintenance_current_result="FAILED";raise
         finally:
             self._refresh_maintenance_status()
         rows = self._maintenance_rows(already_complete)
+        self.maintenance_current_result="PASS"
         self.maintenance_status = "COMPLETE"
         self.print_summary(rows)
 
@@ -549,6 +572,8 @@ class ReleaseBatch:
             print("resume state: UNAVAILABLE", file=sys.stderr)
 
     def print_summary(self, rows):
+        if any(row["result"] not in ("SUCCEEDED","CARRIED","RETRIED") or row["RESULT"]!="PASS" for row in rows):
+            raise ReleaseBatchError("maintenance-summary","partial batch cannot pass")
         print("\nPRODUCTION RELEASE BATCH: PASS")
         print("repository_head: %s" % self.publish_result["repository_head"])
         print("publish: PASS")
@@ -560,9 +585,9 @@ class ReleaseBatch:
         print("locale | published_at | publish | deploy | purge | machine | browser | result")
         for row in rows:
             print("{locale} | {published_at} | {publish} | {deploy} | {purge} | {machine} | {browser} | {result}".format(**row))
-        passed = sum(row["result"] == "PASS" for row in rows)
-        skipped = sum(row["result"] == "SKIPPED" for row in rows)
-        print("PASS=%d FAILED=0 SKIPPED=%d" % (passed, skipped))
+        print(json.dumps({"locales":rows},ensure_ascii=False,sort_keys=True))
+        print("SUCCEEDED=%d CARRIED=%d RETRIED=%d FAILED=0 UNKNOWN=0" %
+              (sum(row["result"]=="SUCCEEDED" for row in rows),sum(row["result"]=="CARRIED" for row in rows),sum(row["result"]=="RETRIED" for row in rows)))
 
 
 def parse_args(argv):
@@ -597,7 +622,7 @@ def main(argv=None):
             workflow = ReleaseBatch(args.output_root or "/tmp", args.all_live, args.locale)
             workflow.execute()
         return 0
-    except (ReleaseBatchError, IDENTITY.IdentityError, OSError, ValueError, KeyError) as exc:
+    except (ReleaseBatchError, IDENTITY.IdentityError,MAINTENANCE.CORE.CONTRACT.ContractError, OSError, ValueError, KeyError) as exc:
         if workflow is not None:
             workflow.print_failure(exc)
         else:

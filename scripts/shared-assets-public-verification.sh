@@ -26,7 +26,7 @@ shared_assets_public_error() { printf '[verify-shared-assets-production] ERROR: 
 
 shared_assets_safe_logical_path() {
     local path=$1
-    [[ $path =~ ^[A-Za-z0-9._/-]+$ && $path != /* && $path != *'..'* && $path != *'//'* && $path != *'\\'* ]]
+    [[ $path =~ ^[A-Za-z0-9._/\&-]+$ && $path != /* && $path != *'..'* && $path != *'//'* && $path != *'\\'* ]]
 }
 
 shared_assets_setup_network_ssh() {
@@ -117,13 +117,28 @@ shared_assets_public_request_error() {
 }
 
 shared_assets_verify_public_assets() {
-    local manifest=$1 checksum path body headers count=0 got url
+    local manifest=$1 checksum path body headers count=0 got url expected_count
     while IFS=' ' read -r checksum path; do
         [[ $checksum =~ ^[0-9a-f]{64}$ ]] && shared_assets_safe_logical_path "$path" || { shared_assets_public_error 'invalid formal SHA256SUMS entry'; return 1; }
         body=$(mktemp) || return 1
         headers=$(mktemp) || { rm -f -- "$body"; return 1; }
         url="$SHARED_ASSETS_PUBLIC_BASE_URL/$path"
         shared_assets_public_http_request "$url" "$body" "$headers"
+        if [[ $SHARED_ASSETS_LAST_CURL_EXIT != 0 || $SHARED_ASSETS_LAST_HTTP_STATUS != 200 ]]; then
+            rm -f -- "$headers" "$body"
+            shared_assets_public_request_error "public asset request failed: path=$path" "$url"
+            return 1
+        fi
+        case $path in
+            *.woff|*.woff2|*.ttf|*.otf|*.eot)
+                if ! awk 'tolower($1)=="access-control-allow-origin:" {gsub(/\r/,"",$2);if($2=="*")ok=1} END{exit !ok}' "$headers"; then
+                    shared_assets_public_error "font CORS policy missing: $path"; rm -f -- "$headers" "$body"; return 1
+                fi
+                ;;
+        esac
+        if awk 'tolower($1)=="content-type:" && tolower($2) ~ /text\/html/ {bad=1} END{exit !bad}' "$headers"; then
+            shared_assets_public_error "static asset served as HTML: $path"; rm -f -- "$headers" "$body"; return 1
+        fi
         rm -f -- "$headers"
         if [[ $SHARED_ASSETS_LAST_CURL_EXIT != 0 || $SHARED_ASSETS_LAST_HTTP_STATUS != 200 ]]; then
             rm -f -- "$body"
@@ -134,8 +149,9 @@ shared_assets_verify_public_assets() {
         [[ $got == "$checksum" ]] || { shared_assets_public_error "public asset SHA-256 mismatch: path=$path expected=$checksum actual=$got"; return 1; }
         count=$((count + 1))
     done <"$manifest"
-    [[ $count == 14 ]] || { shared_assets_public_error "expected 14 public allowlist files, got $count"; return 1; }
-    printf 'PUBLIC SHA-256 verification: PASS (%d/14 files)\n' "$count"
+    expected_count=$(awk 'END{print NR}' "$manifest")
+    [[ $count == "$expected_count" && $count -gt 0 ]] || { shared_assets_public_error "incomplete exact public inventory: got $count want $expected_count"; return 1; }
+    printf 'PUBLIC SHA-256 verification: PASS (%d/%d files)\n' "$count" "$expected_count"
 }
 
 shared_assets_verify_boundaries() {

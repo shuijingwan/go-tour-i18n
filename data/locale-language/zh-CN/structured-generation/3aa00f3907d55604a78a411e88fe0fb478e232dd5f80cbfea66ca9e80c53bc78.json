@@ -1,0 +1,1764 @@
+{
+  "schema": "go-learning/locale-structured-assets/v1",
+  "plan": {
+    "schema": "go-learning/locale-structured-assets/v1",
+    "locale": "zh-CN",
+    "corpus_identity_sha256": "2289cd6ff3bebb3d0b863a312cebb75c24c05a3c5df505fd8c070e56c5c7b305",
+    "glossary_sha256": "5c6f5666eb17e0563221259a560605b878ee7a9faf46112bd62c0debac2b6f63",
+    "unified_glossary_review": {
+      "path": "data/unified-glossary-reviews/zh-CN/20261009-zh-CN-glossary-review-006.review.json",
+      "sha256": "2ab0f3a2368413969913d304e5bc062cf3ff21e25a6e8940e800b71bfb1440a3"
+    },
+    "assets": [
+      {
+        "id": "article-metadata",
+        "package": "tour-v1",
+        "source_paths": [
+          "_content/tour/basics.article",
+          "_content/tour/concurrency.article",
+          "_content/tour/flowcontrol.article",
+          "_content/tour/generics.article",
+          "_content/tour/methods.article",
+          "_content/tour/moretypes.article",
+          "_content/tour/welcome.article"
+        ],
+        "source_sha256": "99ddbafebd221442974a83c5d32251732af05ffcc3ccc8211f2a7b793c419982",
+        "target_path": "locales/zh-CN/article-metadata.json",
+        "state": "carry",
+        "target_sha256": "b35eec52636238836fb9d904dbf03a627a2ccd95dc4279567e13001f32b836a6",
+        "carry_evidence": [
+          {
+            "path": "data/locale-surface-reviews/zh-CN/20261009-zh-CN-tour-current-surface-002.a-gate.json",
+            "sha256": "d0d463c1c45eb2cee5d19d62157eb1bb15c7325db76b12314582a3a129808851"
+          },
+          {
+            "path": "data/locale-surface-reviews/zh-CN/20261009-zh-CN-tour-current-surface-002.md",
+            "sha256": "5580cdd544ad14b4dd2c91386e6b247be96f2bc5b8bed35011471397a7a3c9ad"
+          },
+          {
+            "path": "locales/zh-CN/content-scope.json",
+            "sha256": "5c65e39616d77c0020de9ed7f9bdffba845c5c860595b780a47f70b45dac4fb6"
+          },
+          {
+            "path": "data/unified-glossary-reviews/zh-CN/20261009-zh-CN-glossary-review-006.review.json",
+            "sha256": "2ab0f3a2368413969913d304e5bc062cf3ff21e25a6e8940e800b71bfb1440a3"
+          },
+          {
+            "path": "data/promotion-recoveries/zh-CN/569329ec1bbaf1a68adf74e2a0924a3565c52a155f8fa6b514e54b297d5ac903.json",
+            "sha256": "68eb76e55f15d290040dfde5a264a11f2324e91b7fd1fa8f3980af13fb1b212c"
+          },
+          {
+            "path": "data/quality-check-snapshots/zh-CN/qc-008/finalization.json",
+            "sha256": "4941e15e8fcfca4e9fca00ea49018cb25b7ad371af938a0044f59825ab448a8b"
+          }
+        ]
+      },
+      {
+        "id": "source:_content/learn/books.yaml",
+        "package": "learn-docs-v1",
+        "source_paths": [
+          "_content/learn/books.yaml"
+        ],
+        "source_sha256": "3ba174700fb64fcd242e65fbf85831cc1f3e7b9dd17f928e1ab8ef38a4b7de60",
+        "target_path": "locales/zh-CN/structured/_content/learn/books.yaml",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "_content/learn/books.yaml",
+          "kind": "data",
+          "route": "",
+          "source_sha256": "929aff40ecf99c211788d4edc7bd88697e290a3f7976559f39ba6403dcc8f19a",
+          "structure_sha256": "863b74ef2e654bfae66537ec9ea6683b739240d9984713f98e29198893b4e8c1",
+          "dependencies": [
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/concurrency-in-go.png",
+              "sha256": "df5c4ec6d4291f5fd8e163c509c84772ed85b162ac2b1e0f636d8a51d61ce001"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/get-programming-with-go.jpeg",
+              "sha256": "2ea7e4bd51466dc340c1c6a6263b58cacf2230b389ced92bcbc86de63db4c0bc"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/go-programming-blueprints.png",
+              "sha256": "93b6c34aa03c34ad22b0aea276f6dfe30d17e9ae1f3537eca22029d4c33a85e8"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/go-programming-language-book.png",
+              "sha256": "5f78af42041654a555b930a40f2b9805c619cc8ef21712e4413c88543df4f5e1"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/introducing-go-book.png",
+              "sha256": "6e9a1429e983b1a83ca0bfefdc91acd0c1c9ceee8631ff6ca616a0974ef1f277"
+            }
+          ],
+          "units": [
+            {
+              "id": "ac343dad415bd6bcb6780fe58b930f0e55ec860e43ae04e71c852e82227156c0",
+              "locator": "_content/learn/books.yaml#data/6f0fbc1c7d0ab44d1bfb0c4fe8ff2dc0f84c547059f286b40550563e74ab237b/title:70f2473cde4bb5a230d933a423339994369a608ad5f90edc7ca8445fcfa266f1:1",
+              "source": "The Go Programming Language",
+              "source_sha256": "70f2473cde4bb5a230d933a423339994369a608ad5f90edc7ca8445fcfa266f1",
+              "start": 11,
+              "end": 38,
+              "protected": []
+            },
+            {
+              "id": "5a99d896ff7dbafcdd9547a144bdd9e93b08519ef2e05ca69b069fd811aaec27",
+              "locator": "_content/learn/books.yaml#data/6f0fbc1c7d0ab44d1bfb0c4fe8ff2dc0f84c547059f286b40550563e74ab237b/description:4e41d823f32d9d6ff383a6cb8ed33986d047564523239fe1b9c4199ea42f9972:1",
+              "source": "Alan A. A. Donovan, Brian W. Kernighan",
+              "source_sha256": "4e41d823f32d9d6ff383a6cb8ed33986d047564523239fe1b9c4199ea42f9972",
+              "start": 56,
+              "end": 94,
+              "protected": []
+            },
+            {
+              "id": "da11a268ec2afbe4d97141c83071e4079275994f66ca8850adc449878755db05",
+              "locator": "_content/learn/books.yaml#data/e9eb0d69e9bce710399c6b1fdb9578fdab59ba77c2bbb1ad72c6e6b7c360cf66/title:6c797309a27206e2084241cd3929b261369f8142977cc2ed8b2e96d1f8374188:1",
+              "source": "Get Programming with Go",
+              "source_sha256": "6c797309a27206e2084241cd3929b261369f8142977cc2ed8b2e96d1f8374188",
+              "start": 215,
+              "end": 238,
+              "protected": []
+            },
+            {
+              "id": "abddfd28112538b17334e2326bf98b03bd7e368656d8bc8383d2dfd5696edf8a",
+              "locator": "_content/learn/books.yaml#data/e9eb0d69e9bce710399c6b1fdb9578fdab59ba77c2bbb1ad72c6e6b7c360cf66/description:3936e08d64fff5ac87131020502c71e2e5d839a2fd2fcf011d20635303d22e8a:1",
+              "source": "Nathan Youngman, Roger Peppé",
+              "source_sha256": "3936e08d64fff5ac87131020502c71e2e5d839a2fd2fcf011d20635303d22e8a",
+              "start": 256,
+              "end": 285,
+              "protected": []
+            },
+            {
+              "id": "b4d03aa8e3ebd3519ed59e723ae9a7c25d417657d5042e930145864e191a7965",
+              "locator": "_content/learn/books.yaml#data/b0cbe79b2ae4665591e78d2639cfb50882f0825498f0df9a2078c6c35bd038bd/title:bd0c63036ab7ba5b2289058a084256c92866038fdecc0058e1ac9f0f4fee7788:1",
+              "source": "Go Programming Blueprints",
+              "source_sha256": "bd0c63036ab7ba5b2289058a084256c92866038fdecc0058e1ac9f0f4fee7788",
+              "start": 443,
+              "end": 468,
+              "protected": []
+            },
+            {
+              "id": "9d2a9771f2eb06899afd030926bf3675f8f7f96b6ca45a6134e6e5b0da9cd72b",
+              "locator": "_content/learn/books.yaml#data/b0cbe79b2ae4665591e78d2639cfb50882f0825498f0df9a2078c6c35bd038bd/description:f783dbae74f2985bce426d38585a477bb25a909bfc3247183bfeccf8fdf87db8:1",
+              "source": "This is the official source code repository for the book.",
+              "source_sha256": "f783dbae74f2985bce426d38585a477bb25a909bfc3247183bfeccf8fdf87db8",
+              "start": 486,
+              "end": 543,
+              "protected": []
+            },
+            {
+              "id": "5a5e3117b0559be292c80ff2c5b4501a8bd18adbd8f98d06bb512efdea4e1dcb",
+              "locator": "_content/learn/books.yaml#data/28f39baa0c5ce75e5896e49da91feac0a288370e9e05deb66fed98d561c09648/title:1ff45c0b0872f781cc271d483f2a9c79759fc220c478c65f168d559cf8ca2f8c:1",
+              "source": "Introducing Go",
+              "source_sha256": "1ff45c0b0872f781cc271d483f2a9c79759fc220c478c65f168d559cf8ca2f8c",
+              "start": 683,
+              "end": 697,
+              "protected": []
+            },
+            {
+              "id": "eb9d40ed14db273861f28778c16ce6411f6697b7fc2ac7f538cc54cb3158524f",
+              "locator": "_content/learn/books.yaml#data/28f39baa0c5ce75e5896e49da91feac0a288370e9e05deb66fed98d561c09648/description:4a9beffc369c9aed9dac0ea02f3e18d3085a65c2fa1274e1e7c3980c5cbcb670:1",
+              "source": "Caleb Doxsey",
+              "source_sha256": "4a9beffc369c9aed9dac0ea02f3e18d3085a65c2fa1274e1e7c3980c5cbcb670",
+              "start": 715,
+              "end": 727,
+              "protected": []
+            },
+            {
+              "id": "0d347df2a62f6068ea5b519c8c79d524b8342ed9d094dd1c90dc9cea00e42368",
+              "locator": "_content/learn/books.yaml#data/c28c07d78b54639f5716eacd7a3915992998592a47dcae50a1ab01e1e3968e73/title:4befe00b88a8dbea7e11962f878c19d06edbf2e6dafac2e7700020968aecca7f:1",
+              "source": "Concurrency in Go",
+              "source_sha256": "4befe00b88a8dbea7e11962f878c19d06edbf2e6dafac2e7700020968aecca7f",
+              "start": 876,
+              "end": 893,
+              "protected": []
+            },
+            {
+              "id": "c33684b3d2a1a36e8a51a15f862777474e40cd24bb78783d94cb40a46bf06572",
+              "locator": "_content/learn/books.yaml#data/c28c07d78b54639f5716eacd7a3915992998592a47dcae50a1ab01e1e3968e73/description:0d5c9b7ff6270bcabc007b2673cd79c2fab046125552e930cf4422e646db3660:1",
+              "source": "Katherine Cox-Buday",
+              "source_sha256": "0d5c9b7ff6270bcabc007b2673cd79c2fab046125552e930cf4422e646db3660",
+              "start": 911,
+              "end": 930,
+              "protected": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "source:_content/learn/cloud.yaml",
+        "package": "learn-docs-v1",
+        "source_paths": [
+          "_content/learn/cloud.yaml"
+        ],
+        "source_sha256": "1e85ea6ae7a68afc48a9debc45c1c826d1d994ddbb8e9520102675b2f7f1a385",
+        "target_path": "locales/zh-CN/structured/_content/learn/cloud.yaml",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "_content/learn/cloud.yaml",
+          "kind": "data",
+          "route": "",
+          "source_sha256": "7cdd8b50ec77c3207c7edbcb2cd8920f5180a0937054b5d91f30104da8f83347",
+          "structure_sha256": "32165a6ad8f3a8d3d0bd8b6c40a868efddb24e6aaf6f384aee4a07f5e6f9e91e",
+          "dependencies": [],
+          "units": [
+            {
+              "id": "a9dbf4db493cf05f05a0c86be8910a4f2b32320b4c69de8c58871ce190012672",
+              "locator": "_content/learn/cloud.yaml#data/19c9f7f84136c575e4ecb651ceaf8f1089d9419234f0efedfd71b5be5895cd72/title:dfaf87c5209ff36171073cbe4edf65ca89270babdab6a2c45cde1637680396ac:1",
+              "source": "Deploy Go Apps on Google Cloud Serverless Platforms",
+              "source_sha256": "dfaf87c5209ff36171073cbe4edf65ca89270babdab6a2c45cde1637680396ac",
+              "start": 12,
+              "end": 63,
+              "protected": []
+            },
+            {
+              "id": "2ec457a1838eb68a65535122cd4a57a30c018317148e7ee6390458e2e741547f",
+              "locator": "_content/learn/cloud.yaml#data/510270de9efd7ae2718cddfa9b194ed51009ccdc2295fb874fa0895ed22fd126/title:dc07a7db9a6e72f32fe2003729e35c06fb83348910f78e24ae6a8709c86625d5:1",
+              "source": "Use Go Code to Work with Google Cloud Data Sources",
+              "source_sha256": "dc07a7db9a6e72f32fe2003729e35c06fb83348910f78e24ae6a8709c86625d5",
+              "start": 192,
+              "end": 242,
+              "protected": []
+            },
+            {
+              "id": "a98c7c3d8364c2a050e4693ea175b23f7fd17f72d5c51a9adf116069a8f683c0",
+              "locator": "_content/learn/cloud.yaml#data/dbcff3f1f50df718cfc4ae546aab6844ba8673f9448ef516cd935b6891f58a08/title:314e53e5f3ec287f0db6534c729e20013fa1cfcc7447ef84367a66f275d48c2c:1",
+              "source": "Getting Started with Go on App Engine",
+              "source_sha256": "314e53e5f3ec287f0db6534c729e20013fa1cfcc7447ef84367a66f275d48c2c",
+              "start": 371,
+              "end": 408,
+              "protected": []
+            },
+            {
+              "id": "89212e3390a18e7471c8817fe08914423c3904b9df4f14f0be43713690bfbfd7",
+              "locator": "_content/learn/cloud.yaml#data/13596d14d7292674cbbadb8a3eb0b15d8dc4fa06acee8358312a4fbd5994fd61/title:557d1d9ca1a89a52c1cc48be8eee893a8c9be690c93c54861f8dfa8a6093d37e:1",
+              "source": "⟦P0⟧ Google Cloud Functions in Go",
+              "source_sha256": "557d1d9ca1a89a52c1cc48be8eee893a8c9be690c93c54861f8dfa8a6093d37e",
+              "start": 636,
+              "end": 669,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "HTTP",
+                  "role": "atom"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "source:_content/learn/courses.yaml",
+        "package": "learn-docs-v1",
+        "source_paths": [
+          "_content/learn/courses.yaml"
+        ],
+        "source_sha256": "97eb344907fba022cd7901e30dc5b6bf0db5f520a19b5e4d323e155e7159d207",
+        "target_path": "locales/zh-CN/structured/_content/learn/courses.yaml",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "_content/learn/courses.yaml",
+          "kind": "data",
+          "route": "",
+          "source_sha256": "41e32c5136468d2cafed0876c0fddae0c909d408b30616850858f66af5b4b425",
+          "structure_sha256": "b005b24acdff656ea59793496d644b4a76124509375291b69637e425bbb15b37",
+          "dependencies": [
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/codecademy_dark.svg",
+              "sha256": "3cc58e79ef63ad476a10f65545307b2729f64e9932e71858a2616cecfc15d8f3"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/codecademy_light.svg",
+              "sha256": "05de2f4942295f297d854ea63342215b423cf37c335afe4a895f947eb6805ce2"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/codelabs_dark.svg",
+              "sha256": "cda96e10b898cfd580b380437c056bb29ab1f73b075229e07836d6678dd33f63"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/codelabs_light.svg",
+              "sha256": "bfab673d5fe7de2c03a786cbf0745c8713c9911d9ac70f642a0727d22d0e65ed"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/exercism_dark.svg",
+              "sha256": "5524964a145b401bcc6ad5991b73ae2f306e5905a101e3b9d6b8f8aab4b8f4a6"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/exercism_light.svg",
+              "sha256": "5dbff3f9c47193d280049dac01b00611440188677afbabba212a83abd625f41b"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/gophercises_dark.png",
+              "sha256": "c2177c870382fdff0fb908957f3f2b9679ff04677927a4b9382cf7ae6a1827d7"
+            },
+            {
+              "kind": "asset",
+              "path": "_content/images/learn/gophercises_light.png",
+              "sha256": "c2177c870382fdff0fb908957f3f2b9679ff04677927a4b9382cf7ae6a1827d7"
+            }
+          ],
+          "units": [
+            {
+              "id": "7323b9d54fbab45aa92c1f5c3ba68c4d92e9b374d85585cbc274fdfd3cd4cc0c",
+              "locator": "_content/learn/courses.yaml#data/06b25cfee5b2f35ed4c04be788d19e4b58ffc10ee1a84391013dfab459fc4f7d/title:3a8ac9c2cf775ae8f2a6fb9580abf8647ad5c6dbd30e849e7c8c5c1970d79e8b:1",
+              "source": "Codecademy",
+              "source_sha256": "3a8ac9c2cf775ae8f2a6fb9580abf8647ad5c6dbd30e849e7c8c5c1970d79e8b",
+              "start": 11,
+              "end": 21,
+              "protected": []
+            },
+            {
+              "id": "d40e7198af87221bc06c5caf3752cb17a033b52ac58cd7a12b4ec024170bce69",
+              "locator": "_content/learn/courses.yaml#data/06b25cfee5b2f35ed4c04be788d19e4b58ffc10ee1a84391013dfab459fc4f7d/content:dc4565ebe2f086f80b2f283dabe7dc368e33d5fef7a5571a054ecf6eab5f8192:1",
+              "source": "This course covers setting up a Go environment, the fundamentals of⟦P0⟧Go, and will walk you through building a few sample projects.",
+              "source_sha256": "dc4565ebe2f086f80b2f283dabe7dc368e33d5fef7a5571a054ecf6eab5f8192",
+              "start": 35,
+              "end": 170,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "7800fc3e9ceac28c7d8728c201f9e430e72dac582e64cf34c571b5166a5f1b8e",
+              "locator": "_content/learn/courses.yaml#data/06b25cfee5b2f35ed4c04be788d19e4b58ffc10ee1a84391013dfab459fc4f7d/cta:eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843:1",
+              "source": "Learn more",
+              "source_sha256": "eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843",
+              "start": 426,
+              "end": 436,
+              "protected": []
+            },
+            {
+              "id": "ab757ddb3f6a3cf9dec2c24b5ed27be2393c9d330d9510683038acf7fdb84096",
+              "locator": "_content/learn/courses.yaml#data/fb60acbaca84e6bc5a48d4a3f76d6f89a2ded5ff63bc29951926495e22b66860/content:d70ede1b594503b9ae57ffbb6ffd540731a77ef9c78675925fa639b1d7586a7a:1",
+              "source": "Tackle community-sourced Go challenges in this interactive course,⟦P0⟧working with other participants and mentors along the way.",
+              "source_sha256": "d70ede1b594503b9ae57ffbb6ffd540731a77ef9c78675925fa639b1d7586a7a",
+              "start": 473,
+              "end": 604,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "e0cc7aacc07c91d08930c2b3b1d6db75491ba6e2c4ffca3b00eb0434b87f204e",
+              "locator": "_content/learn/courses.yaml#data/fb60acbaca84e6bc5a48d4a3f76d6f89a2ded5ff63bc29951926495e22b66860/cta:eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843:1",
+              "source": "Learn more",
+              "source_sha256": "eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843",
+              "start": 752,
+              "end": 762,
+              "protected": []
+            },
+            {
+              "id": "89a6f1d80169358b8109e1f87bffe9bd89a16fb7abdfca11a88f9530a0cc4bf0",
+              "locator": "_content/learn/courses.yaml#data/2f484e95741a7c533a50ffc067486f0843cb8195a9f2365f432c06ad10671399/title:1a50fd6aa2d24a6d28cdc3c67c37a0c9c7eecd6fdebe922d97c280a73cea85e2:1",
+              "source": "Google Developers Codelabs",
+              "source_sha256": "1a50fd6aa2d24a6d28cdc3c67c37a0c9c7eecd6fdebe922d97c280a73cea85e2",
+              "start": 774,
+              "end": 800,
+              "protected": []
+            },
+            {
+              "id": "775b41aac6785afaaf8ec936e409ca29f0d52cfbcd0374c6fd2956b68ec70a55",
+              "locator": "_content/learn/courses.yaml#data/2f484e95741a7c533a50ffc067486f0843cb8195a9f2365f432c06ad10671399/content:b84805774531c81763dfccf6cd3cafd3f82a86d117cbda1842bc0de067a92811:1",
+              "source": "Get started with a free codelab that walks you through using Go to⟦P0⟧build and publish a Google Cloud Function.",
+              "source_sha256": "b84805774531c81763dfccf6cd3cafd3f82a86d117cbda1842bc0de067a92811",
+              "start": 814,
+              "end": 929,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "b6a18edcf445bfea8d96e351d898ce886a3bde28795861d82a53c4cfb4ad29de",
+              "locator": "_content/learn/courses.yaml#data/2f484e95741a7c533a50ffc067486f0843cb8195a9f2365f432c06ad10671399/cta:eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843:1",
+              "source": "Learn more",
+              "source_sha256": "eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843",
+              "start": 1122,
+              "end": 1132,
+              "protected": []
+            },
+            {
+              "id": "1bab0063fdbb748b14d156fd21170682e52c4e90be9912f3dff30c748d954b46",
+              "locator": "_content/learn/courses.yaml#data/1c82d687e7234bd0c413b3a2e17d30a805456e714e94e74a42c2339a530b552e/title:41d1e77d7235ba4a744f833ba918df82b5881676f0e2683356ff1b0631801ece:1",
+              "source": "Gophercises",
+              "source_sha256": "41d1e77d7235ba4a744f833ba918df82b5881676f0e2683356ff1b0631801ece",
+              "start": 1144,
+              "end": 1155,
+              "protected": []
+            },
+            {
+              "id": "f5c4ff992c5cc5585c027189242c41b3a53e9b6ae9a7014be5c17f86517815c0",
+              "locator": "_content/learn/courses.yaml#data/1c82d687e7234bd0c413b3a2e17d30a805456e714e94e74a42c2339a530b552e/content:a41f264c9b839ba451ec85044f6233163e2e7829d1350ec68b4fe1a951eb5aea:1",
+              "source": "Build your confidence in using Go with this course, where you’ll⟦P0⟧build roughly twenty different Go applications.",
+              "source_sha256": "a41f264c9b839ba451ec85044f6233163e2e7829d1350ec68b4fe1a951eb5aea",
+              "start": 1169,
+              "end": 1289,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "fc8993c3623696196965fae4d5cd76f01520868671b5f190bc5ed86f0b204b29",
+              "locator": "_content/learn/courses.yaml#data/1c82d687e7234bd0c413b3a2e17d30a805456e714e94e74a42c2339a530b552e/cta:eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843:1",
+              "source": "Learn more",
+              "source_sha256": "eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843",
+              "start": 1438,
+              "end": 1448,
+              "protected": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "source:_content/learn/guided.yaml",
+        "package": "learn-docs-v1",
+        "source_paths": [
+          "_content/learn/guided.yaml"
+        ],
+        "source_sha256": "355aa347fadf02ef88d068b8a2c0791dda8a28a2cf0af70326b5c0050aff70b2",
+        "target_path": "locales/zh-CN/structured/_content/learn/guided.yaml",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "_content/learn/guided.yaml",
+          "kind": "data",
+          "route": "",
+          "source_sha256": "6df4750d39a30238a3bb460caa0fd59865d7d84f8e36278a1a92e668deb4935b",
+          "structure_sha256": "68f9cbb9ac3478c2ba71de6ba166515def6ddbfca973f84ce902ef51ab980152",
+          "dependencies": [],
+          "units": [
+            {
+              "id": "2e9af880a3dffad69f578974640ac8fb1bbde5907b14cc48a09a46390f389617",
+              "locator": "_content/learn/guided.yaml#data/928939f396708a998ee13542449c3f0275b4e9b0f4b6ca9fcf4f3e184b89adcf/title:e5380f9f6e478dbe4efb6642ea43eabca1da7a13cf29161c574acb4b32e5f4e6:1",
+              "source": "Web Dev",
+              "source_sha256": "e5380f9f6e478dbe4efb6642ea43eabca1da7a13cf29161c574acb4b32e5f4e6",
+              "start": 11,
+              "end": 18,
+              "protected": []
+            },
+            {
+              "id": "a94736139f21fb58dc0e0837a2067a3c6145a13bac25402400ce2cf6dabd3a98",
+              "locator": "_content/learn/guided.yaml#data/928939f396708a998ee13542449c3f0275b4e9b0f4b6ca9fcf4f3e184b89adcf/content:4582c638c037c38639e9777af271751132479d01c1ac03ff1a81e3bbde7f1bd0:1",
+              "source": "Go Web Examples provides easy to understand code snippets on⟦P0⟧how to use Go for web development.",
+              "source_sha256": "4582c638c037c38639e9777af271751132479d01c1ac03ff1a81e3bbde7f1bd0",
+              "start": 32,
+              "end": 133,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "eab9619663b2a6fa822082a17515efbe530079bf2b0982364c15fc5553fe82ef",
+              "locator": "_content/learn/guided.yaml#data/928939f396708a998ee13542449c3f0275b4e9b0f4b6ca9fcf4f3e184b89adcf/cta:eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843:1",
+              "source": "Learn more",
+              "source_sha256": "eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843",
+              "start": 178,
+              "end": 188,
+              "protected": []
+            },
+            {
+              "id": "28f1c2586e37c98bf131ac8f76af20a30f110d38a67a846d1f3e672305a79c3d",
+              "locator": "_content/learn/guided.yaml#data/895a0d98df97458cd629d810ab45d90f3f3207a03889a7824a7aa0c53081e942/title:894f3a67524258835d27fccc9318fb10f8a6aa5333eee935fab73c45862c6399:1",
+              "source": "CLIs",
+              "source_sha256": "894f3a67524258835d27fccc9318fb10f8a6aa5333eee935fab73c45862c6399",
+              "start": 200,
+              "end": 204,
+              "protected": []
+            },
+            {
+              "id": "8269f0c79740a505a442aeeaa6eedb7453b7eeb84900137e027c0f19c178eb58",
+              "locator": "_content/learn/guided.yaml#data/895a0d98df97458cd629d810ab45d90f3f3207a03889a7824a7aa0c53081e942/content:bed9c93ea6668e99bdf4377d3d45a12218af7aad5ee7bde3985067b32ca5ae2a:1",
+              "source": "This workshop will walk you through building a ⟦P0⟧ app with Go,⟦P1⟧introducing you to basic Go principles and ⟦P2⟧ frameworks along the way.",
+              "source_sha256": "bed9c93ea6668e99bdf4377d3d45a12218af7aad5ee7bde3985067b32ca5ae2a",
+              "start": 218,
+              "end": 360,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "CLI",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P1⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P2⟧",
+                  "raw": "CLI",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "2a967fa5d8707252b91150ca4369ac5990fed126b6da4b5b0977e0d142a6bf10",
+              "locator": "_content/learn/guided.yaml#data/895a0d98df97458cd629d810ab45d90f3f3207a03889a7824a7aa0c53081e942/cta:eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843:1",
+              "source": "Learn more",
+              "source_sha256": "eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843",
+              "start": 451,
+              "end": 461,
+              "protected": []
+            },
+            {
+              "id": "af584e9a907fdd8dec3af33f1c76e7e390fcf83a212b758455f503e72927f0c7",
+              "locator": "_content/learn/guided.yaml#data/fe3fbd20ec704b7b1c71e0e6fd127e52eab093880d443c908d6ab92f61097d27/title:f92ce422a05f00898a09818806fe2d98834b5ac6ab7be4dc7a36cecbf22cdaff:1",
+              "source": "New to coding?",
+              "source_sha256": "f92ce422a05f00898a09818806fe2d98834b5ac6ab7be4dc7a36cecbf22cdaff",
+              "start": 473,
+              "end": 487,
+              "protected": []
+            },
+            {
+              "id": "aae50b1e45a563d1f445c4526f022170a60fc1a18b24025e68945d889750cb3f",
+              "locator": "_content/learn/guided.yaml#data/fe3fbd20ec704b7b1c71e0e6fd127e52eab093880d443c908d6ab92f61097d27/content:3e925b91bc6773be8f50ef5a9514eeb37d0ed13df37cceed3e65f1c47738b770:1",
+              "source": "Get started with this introductory course covering basic⟦P0⟧programming principles and Go fundamentals.",
+              "source_sha256": "3e925b91bc6773be8f50ef5a9514eeb37d0ed13df37cceed3e65f1c47738b770",
+              "start": 501,
+              "end": 607,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "57e59081f9bc72d718e8b08e6abf4b81bf692956ee58ae9274015445ce77b091",
+              "locator": "_content/learn/guided.yaml#data/fe3fbd20ec704b7b1c71e0e6fd127e52eab093880d443c908d6ab92f61097d27/cta:eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843:1",
+              "source": "Learn more",
+              "source_sha256": "eef3644996331a2acbf57bae15781f6c233129eda9534c1b9da5b16457bf6843",
+              "start": 670,
+              "end": 680,
+              "protected": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "source:_content/learn/quickstart.yaml",
+        "package": "learn-docs-v1",
+        "source_paths": [
+          "_content/learn/quickstart.yaml"
+        ],
+        "source_sha256": "e3820d22e724a46d4d34730b88d1d3eaeedd9c774167da820c2af63a7e3422e5",
+        "target_path": "locales/zh-CN/structured/_content/learn/quickstart.yaml",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "_content/learn/quickstart.yaml",
+          "kind": "data",
+          "route": "",
+          "source_sha256": "89e1c3cd9ccefbb21ef3f83a167924df22dcd51a8412b3e4a9d258dddff45cc7",
+          "structure_sha256": "eb1fd3eabfb141bb92728591ddc407cf6b06d8a675a1c5209e7c79c4be0aad2a",
+          "dependencies": [],
+          "units": [
+            {
+              "id": "14e779d70b81811a02474f955d96ee0559ae7ac4d43f8e3dd5225d03ab73d3eb",
+              "locator": "_content/learn/quickstart.yaml#data/681bdd6cc5f0b61e44e3dca746541bd04c0a73d9d185dcdf7a57493ced134173/title:9eed7c3bbc4b7eb978b826ec62e36635ce2981147a118b70580ca09ca876fc10:1",
+              "source": "Documentation",
+              "source_sha256": "9eed7c3bbc4b7eb978b826ec62e36635ce2981147a118b70580ca09ca876fc10",
+              "start": 11,
+              "end": 24,
+              "protected": []
+            },
+            {
+              "id": "e9cf1999bb5f83c344aefa51a9f451929a5328b064a2260f542a7b9104c4ea3f",
+              "locator": "_content/learn/quickstart.yaml#data/681bdd6cc5f0b61e44e3dca746541bd04c0a73d9d185dcdf7a57493ced134173/content:9cf23e6d088bee0a2cb80079cc71ebaf08c8da0ab2e7ce5d0d6b9d27e5b20c76:1",
+              "source": "Everything there is to know about Go. Get started on a new project⟦P0⟧or brush up for your existing Go code.",
+              "source_sha256": "9cf23e6d088bee0a2cb80079cc71ebaf08c8da0ab2e7ce5d0d6b9d27e5b20c76",
+              "start": 38,
+              "end": 149,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "fce46bd26992deffea6b94b9d0ffef9702c37c77a19c8e26a35ecfe2e1afe29c",
+              "locator": "_content/learn/quickstart.yaml#data/681bdd6cc5f0b61e44e3dca746541bd04c0a73d9d185dcdf7a57493ced134173/cta:ecf5b93a409cd282f049106658d29db44dda582535d0745d0f172537d3831ae7:1",
+              "source": "View documentation",
+              "source_sha256": "ecf5b93a409cd282f049106658d29db44dda582535d0745d0f172537d3831ae7",
+              "start": 159,
+              "end": 177,
+              "protected": []
+            },
+            {
+              "id": "637684dbcff4978e48fa7ac71e63cb2d5f07706552ada58c147e3dad05fd7471",
+              "locator": "_content/learn/quickstart.yaml#data/04deda70a801a42c5a63078df9ffb5849bc74e01fe6d80648f810a34d73c9547/title:a7dbd36be74f5ab38be52ab3412c815066104f1c8077251370afc35b398d4e82:1",
+              "source": "Tour of Go",
+              "source_sha256": "a7dbd36be74f5ab38be52ab3412c815066104f1c8077251370afc35b398d4e82",
+              "start": 204,
+              "end": 214,
+              "protected": []
+            },
+            {
+              "id": "e8c77505874e6c705f3d0e24b1c77c997723fe3098f5802821960d2ca6fd742a",
+              "locator": "_content/learn/quickstart.yaml#data/04deda70a801a42c5a63078df9ffb5849bc74e01fe6d80648f810a34d73c9547/content:685faf5a700444e107ac7e3825cb670b30b5966707480fd76317011408ab0154:1",
+              "source": "An interactive introduction to Go in four sections. Each section⟦P0⟧concludes with a few exercises so you can practice what you've learned.",
+              "source_sha256": "685faf5a700444e107ac7e3825cb670b30b5966707480fd76317011408ab0154",
+              "start": 228,
+              "end": 370,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "87a38adf2f139564b3f8079c93c748ce9bbf19043a8da9ebfb53af4afaaa037d",
+              "locator": "_content/learn/quickstart.yaml#data/04deda70a801a42c5a63078df9ffb5849bc74e01fe6d80648f810a34d73c9547/cta:ae2467534df072591a732a1ea9503a2d96596258756f37554dd938b788565a4c:1",
+              "source": "Take a tour",
+              "source_sha256": "ae2467534df072591a732a1ea9503a2d96596258756f37554dd938b788565a4c",
+              "start": 380,
+              "end": 391,
+              "protected": []
+            },
+            {
+              "id": "fc263a3da1dabacf5425754635945968fdbdbac9f97e6ee10fefe58b3a4ac56e",
+              "locator": "_content/learn/quickstart.yaml#data/e868a7f9bd355d12be5b07176a5faa72da7563ff2a904df86af5355eed970765/title:9b051d255cb2fb0d2996301f756ade6b6b48157fa84ca4694f4f86fd3c4611cd:1",
+              "source": "Go by example",
+              "source_sha256": "9b051d255cb2fb0d2996301f756ade6b6b48157fa84ca4694f4f86fd3c4611cd",
+              "start": 419,
+              "end": 432,
+              "protected": []
+            },
+            {
+              "id": "d972d4672648a9a9a5ade827ab7176a62826a44a754765a1e288f587afab282c",
+              "locator": "_content/learn/quickstart.yaml#data/e868a7f9bd355d12be5b07176a5faa72da7563ff2a904df86af5355eed970765/content:f3d288829ac4da6a4e7ec240f46bdf1e73ec8b8664cc1fd6853131d0be29849f:1",
+              "source": "⟦P0⟧Go by Example⟦P1⟧ is a hands-on introduction to Go using annotated⟦P2⟧example programs. It’s a great starting point to use when tackling any Go⟦P3⟧project.",
+              "source_sha256": "f3d288829ac4da6a4e7ec240f46bdf1e73ec8b8664cc1fd6853131d0be29849f",
+              "start": 446,
+              "end": 612,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\u003ci\u003e",
+                  "role": "open",
+                  "pair": "binding-0"
+                },
+                {
+                  "token": "⟦P1⟧",
+                  "raw": "\u003c/i\u003e",
+                  "role": "close",
+                  "pair": "binding-0"
+                },
+                {
+                  "token": "⟦P2⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P3⟧",
+                  "raw": "\n      ",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "055eba2449c6203189767e49bea9921ac7dcbf743bc48b7a7e388d2ad63c9125",
+              "locator": "_content/learn/quickstart.yaml#data/e868a7f9bd355d12be5b07176a5faa72da7563ff2a904df86af5355eed970765/cta:aef5732ee283fc25e9318d1d2d4c62b856880b9e56b067e234a45bb51d6b5816:1",
+              "source": "View examples",
+              "source_sha256": "aef5732ee283fc25e9318d1d2d4c62b856880b9e56b067e234a45bb51d6b5816",
+              "start": 656,
+              "end": 669,
+              "protected": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "source:_content/learn/training.yaml",
+        "package": "learn-docs-v1",
+        "source_paths": [
+          "_content/learn/training.yaml"
+        ],
+        "source_sha256": "61e91978de9c680163d321507383d8247bcde2ca24a64f8be7a1976c756ee395",
+        "target_path": "locales/zh-CN/structured/_content/learn/training.yaml",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "_content/learn/training.yaml",
+          "kind": "data",
+          "route": "",
+          "source_sha256": "f471d8a25ff9751ce9d7e5f260e3e2d3f7a89f969b8dcd09d8cc5485ebbdb9b3",
+          "structure_sha256": "733cdab4f11e7c68930eb0d9d5d579c4f8d04cab9a18caa268759ebce495c92f",
+          "dependencies": [],
+          "units": [
+            {
+              "id": "fc2c8c2423d2a240405b4e5c0c07f85acdfa1b6591e0b8383066f75dd543ad9f",
+              "locator": "_content/learn/training.yaml#data/286fb79a83c21426358710b09dd916fde16b5ca79847197ab995bfd9d2550fba/title:82a9654bba35bd60f8720687f3ce065af6f13333cc828a036f3d0023ec3d294e:1",
+              "source": "Ardan Labs",
+              "source_sha256": "82a9654bba35bd60f8720687f3ce065af6f13333cc828a036f3d0023ec3d294e",
+              "start": 11,
+              "end": 21,
+              "protected": []
+            },
+            {
+              "id": "7388068388e2f97353c70c8b4c036a62a2664537aa06a0533b43d297a4963c40",
+              "locator": "_content/learn/training.yaml#data/286fb79a83c21426358710b09dd916fde16b5ca79847197ab995bfd9d2550fba/blurb:14b2dcc51f716743938e3186f297882239a7d117b8ce46292f70ed56132cda21:1",
+              "source": "Offering customized on-site live training classes.",
+              "source_sha256": "14b2dcc51f716743938e3186f297882239a7d117b8ce46292f70ed56132cda21",
+              "start": 84,
+              "end": 134,
+              "protected": []
+            },
+            {
+              "id": "0aaa02102edd4e96902236759c0b72f396768964f968342679060e6c44c5135b",
+              "locator": "_content/learn/training.yaml#data/aed32d3624f877346b75aaca10125b06ca0db88b136ab792b09a3e1ab4cc095f/title:a1b968c0fac73ba140ac43b49471b4bf3d4be0355c968852a80ce78f210949bb:1",
+              "source": "Gopher Guides",
+              "source_sha256": "a1b968c0fac73ba140ac43b49471b4bf3d4be0355c968852a80ce78f210949bb",
+              "start": 146,
+              "end": 159,
+              "protected": []
+            },
+            {
+              "id": "7577dc744c240076732fdc9756a00e4e01686a239a5f9379aa7728263f49137e",
+              "locator": "_content/learn/training.yaml#data/aed32d3624f877346b75aaca10125b06ca0db88b136ab792b09a3e1ab4cc095f/blurb:131848f303b870ea234c4f5bd42066c6c3301a3c8194e115ca20f7407d1f306e:1",
+              "source": "Customized In-person, remote, and online training classes. Training for Developers by Developers.",
+              "source_sha256": "131848f303b870ea234c4f5bd42066c6c3301a3c8194e115ca20f7407d1f306e",
+              "start": 225,
+              "end": 322,
+              "protected": []
+            },
+            {
+              "id": "f9a7cade9a7f42f8a8d24da572b8f076a4c64d6470fe6f70ecbdcaf570907ef8",
+              "locator": "_content/learn/training.yaml#data/59c67ab3d9fe2830e137ea21a162e8829245b2c17867f79e8de20b55897efbb2/title:60a04220b76b960adeef9ddf2b09075faac5827f3b4801dd5fdb2cb0ece60537:1",
+              "source": "Boss Sauce Creative",
+              "source_sha256": "60a04220b76b960adeef9ddf2b09075faac5827f3b4801dd5fdb2cb0ece60537",
+              "start": 334,
+              "end": 353,
+              "protected": []
+            },
+            {
+              "id": "3818b037343bb2dc1c0cc0310d9b662609fc635486bd55a8bfb2e25141076e66",
+              "locator": "_content/learn/training.yaml#data/59c67ab3d9fe2830e137ea21a162e8829245b2c17867f79e8de20b55897efbb2/blurb:0b4790cd4c6f9ecf13b6ba5a437ed21affb4c5c88cef22694b3db3b6b6d2558e:1",
+              "source": "Personalized or track-based Go training for teams.",
+              "source_sha256": "0b4790cd4c6f9ecf13b6ba5a437ed21affb4c5c88cef22694b3db3b6b6d2558e",
+              "start": 428,
+              "end": 478,
+              "protected": []
+            },
+            {
+              "id": "7eb0f3ab1294a59b5203b49ad2140df49bb44e35618c2c3982ae091a1401ac28",
+              "locator": "_content/learn/training.yaml#data/21e6dd95f7c52e085dad1452458cbd4181875b7851f447bdfb3e052745d41f5f/title:1b4cb52b5c7f7367fa7018889cb025fa95c8dc249afcd604788c1c792bc77294:1",
+              "source": "Shiju Varghese",
+              "source_sha256": "1b4cb52b5c7f7367fa7018889cb025fa95c8dc249afcd604788c1c792bc77294",
+              "start": 490,
+              "end": 504,
+              "protected": []
+            },
+            {
+              "id": "d7c204b382cf9a5dd856ac100f5c1845c31d0008d5bf84c61eedf0516615796c",
+              "locator": "_content/learn/training.yaml#data/21e6dd95f7c52e085dad1452458cbd4181875b7851f447bdfb3e052745d41f5f/blurb:d77d1f52a767cc78296a50b7cc7fddec2d45e2761a3a2a1e7c19cf8ea9bd4091:1",
+              "source": "On-site classroom training on Go and consulting on distributed systems architectures, in India.",
+              "source_sha256": "d77d1f52a767cc78296a50b7cc7fddec2d45e2761a3a2a1e7c19cf8ea9bd4091",
+              "start": 595,
+              "end": 690,
+              "protected": []
+            },
+            {
+              "id": "967422a066166931756c45e890ffcef546c3c934c3b374be4298c693fa8754c6",
+              "locator": "_content/learn/training.yaml#data/d60899f0b0b37303d3b110ef5e856353753919d5cabba87c4e10c290ca7637a2/title:987a6a3674e90e2efe01fc3ad1a39e782b678b44b9b764e72040febc31145524:1",
+              "source": "kkoehler",
+              "source_sha256": "987a6a3674e90e2efe01fc3ad1a39e782b678b44b9b764e72040febc31145524",
+              "start": 702,
+              "end": 710,
+              "protected": []
+            },
+            {
+              "id": "09ed221ebbb7085efd2794ab34a3578c1278e3de5aea2cc57af7cb53e61ef2bb",
+              "locator": "_content/learn/training.yaml#data/d60899f0b0b37303d3b110ef5e856353753919d5cabba87c4e10c290ca7637a2/blurb:acd65cb8329b54e2e1485b40b0482239d3d014ae89e1c3a9d2a1f25ee5beb643:1",
+              "source": "In-Person class trainings for Go in Germany, Austria and Switzerland.",
+              "source_sha256": "acd65cb8329b54e2e1485b40b0482239d3d014ae89e1c3a9d2a1f25ee5beb643",
+              "start": 775,
+              "end": 844,
+              "protected": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "source:_content/learn/tutorials.yaml",
+        "package": "learn-docs-v1",
+        "source_paths": [
+          "_content/learn/tutorials.yaml"
+        ],
+        "source_sha256": "f8a477568b260651ed990d3b8460c8bec6b1350f04cc233f0010e30cae216f2a",
+        "target_path": "locales/zh-CN/structured/_content/learn/tutorials.yaml",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "_content/learn/tutorials.yaml",
+          "kind": "data",
+          "route": "",
+          "source_sha256": "c6bcce772bcc13f0efd1aeb027b48651da5aef2a8ee654ec7d46938b5dc18120",
+          "structure_sha256": "db0682df2f4b8e7c78c10e2012e278745b88b0061b3df74f0021353f7081d109",
+          "dependencies": [],
+          "units": [
+            {
+              "id": "9ebdc09db4583adaad863157819c5fe8ab5179cab1bc6e4dfb73d15832eab873",
+              "locator": "_content/learn/tutorials.yaml#data/3ff9113fdd2dd833a167988cb69f1765ebdd0884bc6e20959fef9a40f7cb9241/title:e7b1b11dac418c9a9e5cc3a6529eb40a39621f385185e99dee55a8fc22514617:1",
+              "source": "Getting started",
+              "source_sha256": "e7b1b11dac418c9a9e5cc3a6529eb40a39621f385185e99dee55a8fc22514617",
+              "start": 9,
+              "end": 24,
+              "protected": []
+            },
+            {
+              "id": "dc6e3b321bc96ef61fd71c772f1b39de5d07cba17b310c9ba92e2fb510b241c8",
+              "locator": "_content/learn/tutorials.yaml#data/3ff9113fdd2dd833a167988cb69f1765ebdd0884bc6e20959fef9a40f7cb9241/content:7e117b9520019f1d2ef1021b1b9a0191dcaf73410c5a02b8e8ad3b5836714eed:1",
+              "source": "In this tutorial, you'll get a brief introduction to Go programming. Along the way, you will install Go, write some simple \"Hello, world\" code, use the go command to run your code, use the Go package discovery tool, and call functions of an external module.",
+              "source_sha256": "7e117b9520019f1d2ef1021b1b9a0191dcaf73410c5a02b8e8ad3b5836714eed",
+              "start": 36,
+              "end": 293,
+              "protected": []
+            },
+            {
+              "id": "dc314c4dd46d7b185c9911bcbcff8becb8562f72720bb660b4078bb59073af83",
+              "locator": "_content/learn/tutorials.yaml#data/3ff9113fdd2dd833a167988cb69f1765ebdd0884bc6e20959fef9a40f7cb9241/cta:dabdaf8d62aaeff1eff539299f74b0740e647cb38245f2a814691953bb72bf04:1",
+              "source": "Tutorial",
+              "source_sha256": "dabdaf8d62aaeff1eff539299f74b0740e647cb38245f2a814691953bb72bf04",
+              "start": 351,
+              "end": 359,
+              "protected": []
+            },
+            {
+              "id": "ff9667b333429b2a39bc8bb59db12242157306a2f851b34f0f756798e230e781",
+              "locator": "_content/learn/tutorials.yaml#data/4f069924fdd1e6f78bd0d680c50c9db63795de8362f03c069c9fdc5d004e2381/title:cab2b9a9f958c1f0a7367d3f65bf95e214035b70d4c4d4963e826cf30e68bc3c:1",
+              "source": "Create a module",
+              "source_sha256": "cab2b9a9f958c1f0a7367d3f65bf95e214035b70d4c4d4963e826cf30e68bc3c",
+              "start": 369,
+              "end": 384,
+              "protected": []
+            },
+            {
+              "id": "8f697ccf91e565ec1c3bdd3648ee0f033724f9e72b3b8cef3b404610c94fcefd",
+              "locator": "_content/learn/tutorials.yaml#data/4f069924fdd1e6f78bd0d680c50c9db63795de8362f03c069c9fdc5d004e2381/content:2dd373516dbb5b9cc89f93e571ec411cba8b457570389c64c75d7cc9321c6923:1",
+              "source": "This is the first part of a tutorial that introduces a few fundamental features of the Go language. In this tutorial you'll create two modules. The first is a library which is intended to be imported by other libraries or applications. The second is a caller application which will use the first.",
+              "source_sha256": "2dd373516dbb5b9cc89f93e571ec411cba8b457570389c64c75d7cc9321c6923",
+              "start": 396,
+              "end": 692,
+              "protected": []
+            },
+            {
+              "id": "33461b33a9e09cce3a6db8b9d005de0461a43c686a20841ab6ac7a5c1255c188",
+              "locator": "_content/learn/tutorials.yaml#data/4f069924fdd1e6f78bd0d680c50c9db63795de8362f03c069c9fdc5d004e2381/cta:dabdaf8d62aaeff1eff539299f74b0740e647cb38245f2a814691953bb72bf04:1",
+              "source": "Tutorial",
+              "source_sha256": "dabdaf8d62aaeff1eff539299f74b0740e647cb38245f2a814691953bb72bf04",
+              "start": 748,
+              "end": 756,
+              "protected": []
+            },
+            {
+              "id": "642a52f75415af35b6e3b688d07666d2e4fe35ee57a5b179c40b8dd2a07c7a56",
+              "locator": "_content/learn/tutorials.yaml#data/52378422dbd2a397d557485521749ac07c5e8638e0ebe3d8850286249cf37741/title:d2c71b85a29548c3e6641bcb832796d7995fa0dafbe6396959f0408f8a1cdd44:1",
+              "source": "Developing a web service",
+              "source_sha256": "d2c71b85a29548c3e6641bcb832796d7995fa0dafbe6396959f0408f8a1cdd44",
+              "start": 766,
+              "end": 790,
+              "protected": []
+            },
+            {
+              "id": "02aa79835c056786ca01708b009f3cf9004afef0ff54fbf7ce62713d5912e354",
+              "locator": "_content/learn/tutorials.yaml#data/52378422dbd2a397d557485521749ac07c5e8638e0ebe3d8850286249cf37741/content:6031d2aea765e13b47401fddae5f3c2bede7f8d2b1fbdd2b82cc1807047e7ace:1",
+              "source": "This tutorial introduces the basics of writing a RESTful web service ⟦P0⟧ with Go and the Gin Web Framework. In this tutorial, you will build a RESTful ⟦P1⟧ server with two endpoints.",
+              "source_sha256": "6031d2aea765e13b47401fddae5f3c2bede7f8d2b1fbdd2b82cc1807047e7ace",
+              "start": 802,
+              "end": 983,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "API",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P1⟧",
+                  "raw": "API",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "f5aecfee649ac399bfe072004b25e788aeec47d62a2541ada384057b46b80215",
+              "locator": "_content/learn/tutorials.yaml#data/52378422dbd2a397d557485521749ac07c5e8638e0ebe3d8850286249cf37741/cta:b513481e02c8164c819fe15dd6386dea0cfd1295388f4c1394e419ab0c954c84:1",
+              "source": "Interactive Tutorial",
+              "source_sha256": "b513481e02c8164c819fe15dd6386dea0cfd1295388f4c1394e419ab0c954c84",
+              "start": 1207,
+              "end": 1227,
+              "protected": []
+            },
+            {
+              "id": "ba000ebf6166f2acfdfd707812e544bc1cd351beb86696b396a8e66adecfd225",
+              "locator": "_content/learn/tutorials.yaml#data/7cf8b42c7d13d9a3615e2532311b7b7b2905b2f3d1d8102bc9611b920ba6b1c7/title:9538da1ad28d76d132f908dde8e0e601d1be7db5ac25f829c39e3e57ac5e8429:1",
+              "source": "Accessing a relational database",
+              "source_sha256": "9538da1ad28d76d132f908dde8e0e601d1be7db5ac25f829c39e3e57ac5e8429",
+              "start": 1237,
+              "end": 1268,
+              "protected": []
+            },
+            {
+              "id": "1c149d1975ddc7d32d48eb6188d5e87ae1a79f5b20fb241d427adae0f18e35ee",
+              "locator": "_content/learn/tutorials.yaml#data/7cf8b42c7d13d9a3615e2532311b7b7b2905b2f3d1d8102bc9611b920ba6b1c7/content:7048452bde471b0ed624ce6aa1549dbc278845211ec9a38e0ca0b72fd215de54:1",
+              "source": "This tutorial introduces the basics of accessing a relational database with Go and the ⟦P0⟧ package in its standard library. In this tutorial, you’ll create a database, then write code to access the database.",
+              "source_sha256": "7048452bde471b0ed624ce6aa1549dbc278845211ec9a38e0ca0b72fd215de54",
+              "start": 1280,
+              "end": 1498,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "database/sql",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "7f53c88e022979325a144c717b63d1d0cc2f7041d223351c3e282dc757d18d1a",
+              "locator": "_content/learn/tutorials.yaml#data/7cf8b42c7d13d9a3615e2532311b7b7b2905b2f3d1d8102bc9611b920ba6b1c7/cta:dabdaf8d62aaeff1eff539299f74b0740e647cb38245f2a814691953bb72bf04:1",
+              "source": "Tutorial",
+              "source_sha256": "dabdaf8d62aaeff1eff539299f74b0740e647cb38245f2a814691953bb72bf04",
+              "start": 1556,
+              "end": 1564,
+              "protected": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "source:data/site-shell/home.html",
+        "package": "site-v2-shell",
+        "source_paths": [
+          "data/site-shell/home.html"
+        ],
+        "source_sha256": "59790b6d01b4ff23c7178f2105e49a0507d01c74f1d155936a9853ec861a7e38",
+        "target_path": "locales/zh-CN/structured/data/site-shell/home.html",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "data/site-shell/home.html",
+          "kind": "page",
+          "route": "/",
+          "source_sha256": "cac0fc622a49b6c5ebaa80f53fb9234040df3ff4fb0d16d6213487330e586362",
+          "structure_sha256": "5f5879dbff35b01d10672d4b3d33bacc144d9c2a91eeb43d27e823fa4f80aac9",
+          "dependencies": [],
+          "units": [
+            {
+              "id": "941831b71c7cefc278445356ac21b40dc229d8f3f0edaf1aeafcc6c90bfd9c74",
+              "locator": "data/site-shell/home.html#html/h1:c121caab0d975d5d10921a153b682cb67d0aa0b213b980820517e97e422ca401:1",
+              "source": "Go Learning ⟦P0⟧ Documentation Translations",
+              "source_sha256": "c121caab0d975d5d10921a153b682cb67d0aa0b213b980820517e97e422ca401",
+              "start": 13,
+              "end": 57,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\u0026amp;",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "33707a17f65d0ef9107853c11324f69bab7f38b41fe8cc30316d574ee74756e8",
+              "locator": "data/site-shell/home.html#html/p:224d1a5e8369632d68070161e026a3061fddeda3912bed9b369e19f6f31f3218:1",
+              "source": "Learn Go with community translations of the Tour, learning resources, tutorials, and documentation.",
+              "source_sha256": "224d1a5e8369632d68070161e026a3061fddeda3912bed9b369e19f6f31f3218",
+              "start": 68,
+              "end": 167,
+              "protected": []
+            },
+            {
+              "id": "618bec4bd0aacfc149e4d50d8b4322175e0a432ca2e71514adebf2c1dfa19424",
+              "locator": "data/site-shell/home.html#html/attribute/aria-label:f316a94c4d7af55eaae723d3ab16ebee9c5f6ade0f2e0d661dbe3564e5c770d5:1",
+              "source": "Learning resources",
+              "source_sha256": "f316a94c4d7af55eaae723d3ab16ebee9c5f6ade0f2e0d661dbe3564e5c770d5",
+              "start": 191,
+              "end": 209,
+              "protected": []
+            },
+            {
+              "id": "6c232f4ca69283f715cb8ccc99ca21063e11098d691617f603569ce63aed29ce",
+              "locator": "data/site-shell/home.html#html/text-block:5c684de0c0808694bcd4a84e5d3e408ec52398b81c7d5cf42ff22b01ea915309:1",
+              "source": "⟦P0⟧A Tour of Go⟦P1⟧⟦P2⟧⟦P3⟧Learn⟦P4⟧⟦P5⟧⟦P6⟧Tutorials⟦P7⟧⟦P8⟧⟦P9⟧Databases⟦P10⟧⟦P11⟧⟦P12⟧Modules⟦P13⟧⟦P14⟧⟦P15⟧Security⟦P16⟧⟦P17⟧⟦P18⟧About this translation project⟦P19⟧",
+              "source_sha256": "5c684de0c0808694bcd4a84e5d3e408ec52398b81c7d5cf42ff22b01ea915309",
+              "start": 216,
+              "end": 512,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\u003ca href=\"/tour/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-0"
+                },
+                {
+                  "token": "⟦P1⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-0"
+                },
+                {
+                  "token": "⟦P2⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P3⟧",
+                  "raw": "\u003ca href=\"/learn/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-3"
+                },
+                {
+                  "token": "⟦P4⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-3"
+                },
+                {
+                  "token": "⟦P5⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P6⟧",
+                  "raw": "\u003ca href=\"/doc/tutorial/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-6"
+                },
+                {
+                  "token": "⟦P7⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-6"
+                },
+                {
+                  "token": "⟦P8⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P9⟧",
+                  "raw": "\u003ca href=\"/doc/database/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-9"
+                },
+                {
+                  "token": "⟦P10⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-9"
+                },
+                {
+                  "token": "⟦P11⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P12⟧",
+                  "raw": "\u003ca href=\"/doc/modules/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-12"
+                },
+                {
+                  "token": "⟦P13⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-12"
+                },
+                {
+                  "token": "⟦P14⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P15⟧",
+                  "raw": "\u003ca href=\"/doc/security/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-15"
+                },
+                {
+                  "token": "⟦P16⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-15"
+                },
+                {
+                  "token": "⟦P17⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P18⟧",
+                  "raw": "\u003ca href=\"/translation/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-18"
+                },
+                {
+                  "token": "⟦P19⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-18"
+                }
+              ]
+            },
+            {
+              "id": "66bf10b345586c06095aedc41341d4f7ad473b258c74ed8a4709a339f4b116c2",
+              "locator": "data/site-shell/home.html#html/p:cb672cc7bce5905e7e05b1d85917e559d4c5a479533b2a557500ef3465d0d610:1",
+              "source": "Links open a completed local translation when available, or the official English source.",
+              "source_sha256": "cb672cc7bce5905e7e05b1d85917e559d4c5a479533b2a557500ef3465d0d610",
+              "start": 527,
+              "end": 615,
+              "protected": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "source:data/site-shell/translation.html",
+        "package": "site-v2-shell",
+        "source_paths": [
+          "data/site-shell/translation.html"
+        ],
+        "source_sha256": "d8ce290c36a6219d19ef41bc0cc85043dfd6f99f03e47d745e9e222a09bedb10",
+        "target_path": "locales/zh-CN/structured/data/site-shell/translation.html",
+        "state": "missing",
+        "carry_evidence": [],
+        "document": {
+          "contract": "go-learning/content-units/v2",
+          "path": "data/site-shell/translation.html",
+          "kind": "page",
+          "route": "/translation/",
+          "source_sha256": "04ab70b5086539b36c55c504ee5cf302037b95c3abf4904824b079a8c316be6c",
+          "structure_sha256": "73931a029a7c1a1a46ff1522d5635bb9ce3e537f648e92fa2d49a07cceb5d2f1",
+          "dependencies": [],
+          "units": [
+            {
+              "id": "fc14df339791f48997d0078eb0bdcfac64bdd6857c1712e922c4013891150c68",
+              "locator": "data/site-shell/translation.html#html/h1:c121caab0d975d5d10921a153b682cb67d0aa0b213b980820517e97e422ca401:1",
+              "source": "Go Learning ⟦P0⟧ Documentation Translations",
+              "source_sha256": "c121caab0d975d5d10921a153b682cb67d0aa0b213b980820517e97e422ca401",
+              "start": 13,
+              "end": 57,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\u0026amp;",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "37d22fae8c419c9eb9739d0296e7f2a8ef1d170bcde4dc1c783827f7cce98f89",
+              "locator": "data/site-shell/translation.html#html/p:78a7742141f6f2a08eaa6b2c0e175f11b11732c643c6212a61f13e3746630e4e:1",
+              "source": "This community project translates the Tour, Learn, and Go documentation. Future formal surfaces follow the same source, glossary, and independent review rules.",
+              "source_sha256": "78a7742141f6f2a08eaa6b2c0e175f11b11732c643c6212a61f13e3746630e4e",
+              "start": 68,
+              "end": 227,
+              "protected": []
+            },
+            {
+              "id": "4fccae29455ea4ebafd755a9f14c97ef151b5fb5a72a1e1a9962aee657c311a8",
+              "locator": "data/site-shell/translation.html#html/p:03af11bd651f79f5cc7e43ae5e62bafbb95149781c1c942acb45ed3a41c415c9:1",
+              "source": "The official English source is the frozen ⟦P0⟧ baseline recorded in this repository. Local translations are activated only after generation, independent language review, and machine validation have passed for a complete package.",
+              "source_sha256": "03af11bd651f79f5cc7e43ae5e62bafbb95149781c1c942acb45ed3a41c415c9",
+              "start": 237,
+              "end": 475,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "golang/website",
+                  "role": "atom"
+                }
+              ]
+            },
+            {
+              "id": "54a10927230c12c235c9e33bf2d47abe88bee169016bdb54ff87c126c56a2a37",
+              "locator": "data/site-shell/translation.html#html/p:58bdd2a6c952b20ce7cdd8b73ca0e725ac37104a4c1399f0b6dadeb4478dd2b2:1",
+              "source": "Each language uses one glossary across all surfaces. Source changes and reviewed glossary changes reopen only the affected content, with verified evidence for reuse of unaffected work.",
+              "source_sha256": "58bdd2a6c952b20ce7cdd8b73ca0e725ac37104a4c1399f0b6dadeb4478dd2b2",
+              "start": 485,
+              "end": 669,
+              "protected": []
+            },
+            {
+              "id": "75dd1eaa56d13eb593d6e9de3a2a23b6d34d0bfd9dd2267b5737a089f1bc5e33",
+              "locator": "data/site-shell/translation.html#html/p:31b1694649bcb584d88d50acdebce802a9c24c619a0539b7972f7f0f9fd43dcb:1",
+              "source": "The project homepage and this page have no advertising. Tour advertising follows the locale publication agreement; documentation advertising follows the explicit site policy.",
+              "source_sha256": "31b1694649bcb584d88d50acdebce802a9c24c619a0539b7972f7f0f9fd43dcb",
+              "start": 679,
+              "end": 853,
+              "protected": []
+            },
+            {
+              "id": "fbc16ef9104c121d83638b371f7af02af63d9fc5d5c4ba53a9de77d71c603444",
+              "locator": "data/site-shell/translation.html#html/p:9373f931cd702dfa7362025a94e06a42f5cf5249957096a8a41032af84a6bbad:1",
+              "source": "Translations may differ from the latest official English website. Unavailable local pages link directly to the official source; direct requests to missing local pages return a real not-found response.",
+              "source_sha256": "9373f931cd702dfa7362025a94e06a42f5cf5249957096a8a41032af84a6bbad",
+              "start": 863,
+              "end": 1063,
+              "protected": []
+            },
+            {
+              "id": "9a671862aecf4f923a27c83fed9cf29c95db34789855641469c45ebe33a2c312",
+              "locator": "data/site-shell/translation.html#html/attribute/aria-label:b53dedd84cdc6af5cac20e1c65a10e810a6802c7692f15eb33738277333b69eb:1",
+              "source": "Project links",
+              "source_sha256": "b53dedd84cdc6af5cac20e1c65a10e810a6802c7692f15eb33738277333b69eb",
+              "start": 1087,
+              "end": 1100,
+              "protected": []
+            },
+            {
+              "id": "efdaaf7da1a52f53035373c2d8929f089d258d3e5f629cc94ad0d870ed01e8a7",
+              "locator": "data/site-shell/translation.html#html/text-block:416a8b95035104edeb5cb58e3e8d31e765d4df873269557a2d344a6ea0b8b665:1",
+              "source": "⟦P0⟧Source and development history⟦P1⟧⟦P2⟧⟦P3⟧Feedback and corrections⟦P4⟧⟦P5⟧⟦P6⟧Official Go website⟦P7⟧⟦P8⟧⟦P9⟧Learning and documentation homepage⟦P10⟧",
+              "source_sha256": "416a8b95035104edeb5cb58e3e8d31e765d4df873269557a2d344a6ea0b8b665",
+              "start": 1107,
+              "end": 1399,
+              "protected": [
+                {
+                  "token": "⟦P0⟧",
+                  "raw": "\u003ca href=\"https://github.com/shuijingwan/go-tour-i18n\"\u003e",
+                  "role": "open",
+                  "pair": "binding-0"
+                },
+                {
+                  "token": "⟦P1⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-0"
+                },
+                {
+                  "token": "⟦P2⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P3⟧",
+                  "raw": "\u003ca href=\"https://github.com/shuijingwan/go-tour-i18n/issues\"\u003e",
+                  "role": "open",
+                  "pair": "binding-3"
+                },
+                {
+                  "token": "⟦P4⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-3"
+                },
+                {
+                  "token": "⟦P5⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P6⟧",
+                  "raw": "\u003ca href=\"https://go.dev/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-6"
+                },
+                {
+                  "token": "⟦P7⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-6"
+                },
+                {
+                  "token": "⟦P8⟧",
+                  "raw": "\n    ",
+                  "role": "atom"
+                },
+                {
+                  "token": "⟦P9⟧",
+                  "raw": "\u003ca href=\"/\"\u003e",
+                  "role": "open",
+                  "pair": "binding-9"
+                },
+                {
+                  "token": "⟦P10⟧",
+                  "raw": "\u003c/a\u003e",
+                  "role": "close",
+                  "pair": "binding-9"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "tour-ui",
+        "package": "tour-v1",
+        "source_paths": [
+          "internal/tour/ui/en.json"
+        ],
+        "source_sha256": "2780f3ff3186beb5fd403afd4be914173793662419522d7ce8d107724381bf2b",
+        "target_path": "internal/tour/ui/zh-CN.json",
+        "state": "carry",
+        "target_sha256": "0538913c01892470baf7a1d033ac41ae94991ea94c1015e2e05a4d92433e189a",
+        "carry_evidence": [
+          {
+            "path": "data/locale-surface-reviews/zh-CN/20261009-zh-CN-tour-current-surface-002.a-gate.json",
+            "sha256": "d0d463c1c45eb2cee5d19d62157eb1bb15c7325db76b12314582a3a129808851"
+          },
+          {
+            "path": "data/locale-surface-reviews/zh-CN/20261009-zh-CN-tour-current-surface-002.md",
+            "sha256": "5580cdd544ad14b4dd2c91386e6b247be96f2bc5b8bed35011471397a7a3c9ad"
+          },
+          {
+            "path": "locales/zh-CN/content-scope.json",
+            "sha256": "5c65e39616d77c0020de9ed7f9bdffba845c5c860595b780a47f70b45dac4fb6"
+          },
+          {
+            "path": "data/unified-glossary-reviews/zh-CN/20261009-zh-CN-glossary-review-006.review.json",
+            "sha256": "2ab0f3a2368413969913d304e5bc062cf3ff21e25a6e8940e800b71bfb1440a3"
+          },
+          {
+            "path": "data/promotion-recoveries/zh-CN/569329ec1bbaf1a68adf74e2a0924a3565c52a155f8fa6b514e54b297d5ac903.json",
+            "sha256": "68eb76e55f15d290040dfde5a264a11f2324e91b7fd1fa8f3980af13fb1b212c"
+          },
+          {
+            "path": "data/quality-check-snapshots/zh-CN/qc-008/finalization.json",
+            "sha256": "4941e15e8fcfca4e9fca00ea49018cb25b7ad371af938a0044f59825ab448a8b"
+          }
+        ]
+      }
+    ],
+    "expected_outputs": [
+      "locales/zh-CN/structured/_content/learn/books.yaml",
+      "locales/zh-CN/structured/_content/learn/cloud.yaml",
+      "locales/zh-CN/structured/_content/learn/courses.yaml",
+      "locales/zh-CN/structured/_content/learn/guided.yaml",
+      "locales/zh-CN/structured/_content/learn/quickstart.yaml",
+      "locales/zh-CN/structured/_content/learn/training.yaml",
+      "locales/zh-CN/structured/_content/learn/tutorials.yaml",
+      "locales/zh-CN/structured/data/site-shell/home.html",
+      "locales/zh-CN/structured/data/site-shell/translation.html"
+    ],
+    "identity_sha256": "0e1f4aefc78bc1833a9d0376d6f36cfc1079dcbd0b5c473344b0948f1733115e"
+  },
+  "output": {
+    "schema": "go-learning/locale-structured-assets/v1",
+    "bundle_identity_sha256": "2550ef8ea0b0746e45d99c3abd963f29161bec7bfefd0a33d36308bb2879b19c",
+    "outputs": [
+      {
+        "path": "locales/zh-CN/structured/_content/learn/books.yaml",
+        "data": "",
+        "slots": [
+          {
+            "id": "ac343dad415bd6bcb6780fe58b930f0e55ec860e43ae04e71c852e82227156c0",
+            "text": "The Go Programming Language"
+          },
+          {
+            "id": "5a99d896ff7dbafcdd9547a144bdd9e93b08519ef2e05ca69b069fd811aaec27",
+            "text": "Alan A. A. Donovan, Brian W. Kernighan"
+          },
+          {
+            "id": "da11a268ec2afbe4d97141c83071e4079275994f66ca8850adc449878755db05",
+            "text": "Get Programming with Go"
+          },
+          {
+            "id": "abddfd28112538b17334e2326bf98b03bd7e368656d8bc8383d2dfd5696edf8a",
+            "text": "Nathan Youngman, Roger Peppé"
+          },
+          {
+            "id": "b4d03aa8e3ebd3519ed59e723ae9a7c25d417657d5042e930145864e191a7965",
+            "text": "Go Programming Blueprints"
+          },
+          {
+            "id": "9d2a9771f2eb06899afd030926bf3675f8f7f96b6ca45a6134e6e5b0da9cd72b",
+            "text": "这是本书的官方源代码仓库。"
+          },
+          {
+            "id": "5a5e3117b0559be292c80ff2c5b4501a8bd18adbd8f98d06bb512efdea4e1dcb",
+            "text": "Introducing Go"
+          },
+          {
+            "id": "eb9d40ed14db273861f28778c16ce6411f6697b7fc2ac7f538cc54cb3158524f",
+            "text": "Caleb Doxsey"
+          },
+          {
+            "id": "0d347df2a62f6068ea5b519c8c79d524b8342ed9d094dd1c90dc9cea00e42368",
+            "text": "Concurrency in Go"
+          },
+          {
+            "id": "c33684b3d2a1a36e8a51a15f862777474e40cd24bb78783d94cb40a46bf06572",
+            "text": "Katherine Cox-Buday"
+          }
+        ]
+      },
+      {
+        "path": "locales/zh-CN/structured/_content/learn/cloud.yaml",
+        "data": "",
+        "slots": [
+          {
+            "id": "a9dbf4db493cf05f05a0c86be8910a4f2b32320b4c69de8c58871ce190012672",
+            "text": "在 Google Cloud 无服务器平台上部署 Go 应用"
+          },
+          {
+            "id": "2ec457a1838eb68a65535122cd4a57a30c018317148e7ee6390458e2e741547f",
+            "text": "使用 Go 代码处理 Google Cloud 数据源"
+          },
+          {
+            "id": "a98c7c3d8364c2a050e4693ea175b23f7fd17f72d5c51a9adf116069a8f683c0",
+            "text": "在 App Engine 上开始使用 Go"
+          },
+          {
+            "id": "89212e3390a18e7471c8817fe08914423c3904b9df4f14f0be43713690bfbfd7",
+            "text": "使用 Go 编写 ⟦P0⟧ Google Cloud Functions"
+          }
+        ]
+      },
+      {
+        "path": "locales/zh-CN/structured/_content/learn/courses.yaml",
+        "data": "",
+        "slots": [
+          {
+            "id": "7323b9d54fbab45aa92c1f5c3ba68c4d92e9b374d85585cbc274fdfd3cd4cc0c",
+            "text": "Codecademy"
+          },
+          {
+            "id": "d40e7198af87221bc06c5caf3752cb17a033b52ac58cd7a12b4ec024170bce69",
+            "text": "本课程涵盖 Go 环境的搭建、Go 基础知识，⟦P0⟧并将带你构建几个示例项目。"
+          },
+          {
+            "id": "7800fc3e9ceac28c7d8728c201f9e430e72dac582e64cf34c571b5166a5f1b8e",
+            "text": "了解更多"
+          },
+          {
+            "id": "ab757ddb3f6a3cf9dec2c24b5ed27be2393c9d330d9510683038acf7fdb84096",
+            "text": "在这门交互式课程中挑战来自社区的 Go 题目，⟦P0⟧并在过程中与其他参与者和导师协作。"
+          },
+          {
+            "id": "e0cc7aacc07c91d08930c2b3b1d6db75491ba6e2c4ffca3b00eb0434b87f204e",
+            "text": "了解更多"
+          },
+          {
+            "id": "89a6f1d80169358b8109e1f87bffe9bd89a16fb7abdfca11a88f9530a0cc4bf0",
+            "text": "Google Developers Codelabs"
+          },
+          {
+            "id": "775b41aac6785afaaf8ec936e409ca29f0d52cfbcd0374c6fd2956b68ec70a55",
+            "text": "从免费的 Codelab 开始，逐步学习如何使用 Go⟦P0⟧构建并发布 Google Cloud Function。"
+          },
+          {
+            "id": "b6a18edcf445bfea8d96e351d898ce886a3bde28795861d82a53c4cfb4ad29de",
+            "text": "了解更多"
+          },
+          {
+            "id": "1bab0063fdbb748b14d156fd21170682e52c4e90be9912f3dff30c748d954b46",
+            "text": "Gophercises"
+          },
+          {
+            "id": "f5c4ff992c5cc5585c027189242c41b3a53e9b6ae9a7014be5c17f86517815c0",
+            "text": "通过这门课程提升使用 Go 的信心；你将⟦P0⟧构建大约二十个不同的 Go 应用。"
+          },
+          {
+            "id": "fc8993c3623696196965fae4d5cd76f01520868671b5f190bc5ed86f0b204b29",
+            "text": "了解更多"
+          }
+        ]
+      },
+      {
+        "path": "locales/zh-CN/structured/_content/learn/guided.yaml",
+        "data": "",
+        "slots": [
+          {
+            "id": "2e9af880a3dffad69f578974640ac8fb1bbde5907b14cc48a09a46390f389617",
+            "text": "Web 开发"
+          },
+          {
+            "id": "a94736139f21fb58dc0e0837a2067a3c6145a13bac25402400ce2cf6dabd3a98",
+            "text": "Go Web Examples 提供易于理解的代码片段，⟦P0⟧展示如何使用 Go 进行 Web 开发。"
+          },
+          {
+            "id": "eab9619663b2a6fa822082a17515efbe530079bf2b0982364c15fc5553fe82ef",
+            "text": "了解更多"
+          },
+          {
+            "id": "28f1c2586e37c98bf131ac8f76af20a30f110d38a67a846d1f3e672305a79c3d",
+            "text": "CLI"
+          },
+          {
+            "id": "8269f0c79740a505a442aeeaa6eedb7453b7eeb84900137e027c0f19c178eb58",
+            "text": "本工作坊将带你使用 Go 构建一个 ⟦P0⟧ 应用，⟦P1⟧并在过程中介绍 Go 的基本原理和 ⟦P2⟧ 框架。"
+          },
+          {
+            "id": "2a967fa5d8707252b91150ca4369ac5990fed126b6da4b5b0977e0d142a6bf10",
+            "text": "了解更多"
+          },
+          {
+            "id": "af584e9a907fdd8dec3af33f1c76e7e390fcf83a212b758455f503e72927f0c7",
+            "text": "刚开始学编程？"
+          },
+          {
+            "id": "aae50b1e45a563d1f445c4526f022170a60fc1a18b24025e68945d889750cb3f",
+            "text": "从这门入门课程开始，学习基本的⟦P0⟧编程原理和 Go 基础知识。"
+          },
+          {
+            "id": "57e59081f9bc72d718e8b08e6abf4b81bf692956ee58ae9274015445ce77b091",
+            "text": "了解更多"
+          }
+        ]
+      },
+      {
+        "path": "locales/zh-CN/structured/_content/learn/quickstart.yaml",
+        "data": "",
+        "slots": [
+          {
+            "id": "14e779d70b81811a02474f955d96ee0559ae7ac4d43f8e3dd5225d03ab73d3eb",
+            "text": "文档"
+          },
+          {
+            "id": "e9cf1999bb5f83c344aefa51a9f451929a5328b064a2260f542a7b9104c4ea3f",
+            "text": "全面了解 Go。你可以从新项目开始，⟦P0⟧也可以复习已有 Go 代码所需的知识。"
+          },
+          {
+            "id": "fce46bd26992deffea6b94b9d0ffef9702c37c77a19c8e26a35ecfe2e1afe29c",
+            "text": "查看文档"
+          },
+          {
+            "id": "637684dbcff4978e48fa7ac71e63cb2d5f07706552ada58c147e3dad05fd7471",
+            "text": "Go 语言之旅"
+          },
+          {
+            "id": "e8c77505874e6c705f3d0e24b1c77c997723fe3098f5802821960d2ca6fd742a",
+            "text": "通过四个部分交互式入门 Go。每个部分⟦P0⟧都以几道练习结束，帮助你实践所学内容。"
+          },
+          {
+            "id": "87a38adf2f139564b3f8079c93c748ce9bbf19043a8da9ebfb53af4afaaa037d",
+            "text": "开始教程"
+          },
+          {
+            "id": "fc263a3da1dabacf5425754635945968fdbdbac9f97e6ee10fefe58b3a4ac56e",
+            "text": "Go by Example"
+          },
+          {
+            "id": "d972d4672648a9a9a5ade827ab7176a62826a44a754765a1e288f587afab282c",
+            "text": "⟦P0⟧Go by Example⟦P1⟧通过带注释的⟦P2⟧示例程序，以动手实践的方式介绍 Go。着手任何 Go⟦P3⟧项目时，它都是很好的起点。"
+          },
+          {
+            "id": "055eba2449c6203189767e49bea9921ac7dcbf743bc48b7a7e388d2ad63c9125",
+            "text": "查看示例"
+          }
+        ]
+      },
+      {
+        "path": "locales/zh-CN/structured/_content/learn/training.yaml",
+        "data": "",
+        "slots": [
+          {
+            "id": "fc2c8c2423d2a240405b4e5c0c07f85acdfa1b6591e0b8383066f75dd543ad9f",
+            "text": "Ardan Labs"
+          },
+          {
+            "id": "7388068388e2f97353c70c8b4c036a62a2664537aa06a0533b43d297a4963c40",
+            "text": "提供定制化的现场面授培训课程。"
+          },
+          {
+            "id": "0aaa02102edd4e96902236759c0b72f396768964f968342679060e6c44c5135b",
+            "text": "Gopher Guides"
+          },
+          {
+            "id": "7577dc744c240076732fdc9756a00e4e01686a239a5f9379aa7728263f49137e",
+            "text": "提供定制化的面授、远程和在线培训课程。由开发者为开发者提供培训。"
+          },
+          {
+            "id": "f9a7cade9a7f42f8a8d24da572b8f076a4c64d6470fe6f70ecbdcaf570907ef8",
+            "text": "Boss Sauce Creative"
+          },
+          {
+            "id": "3818b037343bb2dc1c0cc0310d9b662609fc635486bd55a8bfb2e25141076e66",
+            "text": "为团队提供个性化或按学习路径组织的 Go 培训。"
+          },
+          {
+            "id": "7eb0f3ab1294a59b5203b49ad2140df49bb44e35618c2c3982ae091a1401ac28",
+            "text": "Shiju Varghese"
+          },
+          {
+            "id": "d7c204b382cf9a5dd856ac100f5c1845c31d0008d5bf84c61eedf0516615796c",
+            "text": "在印度提供 Go 现场课堂培训和分布式系统架构咨询。"
+          },
+          {
+            "id": "967422a066166931756c45e890ffcef546c3c934c3b374be4298c693fa8754c6",
+            "text": "kkoehler"
+          },
+          {
+            "id": "09ed221ebbb7085efd2794ab34a3578c1278e3de5aea2cc57af7cb53e61ef2bb",
+            "text": "在德国、奥地利和瑞士提供 Go 面授课堂培训。"
+          }
+        ]
+      },
+      {
+        "path": "locales/zh-CN/structured/_content/learn/tutorials.yaml",
+        "data": "",
+        "slots": [
+          {
+            "id": "9ebdc09db4583adaad863157819c5fe8ab5179cab1bc6e4dfb73d15832eab873",
+            "text": "入门"
+          },
+          {
+            "id": "dc6e3b321bc96ef61fd71c772f1b39de5d07cba17b310c9ba92e2fb510b241c8",
+            "text": "本教程将简要介绍 Go 编程。在此过程中，你将安装 Go、编写简单的“Hello, world”代码、使用 go 命令运行代码、使用 Go 包发现工具，并调用外部模块中的函数。"
+          },
+          {
+            "id": "dc314c4dd46d7b185c9911bcbcff8becb8562f72720bb660b4078bb59073af83",
+            "text": "教程"
+          },
+          {
+            "id": "ff9667b333429b2a39bc8bb59db12242157306a2f851b34f0f756798e230e781",
+            "text": "创建模块"
+          },
+          {
+            "id": "8f697ccf91e565ec1c3bdd3648ee0f033724f9e72b3b8cef3b404610c94fcefd",
+            "text": "这是介绍 Go 语言若干基础特性的教程第一部分。在本教程中，你将创建两个模块：第一个是供其他库或应用程序导入的库，第二个是使用第一个模块的调用方应用程序。"
+          },
+          {
+            "id": "33461b33a9e09cce3a6db8b9d005de0461a43c686a20841ab6ac7a5c1255c188",
+            "text": "教程"
+          },
+          {
+            "id": "642a52f75415af35b6e3b688d07666d2e4fe35ee57a5b179c40b8dd2a07c7a56",
+            "text": "开发 Web 服务"
+          },
+          {
+            "id": "02aa79835c056786ca01708b009f3cf9004afef0ff54fbf7ce62713d5912e354",
+            "text": "本教程介绍使用 Go 和 Gin Web Framework 编写 RESTful Web 服务 ⟦P0⟧ 的基础知识。你将构建一个具有两个端点的 RESTful ⟦P1⟧ 服务器。"
+          },
+          {
+            "id": "f5aecfee649ac399bfe072004b25e788aeec47d62a2541ada384057b46b80215",
+            "text": "交互式教程"
+          },
+          {
+            "id": "ba000ebf6166f2acfdfd707812e544bc1cd351beb86696b396a8e66adecfd225",
+            "text": "访问关系型数据库"
+          },
+          {
+            "id": "1c149d1975ddc7d32d48eb6188d5e87ae1a79f5b20fb241d427adae0f18e35ee",
+            "text": "本教程介绍使用 Go 和标准库中的 ⟦P0⟧ 包访问关系型数据库的基础知识。你将创建一个数据库，然后编写代码访问该数据库。"
+          },
+          {
+            "id": "7f53c88e022979325a144c717b63d1d0cc2f7041d223351c3e282dc757d18d1a",
+            "text": "教程"
+          }
+        ]
+      },
+      {
+        "path": "locales/zh-CN/structured/data/site-shell/home.html",
+        "data": "",
+        "slots": [
+          {
+            "id": "941831b71c7cefc278445356ac21b40dc229d8f3f0edaf1aeafcc6c90bfd9c74",
+            "text": "Go 学习 ⟦P0⟧ 文档多语言本地化项目"
+          },
+          {
+            "id": "33707a17f65d0ef9107853c11324f69bab7f38b41fe8cc30316d574ee74756e8",
+            "text": "通过社区翻译的 Go 语言之旅、学习资源、教程和文档学习 Go。"
+          },
+          {
+            "id": "618bec4bd0aacfc149e4d50d8b4322175e0a432ca2e71514adebf2c1dfa19424",
+            "text": "学习资源"
+          },
+          {
+            "id": "6c232f4ca69283f715cb8ccc99ca21063e11098d691617f603569ce63aed29ce",
+            "text": "⟦P0⟧Go 语言之旅⟦P1⟧⟦P2⟧⟦P3⟧学习⟦P4⟧⟦P5⟧⟦P6⟧教程⟦P7⟧⟦P8⟧⟦P9⟧数据库⟦P10⟧⟦P11⟧⟦P12⟧模块⟦P13⟧⟦P14⟧⟦P15⟧安全⟦P16⟧⟦P17⟧⟦P18⟧关于本翻译项目⟦P19⟧"
+          },
+          {
+            "id": "66bf10b345586c06095aedc41341d4f7ad473b258c74ed8a4709a339f4b116c2",
+            "text": "如已有完整的本地翻译，链接会打开本地版本；否则会打开官方英文源内容。"
+          }
+        ]
+      },
+      {
+        "path": "locales/zh-CN/structured/data/site-shell/translation.html",
+        "data": "",
+        "slots": [
+          {
+            "id": "fc14df339791f48997d0078eb0bdcfac64bdd6857c1712e922c4013891150c68",
+            "text": "Go 学习 ⟦P0⟧ 文档多语言本地化项目"
+          },
+          {
+            "id": "37d22fae8c419c9eb9739d0296e7f2a8ef1d170bcde4dc1c783827f7cce98f89",
+            "text": "本社区项目翻译 Go 语言之旅、学习资源和 Go 文档。未来纳入正式范围的内容同样遵循统一的源内容、术语表和独立审核规则。"
+          },
+          {
+            "id": "4fccae29455ea4ebafd755a9f14c97ef151b5fb5a72a1e1a9962aee657c311a8",
+            "text": "官方英文源内容以本仓库中记录的冻结 ⟦P0⟧ 基线为准。只有完整内容包通过生成、独立语言审核和机器校验后，才会启用本地翻译。"
+          },
+          {
+            "id": "54a10927230c12c235c9e33bf2d47abe88bee169016bdb54ff87c126c56a2a37",
+            "text": "每种语言在所有内容中统一使用一份术语表。源内容或经审核的术语表发生变更时，只重新处理受影响的内容；未受影响的成果则依据已验证的证据继续复用。"
+          },
+          {
+            "id": "75dd1eaa56d13eb593d6e9de3a2a23b6d34d0bfd9dd2267b5737a089f1bc5e33",
+            "text": "项目首页和本页面均不展示广告。Go 语言之旅的广告遵循对应语言版本的发布协议；文档广告遵循站点明确规定的政策。"
+          },
+          {
+            "id": "fbc16ef9104c121d83638b371f7af02af63d9fc5d5c4ba53a9de77d71c603444",
+            "text": "翻译内容可能与最新的官方英文网站存在差异。没有本地版本的页面会直接链接到官方源内容；直接请求不存在的本地页面会返回真实的“未找到”响应。"
+          },
+          {
+            "id": "9a671862aecf4f923a27c83fed9cf29c95db34789855641469c45ebe33a2c312",
+            "text": "项目链接"
+          },
+          {
+            "id": "efdaaf7da1a52f53035373c2d8929f089d258d3e5f629cc94ad0d870ed01e8a7",
+            "text": "⟦P0⟧源代码与开发历史⟦P1⟧⟦P2⟧⟦P3⟧反馈与更正⟦P4⟧⟦P5⟧⟦P6⟧Go 官方网站⟦P7⟧⟦P8⟧⟦P9⟧学习与文档首页⟦P10⟧"
+          }
+        ]
+      }
+    ]
+  },
+  "generation": {
+    "provider": "chatgpt",
+    "model": "gpt-5.6-sol-high",
+    "session": "chatgpt-zh-CN-generation",
+    "generated_at": "2026-10-09T06:30:15Z"
+  },
+  "bundle": {
+    "path": "data/locale-language/zh-CN/structured-bundles/39ee364d065581165e833613e4500af229e690364dbbe66c7c4f325b60df4845.zip",
+    "sha256": "39ee364d065581165e833613e4500af229e690364dbbe66c7c4f325b60df4845"
+  },
+  "identity_sha256": "3aa00f3907d55604a78a411e88fe0fb478e232dd5f80cbfea66ca9e80c53bc78"
+}

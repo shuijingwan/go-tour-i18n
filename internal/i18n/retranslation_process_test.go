@@ -21,6 +21,7 @@ func makeRetranslationProcessBatchForLocale(t *testing.T, locale string, count i
 	t.Helper()
 	root := t.TempDir()
 	writeRetranslationTestGlossaryForLocale(t, root, locale)
+	recordSyntheticUnifiedReview(t, root, "synthetic-generation-review", locale)
 	catalog := retranslationTestCatalog(count)
 	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: locale, Limit: count})
 	if err != nil {
@@ -127,6 +128,7 @@ func makeRetranslationExampleProcessBatch(t *testing.T) (string, *Catalog, strin
 	if _, _, err := RecordGlossaryReview(root, "zh-CN", "test-review", "independent-reviewer", "passed", nil); err != nil {
 		t.Fatal(err)
 	}
+	recordSyntheticUnifiedReview(t, root, "synthetic-example-process-review")
 	source := []byte("package main\n\n// A goroutine sends the value through the channel.\nfunc main() { println(1) }\n")
 	example := Example{
 		ID: "example:basics/channel.go", SourcePath: "_content/tour/basics/channel.go",

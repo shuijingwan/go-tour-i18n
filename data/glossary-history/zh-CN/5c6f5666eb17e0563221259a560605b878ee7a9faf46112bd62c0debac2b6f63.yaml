@@ -1,0 +1,153 @@
+locale: zh-CN
+mandatory:
+  A Tour of Go: Go 语言之旅
+  Reset: 重置
+  Go Playground: Go 语言演练场
+  constraint: 约束
+  type switch: 类型选择
+  type switches: 类型选择
+  type assertion: 类型断言
+  type assertions: 类型断言
+  interface value: 接口值
+  interface type: 接口类型
+  concrete type: 具体类型
+  type parameter: 类型参数
+  type parameters: 类型参数
+preferred:
+  Format: 格式化
+  Run: 运行
+  Go programming language: Go 编程语言
+  built-in: 内置
+  channel: 通道
+  pipeline: 管道
+  tour: 教程
+  the tour: 本教程
+  sandbox: 沙箱
+  deterministic output: 确定性输出
+  package: 包
+  import path: 导入路径
+  package name: 包名
+  import statement: 导入语句
+  exported name: 导出名
+  unexported name: 未导出的名称
+  standard library: 标准库
+  iteration: 迭代
+  loop condition: 循环条件
+  type inference: 类型推断
+  untyped constant: 无类型常量
+  untyped numeric constant: 无类型数值常量
+  module: 模块
+  module path: 模块路径
+  module version: 模块版本
+  module version number: 模块版本号
+  module proxy: 模块代理
+  module graph: 模块图
+  main module: 主模块
+  minimal version selection: 最小版本选择
+  dependency: 依赖项
+  dependencies: 依赖项
+  semantic versioning: 语义化版本
+  semantic version: 语义化版本
+  version number: 版本号
+  major version: 主版本
+  major version number: 主版本号
+  minor version: 次版本
+  patch version: 补丁版本
+  pre-release version: 预发布版本
+  pseudo-version: 伪版本
+  backward compatibility: 向后兼容性
+  breaking change: 破坏性变更
+  workspace: 工作区
+  multi-module workspace: 多模块工作区
+  toolchain: 工具链
+  database: 数据库
+  databases: 数据库
+  relational database: 关系型数据库
+  database management system: 数据库管理系统
+  database handle: 数据库句柄
+  connection pool: 连接池
+  transaction: 事务
+  transactions: 事务
+  prepared statement: 预处理语句
+  prepared statements: 预处理语句
+  query: 查询
+  result set: 结果集
+  driver: 驱动程序
+  vulnerability: 漏洞
+  vulnerabilities: 漏洞
+  vulnerability database: 漏洞数据库
+  vulnerability scanning: 漏洞扫描
+  fuzzing: 模糊测试
+  fuzz test: 模糊测试
+  fuzz tests: 模糊测试
+  fuzz target: 模糊测试目标
+  corpus: 语料库
+  seed corpus: 种子语料库
+  code coverage: 代码覆盖率
+  security: 安全
+  security policy: 安全政策
+  threat model: 威胁模型
+  cryptographic module: 密码模块
+  type argument: 类型实参
+  type arguments: 类型实参
+  generic: 泛型
+  goroutines: goroutine
+  generics: 泛型
+  exercise: 练习
+  syntax highlighting: 语法高亮
+  map: 映射
+  maps: 映射
+  type set: 类型集
+  method set: 方法集
+  underlying type: 底层类型
+  defined type: 定义类型
+  named type: 命名类型
+  alias declaration: 别名声明
+  type definition: 类型定义
+  blank identifier: 空白标识符
+  predeclared identifier: 预声明标识符
+  composite literal: 复合字面量
+  zero value: 零值
+  strictly comparable: 严格可比较
+  type unification: 类型统一
+  memory model: 内存模型
+  data race: 数据竞争
+  data races: 数据竞争
+  race condition: 竞态条件
+  race conditions: 竞态条件
+  race detector: 数据竞争检测器
+  happens before: 发生序
+  sequenced before: 程序序
+  synchronized before: 同步序
+  sequential consistency: 顺序一致性
+  sequentially consistent: 顺序一致
+  checksum database: 校验和数据库
+  build list: 构建列表
+  module graph pruning: 模块图修剪
+  lazy module loading: 延迟模块加载
+  retraction: 版本撤回
+  retracted version: 已撤回的版本
+  retracted versions: 已撤回的版本
+  major version suffix: 主版本后缀
+  build constraint: 构建约束
+  build tag: 构建标签
+  language version: 语言版本
+  go command: go 命令
+  benchmark: 基准测试
+  benchmarks: 基准测试
+  profiling: 性能剖析
+  execution trace: 执行跟踪
+  profile-guided optimization: 基于性能剖析的优化
+  feedback-directed optimization: 反馈导向优化
+forbidden:
+  - 本之旅
+  - 欢迎使用 Go 编程语言之旅
+keep:
+  - Go
+  - gofmt
+  - PageUp
+  - PageDown
+  - Ctrl
+  - Ctrl+Shift+P
+  - Cmd+Shift+P
+  - goroutine

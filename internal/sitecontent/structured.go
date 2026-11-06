@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"reflect"
 	"sort"
 	"strings"
 
@@ -14,15 +15,17 @@ import (
 const StructuredSchema = "go-learning/locale-structured-assets/v1"
 
 type StructuredAsset struct {
-	ID          string      `json:"id"`
-	Package     string      `json:"package"`
-	SourcePaths []string    `json:"source_paths"`
-	SourceSHA   string      `json:"source_sha256"`
-	TargetPath  string      `json:"target_path"`
-	State       string      `json:"state"`
-	TargetSHA   string      `json:"target_sha256,omitempty"`
-	Proof       []Reference `json:"carry_evidence"`
-	Document    *Document   `json:"document,omitempty"`
+	CarriedSlots []Target              `json:"carried_slots,omitempty"`
+	ID           string                `json:"id"`
+	Package      string                `json:"package"`
+	SourcePaths  []string              `json:"source_paths"`
+	SourceSHA    string                `json:"source_sha256"`
+	TargetPath   string                `json:"target_path"`
+	State        string                `json:"state"`
+	TargetSHA    string                `json:"target_sha256,omitempty"`
+	Proof        []Reference           `json:"carry_evidence"`
+	Document     *Document             `json:"document,omitempty"`
+	Assessment   *StructuredAssessment `json:"current_assessment,omitempty"`
 }
 type StructuredPlan struct {
 	Schema      string            `json:"schema"`
@@ -40,7 +43,33 @@ func PlanStructuredAssets(root, locale string) (*StructuredPlan, error) {
 	if !component(locale) {
 		return nil, fmt.Errorf("invalid locale")
 	}
-	if err := requireUnifiedReview(root, locale); err != nil {
+	v := newClosureValidation(root)
+	if err := v.currentInputs(locale); err != nil {
+		return nil, err
+	}
+	var p *StructuredPlan
+	err := withReadonlyStructuredValidation(root, func(successors *structuredSuccessorValidation) error {
+		v.readonlySuccessors = successors
+		var err error
+		p, err = v.planStructuredAssets(root, locale)
+		if err != nil {
+			return err
+		}
+		return v.verify()
+	})
+	return p, err
+}
+
+// One graph spans all assets and packages in this invocation. Reused nodes
+// retain their exact dependency proofs; the public boundary seals the graph.
+func (v *closureValidation) planStructuredAssets(root, locale string) (*StructuredPlan, error) {
+	if err := v.bindLanguageAudit(root, locale); err != nil {
+		return nil, err
+	}
+	if !component(locale) {
+		return nil, fmt.Errorf("invalid locale")
+	}
+	if err := v.requireUnifiedReview(root, locale); err != nil {
 		return nil, err
 	}
 	corpus, err := i18n.LoadUnifiedGlossaryCorpus(root)
@@ -51,32 +80,22 @@ func PlanStructuredAssets(root, locale string) (*StructuredPlan, error) {
 	if err != nil {
 		return nil, err
 	}
-	review, err := i18n.RequireUnifiedGlossaryReview(root, locale)
+	review, err := v.unifiedReview(locale)
 	if err != nil {
 		return nil, err
 	}
 	p := &StructuredPlan{Schema: StructuredSchema, Locale: locale, CorpusSHA: corpus.Identity, GlossarySHA: digest(glossary), Review: Reference{review.Path, review.SHA256}, Assets: []StructuredAsset{}, Expected: []string{}}
-	groups := map[string][]i18n.LanguageContributor{}
-	for _, c := range corpus.Contributors {
-		if !c.Structured {
-			continue
-		}
-		id := c.ID
-		if c.Parser == "ui-visible/v1" {
-			id = "tour-ui"
-		}
-		if c.Parser == "article-header/v1" {
-			id = "article-metadata"
-		}
-		groups[id] = append(groups[id], c)
+	groups, err := structuredContributorGroups(corpus.Contributors)
+	if err != nil {
+		return nil, err
 	}
-	g, err := LoadCurrent(root)
+	g, err := v.loadCurrent(root)
 	if err != nil {
 		return nil, err
 	}
 	docs := map[string]Document{}
 	for _, pkg := range []string{"site-v2-shell", "learn-docs-v1"} {
-		ds, _, err := PackageDocuments(root, g, pkg)
+		ds, _, err := CurrentPackageDocuments(root, g, pkg, v.readonlySuccessors)
 		if err != nil {
 			return nil, err
 		}
@@ -105,13 +124,18 @@ func PlanStructuredAssets(root, locale string) (*StructuredPlan, error) {
 		return nil, err
 	}
 	reuse := map[string]string{}
+	baselines := map[string]*structuredBaseline{}
+	var checkpointEvidence []Reference
 	if completion != nil {
-		plan, err := PlanLocaleLanguage(root, locale)
+		plan, err := planLocaleLanguage(root, locale, true, v)
 		if err != nil {
 			return nil, err
 		}
 		for _, w := range plan.Work {
 			reuse[w.ID] = w.State
+			if w.Package == "tour-v1" && w.State == "carry" && w.Reason == tourCheckpointReason {
+				checkpointEvidence = w.Evidence
+			}
 		}
 	}
 
@@ -137,23 +161,57 @@ func PlanStructuredAssets(root, locale string) (*StructuredPlan, error) {
 			a.TargetPath = "locales/" + locale + "/structured/" + cs[0].Path
 			d, ok := docs[cs[0].Path]
 			if !ok {
-				return nil, fmt.Errorf("unknown structured parser")
+				// A terminology/source foundation is not yet a reconstructable
+				// structured lifecycle. Report it and forbid Bundle export.
+				a.State = "unknown"
+				p.Assets = append(p.Assets, a)
+				continue
 			}
 			a.Document = &d
 		}
 		if c, ok := completed[a.Package]; ok && a.Document != nil {
-			if err := checkPackageCompletion(root, g, locale, c); err != nil {
-				return nil, err
+			baseline := baselines[a.Package]
+			if baseline == nil {
+				baseline, err = v.historicalStructuredCompletion(root, locale, c)
+				if err != nil {
+					return nil, err
+				}
+				baselines[a.Package] = baseline
 			}
-			_, files, err := CheckPackageClosure(root, c.Evidence[0])
+			// Source adoption adds genuinely new assets. A predecessor cannot
+			// carry a target it never accepted; it still proves translation carry.
+			if _, exists := baseline.Owners[a.Document.Path]; !exists {
+				if _, e := readRegular(root, a.TargetPath); e == nil {
+					a.State = "stale"
+				} else if !os.IsNotExist(e) {
+					return nil, e
+				}
+				if a.State == "generation-required" {
+					p.Expected = append(p.Expected, a.TargetPath)
+				}
+				p.Assets = append(p.Assets, a)
+				continue
+			}
+			a.Assessment, err = v.assessStructuredAsset(root, *p, a, baseline)
 			if err != nil {
 				return nil, err
 			}
-			file, ok := files[a.Document.Path]
-			if !ok {
-				return nil, fmt.Errorf("completed structured asset missing from exact closure")
+			a.TargetSHA, a.Proof = a.Assessment.TargetSHA, c.Evidence
+			a.CarriedSlots, err = sourceDeltaCarry(root, *p, a, baseline)
+			if err != nil {
+				return nil, err
 			}
-			a.State, a.TargetSHA, a.Proof = "carry", digest(file), c.Evidence
+			switch a.Assessment.Classification {
+			case "compatible":
+				a.State = "carry"
+			case "affected":
+				a.State = "generation-required"
+			default:
+				a.State = a.Assessment.Classification
+			}
+			if a.State == "generation-required" {
+				p.Expected = append(p.Expected, a.TargetPath)
+			}
 			p.Assets = append(p.Assets, a)
 			continue
 		}
@@ -161,7 +219,17 @@ func PlanStructuredAssets(root, locale string) (*StructuredPlan, error) {
 		if err == nil {
 			a.TargetSHA = digest(target)
 			a.State = "stale"
-			if completion != nil && a.Package == "tour-v1" {
+			if a.Package == "tour-v1" && len(checkpointEvidence) > 0 {
+				carried := true
+				for _, c := range cs {
+					if reuse[c.ID] != "carry" {
+						carried = false
+					}
+				}
+				if carried {
+					a.State, a.Proof = "carry", checkpointEvidence
+				}
+			} else if completion != nil && a.Package == "tour-v1" {
 				for _, r := range completion.Evidence {
 					if r.Path == a.TargetPath && r.SHA256 == a.TargetSHA {
 						a.Proof = append(a.Proof, r)
@@ -179,13 +247,14 @@ func PlanStructuredAssets(root, locale string) (*StructuredPlan, error) {
 							oldGlossary = r.SHA256
 						}
 					}
+					compatibility := i18n.PrepareGlossaryCompatibility(root, locale, cat)
 					for _, c := range cs {
 						scope := c.ID
 						if reuse[scope] != "carry" {
 							unchanged = false
 						}
 						if oldGlossary != p.GlossarySHA {
-							result := i18n.ResolveGlossaryCompatibility(root, locale, oldGlossary, p.GlossarySHA, scope, cat)
+							result := compatibility.Resolve(oldGlossary, p.GlossarySHA, scope)
 							if result.Status != "compatible" && result.Status != "exact" {
 								unchanged = false
 							}
@@ -207,7 +276,7 @@ func PlanStructuredAssets(root, locale string) (*StructuredPlan, error) {
 		} else if !os.IsNotExist(err) {
 			return nil, err
 		} else {
-			a.State = "missing"
+			a.State = "generation-required"
 		}
 		// New/missing/stale share one exact generation-required output set.
 		if a.State != "carry" && a.State != "context-only" {
@@ -215,9 +284,62 @@ func PlanStructuredAssets(root, locale string) (*StructuredPlan, error) {
 		}
 		p.Assets = append(p.Assets, a)
 	}
-	sort.Strings(p.Expected)
-	p.Identity = identity(*p)
+	finishStructuredPlan(p, g)
 	return p, nil
+}
+
+func finishStructuredPlan(p *StructuredPlan, g *Global) {
+	// Reopening is one exact affected delta, never an implicit initial campaign
+	// for unrelated incomplete packages. Their inputs remain context only.
+	reopening := false
+	for _, a := range p.Assets {
+		if a.Assessment != nil && a.Assessment.Classification == "affected" {
+			reopening = true
+		}
+	}
+	if reopening {
+		p.Expected = []string{}
+		for i := range p.Assets {
+			a := &p.Assets[i]
+			if a.Assessment != nil && a.Assessment.Classification == "affected" {
+				p.Expected = append(p.Expected, a.TargetPath)
+			} else if a.Assessment == nil && a.State == "generation-required" && !(g.ShellAdoption != nil && a.Package == "site-v2-shell") {
+				a.State = "context-only"
+			} else if a.State == "generation-required" {
+				p.Expected = append(p.Expected, a.TargetPath)
+			}
+		}
+	}
+	sort.Strings(p.Expected)
+	p.Identity = ""
+	p.Identity = identity(*p)
+}
+
+func structuredContributorGroups(contributors []i18n.LanguageContributor) (map[string][]i18n.LanguageContributor, error) {
+	groups := map[string][]i18n.LanguageContributor{}
+	for _, c := range contributors {
+		if i18n.EffectiveContributorPurpose(c) == i18n.ContributorPurposeTerminologyDiscovery {
+			if c.Structured {
+				return nil, fmt.Errorf("terminology-discovery contributor cannot be structured: %s", c.ID)
+			}
+			continue
+		}
+		if i18n.EffectiveContributorPurpose(c) != i18n.ContributorPurposeActiveContent {
+			return nil, fmt.Errorf("unknown contributor purpose: %s", c.Purpose)
+		}
+		if !c.Structured {
+			continue
+		}
+		id := c.ID
+		if c.Parser == "ui-visible/v1" {
+			id = "tour-ui"
+		}
+		if c.Parser == "article-header/v1" {
+			id = "article-metadata"
+		}
+		groups[id] = append(groups[id], c)
+	}
+	return groups, nil
 }
 func uniqueStrings(xs []string) []string {
 	sort.Strings(xs)
@@ -231,11 +353,14 @@ func uniqueStrings(xs []string) []string {
 }
 
 type StructuredBundle struct {
-	RevisionFinding *Reference                 `json:"revision_finding,omitempty"`
-	Schema          string                     `json:"schema"`
-	Plan            StructuredPlan             `json:"plan"`
-	Files           []i18n.TransportBundleFile `json:"files"`
-	Identity        string                     `json:"identity_sha256"`
+	TransportProfile string                     `json:"transport_profile,omitempty"`
+	ValidationInputs []Reference                `json:"validated_repository_inputs,omitempty"`
+	AuthorityProfile string                     `json:"authority_profile,omitempty"`
+	RevisionFinding  *Reference                 `json:"revision_finding,omitempty"`
+	Schema           string                     `json:"schema"`
+	Plan             StructuredPlan             `json:"plan"`
+	Files            []i18n.TransportBundleFile `json:"files"`
+	Identity         string                     `json:"identity_sha256"`
 }
 
 func ExportStructuredAssets(root, locale string) ([]byte, *StructuredBundle, error) {
@@ -245,7 +370,37 @@ func ExportStructuredAssetsRevision(root, locale string, finding Reference) ([]b
 	return exportStructuredAssets(root, locale, &finding)
 }
 func exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *StructuredBundle, error) {
-	p, err := PlanStructuredAssets(root, locale)
+	if !component(locale) {
+		return nil, nil, fmt.Errorf("invalid locale")
+	}
+	v := newClosureValidation(root)
+	if err := v.currentInputs(locale); err != nil {
+		return nil, nil, err
+	}
+	b, m, err := v.exportStructuredAssetsReadonly(root, locale, finding)
+	return b, m, err
+}
+
+// Export/check own the same explicit readonly successor lifetime as the public
+// planner. Publication/default callers remain eager; no state crosses calls.
+func (v *closureValidation) exportStructuredAssetsReadonly(root, locale string, finding *Reference) ([]byte, *StructuredBundle, error) {
+	var b []byte
+	var m *StructuredBundle
+	err := withReadonlyStructuredValidation(root, func(successors *structuredSuccessorValidation) error {
+		v.readonlySuccessors = successors
+		defer v.phase("structured-export")()
+		var err error
+		b, m, err = v.exportStructuredAssets(root, locale, finding)
+		if err != nil {
+			return err
+		}
+		return v.verify()
+	})
+	return b, m, err
+}
+
+func (v *closureValidation) exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *StructuredBundle, error) {
+	p, err := v.planStructuredAssets(root, locale)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -254,44 +409,125 @@ func exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *S
 		if err != nil {
 			return nil, nil, err
 		}
-		expected := []string{}
-		for i := range p.Assets {
-			a := &p.Assets[i]
-			needed := false
-			for _, f := range r.ExactFindings {
-				if a.Document != nil && a.Document.Path == f.ID {
-					needed = true
-				}
-				if a.ID == "tour-ui" && strings.HasPrefix(f.ID, "ui:") {
-					needed = true
-				}
-				if a.ID == "article-metadata" && strings.HasPrefix(f.ID, "article:") {
-					needed = true
-				}
-			}
-			if needed {
-				expected = append(expected, a.TargetPath)
-				a.State = "generation-required"
-			} else {
-				a.State = "context-only"
-			}
+		if err := selectStructuredSurfaceRevision(root, p, r); err != nil {
+			return nil, nil, err
 		}
-		sort.Strings(expected)
-		p.Expected = expected
-		p.Identity = ""
-		p.Identity = identity(*p)
 	}
 	if len(p.Expected) == 0 {
 		return nil, nil, fmt.Errorf("no generation-required structured assets")
 	}
-	m := &StructuredBundle{Schema: StructuredSchema, RevisionFinding: finding, Plan: *p, Files: []i18n.TransportBundleFile{}}
+	for _, a := range p.Assets {
+		if a.State == "stale" || a.State == "unknown" {
+			return nil, nil, fmt.Errorf("structured asset %s is %s", a.ID, a.State)
+		}
+	}
+	m := &StructuredBundle{Schema: StructuredSchema, AuthorityProfile: StructuredAuthorityProfile, RevisionFinding: finding, Plan: *p, Files: []i18n.TransportBundleFile{}}
 	entries := []i18n.TransportBundleEntry{}
-	paths := []string{i18n.GlossaryCorpusPath, "locales/" + locale + "/glossary.yaml", "locales/" + locale + "/locale.json", p.Review.Path}
+	paths := []string{i18n.GlossaryCorpusPath, "locales/" + locale + "/glossary.yaml", "locales/" + locale + "/locale.json", p.Review.Path, structuredTransportContract, "docs/LANGUAGE_DEFECT_EXHAUSTION.md"}
+	archives := map[Reference]bool{}
+	currentAuthority, err := v.loadCurrent(root)
+	if err != nil {
+		return nil, nil, err
+	}
+	if currentAuthority.ShellAdoption != nil {
+		a, err := CheckShellAdoption(root, *currentAuthority.ShellAdoption, v.readonlySuccessors)
+		if err != nil {
+			return nil, nil, err
+		}
+		paths = append(paths, ShellAdoptionCurrent, currentAuthority.ShellAdoption.Path, a.Foundation.Path, SourceManifestPath)
+	}
+	for _, ref := range currentAuthority.StructuredSuccessors {
+		a, err := checkStructuredSourceSuccessor(root, ref, 0, v.readonlySuccessors)
+		if err != nil {
+			return nil, nil, err
+		}
+		paths = append(paths, ref.Path, structuredSourceCurrent(a.Previous.Path), a.Proposal.Path, a.Body.Path)
+	}
 	paths = append(paths, PackageAuthorities...)
+	paths = append(paths, StructuredSemanticAuthorities...)
 	if finding != nil {
 		paths = append(paths, finding.Path)
 	}
+	archivedGenerations := map[string]*StructuredGeneration{}
+	archivedInputs := map[string]map[string][]byte{}
 	for _, a := range p.Assets {
+		if a.Document != nil && hasSharedDocumentAuthority(*a.Document) {
+			authority, err := sharedDocumentAuthority(*a.Document)
+			if err != nil {
+				return nil, nil, err
+			}
+			ref := *authority
+			for depth := 0; ; depth++ {
+				if depth >= 32 {
+					return nil, nil, fmt.Errorf("shared representation ancestry limit")
+				}
+				paths = append(paths, ref.Path)
+				var receipt SharedRepresentationSuccessor
+				if err := readReference(root, ref, &receipt); err != nil {
+					return nil, nil, err
+				}
+				if depth == 0 {
+					contextPaths, err := sharedReattestationContextPaths(root, receipt, successorValidation(root, []*structuredSuccessorValidation{v.readonlySuccessors}))
+					if err != nil {
+						return nil, nil, err
+					}
+					paths = append(paths, contextPaths...)
+				}
+				if receipt.Previous == nil {
+					break
+				}
+				ref = *receipt.Previous
+			}
+			paths = append(paths, sharedRepresentationHead(a.Package, a.ID))
+		}
+		if a.Assessment != nil {
+			paths = append(paths, a.Assessment.Closure.Path, a.Assessment.Generation.Path, a.Assessment.Surface.Path)
+			if a.Assessment.InputReopen != nil {
+				paths = append(paths, a.Assessment.InputReopen.Path)
+			}
+			r := archivedGenerations[a.Assessment.Generation.Path]
+			fs := archivedInputs[a.Assessment.Generation.Path]
+			if r == nil {
+				var err error
+				r, _, fs, err = v.historicalStructuredGeneration(root, a.Assessment.Generation)
+				if err != nil {
+					return nil, nil, err
+				}
+				archivedGenerations[a.Assessment.Generation.Path], archivedInputs[a.Assessment.Generation.Path] = r, fs
+			}
+			paths = append(paths, r.Bundle.Path, r.Plan.Review.Path)
+			archives[r.Bundle] = true
+			var oldReview i18n.UnifiedGlossaryReview
+			if err := readReference(root, r.Plan.Review, &oldReview); err != nil {
+				return nil, nil, err
+			}
+			reviewArchive := Reference{"data/unified-glossary-reviews/" + locale + "-bundles/" + oldReview.BundleSHA + ".zip", oldReview.BundleSHA}
+			archives[reviewArchive] = true
+			paths = append(paths, reviewArchive.Path)
+			var surface IntegratedSurfaceReceipt
+			if err := readReference(root, a.Assessment.Surface, &surface); err != nil {
+				return nil, nil, err
+			}
+			paths = append(paths, surface.Evidence.Path)
+			if a.State == "generation-required" && a.Document != nil {
+				for _, t := range r.Output.Outputs {
+					if t.Path != a.TargetPath {
+						continue
+					}
+					data, err := Encode(t)
+					if err != nil {
+						return nil, nil, err
+					}
+					name := "previous/" + a.Document.Path + ".json"
+					entries = append(entries, i18n.TransportBundleEntry{Path: name, Data: data})
+					m.Files = append(m.Files, i18n.NewTransportBundleFile(name, "", data))
+				}
+				name := "baseline/" + a.ID + "/glossary.yaml"
+				data := fs["inputs/locales/"+locale+"/glossary.yaml"]
+				entries = append(entries, i18n.TransportBundleEntry{Path: name, Data: data})
+				m.Files = append(m.Files, i18n.NewTransportBundleFile(name, "", data))
+			}
+		}
 		if a.State != "carry" && a.State != "context-only" {
 			for _, path := range a.SourcePaths {
 				if a.Document == nil {
@@ -301,7 +537,7 @@ func exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *S
 		}
 	}
 	for _, path := range uniqueStrings(paths) {
-		b, err := readRegular(root, path)
+		b, err := v.readRegular(root, path)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -309,13 +545,22 @@ func exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *S
 		entries = append(entries, i18n.TransportBundleEntry{Path: name, Data: b})
 		m.Files = append(m.Files, i18n.NewTransportBundleFile(name, path, b))
 	}
-	global, err := LoadCurrent(root)
+	global, err := v.loadCurrent(root)
 	if err != nil {
 		return nil, nil, err
 	}
 	raw := map[string][]byte{}
+	neededPackages := map[string]bool{}
+	for _, a := range p.Assets {
+		if a.Document != nil && a.State != "carry" && a.State != "context-only" {
+			neededPackages[a.Package] = true
+		}
+	}
 	for _, pkg := range []string{"site-v2-shell", "learn-docs-v1"} {
-		_, files, err := PackageDocuments(root, global, pkg)
+		if !neededPackages[pkg] {
+			continue
+		}
+		_, files, err := CurrentPackageDocuments(root, global, pkg, v.readonlySuccessors)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -330,7 +575,13 @@ func exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *S
 		b := raw[a.Document.Path]
 		name := "source/" + a.Document.Path
 		entries = append(entries, i18n.TransportBundleEntry{Path: name, Data: b})
-		m.Files = append(m.Files, i18n.NewTransportBundleFile(name, a.Document.Path, b))
+		repositoryPath := a.Document.Path
+		for _, s := range global.Sources {
+			if s.Path == a.Document.Path {
+				repositoryPath = currentSourceReference(s).Path
+			}
+		}
+		m.Files = append(m.Files, i18n.NewTransportBundleFile(name, repositoryPath, b))
 	}
 	if finding != nil {
 		var review IntegratedSurfaceReceipt
@@ -338,10 +589,14 @@ func exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *S
 			return nil, nil, err
 		}
 		for _, ref := range review.Scope.Closures {
-			_, previous, err := CheckPackageClosure(root, ref)
+			// Full finding validation above already proved current eligibility
+			// or exact representation-successor revision authority. Previous
+			// targets are historical inputs, not a second current closure gate.
+			baseline, err := v.historicalStructuredClosure(root, ref, map[string]bool{})
 			if err != nil {
 				return nil, nil, err
 			}
+			previous := baseline.Files
 			for _, a := range p.Assets {
 				if a.State != "generation-required" || a.Document == nil {
 					continue
@@ -354,6 +609,10 @@ func exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *S
 			}
 		}
 	}
+	entries, err = projectStructuredArchiveTransport(m, entries, archives)
+	if err != nil {
+		return nil, nil, err
+	}
 	sort.Slice(m.Files, func(i, j int) bool { return m.Files[i].BundlePath < m.Files[j].BundlePath })
 	m.Identity = identity(*m)
 	manifest, err := Encode(m)
@@ -361,28 +620,33 @@ func exportStructuredAssets(root, locale string, finding *Reference) ([]byte, *S
 		return nil, nil, err
 	}
 	b, err := i18n.WriteDeterministicTransportBundle(manifest, entries)
+	if err == nil {
+		_, _, err = readStructuredBundle(b) // Never export an unusable/oversized transport.
+	}
 	return b, m, err
 }
 func CheckStructuredAssetsBundle(root string, b []byte) (*StructuredBundle, error) {
-	fs, err := i18n.ReadTransportBundle(b, 256, 32<<20)
+	m, fs, err := readStructuredBundle(b)
 	if err != nil {
 		return nil, err
 	}
-	var m StructuredBundle
-	if err := StrictJSON(fs["manifest.json"], &m); err != nil {
-		return nil, err
-	}
-	if err := i18n.ValidateTransportBundleInventory(fs, m.Files, true); err != nil {
-		return nil, err
-	}
-	want, _, err := exportStructuredAssets(root, m.Plan.Locale, m.RevisionFinding)
+	want, current, err := exportStructuredAssets(root, m.Plan.Locale, m.RevisionFinding)
 	if err != nil {
 		return nil, err
 	}
 	if !bytes.Equal(want, b) {
-		return nil, fmt.Errorf("structured bundle stale/noncanonical")
+		if m.AuthorityProfile != StructuredAuthorityProfile {
+			return nil, fmt.Errorf("structured bundle stale/noncanonical")
+		}
+		_, currentFiles, err := readStructuredBundle(want)
+		if err != nil {
+			return nil, err
+		}
+		if err := compatibleStructuredBundles(*m, fs, *current, currentFiles); err != nil {
+			return nil, fmt.Errorf("structured bundle stale/noncanonical: %w", err)
+		}
 	}
-	return &m, nil
+	return m, nil
 }
 
 type StructuredTarget struct {
@@ -396,12 +660,14 @@ type StructuredOutput struct {
 	Outputs   []StructuredTarget `json:"outputs"`
 }
 type StructuredGeneration struct {
-	Schema     string           `json:"schema"`
-	Plan       StructuredPlan   `json:"plan"`
-	Output     StructuredOutput `json:"output"`
-	Provenance Provenance       `json:"generation"`
-	Bundle     Reference        `json:"bundle"`
-	Identity   string           `json:"identity_sha256"`
+	TimestampRecovery *Reference              `json:"timestamp_recovery,omitempty"`
+	CarryForward      *StructuredCarryForward `json:"carry_forward,omitempty"`
+	Schema            string                  `json:"schema"`
+	Plan              StructuredPlan          `json:"plan"`
+	Output            StructuredOutput        `json:"output"`
+	Provenance        Provenance              `json:"generation"`
+	Bundle            Reference               `json:"bundle"`
+	Identity          string                  `json:"identity_sha256"`
 }
 
 func validateStructuredOutput(root string, p StructuredPlan, o StructuredOutput) (map[string][]byte, error) {
@@ -417,15 +683,13 @@ func validateStructuredOutput(root string, p StructuredPlan, o StructuredOutput)
 	if err != nil {
 		return nil, err
 	}
-	raw := map[string][]byte{}
-	for _, pkg := range []string{"site-v2-shell", "learn-docs-v1"} {
-		_, rs, err := PackageDocuments(root, g, pkg)
-		if err != nil {
-			return nil, err
-		}
-		for k, v := range rs {
-			raw[k] = v
-		}
+	selected := []StructuredAsset{}
+	for _, t := range o.Outputs {
+		selected = append(selected, all[t.Path])
+	}
+	docs, raw, err := currentStructuredDocuments(root, g, selected)
+	if err != nil {
+		return nil, err
 	}
 	glossary, err := i18n.LoadGlossary(root, p.Locale)
 	if err != nil {
@@ -437,22 +701,19 @@ func validateStructuredOutput(root string, p StructuredPlan, o StructuredOutput)
 		}
 		a := all[t.Path]
 		if a.Document != nil {
-			if t.Data != "" || len(t.Slots) != len(a.Document.Units) {
-				return nil, fmt.Errorf("structured parser slot exact-set required")
+			if identity(docs[a.Document.Path]) != identity(*a.Document) {
+				return nil, fmt.Errorf("structured current exact input mismatch")
 			}
-			values := map[string]string{}
-			for _, v := range t.Slots {
-				if values[v.ID] != "" {
-					return nil, fmt.Errorf("duplicate structured slot")
-				}
-				values[v.ID] = v.Text
+			values, err := structuredTargetValues(a, t, glossary)
+			if err != nil {
+				return nil, err
 			}
-			for _, u := range a.Document.Units {
-				if err := i18n.ValidateParsedGlossary(u.Source, values[u.ID], glossary); err != nil {
-					return nil, err
-				}
+			var b []byte
+			if a.Assessment != nil && a.Assessment.SourceSuccessor != nil {
+				b, err = reconstructFrozenStructuredRepresentation(*a.Document, raw[a.Document.Path], values)
+			} else {
+				b, err = reconstructAuthorityStructuredRepresentation(*a.Document, raw[a.Document.Path], values)
 			}
-			b, err := Reconstruct(documentSource(*a.Document), raw[a.Document.Path], values)
 			if err != nil {
 				return nil, err
 			}
@@ -487,6 +748,9 @@ func validateStructuredOutput(root string, p StructuredPlan, o StructuredOutput)
 			}
 			files[t.Path] = b
 		}
+	}
+	if _, err := structuredLanguageAttention(root, p, raw, files); err != nil {
+		return nil, err
 	}
 	return files, nil
 }
@@ -526,9 +790,12 @@ func ImportStructuredAssets(root string, bundle, output []byte, provenance Prove
 func CheckStructuredGeneration(root string, ref Reference) (*StructuredGeneration, map[string][]byte, error) {
 	return checkStructuredGeneration(root, ref, "")
 }
-func checkStructuredGeneration(root string, ref Reference, pkg string) (*StructuredGeneration, map[string][]byte, error) {
+func (validation *closureValidation) computeCurrentStructuredGeneration(root string, ref Reference, pkg string) (*StructuredGeneration, map[string][]byte, error) {
+	if _, _, _, err := validation.historicalStructuredGeneration(root, ref); err != nil {
+		return nil, nil, err
+	}
 	var r StructuredGeneration
-	if err := readReference(root, ref, &r); err != nil {
+	if err := validation.readReference(root, ref, &r); err != nil {
 		return nil, nil, err
 	}
 	copy := r
@@ -536,36 +803,69 @@ func checkStructuredGeneration(root string, ref Reference, pkg string) (*Structu
 	if r.Schema != StructuredSchema || r.Identity != identity(copy) || ref.Path != "data/locale-language/"+r.Plan.Locale+"/structured-generation/"+r.Identity+".json" {
 		return nil, nil, fmt.Errorf("invalid structured evidence identity")
 	}
-	if err := validateProvenance(r.Provenance); err != nil {
+	if _, err := validateStructuredProvenance(root, &r); err != nil {
 		return nil, nil, err
 	}
-	b, err := readRegular(root, r.Bundle.Path)
-	if err != nil || digest(b) != r.Bundle.SHA256 {
-		return nil, nil, fmt.Errorf("structured archived bundle hash mismatch")
-	}
-	fs, err := i18n.ReadTransportBundle(b, 256, 32<<20)
+	_, m, fs, err := readStructuredGeneration(root, ref)
 	if err != nil {
 		return nil, nil, err
 	}
-	var manifest StructuredBundle
-	if err := StrictJSON(fs["manifest.json"], &manifest); err != nil {
+	if m.AuthorityProfile != "" {
+		paths := append([]string(nil), StructuredSemanticAuthorities...)
+		for _, f := range m.Files {
+			if strings.HasPrefix(f.RepositoryPath, "docs/") && !structuredExecutionAuthority(f.RepositoryPath) {
+				paths = append(paths, f.RepositoryPath)
+			}
+		}
+		for _, name := range uniqueStrings(paths) {
+			if _, err := validation.readRegular(root, name); err != nil {
+				return nil, nil, err
+			}
+		}
+	}
+	if err := checkStructuredSemanticAuthority(root, *m, fs); err != nil {
 		return nil, nil, err
 	}
-	m := &manifest
-	if err := i18n.ValidateTransportBundleInventory(fs, m.Files, true); err != nil {
+	if err := validation.bindLanguageAudit(root, r.Plan.Locale); err != nil {
 		return nil, nil, err
-	}
-	mc := *m
-	mc.Identity = ""
-	if m.Identity != identity(mc) {
-		return nil, nil, fmt.Errorf("structured archived input identity mismatch")
-	}
-
-	if identity(m.Plan) != identity(r.Plan) || r.Output.BundleSHA != m.Identity {
-		return nil, nil, fmt.Errorf("structured evidence input mismatch")
 	}
 	p := r.Plan
 	o := r.Output
+	if err := validation.requireUnifiedReview(root, p.Locale); err != nil {
+		return nil, nil, err
+	}
+	if err := validation.validateStructuredDelta(root, &r, m); err != nil {
+		return nil, nil, err
+	}
+	glob, err := validation.loadCurrent(root)
+	if err != nil {
+		return nil, nil, err
+	}
+	selected := []StructuredAsset{}
+	for _, a := range p.Assets {
+		if a.Document == nil || (pkg != "" && a.Package != pkg) {
+			continue
+		}
+		for _, t := range o.Outputs {
+			if t.Path == a.TargetPath {
+				selected = append(selected, a)
+			}
+		}
+	}
+	currentDocs, _, err := currentStructuredDocuments(root, glob, selected)
+	if err != nil {
+		return nil, nil, err
+	}
+	for _, a := range p.Assets {
+		if a.Document == nil || (pkg != "" && a.Package != pkg) {
+			continue
+		}
+		for _, t := range o.Outputs {
+			if t.Path == a.TargetPath && identity(currentDocs[a.Document.Path]) != identity(*a.Document) {
+				return nil, nil, fmt.Errorf("structured current source drift: %s", a.ID)
+			}
+		}
+	}
 	if pkg != "" {
 		assets := []StructuredAsset{}
 		wanted := map[string]bool{}
@@ -586,7 +886,7 @@ func checkStructuredGeneration(root string, ref Reference, pkg string) (*Structu
 		}
 	}
 	// Per-asset semantic reuse; corpus growth elsewhere is not a language gate.
-	current, err := readRegular(root, "locales/"+p.Locale+"/glossary.yaml")
+	current, err := validation.readRegular(root, "locales/"+p.Locale+"/glossary.yaml")
 	if err != nil {
 		return nil, nil, err
 	}
@@ -621,6 +921,20 @@ func checkStructuredGeneration(root string, ref Reference, pkg string) (*Structu
 	return &r, files, err
 }
 func structuredSupersedes(root string, g *StructuredGeneration, parent Reference, path string) bool {
+	if g != nil && g.CarryForward != nil {
+		original, _, _, err := readStructuredGeneration(root, parent)
+		if err == nil && original.CarryForward == nil && original.Bundle == g.Bundle && reflect.DeepEqual(original.Plan, g.Plan) && reflect.DeepEqual(original.Output, g.Output) && original.Provenance == g.Provenance {
+			for _, a := range g.Plan.Assets {
+				if a.Document != nil && a.Document.Path == path {
+					for _, t := range g.Output.Outputs {
+						if t.Path == a.TargetPath {
+							return true
+						}
+					}
+				}
+			}
+		}
+	}
 	b, err := readRegular(root, g.Bundle.Path)
 	if err != nil {
 		return false
@@ -637,22 +951,67 @@ func structuredSupersedes(root string, g *StructuredGeneration, parent Reference
 	if readReference(root, *m.RevisionFinding, &r) != nil || r.Decision != "failed" {
 		return false
 	}
+	copy := r
+	copy.Identity = ""
+	scope := r.Scope
+	scope.Identity = ""
+	if r.Schema != IntegratedSurfaceSchema || r.Identity != identity(copy) || r.Scope.Identity != identity(scope) || r.Scope.Locale != g.Plan.Locale {
+		return false
+	}
+	if _, err := readRegularReference(root, r.Evidence); err != nil {
+		return false
+	}
+	if err := requireIndependentSession(root, r.Scope.Locale, r.Reviewer, "reviewer"); err != nil {
+		return false
+	}
 	exact := false
+	owners, err := reviewedFindingAssets(root, &r)
+	if err != nil {
+		return false
+	}
+	asset, ok := owners[path]
+	if !ok {
+		return false
+	}
 	for _, f := range r.ExactFindings {
-		if f.ID == path {
+		if f.ID == path && structuredLanguageFinding(f, asset) {
 			exact = true
 		}
 	}
 	if !exact {
 		return false
 	}
+	// Validate every scope reference before an owner match can return success.
+	// Only the finding owner's exact package participates in owner resolution.
+	closures := map[Reference]PackageClosure{}
 	for _, ref := range r.Scope.Closures {
 		var c PackageClosure
 		if readReference(root, ref, &c) != nil {
 			return false
 		}
+		if c.Package == asset.Package {
+			closures[ref] = c
+		}
+	}
+	for _, ref := range r.Scope.Closures {
+		c, ok := closures[ref]
+		if !ok {
+			continue
+		}
 		for _, old := range c.Structured {
 			if old == parent {
+				return true
+			}
+		}
+		// A mandatory shared composition finding may name a carried asset whose
+		// Generation owner is inherited through the closure's frozen baseline.
+		// Resolve the exact path's accepted owner, never an arbitrary ancestor.
+		if c.StructuredBaseline != nil {
+			owner, err := compositionStructuredOwner(root, ref, r.Scope.Locale, asset, map[Reference]bool{})
+			if err != nil {
+				return false
+			}
+			if owner == parent {
 				return true
 			}
 		}

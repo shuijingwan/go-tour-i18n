@@ -22,6 +22,10 @@ type Reconciliation struct {
 }
 
 func validateDocuments(docs []Document) error {
+	return validateDocumentRepresentations(docs, true)
+}
+
+func validateDocumentRepresentations(docs []Document, current bool) error {
 	if len(docs) == 0 {
 		return fmt.Errorf("empty document set")
 	}
@@ -42,9 +46,32 @@ func validateDocuments(docs []Document) error {
 			if err != nil {
 				return err
 			}
-			parsed, err := ParseWorkflowDocument(documentSource(d), []byte(raw), d.StableIndex)
-			if err != nil || identity(parsed) != identity(d) {
-				return fmt.Errorf("formal Page source/protection identity mismatch")
+			if current {
+				parsed, err := ParseWorkflowDocument(documentSource(d), []byte(raw), d.StableIndex)
+				if err != nil || identity(parsed) != identity(d) {
+					return fmt.Errorf("formal Page source/protection identity mismatch")
+				}
+			}
+			if digest([]byte(raw)) != d.SourceSHA {
+				return fmt.Errorf("historical Page physical source mismatch")
+			}
+			if !current {
+				// Reassemble frozen slots, rather than reinterpret them with the
+				// current protector. The formal ID binds every protected byte.
+				slots := d
+				last := 0
+				for _, slot := range d.Slots {
+					restored, e := restoreBlock(slot, slot.Source)
+					if e != nil || slot.ID != digest([]byte(UnitContract+"\n"+slot.Locator)) || slot.SourceSHA != unitSourceIdentity(slot.Source, slot.Protected) || slot.Start < last || slot.End > len(raw) || slot.End <= slot.Start || restored != raw[slot.Start:slot.End] {
+						return fmt.Errorf("historical Page source coordinate mismatch")
+					}
+					last = slot.End
+				}
+				slots.Units = d.Slots
+				frozen, e := FormalPage(slots, []byte(raw), d.StableIndex)
+				if e != nil || identity(frozen) != identity(d) {
+					return fmt.Errorf("historical Page slot/protection identity mismatch")
+				}
 			}
 		}
 		paths[d.Path] = true
@@ -76,6 +103,35 @@ func ReconcileDocuments(old, next []Document) (*Reconciliation, error) {
 	if err := validateDocuments(next); err != nil {
 		return nil, err
 	}
+	return reconcileDocuments(old, next), nil
+}
+
+// ReconcileHistoricalPages accepts only an explicit frozen formal representation
+// of the same physical sources and registry. It grants no language/QC carry.
+func ReconcileHistoricalPages(old, next []Document) (*Reconciliation, error) {
+	if err := validateReplacementDocuments(old, false); err != nil {
+		return nil, err
+	}
+	if err := validateReplacementDocuments(next, true); err != nil {
+		return nil, err
+	}
+	if len(old) != len(next) {
+		return nil, fmt.Errorf("replacement package membership changed")
+	}
+	for i, a := range old {
+		b := next[i]
+		if a.UnitScope != PageContract || b.UnitScope != PageContract || a.Path != b.Path || a.SourceSHA != b.SourceSHA || a.Route != b.Route || a.StableIndex != b.StableIndex || identity(a.Dependencies) != identity(b.Dependencies) {
+			return nil, fmt.Errorf("replacement requires exact physical Page/registry/dependencies: %s", a.Path)
+		}
+	}
+	r := reconcileDocuments(old, next)
+	if len(r.NeedsMapping) != 0 {
+		return nil, fmt.Errorf("ambiguous Page replacement")
+	}
+	return r, nil
+}
+
+func reconcileDocuments(old, next []Document) *Reconciliation {
 	result := &Reconciliation{Contract: UnitContract, OldSHA: documentIdentity(old), NewSHA: documentIdentity(next), Units: []UnitChange{}, NeedsMapping: []string{}}
 	prior := map[string]Document{}
 	future := map[string]Document{}
@@ -148,5 +204,5 @@ func ReconcileDocuments(old, next []Document) (*Reconciliation, error) {
 	}
 	sort.Slice(result.Units, func(i, j int) bool { return result.Units[i].ID < result.Units[j].ID })
 	sort.Strings(result.NeedsMapping)
-	return result, nil
+	return result
 }

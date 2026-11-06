@@ -140,6 +140,8 @@ go run -mod=readonly ./cmd/tour-i18n quality-check record-batch \
 
 新增 locale 的效率优先默认调度以[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md#新增-locale-默认调度路径效率优先)为唯一高层入口：不得提前导出后续两组 Reviewer ZIP；每组完成 `reviewer-bundle-check`、独立审核与 record 后才导出下一组，并默认先完成三组首审、汇总 B/C/D，再集中 revision。record 会改变同一 Snapshot 的 current scope，使先前预导出的后续 ZIP stale；中途 revision 又必须切换到新的 full Snapshot，旧 Snapshot 的预导出 ZIP 不再是当前审核目标。CLI 仍允许已有执行在中途 revision；恢复时不倒退或改写历史结果，而是从新的 full Snapshot、`--previous-snapshot-id` 与 current pending scope 继续，旧 A 只按下述 exact identity 规则 carry-forward。
 
+Learn/Docs 的固定 working set 只约束 initial Generation / initial QC；完整初审后，正式 B/C/D 与 Surface reopen revision 可跨 initial group。successor Snapshot 的 re-QC 采用上述 current pending、stable index、同 kind、最多60规则，不继承 initial partition。Reviewer Bundle 与 record 根据解析后的 predecessor lineage 使用相同阶段约束；多组继续 JIT。具体共享调度见[共享生命周期](SHARED_TRANSLATION_UNIT_LIFECYCLE.md#固定调度与独立审核)。
+
 旧 evidence 中没有 finding 的 B/C/D 继续兼容读取，但在 revision export 前必须通过 CLI 补录，禁止人工编辑 JSON：
 
 ```bash
@@ -245,6 +247,26 @@ Quality Check 的实际审核工作集由 `pending_quality_check_units` 决定�
 
 finalization 绑定 Snapshot manifest、glossary、rubric、QC-result lineage、完整解析后的 A 结果及每个 Unit 的 source/candidate/validation/attempt identity。新 promotion 必须显式指定并验证该 finalization，且仍独立重验 manifest/input、glossary、restore、validator 与 retry provenance。
 
+### finalize 的历史 representation successor 合同
+
+`quality-check finalize --content-package <package> --locale <locale> --snapshot-id <current> --previous-snapshot-id <previous>` 中，历史 predecessor 的 representation reconciliation 按该事件自己的冻结 descriptor world 验证。例如 A→B 的 immutable receipt 必须仍精确证明 A→B；今天的 canonical representation 为 C 时，还必须由 source provider 独立验证 B→C 的完整正式 successor lineage、当前 pointer 和必要 dependency re-attestation。不能用相同 path/raw SHA 代替 descriptor、protected input 或 successor authority，也不能把 receipt 中的 B 改解成 C。缺链、歧义、循环、错误 package/source/identity 或 stale authority 均拒绝。
+
+这只保持历史 A 的可审计性，不授予 C carry/A。current Snapshot 的完整 active validation、currentness 和独立 A-only QC 必须另外通过。
+
+| Contract | 当前语义 |
+| --- | --- |
+| COMMAND / OPERATION | `quality-check finalize` / `finalize` |
+| INPUT_KIND | 完整 QC lineage，含显式 package scope 和 persisted historical predecessor chain |
+| INPUT_PATH_CONTRACT | 无文件输入；仅 locale/package/Snapshot identifiers |
+| MUTATION_EXPECTATION | 成功 publication 为 `known`；publication 前 validation failure 为 `none` |
+| IDEMPOTENCE | write-once/no-overwrite；已存在 finalization 拒绝，不 replay/覆盖 |
+| CURRENTNESS_CHECK | current Snapshot + frozen predecessor event worlds + exact canonical successor chain；dependency drift 必须有正式 current re-attestation |
+| PRIOR_OR_CAS | 显式 persisted predecessor 及其 exact finalization SHA；目标不存在 |
+| SUCCESS_STOP | immutable finalization publication 后停止 |
+| FAILURE_STOP / RECOVERY | 保留已有 evidence；无 fallback、predecessor rewrite 或 receipt mutation，不盲目重跑；publication 状态未知先诊断 |
+
+此 historical-currentness contract 修改后，首次真实 finalize 前须重新读本合同、current implementation 和 direct CLI/contract tests，完成 [first-real-use gate](WORKFLOW_HANDOFF.md#formal-command-contract-v3)。engineering proof 只在隔离副本执行，不记录真实 Snapshot finalization。
+
 新 revision export 只接受 Quality Check B/C/D feedback。Final Review B/C/D feedback 的 parser 与历史 manifest fields 仅为历史兼容保留，不得用于新正式流程。
 
 ## 必须逐 TranslationUnit 审核
@@ -257,6 +279,40 @@ finalization 绑定 Snapshot manifest、glossary、rubric、QC-result lineage、
 - 用批次级结论代替逐 TranslationUnit review。
 
 抽样评审可以用于模型实验、prompt 调优和质量趋势分析，但不能替代 promotion 前的逐 TranslationUnit Review。
+
+### B/C/D finding 完整性与 successor re-QC
+
+Reviewer 必须对完整 current Unit 做 fresh judgment，不能只核对上一轮 examples。一旦决定 B/C/D 并识别某个 **finding category**，在提交最终 finding 前，必须对当前完整 reviewed Unit 做一次该 category 的 **same-class scan**，尽可能一次收全已经观察到的同类实例。这里要求 reasonable complete scan，不要求数学意义的穷举证明；不能明知是重复型 defect 却只列几个代表实例就结束。
+
+finding 必须明确 defect category 与 bounded scope。已观察实例应尽可能完整列出，并用 exact phrase/token adjacency、paragraph/section/table row 或其他稳定局部坐标定位。实例很多时，可以用 **exact predicate / defect pattern + bounded scope** 表达，例如“当前 Page 全文中，按该目标语言规范应分隔、却与紧邻正文不当粘连的 inline Go API identifier”；不能仅以“例如 / e.g. / 等”留下模糊开放边界。scope 可以是当前完整 Page、指定 section、表格列或明确的 teaching-comment 区域，不能跨出正式授权的 Unit/slot 集合。
+
+Reviewer examples 是 finding evidence，**不默认构成 exhaustive revision boundary**。只有 finding 明确标为 **exact-instance-only**，才只授权列出的具体实例；Generation 不得自行把 examples 当作该限制，也不得从含糊 examples 猜出一个全文 scope。category、predicate 或 scope 不清楚时，按[精确修订任务语义](TRANSLATION_TASK_SPEC.md#精确修订任务语义) fail closed，报告 ambiguity，不回写历史 finding。
+
+same-class scan 不得混入无关措辞偏好、一般润色或另一 defect category。fresh judgment 若发现多个独立问题，必须分别说明各自类别、实例/predicate 和修订边界，不把不同类别并成“改好全文”这类无限 scope finding。以下只是可能的重复类别，不是一律判错的语言规则：
+
+- inline code / API / identifier 与相邻目标语言正文不当粘连；合法词缀和 protected identity 仍按 source、目标语言规范及既有结构合同判断。
+- 指定范围内同一类中文标点前后的异常空格。
+- 同一 bounded section 内某个术语反复出现的同型错误。
+- 同一表格列说明中重复的同型语义错误。
+- 授权 teaching-comment 区域内同一种局部问题。
+
+可在现有自然语言 finding 中使用以下写法；这是推荐 evidence 组织方式，不新增 machine 字段、schema、CLI 或 receipt：
+
+```text
+Finding category:
+<precise defect class>
+
+Observed instances:
+<尽可能完整的已观察实例及定位，或 exact predicate + bounded scope>
+
+Revision scope:
+<同一 current Unit 内的 same-class complete sweep 边界；若仅限具体实例，明确 exact-instance-only>
+
+Out of scope:
+<其他问题类别、一般性润色及必须保持的 protected/structure 内容>
+```
+
+successor re-QC 仍须对完整 current Unit 做独立 fresh judgment；除检查原 finding 明列实例外，还必须检查 **persisted finding category 在授权 scope 内是否完整关闭**。若仍有同类残留，可以继续判 B/C/D，但 finding 必须明确标为 **same-class residual**，尽可能完整列出剩余实例或给出 exact bounded predicate，不能将残留伪装成全新类别。新发现的独立类别另行表达，不能借 closure 扩大原 revision scope。旧 finding/evidence 不回写、不迁移；上述规则不改变评级定义、独立 Reviewer、A-only 或既有调度与 gate。
 
 ## Candidate 变化与重新审核
 
@@ -357,7 +413,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review supersede \
 
 `reviewer` 是审核主体标识，不是账号或权限系统。每个 locale 的 Generation provider 可以在正式 generation 开始前选为普通 ChatGPT 或 Codex，均使用 GPT-5.6 Sol + High；独立 ChatGPT GPT-5.6 Sol + High Reviewer session 统一承担 Quality Check。Quality Check 必须来自与该 locale Generation session 独立的 Reviewer session：该 session 不得参与该 locale 的 glossary、UI / metadata、TranslationUnit initial / revision / retry、Course SEO language generation 或任何 replacement generation。Legacy Final Review 的审核主体同样必须独立重新读取 source、candidate 和相关 evidence 后执行审核。
 
-同一个 generation-independent Reviewer session 可以先完成 [Glossary Review](GLOSSARY_REVIEW.md)，再承担 TranslationUnit Quality Check、revision re-QC 与 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)；三个 gate 仍各自使用自己的范围和 evidence，不要求再建立其他 reviewer session。B/C/D finding 必须回到 Generation session 产生 replacement；具备仓库终端能力的当前 AI execution environment 默认自动完成小批 revision export / bundle / result landing / process / validation、新 Snapshot / scope、Reviewer bundle current-check 与结果 record / finalize。只要 Reviewer session 没有参与 replacement generation，它可以继续 re-QC；不得直接修改 candidate、生成 replacement 后批准自己的结果，或因为上一轮已经审核过就自动批准 revision。全 A finalization 后的 promotion 仍由维护者 Local terminal 执行。
+同一个 generation-independent Reviewer session 可以先完成 [Glossary Review](GLOSSARY_REVIEW.md)，再承担 TranslationUnit Quality Check、revision re-QC 与 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)；三个 gate 仍各自使用自己的范围和 evidence，不要求再建立其他 reviewer session。B/C/D finding 必须回到 Generation session 产生 replacement；维护者 Local terminal 默认执行 revision export / bundle / result landing / process / validation、新 Snapshot / scope、Reviewer bundle current-check 与结果 record / finalize；AI 按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)提供完整命令并消费合法 terminal evidence，与小批规模或预计耗时无关。只要 Reviewer session 没有参与 replacement generation，它可以继续 re-QC；不得直接修改 candidate、生成 replacement 后批准自己的结果，或因为上一轮已经审核过就自动批准 revision。全 A finalization 后的 promotion 仍由维护者 Local terminal 执行。
 
 审核必须重新判断译文质量，不得用 validation passed、旧 A、Surface Review 结论、reviewer 身份或模型历史表现自动批准。未来可以使用其他模型或人工 reviewer，但都必须遵循同一正式 rubric 和 evidence schema。本项目当前不构建 reviewer 账号系统；完整会话职责见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
 
@@ -407,13 +463,15 @@ go run -mod=readonly ./cmd/tour-i18n quality-check preflight \
 
 输出列出已有 finalized Snapshot、结果是否已经开始、persisted/selected predecessor、可 carry-forward A、需要 QC 或 revision 的 Unit，以及预计 Reviewer Unit 数。存在既有 finalization 而新 Snapshot 未选择 predecessor 时，mode 为 `predecessor-required`；第一次 `record` 会 fail closed。维护者确实决定完整重审时，先以 `--full-rereview` 检查预计重复范围，并且只在第一次 `record` 或 `record-batch` 显式传 `--full-rereview`；结果文件建立后继续记录不得重复传该授权。结果文件一旦存在，`previous_snapshot_id` 仍不可补写或更换。
 
-Surface Review 已明确发现某个旧 A TranslationUnit 缺陷时，不把它伪装成完整重审，也不覆盖旧 A/finalization。先确保正式 Markdown finding 精确写出 Unit ID，再创建不可覆盖的 reopen receipt：
+Surface Review 已明确发现某个旧 A TranslationUnit 缺陷时，不把它伪装成完整重审，也不覆盖旧 A/finalization。Integrated Surface 使用既有 immutable receipt 的 exact finding、explicit affected artifacts 和 current scope 授权；`class=translation-unit-language` 的 finding 才能进入 TU reopen。canonical candidate artifact 直接绑定 Snapshot 的 UnitID/kind、source path/SHA、candidate path/SHA、validation path/SHA 和 attempt，表示由 TU/adapter 决定，不限定 Markdown。历史独立 Surface Markdown finding 的直接 UnitID 合同保留兼容。
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n quality-check surface-reopen \
   --locale <locale> --reopen-id <id> \
-  --previous-snapshot-id <current-finalized-snapshot> \
+  --previous-snapshot-id <exact-finalized-predecessor-snapshot> \
   --surface-review-id <review-id> --finding "<specific finding>" \
+  [--finding "<another exact finding>" ...] \
+  [--integrated-surface] \
   --unit-id <unit-id> [--unit-id <unit-id> ...]
 
 go run -mod=readonly ./cmd/tour-i18n retranslation export \
@@ -422,8 +480,32 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
   --surface-reopen-id <id> --id <unit-id> [--id <unit-id> ...]
 ```
 
-receipt 绑定当前 finalized predecessor、正式 Surface evidence 的 path/SHA-256、精确同 kind TU identity 和 finding；`--finding` 必须原样存在于该 Markdown，且每个 Unit ID 必须作为完整标识出现，不能用子串冒充；revision unit set 必须 exact-match，默认且硬性上限为 60，Page / Example 不得混合。manifest 使用 `revision_feedback_source=surface_review` 与显式 authorization ID。revision 后的新 full Snapshot 仍以旧 finalized Snapshot 为 predecessor：未变化 A 正常 carry-forward，变化 Unit 进入 re-QC。任何 evidence、finalization 或 TU identity 变化都 fail closed。
+两种 reopen 路径均绑定 exact finalized predecessor、正式 Surface evidence 的 path/SHA-256、精确同 kind TU identity 和 finding。普通/legacy 直接 Markdown 路径继续要求当前 finalization 验证通过；它要求 `--finding` 原样存在于 evidence，每个 Unit ID 作为完整标识出现，不能用子串冒充。revision unit set 必须 exact-match，默认且硬性上限为 60，Page / Example 不得混合。manifest 使用 `revision_feedback_source=surface_review` 与显式 authorization ID。revision 后的新 full Snapshot 仍以旧 finalized Snapshot 为 predecessor：未变化 A 正常 carry-forward，变化 Unit 进入 re-QC。任何 evidence、finalization 或 TU identity 变化都 fail closed。
+
+上段 Markdown 文本匹配仅适用于历史直接 evidence 路径。`--integrated-surface` 使用 `data/locale-language/<locale>/surface/<review-id>.json` 原 receipt，经独立 session、receipt/scope identity、evidence SHA、closure/runtime/current scope 检查，再通过共享 `ExactSourceTranslationUnit` 将 source path + UnitKind + frozen source SHA 映射为恰好一个 UnitID；0/多个匹配拒绝，不用 route、latest 或近似名称。finding 的 `artifacts` 必须原样属于 Surface scope 的 `candidate_artifacts`，且 Snapshot/validation/candidate bytes 全部一致。多 Unit finding 必须在 receipt 中列出完整 affected scope；未列出的 A 正常 carry。已有 carry TU 只有 scope 绑定其 exact artifact、receipt 明确记录语言 finding 才可定向 reopen，这不产生一次新的 TU A。
+
+Integrated Surface predecessor 可以是 glossary/package membership 已演进的 immutable historical finalization。必须先完整验证 FAILED Surface receipt、独立 Reviewer/session、Markdown SHA、current scope/closure 与 exact artifacts，再按指定 Snapshot 的完整 ordered coordinates 经共享 `SelectFinalizedTranslationPackage` 选择其正式 historical package scope；显式 `--content-package` 仍必须是 Surface 实际绑定的 current owner，历史 predecessor 按下述 composition 关系解析；不能把今天新增的 Page 当作历史 QC，也不能由旧 scope 授权新增 Page。随后通过共享 `RequireCurrentTranslationAuthorization` 验证 sealed checkpoint 或执行等价 readonly assessment：完整 historical A/finalization integrity、exact current source/input/candidate、current glossary、full Unified Review、semantic assessment 与 active validator 全部通过才可 reopen；affected/stale/unknown 一律拒绝，不因没有 checkpoint 而建立新的 authorization。历史 Snapshot/glossary 不要求等于今天 mutable glossary，也不改写原 bytes。exact artifact 另由既有 historical reader 验证 Snapshot membership、candidate/validation path/SHA、attempt 和 reconciliation lineage；当前 source path + UnitKind + source SHA 仍必须唯一映射到同一 UnitID。当前选中 candidate 必须仍为该 predecessor artifact，不能用 latest 替换 reviewed artifact；conflicting successor 拒绝。此分域仅适用于 `--integrated-surface`，不放宽普通 `VerifyQualityCheckFinalization`。
+
+membership composition 中某个 sibling 的 historical package ID 可以不同于显式 current package ID；这不是跨 owner 的任意授权。共享 reader 必须已验证 current Surface scope/closure 的完整 composition，Surface context 必须绑定显式 current owner 的 canonical closure，且该 predecessor 的完整 ordered Unit ID/kind/source path/SHA 必须精确包含于 current membership；所选 finding artifact 仍必须属于指定 historical Snapshot。只给同 bytes、相同 route 或另一个 package 名称不能成立此关系。各 predecessor 分别记录 reopen 并 exact export；A 的 export-only state 不消费 B 的不相交 scope，同一 reopen 或冲突 Unit 的 successor export 仍拒绝。
+
+`--previous-snapshot-id`、`--surface-review-id` 和 `--reopen-id` 都是 stable identity，不是文件路径。成功只以 exclusive create 写入一个新的 immutable `data/quality-check-reopens/<locale>/<reopen-id>.json`；同 ID 重复执行拒绝，不覆盖、不伪装为 idempotent success。validation 失败不发布 reopen；旧 A/finalization、Surface receipt 和已有 authorization 全部保留。record 与首次消费重新检查 current authority，已冻结 invocation 的历史读取仍验证原 integrity 与 exact artifacts，不重放今天的语言资格。
+
+同一个 FAILED Integrated Surface receipt 的多个独立 `translation-unit-language` exact finding，可以用 repeatable `--finding` 形成一个 aggregate reopen：所有 affected Unit 必须属于同一个已通过下述 historical integrity 与 current authorization 检查的 finalized predecessor Snapshot、同一种 UnitKind，总数最多60。每个 finding 必须非空、trimmed、在原 receipt 中 exact match，并具有已审核的 exact artifacts。授权从所选 findings 的 artifact union 建立 Unit→finding 映射；显式 `--unit-id` 集合必须与 union 完全相等，不按 flags 顺序或位置配对。重复 finding、重复 Unit、同一 Unit 被两个 finding 授权、missing/extra Unit、未匹配或 non-TU finding 均拒绝。revision 不继承 initial `1–30` / `31–51` partition；一个 aggregate reopen ID 可一次导出全部授权 Unit，形成一次 concentrated revision 和一个 Generation Bundle，不为独立 finding 拆分 invocation。
+
+reopen schema v1 additive 保存 `findings` 与每条 `units[].finding`；aggregate 的全局 `finding` 为空，不用第一个 finding 代替其他 Unit。读取时从原 authority 重新验证 selected findings 的 exact-set 及逐 Unit finding。旧 single-`finding` v1 receipt 继续原样读取、校验与 export，无需迁移或 schema bump；新单 finding reopen 仍使用原表示。每个 revision manifest Unit 固化自己的 exact `previous_finding`，同时绑定相同的 `revision_authorization_id`、`revision_feedback_source=surface_review`、`previous_rating=A`、`previous_review_decision=reopened` 与原 immutable receipt path/SHA。Generation Bundle 沿用现有 per-unit feedback 和 predecessor 输入；所有 currentness/identity/SHA gate 保持不变，不修改原 receipt、Reviewer evidence、旧 QC/finalization 或 closure。
+
+UI、结构化资产、navigation、sitemap、canonical、runtime、ads、coverage、package integration 等 finding 保持原 Surface/package blocker，不填写伪造 UnitID，也不走 TU revision。record reopen 与首次 revision export 都检查 receipt 当前性；export 后 authority 作为原 invocation 的冻结证据，由既有 revision/retry currentness 接管。原 receipt、reviewer evidence、context references、source 和 predecessor artifact 仍不可变化；已成功 sibling 不把其余原 retry Bundle 失效化。新 scope/closure 完成后必须重新取得独立 Integrated Surface PASS，不能用旧 failed receipt 或 TU A-only 代替。
+
+独立 Surface PASS 后由 preview acceptance 发现的可机械证明 TU 缺陷，使用[Preview TU failure authority](PREVIEW_TU_FAILURE.md) 的独立 immutable machine receipt，通过 `quality-check surface-reopen --preview-failure` 复用同一 revision lifecycle。不能修改旧 PASS、补造 Reviewer finding 或滥用 `--historical-documents`；machine authorization 不产生语言 rating，successor 仍需 independent re-QC。
 
 ## Present 可见文本审核
 
 Reviewer 判断 `.article` 的下划线、强调范围或词间空格前，必须以仓库锁定的 `golang.org/x/tools/present` 实际解析结果为准。legacy Present 用同一个 marker 分隔 span 内的词：`_two_words_` 渲染为一个 italic span，用户可见文本是 `two words`，内部下划线不是缺陷；`_two words_` 因真实空格分词而不会形成同一 emphasis span，用户会看到下划线，才可能构成 finding。仓库测试直接调用实际 parser/`present.Style` 固定该正反例。不得仅搜索原始下划线就提出 finding，也不得为绕过审核放宽 protected token、restore 或 importer。
+
+### 受限 predecessor 的同 Unit representation recovery
+
+正式 B/C/D finding 与 reviewed candidate 保持有效，但 passed predecessor raw 不具备 ordinary prose editing capability 时，先走[同 Unit machine bridge](TRANSLATION_UNIT_REPLACEMENT.md#同一-formal-unit-的受限-transport-bridge)只读 preflight；只在明确授权后 record，再建立新的 exact ordinary QC revision。此 authority 不给语言 rating，不修改原结果，不继承 A，不伪造 formal replacement。per-Unit B/C/D 与 finding 原样进入后续 revision，修订完成仍需 validation、新 Snapshot、独立 re-QC 和 A-only 收口。没有 current bridge 时 early capability guard 继续 fail closed。
+
+## Deterministic language audit 与 Reviewer attention
+
+current TU machine validation 先要求合法 [locale language policy](LANGUAGE_DEFECT_EXHAUSTION.md#正式接入合同首次真实使用前仍须-command-contract-gate)。只有机器可证明的 policy violation 阻断；source-prose/protected-language/paragraph 等 review candidates 不改变 validation/QC decision。QC Reviewer Bundle 保留完整 source/target/glossary，并通过既有 inventory 携带 `machine/language-review-candidates.json` 和 exact policy metadata。Reviewer 必须阅读完整材料，候选不是 finding、不是评分、不是 reopen authority。旧 A 不改写，当前 eligibility 不 grandfather；失败沿既有 current-validation/reopen/recovery 处理。

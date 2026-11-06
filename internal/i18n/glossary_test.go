@@ -7,19 +7,15 @@ import (
 	"testing"
 )
 
-func TestZhCNMandatoryGlossary(t *testing.T) {
+func TestZhCNGlossaryPolicy(t *testing.T) {
 	glossary, err := LoadGlossary(repoRoot(t), "zh-CN")
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := map[string]string{
+
+	for key, want := range map[string]string{
 		"A Tour of Go":    "Go 语言之旅",
-		"previous":        "上一页",
-		"next":            "下一页",
-		"Run":             "运行",
-		"Format":          "格式化",
-		"slide":           "页面",
-		"slides":          "页面",
+		"Reset":           "重置",
 		"Go Playground":   "Go 语言演练场",
 		"constraint":      "约束",
 		"type switch":     "类型选择",
@@ -31,102 +27,78 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		"concrete type":   "具体类型",
 		"type parameter":  "类型参数",
 		"type parameters": "类型参数",
-	}
-	for key, value := range want {
-		if got := glossary.Mandatory[key]; got != value {
-			t.Errorf("mandatory[%q] = %q, want %q", key, got, value)
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
 		}
 	}
-	if len(glossary.Forbidden) != 3 {
-		t.Fatalf("forbidden = %v", glossary.Forbidden)
-	}
-	for _, value := range []string{"幻灯片", "本之旅", "欢迎使用 Go 编程语言之旅"} {
-		if !containsString(glossary.Forbidden, value) {
-			t.Errorf("forbidden missing %q: %v", value, glossary.Forbidden)
+	for _, key := range []string{"previous", "next", "slide", "slides", "Run"} {
+		if _, ok := glossary.Mandatory[key]; ok {
+			t.Errorf("context-sensitive term %q must not be globally mandatory", key)
 		}
 	}
-	wantKeep := []string{"Go", "gofmt", "PageUp", "PageDown", "Shift", "Enter", "Ctrl", "goroutine", "goroutines", "Goroutines"}
-	if len(glossary.Keep) != len(wantKeep) {
-		t.Fatalf("keep = %v, want %v", glossary.Keep, wantKeep)
-	}
-	for i, value := range wantKeep {
-		if glossary.Keep[i] != value {
-			t.Errorf("keep[%d] = %q, want %q", i, glossary.Keep[i], value)
-		}
-	}
-	wantPreferred := map[string]string{
+
+	for key, want := range map[string]string{
+		"Run":                     "运行",
 		"Go programming language": "Go 编程语言",
-		"tour":                    "教程",
-		"the tour":                "本教程",
-		"sandbox":                 "沙箱",
-		"deterministic output":    "确定性输出",
+		"channel":                 "通道",
+		"pipeline":                "管道",
 		"package":                 "包",
-		"import path":             "导入路径",
-		"package name":            "包名",
-		"import statement":        "导入语句",
-		"exported name":           "导出名",
-		"unexported name":         "未导出的名称",
-		"standard library":        "标准库",
-		"iteration":               "迭代",
-		"loop condition":          "循环条件",
-		"module":                  "模块",
-		"exercise":                "练习",
-		"syntax highlighting":     "语法高亮",
 		"map":                     "映射",
 		"maps":                    "映射",
-	}
-	for key, value := range wantPreferred {
-		if got := glossary.Preferred[key]; got != value {
-			t.Errorf("preferred[%q] = %q, want %q", key, got, value)
+		"generic":                 "泛型",
+		"generics":                "泛型",
+		"goroutines":              "goroutine",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
 		}
-		if _, ok := glossary.Mandatory[key]; ok {
-			t.Errorf("preferred term %q is also mandatory", key)
+	}
+	if got, ok := glossary.Mandatory["Format"]; ok {
+		if got != "格式化" {
+			t.Errorf("mandatory Format = %q, want 格式化", got)
+		}
+	} else if got := glossary.Preferred["Format"]; got != "格式化" {
+		t.Errorf("Format has no current 格式化 decision")
+	}
+
+	for _, want := range []string{"本之旅", "欢迎使用 Go 编程语言之旅"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
 		}
 	}
+	if containsString(glossary.Forbidden, "幻灯片") {
+		t.Errorf("context-valid translation 幻灯片 must not be globally forbidden")
+	}
+
+	for _, want := range []string{"Go", "gofmt", "PageUp", "PageDown", "Ctrl", "Ctrl+Shift+P", "Cmd+Shift+P", "goroutine"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+	for _, unwanted := range []string{"Shift", "Enter", "goroutines", "Goroutines"} {
+		if containsString(glossary.Keep, unwanted) {
+			t.Errorf("ordinary-language collision %q must not be a bare keep", unwanted)
+		}
+	}
+
 	rules := glossary.PromptRules("welcome/1")
-	for _, text := range []string{
+	for _, want := range []string{
 		"A Tour of Go => Go 语言之旅（强制；不得保留对应的英文显示文本）",
-		"Go Playground => Go 语言演练场（强制；不得保留对应的英文显示文本）",
-		"普通正文中的 tour => 教程（上下文指导；应结合完整页面自然翻译）",
-		"普通正文中的 the tour => 本教程（上下文指导；应结合完整页面自然翻译）",
-		"普通正文中的 sandbox => 沙箱（上下文指导；应结合完整页面自然翻译）",
-		"普通正文中的 deterministic output => 确定性输出（上下文指导；应结合完整页面自然翻译）",
-		"普通正文中的 map => 映射（上下文指导；应结合完整页面自然翻译）",
-		"普通正文中的 maps => 映射（上下文指导；应结合完整页面自然翻译）",
-		"Go（保持原样；不得翻译）",
-		"goroutine（保持原样；不得翻译）",
-		"gofmt（保持原样；不得翻译）",
-		"禁止使用的 zh-CN 译法：幻灯片",
+		"普通正文中的 Run => 运行（上下文指导；应结合完整页面自然翻译）",
+		"普通正文中的 pipeline => 管道（上下文指导；应结合完整页面自然翻译）",
+		"Go（作为对应技术 identity 时保持原样；普通语言中的同形词按上下文翻译）",
+		"Ctrl+Shift+P（作为对应技术 identity 时保持原样；普通语言中的同形词按上下文翻译）",
 		"welcome/1 必须将 tour 的含义保留为“之旅”；不得简化或改变该含义",
 	} {
-		if !strings.Contains(rules, text) {
-			t.Errorf("prompt rules missing %q", text)
+		if !strings.Contains(rules, want) {
+			t.Errorf("prompt rules missing %q", want)
 		}
 	}
-	for _, old := range []string{"(mandatory;", "ordinary prose ", "forbidden zh-CN translation:", "do not simplify or change"} {
-		if strings.Contains(rules, old) {
-			t.Errorf("prompt rules retain English control text %q", old)
-		}
+	if strings.Contains(rules, "Go（保持原样；不得翻译）") {
+		t.Fatal("prompt retained unconditional keep wording")
 	}
-	ordered := []string{
-		"A Tour of Go =>", "Format =>", "Go Playground =>", "Run =>", "next =>", "previous =>", "slide =>", "slides =>",
-		"普通正文中的 Go programming language =>", "普通正文中的 deterministic output =>", "普通正文中的 exercise =>", "普通正文中的 exported name =>", "普通正文中的 import path =>",
-		"普通正文中的 import statement =>", "普通正文中的 iteration =>", "普通正文中的 loop condition =>",
-		"普通正文中的 map =>", "普通正文中的 maps =>", "普通正文中的 module =>", "普通正文中的 package =>", "普通正文中的 package name =>", "普通正文中的 sandbox =>",
-		"普通正文中的 standard library =>", "普通正文中的 syntax highlighting =>", "普通正文中的 the tour =>", "普通正文中的 tour =>",
-		"普通正文中的 unexported name =>", "Ctrl（保持原样；不得翻译）", "Enter（保持原样；不得翻译）",
-		"Go（保持原样；不得翻译）", "Goroutines（保持原样；不得翻译）", "PageDown（保持原样；不得翻译）", "PageUp（保持原样；不得翻译）",
-		"Shift（保持原样；不得翻译）", "gofmt（保持原样；不得翻译）",
-		"goroutine（保持原样；不得翻译）", "goroutines（保持原样；不得翻译）", "禁止使用的 zh-CN 译法：幻灯片",
-	}
-	last := -1
-	for _, text := range ordered {
-		index := strings.Index(rules, text)
-		if index <= last {
-			t.Errorf("prompt rule order is wrong at %q:\n%s", text, rules)
-		}
-		last = index
-	}
+
 	glossaryData, err := os.ReadFile(filepath.Join(repoRoot(t), "locales", "zh-CN", "glossary.yaml"))
 	if err != nil {
 		t.Fatal(err)
@@ -507,7 +479,7 @@ func TestKoKRGlossary(t *testing.T) {
 		"A Tour of Go => Go 언어 투어（强制；不得保留对应的英文显示文本）",
 		"Go Playground => Go 플레이그라운드（强制；不得保留对应的英文显示文本）",
 		"普通正文中的 channel => 채널（上下文指导；应结合完整页面自然翻译）",
-		"goroutine（保持原样；不得翻译）",
+		"goroutine（作为对应技术 identity 时保持原样；普通语言中的同形词按上下文翻译）",
 		"禁止使用的 ko-KR 译法：고루틴",
 	} {
 		if !strings.Contains(rules, want) {
@@ -574,7 +546,7 @@ func TestEsESGlossary(t *testing.T) {
 		"A Tour of Go => Un tour por Go（强制；不得保留对应的英文显示文本）",
 		"Go Playground => Go Playground（强制；不得保留对应的英文显示文本）",
 		"普通正文中的 channel => canal（上下文指导；应结合完整页面自然翻译）",
-		"goroutine（保持原样；不得翻译）",
+		"goroutine（作为对应技术 identity 时保持原样；普通语言中的同形词按上下文翻译）",
 		"禁止使用的 es-ES 译法：Golang",
 	} {
 		if !strings.Contains(rules, want) {
@@ -1002,6 +974,18 @@ func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	}
 	if strings.Contains(glossary.PromptRules("example/1"), "exercise") {
 		t.Fatal("legacy terms unexpectedly became active")
+	}
+}
+
+func TestGlossaryPromptKeepIsIdentityScoped(t *testing.T) {
+	g := &Glossary{Locale: "zh-CN", Mandatory: map[string]string{"A": "甲"}, Keep: []string{"Go"}}
+	rules := g.PromptRules("example/1")
+	want := "Go（作为对应技术 identity 时保持原样；普通语言中的同形词按上下文翻译）"
+	if !strings.Contains(rules, want) {
+		t.Fatalf("prompt rules missing %q:\n%s", want, rules)
+	}
+	if strings.Contains(rules, "Go（保持原样；不得翻译）") {
+		t.Fatalf("prompt rules retained unconditional keep wording:\n%s", rules)
 	}
 }
 

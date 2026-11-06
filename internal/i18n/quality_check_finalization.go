@@ -16,18 +16,20 @@ const QualityCheckFinalizationEvidenceType = "quality_check_finalization"
 // QualityCheckFinalization is the sole promotion authority for new work. It
 // records a mechanical proof that the complete Snapshot resolves to QC A.
 type QualityCheckFinalization struct {
-	SchemaVersion          int                             `json:"schema_version"`
-	EvidenceType           string                          `json:"evidence_type"`
-	Locale                 string                          `json:"locale"`
-	SnapshotID             string                          `json:"snapshot_id"`
-	SnapshotManifestPath   string                          `json:"snapshot_manifest_path"`
-	SnapshotManifestSHA256 string                          `json:"snapshot_manifest_sha256"`
-	GlossaryPath           string                          `json:"glossary_path"`
-	GlossarySHA256         string                          `json:"glossary_sha256"`
-	Rubric                 string                          `json:"rubric"`
-	QCResults              []QualityCheckFinalizationInput `json:"quality_check_results"`
-	Units                  []QualityCheckFinalizationUnit  `json:"units"`
-	FinalizedAt            string                          `json:"finalized_at"`
+	SchemaVersion           int                             `json:"schema_version"`
+	EvidenceType            string                          `json:"evidence_type"`
+	Locale                  string                          `json:"locale"`
+	SnapshotID              string                          `json:"snapshot_id"`
+	PreviousSnapshotID      string                          `json:"previous_snapshot_id,omitempty"`
+	PredecessorFinalization *GlossaryArchiveReference       `json:"predecessor_finalization,omitempty"`
+	SnapshotManifestPath    string                          `json:"snapshot_manifest_path"`
+	SnapshotManifestSHA256  string                          `json:"snapshot_manifest_sha256"`
+	GlossaryPath            string                          `json:"glossary_path"`
+	GlossarySHA256          string                          `json:"glossary_sha256"`
+	Rubric                  string                          `json:"rubric"`
+	QCResults               []QualityCheckFinalizationInput `json:"quality_check_results"`
+	Units                   []QualityCheckFinalizationUnit  `json:"units"`
+	FinalizedAt             string                          `json:"finalized_at"`
 }
 type QualityCheckFinalizationInput struct {
 	SnapshotID string `json:"snapshot_id"`
@@ -43,8 +45,8 @@ type QualityCheckFinalizationUnit struct {
 	Snapshot           QualityCheckSnapshotUnit   `json:"snapshot"`
 }
 type QualityCheckFinalizeOptions struct {
-	Locale, SnapshotID string
-	Now                func() time.Time
+	Locale, SnapshotID, PreviousSnapshotID string
+	Now                                    func() time.Time
 }
 
 func qualityCheckFinalizationPath(root, locale, snapshotID string) string {
@@ -78,7 +80,7 @@ func FinalizeQualityCheck(root string, catalog *Catalog, options QualityCheckFin
 	} else if !os.IsNotExist(err) {
 		return nil, "", err
 	}
-	finalization, err := buildQualityCheckFinalization(root, catalog, options.Locale, options.SnapshotID, options.Now)
+	finalization, err := buildQualityCheckFinalizationWithEvaluation(newQualityCheckEvaluation(root, options.Locale, catalog), options.SnapshotID, options.Now, options.PreviousSnapshotID)
 	if err != nil {
 		return nil, "", err
 	}
@@ -93,22 +95,70 @@ func FinalizeQualityCheck(root string, catalog *Catalog, options QualityCheckFin
 }
 
 func buildQualityCheckFinalization(root string, catalog *Catalog, locale, snapshotID string, now func() time.Time) (*QualityCheckFinalization, error) {
-	snapshot, err := readQualityCheckSnapshotForReview(root, locale, snapshotID, catalog)
+	evaluation := newQualityCheckEvaluation(root, locale, catalog)
+	return buildQualityCheckFinalizationWithEvaluation(evaluation, snapshotID, now)
+}
+
+func buildQualityCheckFinalizationWithEvaluation(evaluation *qualityCheckEvaluation, snapshotID string, now func() time.Time, predecessors ...string) (*QualityCheckFinalization, error) {
+	root, catalog, locale := evaluation.root, evaluation.catalog, evaluation.locale
+	previous := ""
+	var predecessor *GlossaryArchiveReference
+	if len(predecessors) > 0 {
+		previous = predecessors[0]
+	}
+	snapshot, err := readQualityCheckSnapshotWithCompatibility(root, locale, snapshotID, true, catalog, evaluation.compatibility)
 	if err != nil {
 		return nil, err
 	}
-	scope, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: locale, SnapshotID: snapshotID})
+	scope, err := buildQualityCheckScopeWithEvaluation(evaluation, QualityCheckScopeOptions{Locale: locale, SnapshotID: snapshotID, PreviousSnapshotID: previous})
 	if err != nil {
 		return nil, err
 	}
 	if !scope.ReadyForFinalization || scope.ACount != snapshot.UnitCount || scope.BCount != 0 || scope.CCount != 0 || scope.DCount != 0 || scope.PendingCount != 0 {
 		return nil, errors.New("quality-check finalization requires complete A-only Quality Check coverage")
 	}
-	_, effective, err := loadEffectiveQualityCheckResults(root, locale, snapshotID, map[string]bool{}, catalog)
+	bindPredecessorFinalization := previous != ""
+	if bindPredecessorFinalization {
+		_, err := os.Lstat(qualityCheckFinalizationPath(root, locale, previous))
+		if os.IsNotExist(err) {
+			// Ordinary revision carries reviewed A from a mixed-rating Snapshot.
+			// Its immutable QC inputs supply lineage; that Snapshot cannot have
+			// A-only finalization yet. Zero-review carry still requires one.
+			currentResults, e := readQualityCheckResults(root, locale, snapshot)
+			if e != nil {
+				return nil, e
+			}
+			if currentResults == nil {
+				return nil, fmt.Errorf("zero-review carry requires predecessor finalization")
+			}
+			bindPredecessorFinalization = false
+		} else if err != nil {
+			return nil, err
+		}
+	}
+	if bindPredecessorFinalization {
+		// The predecessor supplies its historical A proof. Current carry is
+		// separately decided above by QC scope/re-attestation, never by asking
+		// that predecessor to become a new current judgment.
+		_, predecessorErr := VerifyHistoricalQualityCheckFinalization(root, locale, previous, catalog)
+		if predecessorErr != nil {
+			return nil, fmt.Errorf("predecessor finalization: %w", predecessorErr)
+		}
+		ref, err := successorReference(root, filepath.ToSlash(filepath.Join("data", "quality-check-snapshots", locale, previous, "finalization.json")))
+		if err != nil {
+			return nil, err
+		}
+		predecessor = &ref
+	}
+	_, effective, err := evaluation.loadEffectiveQualityCheckResults(snapshotID, map[string]bool{})
 	if err != nil {
 		return nil, err
 	}
-	inputs, err := qualityCheckFinalizationInputs(root, locale, snapshotID, map[string]bool{})
+	for _, carry := range scope.CarryForward {
+		u := snapshot.Units[carry.Index-1]
+		effective[carry.UnitID] = effectiveQualityCheckResult{rating: carry.Rating, rubric: TranslationQualityRubric, snapshotID: carry.FromSnapshotID, unit: u, compatibilityChain: carry.CompatibilityChain}
+	}
+	inputs, err := qualityCheckFinalizationInputs(root, locale, snapshotID, map[string]bool{}, previous)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +168,7 @@ func buildQualityCheckFinalization(root string, catalog *Catalog, locale, snapsh
 	}
 	units := make([]QualityCheckFinalizationUnit, 0, len(snapshot.Units))
 	for _, unit := range snapshot.Units {
-		if _, err := readSnapshotUnitRepositoryEvidence(root, catalog, locale, unit); err != nil {
+		if _, err := evaluation.readSnapshotUnitRepositoryEvidence(snapshotID, unit); err != nil {
 			return nil, fmt.Errorf("snapshot index %d (%s) identity: %w", unit.Index, unit.UnitID, err)
 		}
 		result, ok := effective[unit.UnitID]
@@ -130,10 +180,37 @@ func buildQualityCheckFinalization(root string, catalog *Catalog, locale, snapsh
 	if now == nil {
 		now = time.Now
 	}
-	return &QualityCheckFinalization{SchemaVersion: QualityCheckFinalizationSchemaVersion, EvidenceType: QualityCheckFinalizationEvidenceType, Locale: locale, SnapshotID: snapshotID, SnapshotManifestPath: filepath.ToSlash(filepath.Join("data", "quality-check-snapshots", locale, snapshotID, "manifest.json")), SnapshotManifestSHA256: sum(manifestData), GlossaryPath: snapshot.GlossaryPath, GlossarySHA256: snapshot.GlossarySHA256, Rubric: TranslationQualityRubric, QCResults: inputs, Units: units, FinalizedAt: now().UTC().Format(time.RFC3339Nano)}, nil
+	return &QualityCheckFinalization{SchemaVersion: QualityCheckFinalizationSchemaVersion, EvidenceType: QualityCheckFinalizationEvidenceType, Locale: locale, SnapshotID: snapshotID, PreviousSnapshotID: previous, PredecessorFinalization: predecessor, SnapshotManifestPath: filepath.ToSlash(filepath.Join("data", "quality-check-snapshots", locale, snapshotID, "manifest.json")), SnapshotManifestSHA256: sum(manifestData), GlossaryPath: snapshot.GlossaryPath, GlossarySHA256: snapshot.GlossarySHA256, Rubric: TranslationQualityRubric, QCResults: inputs, Units: units, FinalizedAt: now().UTC().Format(time.RFC3339Nano)}, nil
 }
 
-func qualityCheckFinalizationInputs(root, locale, snapshotID string, seen map[string]bool) ([]QualityCheckFinalizationInput, error) {
+// Only immutable finalization may supply lineage in the absence of responses.
+func finalizedCarryPredecessor(root, locale, snapshotID string) (string, error) {
+	b, err := readCompatibilityFile(root, filepath.ToSlash(filepath.Join("data", "quality-check-snapshots", locale, snapshotID, "finalization.json")))
+	if os.IsNotExist(err) {
+		return "", nil
+	}
+	if err != nil {
+		return "", err
+	}
+	var f QualityCheckFinalization
+	if err := decodeStrictCourseSourceDescriptionReviewJSON(b, &f); err != nil {
+		return "", err
+	}
+	if f.Locale != locale || f.SnapshotID != snapshotID || f.SchemaVersion != QualityCheckFinalizationSchemaVersion || f.EvidenceType != QualityCheckFinalizationEvidenceType {
+		return "", errors.New("invalid carry finalization identity")
+	}
+	if f.PreviousSnapshotID != "" {
+		if err := validateSnapshotID(f.PreviousSnapshotID); err != nil {
+			return "", err
+		}
+		if f.PreviousSnapshotID == snapshotID {
+			return "", errors.New("quality-check result lineage contains a cycle")
+		}
+	}
+	return f.PreviousSnapshotID, nil
+}
+
+func qualityCheckFinalizationInputs(root, locale, snapshotID string, seen map[string]bool, predecessors ...string) ([]QualityCheckFinalizationInput, error) {
 	if seen[snapshotID] {
 		return nil, errors.New("quality-check result lineage contains a cycle")
 	}
@@ -148,6 +225,19 @@ func qualityCheckFinalizationInputs(root, locale, snapshotID string, seen map[st
 		return nil, err
 	}
 	if r == nil {
+		previous := ""
+		if len(predecessors) > 0 {
+			previous = predecessors[0]
+		}
+		if previous == "" {
+			previous, err = finalizedCarryPredecessor(root, locale, snapshotID)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if previous != "" {
+			return qualityCheckFinalizationInputs(root, locale, previous, seen)
+		}
 		return nil, fmt.Errorf("quality-check results are missing for snapshot %q", snapshotID)
 	}
 	all := []QualityCheckFinalizationInput{}
@@ -188,24 +278,38 @@ func writeQualityCheckFinalization(path string, v *QualityCheckFinalization) err
 }
 
 func VerifyQualityCheckFinalization(root string, catalog *Catalog, locale, snapshotID string) (*QualityCheckFinalization, error) {
+	// Compatibility entry point for current consumers. A sealed current proof
+	// avoids historical evaluation; the historical API never enters this path.
+	if a, err := FindCurrentTranslationAuthorization(root, catalog, locale, snapshotID); err != nil {
+		return nil, err
+	} else if a != nil {
+		return &a.Historical.Finalization, nil
+	}
+	return verifyLegacyCurrentQualityCheckFinalization(root, catalog, locale, snapshotID)
+}
+
+// Retained for unmigrated legacy callers; new registered package consumers use
+// RequireCurrentTranslationAuthorization. No existing receipt is rewritten.
+func verifyLegacyCurrentQualityCheckFinalization(root string, catalog *Catalog, locale, snapshotID string) (*QualityCheckFinalization, error) {
+	if err := RequireCurrentGlossaryReview(root, locale); err != nil {
+		return nil, err
+	}
 	p := qualityCheckFinalizationPath(root, locale, snapshotID)
 	b, err := os.ReadFile(p)
 	if err != nil {
 		return nil, fmt.Errorf("read quality-check finalization: %w", err)
 	}
 	var got QualityCheckFinalization
-	d := json.NewDecoder(bytes.NewReader(b))
-	d.DisallowUnknownFields()
-	if err := d.Decode(&got); err != nil {
+	if err := decodeStrictCourseSourceDescriptionReviewJSON(b, &got); err != nil {
 		return nil, fmt.Errorf("parse quality-check finalization: %w", err)
 	}
-	want, err := buildQualityCheckFinalization(root, catalog, locale, snapshotID, func() time.Time {
+	want, err := buildQualityCheckFinalizationWithEvaluation(newQualityCheckEvaluation(root, locale, catalog), snapshotID, func() time.Time {
 		t, e := time.Parse(time.RFC3339Nano, got.FinalizedAt)
 		if e != nil {
 			return time.Time{}
 		}
 		return t
-	})
+	}, got.PreviousSnapshotID)
 	if err != nil {
 		return nil, err
 	}

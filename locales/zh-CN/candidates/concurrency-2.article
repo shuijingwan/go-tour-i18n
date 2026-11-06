@@ -12,9 +12,9 @@
 
 	ch := make(chan int)
 
-默认情况下，发送和接收操作会一直阻塞，直到另一端准备就绪。这使得 goroutines 无需显式使用锁或条件变量即可完成同步。
+默认情况下，发送和接收操作会一直阻塞，直到另一端准备就绪。这使得 goroutine 无需显式使用锁或条件变量即可完成同步。
 
-示例代码对一个切片中的数字求和，并将工作分配给两个 goroutines。
-当两个 goroutines 都完成计算后，它会计算最终结果。
+示例代码对一个切片中的数字求和，并将工作分配给两个 goroutine。
+当两个 goroutine 都完成计算后，它会计算最终结果。
 
 .play concurrency/channels.go

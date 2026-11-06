@@ -15,6 +15,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SPEC = importlib.util.spec_from_file_location("production_cdn_shared_assets", ROOT / "scripts" / "production-cdn.py")
 CDN = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(CDN)
+CONTRACT_SPEC=importlib.util.spec_from_file_location("shared_assets_current_contract",ROOT/"scripts/release_contract.py")
+CONTRACT=importlib.util.module_from_spec(CONTRACT_SPEC);CONTRACT_SPEC.loader.exec_module(CONTRACT)
 
 
 class SharedAssetsProductionError(RuntimeError):
@@ -30,14 +32,24 @@ class Workflow:
         if not path.is_dir() or path.is_symlink():
             raise SharedAssetsProductionError("preflight", "export must be a real directory")
         self.export_dir = path.resolve()
-        self.receipt_path = pathlib.Path(str(self.export_dir) + ".verification-receipt.json")
+        self.deployment_receipt_path = pathlib.Path(str(self.export_dir) + ".verification-receipt.json")
+        self.receipt_path = pathlib.Path(str(self.export_dir) + ".shared-assets-execution.json")
         self.identity = CDN._load_identity()
         self.shared = self.identity["shared"]
         self.receipt = None
-        if self.receipt_path.exists():
-            self.receipt, _ = CDN.load_shared_assets_receipt(self.receipt_path, self.shared)
+        if pathlib.Path(str(self.export_dir)+".shared-assets-attempt.json").exists():
+            raise SharedAssetsProductionError("deploy","origin attempt has no durable result; stop for read-only recovery")
+        source = self.receipt_path if self.receipt_path.exists() else self.deployment_receipt_path
+        self.needs_state_write = False
+        if source.exists():
+            self.receipt, _ = CDN.load_shared_assets_receipt(source, self.shared)
+            if source != self.receipt_path:
+                self.needs_state_write = True
             if self.receipt["schema"] == CDN.SHARED_ASSETS_RECEIPT_V1:
-                self._upgrade_receipt()
+                self.receipt["schema"] = CDN.SHARED_ASSETS_RECEIPT_V2
+                self.receipt["purge_result"] = "PENDING" if self.receipt["deployment_result"] == "DEPLOYED" else "SKIPPED"
+                self.receipt["verification_result"] = "PENDING"
+                self.needs_state_write = True
             if self.receipt["purge_result"] == "ATTEMPTED":
                 raise SharedAssetsProductionError(
                     "purge", "previous exact-URL purge attempt is uncertain; refusing duplicate mutation")
@@ -66,18 +78,32 @@ class Workflow:
         self.receipt["verification_result"] = "PENDING"
         self._write()
 
+    def current_assets(self):
+        core=json.loads(CONTRACT.run(["go","run","-mod=readonly","./cmd/tour-i18n","assets","validate",
+                                      "--input",self.export_dir,"--json"],capture=True))
+        if core.get("result")!="PASS":raise SharedAssetsProductionError("current-export","no exact asset dependency proof")
+        return core
+
     def execute(self):
+        self._run("current-export", ["go", "run", "-mod=readonly", "./cmd/tour-i18n", "assets", "validate",
+                                     "--input", self.export_dir], 600)
+        if self.needs_state_write:
+            self._write()
+            self.needs_state_write = False
         preflight_complete = False
         if self.receipt is None:
             self._run("cdn-preflight", [ROOT / "scripts" / "production-cdn.py", "shared-assets-preflight"], 300)
             preflight_complete = True
             self._run("deploy", [ROOT / "scripts" / "deploy-shared-assets.sh", self.export_dir], 1800)
             try:
-                self.receipt, _ = CDN.load_shared_assets_receipt(self.receipt_path, self.shared)
+                self.receipt, _ = CDN.load_shared_assets_receipt(self.deployment_receipt_path, self.shared)
             except CDN.CDNError as exc:
                 raise SharedAssetsProductionError("deploy-receipt", str(exc)) from exc
             self._upgrade_receipt()
         if self.receipt["verification_result"] == "PASS":
+            # Historical acceptance is retained. Revalidate current origin and
+            # public bytes without redeploying, repurging or overwriting it.
+            CONTRACT.shared_freshness({"content": self.current_assets()}, self.shared)
             self.print_summary()
             return
         if self.receipt["purge_result"] == "PENDING":
@@ -89,6 +115,7 @@ class Workflow:
             if self.receipt["purge_result"] != "PASS":
                 raise SharedAssetsProductionError("purge", "purge command returned without a PASS receipt")
         self._run("verify", [ROOT / "scripts" / "verify-shared-assets-production.sh", self.receipt_path], 1800)
+        CONTRACT.shared_origin(self.current_assets(),self.shared)
         self.receipt["verification_result"] = "PASS"
         self._write()
         self.print_summary()
@@ -110,7 +137,7 @@ def main(argv=None):
     try:
         Workflow(argv[0]).execute()
         return 0
-    except (SharedAssetsProductionError, CDN.CDNError, OSError, ValueError, KeyError) as exc:
+    except (SharedAssetsProductionError, CDN.CDNError,CONTRACT.ContractError, OSError, ValueError, KeyError) as exc:
         print("[shared-assets-production] FAILED", file=sys.stderr)
         print("stage: %s" % getattr(exc, "stage", "preflight"), file=sys.stderr)
         print("evidence: %s" % getattr(exc, "evidence", str(exc)), file=sys.stderr)

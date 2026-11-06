@@ -13,11 +13,15 @@ import (
 )
 
 type RetranslationPromoteOptions struct {
-	Locale     string
-	SnapshotID string
-	Apply      bool
-	Now        func() time.Time
-	rename     func(string, string) error
+	Locale         string
+	SnapshotID     string
+	Apply          bool
+	Now            func() time.Time
+	rename         func(string, string) error
+	rollbackRename func(string, string) error
+	stageReceipt   func(*TargetSuccessorEvidence, string, string) error
+	publishReceipt func(string, string) error
+	removeStaging  func(string) error
 }
 
 type RetranslationPromotionUnit struct {
@@ -70,6 +74,16 @@ func promotionBatchRE(locale string) *regexp.Regexp {
 // PromoteRetranslation builds a complete, validated promotion plan and only
 // writes canonical files when Apply is explicitly true.
 func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPromoteOptions) (*RetranslationPromotionPlan, error) {
+	if options.Apply && options.SnapshotID == "" {
+		return nil, errors.New("promotion apply requires a finalized Snapshot and native receipt")
+	}
+	return promoteRetranslation(root, catalog, options)
+}
+
+// promoteRetranslation retains read-only legacy preflight and the archived
+// internal mutation tests. New callers can only apply through the exported
+// finalized-Snapshot/receipt gate above.
+func promoteRetranslation(root string, catalog *Catalog, options RetranslationPromoteOptions) (*RetranslationPromotionPlan, error) {
 	if catalog == nil {
 		return nil, errors.New("retranslation catalog is required")
 	}
@@ -77,6 +91,9 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 		return nil, errors.New("retranslation locale is required")
 	}
 	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
+	}
+	if err := CheckPromotionTransactionState(root, options.Locale); err != nil {
 		return nil, err
 	}
 	// The CLI requires SnapshotID for every new promotion. The package-level
@@ -129,7 +146,9 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 }
 
 func finalizationMatchesLatestPromotionCandidates(root string, catalog *Catalog, locale, snapshotID string) error {
-	snapshot, err := readQualityCheckSnapshotForReview(root, locale, snapshotID)
+	// This function compares selection identity only. Current language
+	// eligibility belongs to the caller's finalization/authorization gate.
+	snapshot, err := readQualityCheckSnapshot(root, locale, snapshotID, false)
 	if err != nil {
 		return err
 	}
@@ -166,6 +185,7 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 	prepared := make([]preparedPromotion, 0, len(latest.ordered))
 	missing := make([]string, 0)
 	reviews := promotionReviewGate{missing: []string{}, rejected: []string{}, invalid: []string{}}
+	compatibility := PrepareGlossaryCompatibility(root, locale, catalog)
 	for _, unit := range latest.ordered {
 		id := unit.ID
 		choice, ok := latest.selectedByID[id]
@@ -181,7 +201,7 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 			missing = append(missing, fmt.Sprintf("%s (latest %s=%s)", id, choice.batchID, choice.result.Status))
 			continue
 		}
-		evidence, err := validateSelectedRetranslationCandidate(root, catalog, locale, glossary, unit, choice)
+		evidence, err := validateSelectedRetranslationCandidate(root, catalog, locale, glossary, unit, choice, compatibility)
 		if err != nil {
 			return nil, nil, promotionReviewGate{}, 0, 0, err
 		}
@@ -258,17 +278,21 @@ func checkPromotionReview(batchDir, batchID, locale string, unit *TranslationUni
 	return "approved", nil
 }
 
-func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, unit *TranslationUnit, manifest RetranslationBatchUnit, validation *RetranslationValidation, glossary *Glossary, candidate []byte, locale string) (int, error) {
+func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, unit *TranslationUnit, manifest RetranslationBatchUnit, validation *RetranslationValidation, glossary *Glossary, candidate []byte, locale string, compatibility *PreparedGlossaryCompatibility, outputs ...*protectedTranslation) (int, error) {
 	input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(manifest.InputPath)))
 	if err != nil || sum(input) != manifest.InputSHA256 {
 		return 0, fmt.Errorf("%s: input_sha256 mismatch", unit.ID)
 	}
 	protected, err := prepareTranslationUnitInput(unit, glossary)
-	if err != nil || (!bytes.Equal(input, []byte(protected.Text)) && !bytes.Equal(input, canonicalizeRetranslationArtifactEOF([]byte(protected.Text)))) || len(protected.Tokens) != manifest.ProtectedTokenCount {
+	exactInput := err == nil && len(protected.Tokens) == manifest.ProtectedTokenCount && (bytes.Equal(input, []byte(protected.Text)) || bytes.Equal(input, canonicalizeRetranslationArtifactEOF([]byte(protected.Text))))
+	if !exactInput {
+		if manifest.GenerationOrigin != nil {
+			return 0, fmt.Errorf("%s: archived invocation formal input changed; proper recovery required", unit.ID)
+		}
 		// Constraint removal can change protection without changing accepted
 		// language semantics. Restore only through an archived glossary tied to
 		// this exact historical candidate and a verified compatible scope.
-		protected, err = compatibleHistoricalProtectedInput(root, catalog, locale, unit, manifest, input, candidate)
+		protected, err = compatibleHistoricalProtectedInput(root, catalog, locale, unit, manifest, input, candidate, compatibility)
 		if err != nil {
 			return 0, fmt.Errorf("%s: regenerated protected input differs from saved input: %w", unit.ID, err)
 		}
@@ -298,6 +322,57 @@ func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, u
 	if err != nil {
 		return 0, fmt.Errorf("%s: read validation raw response: %w", unit.ID, err)
 	}
+	if attempt == 1 {
+		if err := verifyGenerationOrigin(root, locale, unit, manifest, raw); err != nil {
+			// A past invocation keeps its archived glossary. Only an exact
+			// accepted candidate with formal current carry authority can use
+			// the frozen verifier; input equality alone grants no eligibility.
+			if carryErr := compatibility.acceptedCandidateCarry(unit, batchDir, manifest, validation, candidate); carryErr != nil {
+				return 0, fmt.Errorf("%w; compatible carry rejected: %v", err, carryErr)
+			}
+			frozen, ok := unit.Adapter.(FrozenGenerationAdapter)
+			if !ok {
+				return 0, fmt.Errorf("%s: unsupported frozen generation adapter", unit.ID)
+			}
+			if err := frozen.VerifyFrozenGenerationOrigin(root, locale, *manifest.GenerationOrigin, raw); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if len(outputs) > 0 && outputs[0] != nil {
+		if err:=checkSurfaceTransportBatch(root,locale,validation.BatchID,[]RetranslationBatchUnit{manifest},false);err!=nil{return 0,err}
+		if manifest.RevisionFeedbackSource != CurrentValidationRevisionFeedback && manifest.RepresentationBridge == nil && !(manifest.RevisionFeedbackSource == "surface_review" && hasSurfaceTransport(root, locale, manifest.RevisionAuthorizationID)) {
+			return 0, fmt.Errorf("prepared revision output requires exact revision transport authority")
+		}
+		protected = *outputs[0]
+	} else {
+		if manifest.RevisionFeedbackSource == CurrentValidationRevisionFeedback || manifest.RepresentationBridge != nil {
+			batch, err := readRetranslationProcessManifest(batchDir, locale, validation.BatchID)
+			if err != nil {
+				return 0, err
+			}
+			if manifest.RepresentationBridge != nil {
+				protected, err = frozenBridgeOutput(root, catalog, glossary, locale, manifest)
+			} else {
+				protected, err = prepareInvocationRetranslationOutput(root, catalog, glossary, locale, batch.Units, manifest)
+			}
+			if err != nil {
+				return 0, err
+			}
+		}
+	}
+	if manifest.RepresentationBridge == nil && hasInheritedBridgePredecessor(manifest) {
+		decoder, lineage, err := surfaceTransportOutput(root, catalog, locale, manifest)
+		if err == nil && lineage == nil {
+			decoder, lineage, err = inheritedBridgeOutput(root, catalog, glossary, locale, manifest)
+		}
+		if err != nil {
+			return 0, err
+		}
+		if lineage != nil {
+			protected = decoder
+		}
+	}
 	restored, failures := protected.restore(string(raw))
 	restoredBytes := []byte(restored)
 	if len(failures) != 0 || (!bytes.Equal(restoredBytes, candidate) && !bytes.Equal(canonicalizeRetranslationArtifactEOF(restoredBytes), candidate)) {
@@ -306,7 +381,13 @@ func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, u
 	if bytes.Contains(candidate, []byte("GTI18N")) || containsProtectedTranslationToken(candidate) {
 		return 0, fmt.Errorf("%s: candidate contains GTI18N token", unit.ID)
 	}
-	if err := ValidateTranslationUnitCandidate(root, catalog, unit.ID, locale, candidate); err != nil {
+	var validationErr error
+	if compatibility.historicalSHA != "" {
+		validationErr = validateTranslationUnitRepresentation(root, catalog, unit, locale, candidate, glossary)
+	} else {
+		validationErr = ValidateTranslationUnitCandidate(root, catalog, unit.ID, locale, candidate)
+	}
+	if err := validationErr; err != nil {
 		return 0, fmt.Errorf("%s: canonical validation: %w", unit.ID, err)
 	}
 	return attempt, nil
@@ -347,7 +428,15 @@ func readPromotionValidation(batchDir, batchID, locale string, manifest Retransl
 	return validation, nil
 }
 
-func applyRetranslationPromotion(root string, catalog *Catalog, options RetranslationPromoteOptions, prepared []preparedPromotion) error {
+func applyRetranslationPromotion(root string, catalog *Catalog, options RetranslationPromoteOptions, prepared []preparedPromotion) (resultErr error) {
+	var receipt *TargetSuccessorEvidence
+	if options.SnapshotID != "" {
+		var err error
+		receipt, err = prepareNativePromotionReceipt(root, catalog, options, prepared)
+		if err != nil {
+			return err
+		}
+	}
 	localeDir := filepath.Join(root, "locales", options.Locale)
 	statusPath := filepath.Join(localeDir, "status.tsv")
 	statuses, err := ReadStatuses(statusPath)
@@ -376,11 +465,29 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 		now = time.Now
 	}
 	updated := now().UTC().Format(time.RFC3339)
-	staging, err := os.MkdirTemp(localeDir, ".promotion-staging-")
-	if err != nil {
+	// An exclusive fixed staging name serializes mutation even when concurrent
+	// callers both completed preflight. A crash leaves the lock AND backups.
+	staging := filepath.Join(localeDir, ".promotion-staging-transaction")
+	if err := os.Mkdir(staging, 0700); err != nil {
 		return err
 	}
-	defer os.RemoveAll(staging)
+	cleanupStaging := true
+	committed := false
+	defer func() {
+		if cleanupStaging {
+			remove := options.removeStaging
+			if remove == nil {
+				remove = os.RemoveAll
+			}
+			if err := remove(staging); err != nil {
+				state := "none"
+				if committed {
+					state = "known"
+				}
+				resultErr = fmt.Errorf("mutation=%s; committed=%t; retained %s; staging cleanup failed: %v; previous error: %v; inspect transaction before further writes", state, committed, staging, err, resultErr)
+			}
+		}
+	}()
 	stagedCandidates := filepath.Join(staging, "candidates")
 	canonicalCandidates := filepath.Join(localeDir, "candidates")
 	if err := copyDirectory(canonicalCandidates, stagedCandidates); err != nil && !os.IsNotExist(err) {
@@ -409,6 +516,23 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 	if err := writeStatuses(stagedStatus, statuses); err != nil {
 		return err
 	}
+	receiptPath := ""
+	if receipt != nil {
+		stage := options.stageReceipt
+		if stage == nil {
+			stage = stageNativePromotionReceipt
+		}
+		if err := stage(receipt, filepath.Join(staging, "promotion-receipt.json"), stagedStatus); err != nil {
+			return fmt.Errorf("stage native promotion receipt: %w", err)
+		}
+		if err := checkNativePromotionPrecommit(root, receipt); err != nil {
+			return err
+		}
+		receiptPath, err = successorPath(receipt)
+		if err != nil {
+			return err
+		}
+	}
 	rename := options.rename
 	if rename == nil {
 		rename = os.Rename
@@ -416,33 +540,87 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 	backupCandidates := filepath.Join(staging, "old-candidates")
 	backupStatus := filepath.Join(staging, "old-status.tsv")
 	candidatesBackedUp := false
+	// Once mutation starts, even panic unwinding must retain recoverable bytes.
+	cleanupStaging = false
 	if _, err := os.Stat(canonicalCandidates); err == nil {
 		if err := rename(canonicalCandidates, backupCandidates); err != nil {
+			cleanupStaging = true
 			return fmt.Errorf("backup canonical candidates: %w", err)
 		}
 		candidatesBackedUp = true
 	} else if !os.IsNotExist(err) {
+		cleanupStaging = true
 		return err
 	}
-	rollbackCandidates := func() {
-		_ = os.RemoveAll(canonicalCandidates)
-		if candidatesBackedUp {
-			_ = os.Rename(backupCandidates, canonicalCandidates)
+	rollbackRename := options.rollbackRename
+	if rollbackRename == nil {
+		rollbackRename = os.Rename
+	}
+	rollbackCandidates := func() error {
+		if _, err := os.Stat(canonicalCandidates); err == nil {
+			if err := rollbackRename(canonicalCandidates, filepath.Join(staging, "failed-candidates")); err != nil {
+				cleanupStaging = false
+				return err
+			}
+		} else if !os.IsNotExist(err) {
+			cleanupStaging = false
+			return err
 		}
+		if candidatesBackedUp {
+			if err := rollbackRename(backupCandidates, canonicalCandidates); err != nil {
+				cleanupStaging = false
+				return err
+			}
+		}
+		cleanupStaging = true
+		return nil
 	}
 	if err := rename(stagedCandidates, canonicalCandidates); err != nil {
-		rollbackCandidates()
+		if recoveryErr := rollbackCandidates(); recoveryErr != nil {
+			return fmt.Errorf("mutation=unknown; retained %s; install: %v; rollback: %w", staging, err, recoveryErr)
+		}
 		return fmt.Errorf("install canonical candidates: %w", err)
 	}
 	if err := rename(statusPath, backupStatus); err != nil {
-		rollbackCandidates()
+		if recoveryErr := rollbackCandidates(); recoveryErr != nil {
+			return fmt.Errorf("mutation=unknown; retained %s; status backup: %v; rollback: %w", staging, err, recoveryErr)
+		}
 		return fmt.Errorf("backup canonical status: %w", err)
 	}
 	if err := rename(stagedStatus, statusPath); err != nil {
-		_ = os.Rename(backupStatus, statusPath)
-		rollbackCandidates()
+		statusRecoveryErr := rollbackRename(backupStatus, statusPath)
+		candidateRecoveryErr := rollbackCandidates()
+		if statusRecoveryErr != nil || candidateRecoveryErr != nil {
+			cleanupStaging = false
+			return fmt.Errorf("mutation=unknown; retained %s; status install: %v; status rollback: %v; candidate rollback: %v", staging, err, statusRecoveryErr, candidateRecoveryErr)
+		}
 		return fmt.Errorf("install canonical status: %w", err)
 	}
+	if receipt != nil {
+		publish := options.publishReceipt
+		if publish == nil {
+			publish = os.Link
+		}
+		publicationErr := checkInstalledNativePromotion(root, filepath.Join(staging, "promotion-receipt.json"), receipt)
+		if publicationErr == nil {
+			publicationErr = publish(filepath.Join(staging, "promotion-receipt.json"), filepath.Join(root, filepath.FromSlash(receiptPath)))
+		}
+		if publicationErr != nil {
+			// Restore via recoverable renames; never delete the only old bytes.
+			statusRecoveryErr := rollbackRename(statusPath, filepath.Join(staging, "failed-status.tsv"))
+			if statusRecoveryErr == nil {
+				statusRecoveryErr = rollbackRename(backupStatus, statusPath)
+			}
+			candidateRecoveryErr := rollbackCandidates()
+			if statusRecoveryErr != nil || candidateRecoveryErr != nil {
+				cleanupStaging = false
+				return fmt.Errorf("mutation=unknown; retained %s; receipt publication: %v; status rollback: %v; candidate rollback: %v", staging, publicationErr, statusRecoveryErr, candidateRecoveryErr)
+			}
+			return fmt.Errorf("publish native promotion receipt: %w", publicationErr)
+		}
+	}
+	cleanupStaging = true
+	committed = true
 	return nil
 }
 
@@ -493,8 +671,12 @@ func copyDirectory(source, target string) error {
 		return err
 	}
 	for _, entry := range entries {
-		if entry.IsDir() {
-			return fmt.Errorf("unexpected directory in canonical candidates: %s", entry.Name())
+		info, err := entry.Info()
+		if err != nil {
+			return err
+		}
+		if !info.Mode().IsRegular() {
+			return fmt.Errorf("non-regular entry in canonical candidates: %s", entry.Name())
 		}
 		in, err := os.Open(filepath.Join(source, entry.Name()))
 		if err != nil {

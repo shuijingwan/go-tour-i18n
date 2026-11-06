@@ -1,0 +1,605 @@
+{
+  "schema": "go-learning/source-storage-compatibility/v1",
+  "old_storage": {
+    "path": "data/site-content-sources.zip",
+    "sha256": "79dafb0bd0fd9bc7c41d43348e758c8d471580b84e8c01fae51f3bd85bbff226"
+  },
+  "site_source_manifest": {
+    "path": "data/site-source-manifest.json",
+    "sha256": "2d8b646ea4c80a73d4d70e0eacfde5f5c9d286fc0c25eea02d633081d16481fa"
+  },
+  "site_source_manifest_identity": "b77182ea773282bd34e26de980b3802ee0d335402b5cc68cfd653629a3cc2105",
+  "corpora": [
+    {
+      "corpus": {
+        "path": "data/glossary-corpus-history/27825bc34eea7962ce331f1643bee99b3bed9dd2395739b8a49745ae250ec4e7.json",
+        "sha256": "27825bc34eea7962ce331f1643bee99b3bed9dd2395739b8a49745ae250ec4e7"
+      },
+      "corpus_identity": "56fb2011ed379cb4b312ee04e861da9790f5dd6346594b768465fb56b24bd318",
+      "required_entries": [
+        "_content/doc/database/cancel-operations.md",
+        "_content/doc/database/change-data.md",
+        "_content/doc/database/execute-transactions.md",
+        "_content/doc/database/index.md",
+        "_content/doc/database/manage-connections.md",
+        "_content/doc/database/open-handle.md",
+        "_content/doc/database/prepared-statements.md",
+        "_content/doc/database/querying.md",
+        "_content/doc/database/sql-injection.md",
+        "_content/doc/modules/developing.md",
+        "_content/doc/modules/gomod-ref.md",
+        "_content/doc/modules/layout.md",
+        "_content/doc/modules/major-version.md",
+        "_content/doc/modules/managing-dependencies.md",
+        "_content/doc/modules/managing-source.md",
+        "_content/doc/modules/publishing.md",
+        "_content/doc/modules/release-workflow.md",
+        "_content/doc/modules/version-numbers.md",
+        "_content/doc/security/best-practices.md",
+        "_content/doc/security/decisions.md",
+        "_content/doc/security/fips140.md",
+        "_content/doc/security/fuzz/index.md",
+        "_content/doc/security/fuzz/technical.md",
+        "_content/doc/security/index.md",
+        "_content/doc/security/policy.md",
+        "_content/doc/security/threat-model.md",
+        "_content/doc/security/vuln/cna.md",
+        "_content/doc/security/vuln/database.md",
+        "_content/doc/security/vuln/editor.md",
+        "_content/doc/security/vuln/index.md",
+        "_content/doc/tutorial/add-a-test.html",
+        "_content/doc/tutorial/call-module-code.html",
+        "_content/doc/tutorial/compile-install.html",
+        "_content/doc/tutorial/create-module.html",
+        "_content/doc/tutorial/database-access.md",
+        "_content/doc/tutorial/fuzz.md",
+        "_content/doc/tutorial/generics.md",
+        "_content/doc/tutorial/getting-started.html",
+        "_content/doc/tutorial/govulncheck-ide.md",
+        "_content/doc/tutorial/govulncheck.md",
+        "_content/doc/tutorial/greetings-multiple-people.html",
+        "_content/doc/tutorial/handle-errors.html",
+        "_content/doc/tutorial/index.html",
+        "_content/doc/tutorial/json.md",
+        "_content/doc/tutorial/module-conclusion.html",
+        "_content/doc/tutorial/random-greeting.html",
+        "_content/doc/tutorial/web-service-gin.md",
+        "_content/doc/tutorial/workspaces.md",
+        "_content/learn/books.yaml",
+        "_content/learn/cloud.yaml",
+        "_content/learn/courses.yaml",
+        "_content/learn/guided.yaml",
+        "_content/learn/index.md",
+        "_content/learn/quickstart.yaml",
+        "_content/learn/training.yaml",
+        "_content/learn/tutorials.yaml"
+      ]
+    },
+    {
+      "corpus": {
+        "path": "data/glossary-corpus-history/b6aa4bad4202c8728fd9abc0acb61d796b717ec558e3779682d02f151de1db47.json",
+        "sha256": "b6aa4bad4202c8728fd9abc0acb61d796b717ec558e3779682d02f151de1db47"
+      },
+      "corpus_identity": "f4786502100b3ae6f34b539f70728f9a062e7c1982ee91111cf674c57aebd771",
+      "required_entries": [
+        "_content/doc/database/cancel-operations.md",
+        "_content/doc/database/change-data.md",
+        "_content/doc/database/execute-transactions.md",
+        "_content/doc/database/index.md",
+        "_content/doc/database/manage-connections.md",
+        "_content/doc/database/open-handle.md",
+        "_content/doc/database/prepared-statements.md",
+        "_content/doc/database/querying.md",
+        "_content/doc/database/sql-injection.md",
+        "_content/doc/modules/developing.md",
+        "_content/doc/modules/gomod-ref.md",
+        "_content/doc/modules/layout.md",
+        "_content/doc/modules/major-version.md",
+        "_content/doc/modules/managing-dependencies.md",
+        "_content/doc/modules/managing-source.md",
+        "_content/doc/modules/publishing.md",
+        "_content/doc/modules/release-workflow.md",
+        "_content/doc/modules/version-numbers.md",
+        "_content/doc/security/best-practices.md",
+        "_content/doc/security/decisions.md",
+        "_content/doc/security/fips140.md",
+        "_content/doc/security/fuzz/index.md",
+        "_content/doc/security/fuzz/technical.md",
+        "_content/doc/security/index.md",
+        "_content/doc/security/policy.md",
+        "_content/doc/security/threat-model.md",
+        "_content/doc/security/vuln/cna.md",
+        "_content/doc/security/vuln/database.md",
+        "_content/doc/security/vuln/editor.md",
+        "_content/doc/security/vuln/index.md",
+        "_content/doc/tutorial/add-a-test.html",
+        "_content/doc/tutorial/call-module-code.html",
+        "_content/doc/tutorial/compile-install.html",
+        "_content/doc/tutorial/create-module.html",
+        "_content/doc/tutorial/database-access.md",
+        "_content/doc/tutorial/fuzz.md",
+        "_content/doc/tutorial/generics.md",
+        "_content/doc/tutorial/getting-started.html",
+        "_content/doc/tutorial/govulncheck-ide.md",
+        "_content/doc/tutorial/govulncheck.md",
+        "_content/doc/tutorial/greetings-multiple-people.html",
+        "_content/doc/tutorial/handle-errors.html",
+        "_content/doc/tutorial/index.html",
+        "_content/doc/tutorial/json.md",
+        "_content/doc/tutorial/module-conclusion.html",
+        "_content/doc/tutorial/random-greeting.html",
+        "_content/doc/tutorial/web-service-gin.md",
+        "_content/doc/tutorial/workspaces.md",
+        "_content/learn/books.yaml",
+        "_content/learn/cloud.yaml",
+        "_content/learn/courses.yaml",
+        "_content/learn/guided.yaml",
+        "_content/learn/index.md",
+        "_content/learn/quickstart.yaml",
+        "_content/learn/training.yaml",
+        "_content/learn/tutorials.yaml"
+      ]
+    },
+    {
+      "corpus": {
+        "path": "data/glossary-source-corpus.json",
+        "sha256": "6e58a5e939a2f036bbcea4af86f13546863b58e78cd20bc03be799d29ed4cbfe"
+      },
+      "corpus_identity": "63ae28dd831bfc497a6e38eea596c413ab71a090c0e4626a175a540af45e9d0b",
+      "required_entries": [
+        "_content/doc/database/cancel-operations.md",
+        "_content/doc/database/change-data.md",
+        "_content/doc/database/execute-transactions.md",
+        "_content/doc/database/index.md",
+        "_content/doc/database/manage-connections.md",
+        "_content/doc/database/open-handle.md",
+        "_content/doc/database/prepared-statements.md",
+        "_content/doc/database/querying.md",
+        "_content/doc/database/sql-injection.md",
+        "_content/doc/modules/developing.md",
+        "_content/doc/modules/gomod-ref.md",
+        "_content/doc/modules/layout.md",
+        "_content/doc/modules/major-version.md",
+        "_content/doc/modules/managing-dependencies.md",
+        "_content/doc/modules/managing-source.md",
+        "_content/doc/modules/publishing.md",
+        "_content/doc/modules/release-workflow.md",
+        "_content/doc/modules/version-numbers.md",
+        "_content/doc/security/best-practices.md",
+        "_content/doc/security/decisions.md",
+        "_content/doc/security/fips140.md",
+        "_content/doc/security/fuzz/index.md",
+        "_content/doc/security/fuzz/technical.md",
+        "_content/doc/security/index.md",
+        "_content/doc/security/policy.md",
+        "_content/doc/security/threat-model.md",
+        "_content/doc/security/vuln/cna.md",
+        "_content/doc/security/vuln/database.md",
+        "_content/doc/security/vuln/editor.md",
+        "_content/doc/security/vuln/index.md",
+        "_content/doc/tutorial/add-a-test.html",
+        "_content/doc/tutorial/call-module-code.html",
+        "_content/doc/tutorial/compile-install.html",
+        "_content/doc/tutorial/create-module.html",
+        "_content/doc/tutorial/database-access.md",
+        "_content/doc/tutorial/fuzz.md",
+        "_content/doc/tutorial/generics.md",
+        "_content/doc/tutorial/getting-started.html",
+        "_content/doc/tutorial/govulncheck-ide.md",
+        "_content/doc/tutorial/govulncheck.md",
+        "_content/doc/tutorial/greetings-multiple-people.html",
+        "_content/doc/tutorial/handle-errors.html",
+        "_content/doc/tutorial/index.html",
+        "_content/doc/tutorial/json.md",
+        "_content/doc/tutorial/module-conclusion.html",
+        "_content/doc/tutorial/random-greeting.html",
+        "_content/doc/tutorial/web-service-gin.md",
+        "_content/doc/tutorial/workspaces.md",
+        "_content/learn/books.yaml",
+        "_content/learn/cloud.yaml",
+        "_content/learn/courses.yaml",
+        "_content/learn/guided.yaml",
+        "_content/learn/index.md",
+        "_content/learn/quickstart.yaml",
+        "_content/learn/training.yaml",
+        "_content/learn/tutorials.yaml"
+      ]
+    }
+  ],
+  "equivalent_entries": [
+    {
+      "old_entry_path": "_content/doc/database/cancel-operations.md",
+      "old_entry_sha256": "c71ef831003d93f55e7ffb503aadb883797e574b21d905caa42c783cf02ff683",
+      "new_repo_path": "_content/doc/database/cancel-operations.md",
+      "new_entry_sha256": "c71ef831003d93f55e7ffb503aadb883797e574b21d905caa42c783cf02ff683",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/database/change-data.md",
+      "old_entry_sha256": "7d33ffb1904495008147b115fbace5f82640e209c492b13f406363a61837bb55",
+      "new_repo_path": "_content/doc/database/change-data.md",
+      "new_entry_sha256": "7d33ffb1904495008147b115fbace5f82640e209c492b13f406363a61837bb55",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/database/execute-transactions.md",
+      "old_entry_sha256": "3e8e4ee1071772b796cf0e467f4a2cc8065e866385604116a6ddd3d0b07ee59f",
+      "new_repo_path": "_content/doc/database/execute-transactions.md",
+      "new_entry_sha256": "3e8e4ee1071772b796cf0e467f4a2cc8065e866385604116a6ddd3d0b07ee59f",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/database/index.md",
+      "old_entry_sha256": "8335626ef100c20d927f52d02c60850eca7b0e9d4c097c796484529a7f3dd3c9",
+      "new_repo_path": "_content/doc/database/index.md",
+      "new_entry_sha256": "8335626ef100c20d927f52d02c60850eca7b0e9d4c097c796484529a7f3dd3c9",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/database/manage-connections.md",
+      "old_entry_sha256": "c0af88c4644c5118003126a32219fd786b47ae719f267d9b22cbc4954628ee0d",
+      "new_repo_path": "_content/doc/database/manage-connections.md",
+      "new_entry_sha256": "c0af88c4644c5118003126a32219fd786b47ae719f267d9b22cbc4954628ee0d",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/database/open-handle.md",
+      "old_entry_sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c",
+      "new_repo_path": "_content/doc/database/open-handle.md",
+      "new_entry_sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/database/prepared-statements.md",
+      "old_entry_sha256": "37854cb2a8e7ef640129566162422472821faadcbab8dd2a7514513d40eff004",
+      "new_repo_path": "_content/doc/database/prepared-statements.md",
+      "new_entry_sha256": "37854cb2a8e7ef640129566162422472821faadcbab8dd2a7514513d40eff004",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/database/querying.md",
+      "old_entry_sha256": "02e399c4e8b9895689676f976ce052da6d6efa6f6bed3c7368314a47e3314864",
+      "new_repo_path": "_content/doc/database/querying.md",
+      "new_entry_sha256": "02e399c4e8b9895689676f976ce052da6d6efa6f6bed3c7368314a47e3314864",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/database/sql-injection.md",
+      "old_entry_sha256": "b8dac8aa9f02e71bd0b5dda8f6e26706ff22e19c0a3149aae53946b2b10f864a",
+      "new_repo_path": "_content/doc/database/sql-injection.md",
+      "new_entry_sha256": "b8dac8aa9f02e71bd0b5dda8f6e26706ff22e19c0a3149aae53946b2b10f864a",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/developing.md",
+      "old_entry_sha256": "b536e09618906a025e579d4715c3218dd4cc32ba4b1a4554d8dd6e582a7f8ed8",
+      "new_repo_path": "_content/doc/modules/developing.md",
+      "new_entry_sha256": "b536e09618906a025e579d4715c3218dd4cc32ba4b1a4554d8dd6e582a7f8ed8",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/gomod-ref.md",
+      "old_entry_sha256": "f2d3e578640d2a9522a9667b8a203e6a14d60509df1e5c04ad54ca14a6c3d8bd",
+      "new_repo_path": "_content/doc/modules/gomod-ref.md",
+      "new_entry_sha256": "f2d3e578640d2a9522a9667b8a203e6a14d60509df1e5c04ad54ca14a6c3d8bd",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/layout.md",
+      "old_entry_sha256": "3cf064a34e84e48dc66ffdf9277fea2b2c9fdc52d0b5dd7d4de506fb8eeba4a5",
+      "new_repo_path": "_content/doc/modules/layout.md",
+      "new_entry_sha256": "3cf064a34e84e48dc66ffdf9277fea2b2c9fdc52d0b5dd7d4de506fb8eeba4a5",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/major-version.md",
+      "old_entry_sha256": "7d052c1b96c1d537cfede56c69dc92684344172ff03ef2bc87c33d2271c5d36c",
+      "new_repo_path": "_content/doc/modules/major-version.md",
+      "new_entry_sha256": "7d052c1b96c1d537cfede56c69dc92684344172ff03ef2bc87c33d2271c5d36c",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/managing-dependencies.md",
+      "old_entry_sha256": "0d0ba363e0214a23116f0d4e6e016968a31412674970839d0caa7957e17b1ee7",
+      "new_repo_path": "_content/doc/modules/managing-dependencies.md",
+      "new_entry_sha256": "0d0ba363e0214a23116f0d4e6e016968a31412674970839d0caa7957e17b1ee7",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/managing-source.md",
+      "old_entry_sha256": "9edc5cfdd586954d36a2851147eff163cf3e71aaebf3c3499a1a3934245b6a5b",
+      "new_repo_path": "_content/doc/modules/managing-source.md",
+      "new_entry_sha256": "9edc5cfdd586954d36a2851147eff163cf3e71aaebf3c3499a1a3934245b6a5b",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/publishing.md",
+      "old_entry_sha256": "b01eeb7a552c865ef4333be351060487e835185b1345b6d378e26f4e46c46b9f",
+      "new_repo_path": "_content/doc/modules/publishing.md",
+      "new_entry_sha256": "b01eeb7a552c865ef4333be351060487e835185b1345b6d378e26f4e46c46b9f",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/release-workflow.md",
+      "old_entry_sha256": "27cf24c2eb872b60acadfd57f3a39fffdd3bb01ef35880cb640a6724864b6b6d",
+      "new_repo_path": "_content/doc/modules/release-workflow.md",
+      "new_entry_sha256": "27cf24c2eb872b60acadfd57f3a39fffdd3bb01ef35880cb640a6724864b6b6d",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/modules/version-numbers.md",
+      "old_entry_sha256": "43668bda4143e7107f12dc3b3d9a49a1b15f96e1ba1c93c1a6a464b7fbfabbd5",
+      "new_repo_path": "_content/doc/modules/version-numbers.md",
+      "new_entry_sha256": "43668bda4143e7107f12dc3b3d9a49a1b15f96e1ba1c93c1a6a464b7fbfabbd5",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/best-practices.md",
+      "old_entry_sha256": "9f1184cde64388824a4d5cb19ee5938b3fe75ce5b5378ee2475552b8da6dcbe4",
+      "new_repo_path": "_content/doc/security/best-practices.md",
+      "new_entry_sha256": "9f1184cde64388824a4d5cb19ee5938b3fe75ce5b5378ee2475552b8da6dcbe4",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/decisions.md",
+      "old_entry_sha256": "6c15e82b42de1a7fa6b2984144570d2ded12f1b7df86e15a82fb54226be487b4",
+      "new_repo_path": "_content/doc/security/decisions.md",
+      "new_entry_sha256": "6c15e82b42de1a7fa6b2984144570d2ded12f1b7df86e15a82fb54226be487b4",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/fips140.md",
+      "old_entry_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "new_repo_path": "_content/doc/security/fips140.md",
+      "new_entry_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/fuzz/index.md",
+      "old_entry_sha256": "69bd18d0702cab7d9f3a9a4e1fb20f316cbefc518d0e804c7e753a538bd15bbb",
+      "new_repo_path": "_content/doc/security/fuzz/index.md",
+      "new_entry_sha256": "69bd18d0702cab7d9f3a9a4e1fb20f316cbefc518d0e804c7e753a538bd15bbb",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/fuzz/technical.md",
+      "old_entry_sha256": "30f0008d41be96f888cf08aaa8b7cf9101b93d1438ad17d8838016f74fc263b6",
+      "new_repo_path": "_content/doc/security/fuzz/technical.md",
+      "new_entry_sha256": "30f0008d41be96f888cf08aaa8b7cf9101b93d1438ad17d8838016f74fc263b6",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/index.md",
+      "old_entry_sha256": "272aa1d0fb5c22f687b747955f1927a78be8ad0f19169096cb0437e9f7fb1b45",
+      "new_repo_path": "_content/doc/security/index.md",
+      "new_entry_sha256": "272aa1d0fb5c22f687b747955f1927a78be8ad0f19169096cb0437e9f7fb1b45",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/policy.md",
+      "old_entry_sha256": "a5b5e3a901c57743ad9f6da63e0f73668273b1ca17cacd865e7becc32bc69d28",
+      "new_repo_path": "_content/doc/security/policy.md",
+      "new_entry_sha256": "a5b5e3a901c57743ad9f6da63e0f73668273b1ca17cacd865e7becc32bc69d28",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/threat-model.md",
+      "old_entry_sha256": "c58e1f16eb682643adc1d6a74502920aa1700b02463eca04f26949a0a6fd0b9d",
+      "new_repo_path": "_content/doc/security/threat-model.md",
+      "new_entry_sha256": "c58e1f16eb682643adc1d6a74502920aa1700b02463eca04f26949a0a6fd0b9d",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/vuln/cna.md",
+      "old_entry_sha256": "baeefa9cc4fcf4983062a2012ebdf4940357d7084333bf470a27a7d00f6e1a73",
+      "new_repo_path": "_content/doc/security/vuln/cna.md",
+      "new_entry_sha256": "baeefa9cc4fcf4983062a2012ebdf4940357d7084333bf470a27a7d00f6e1a73",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/vuln/database.md",
+      "old_entry_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+      "new_repo_path": "_content/doc/security/vuln/database.md",
+      "new_entry_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/vuln/editor.md",
+      "old_entry_sha256": "0b494da11a9af83183ed913e3c72f4bd8e9a7b7a9359a3b5d66a1abbf6145363",
+      "new_repo_path": "_content/doc/security/vuln/editor.md",
+      "new_entry_sha256": "0b494da11a9af83183ed913e3c72f4bd8e9a7b7a9359a3b5d66a1abbf6145363",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/security/vuln/index.md",
+      "old_entry_sha256": "67c5adf783fd88accf098042728568e8c9ad3e2a04fb390ba147678a38a2a823",
+      "new_repo_path": "_content/doc/security/vuln/index.md",
+      "new_entry_sha256": "67c5adf783fd88accf098042728568e8c9ad3e2a04fb390ba147678a38a2a823",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/add-a-test.html",
+      "old_entry_sha256": "d5ea155f25736df5051fddc35df81af3600b57700972d8fde4c344345c9a0ca0",
+      "new_repo_path": "_content/doc/tutorial/add-a-test.html",
+      "new_entry_sha256": "d5ea155f25736df5051fddc35df81af3600b57700972d8fde4c344345c9a0ca0",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/call-module-code.html",
+      "old_entry_sha256": "e15097929f143836d6b0ba6f7ed56b1a6f61fec64d8e4fbab78407af439a2460",
+      "new_repo_path": "_content/doc/tutorial/call-module-code.html",
+      "new_entry_sha256": "e15097929f143836d6b0ba6f7ed56b1a6f61fec64d8e4fbab78407af439a2460",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/compile-install.html",
+      "old_entry_sha256": "207de8898ceffd8fe454d8d94ffabe348b1579dd0c5dbd31cd5625f39291d3a0",
+      "new_repo_path": "_content/doc/tutorial/compile-install.html",
+      "new_entry_sha256": "207de8898ceffd8fe454d8d94ffabe348b1579dd0c5dbd31cd5625f39291d3a0",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/create-module.html",
+      "old_entry_sha256": "e86bbbcbb07dbd6aa9a5e3e00ddf7525888f8f4298299818b9c7cf7b2407d144",
+      "new_repo_path": "_content/doc/tutorial/create-module.html",
+      "new_entry_sha256": "e86bbbcbb07dbd6aa9a5e3e00ddf7525888f8f4298299818b9c7cf7b2407d144",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/database-access.md",
+      "old_entry_sha256": "006b82bedadb9fbf37ab24e3e7e09ae8f86abc8870d0b1df45e67b4d6ea337e1",
+      "new_repo_path": "_content/doc/tutorial/database-access.md",
+      "new_entry_sha256": "006b82bedadb9fbf37ab24e3e7e09ae8f86abc8870d0b1df45e67b4d6ea337e1",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/fuzz.md",
+      "old_entry_sha256": "91f902e95484e8320b35801d1bb22c12b90f08983a3a269ca373cce96c8cc903",
+      "new_repo_path": "_content/doc/tutorial/fuzz.md",
+      "new_entry_sha256": "91f902e95484e8320b35801d1bb22c12b90f08983a3a269ca373cce96c8cc903",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/generics.md",
+      "old_entry_sha256": "c15398a80cb69b1b0d486d14bb35ccb2a807a4fbcac6b7bd5319a997513aa67f",
+      "new_repo_path": "_content/doc/tutorial/generics.md",
+      "new_entry_sha256": "c15398a80cb69b1b0d486d14bb35ccb2a807a4fbcac6b7bd5319a997513aa67f",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/getting-started.html",
+      "old_entry_sha256": "b4794678dc335ab850ceb21bc7b3a9896a401717d906a5242758803b444d45bd",
+      "new_repo_path": "_content/doc/tutorial/getting-started.html",
+      "new_entry_sha256": "b4794678dc335ab850ceb21bc7b3a9896a401717d906a5242758803b444d45bd",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/govulncheck-ide.md",
+      "old_entry_sha256": "b0173a57e407fe2937c85ed434dee7037eee0a9d91f495cb4d43a4e6f7dabd35",
+      "new_repo_path": "_content/doc/tutorial/govulncheck-ide.md",
+      "new_entry_sha256": "b0173a57e407fe2937c85ed434dee7037eee0a9d91f495cb4d43a4e6f7dabd35",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/govulncheck.md",
+      "old_entry_sha256": "6517f5eb2bc73ca2e1befbb643fcc5cd4d381dbbf404acf03bc12395393809f9",
+      "new_repo_path": "_content/doc/tutorial/govulncheck.md",
+      "new_entry_sha256": "6517f5eb2bc73ca2e1befbb643fcc5cd4d381dbbf404acf03bc12395393809f9",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/greetings-multiple-people.html",
+      "old_entry_sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b",
+      "new_repo_path": "_content/doc/tutorial/greetings-multiple-people.html",
+      "new_entry_sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/handle-errors.html",
+      "old_entry_sha256": "10e61d7f50095845bd2e313add841500b189bb7ddda6c3b7fee248f8cdc53a89",
+      "new_repo_path": "_content/doc/tutorial/handle-errors.html",
+      "new_entry_sha256": "10e61d7f50095845bd2e313add841500b189bb7ddda6c3b7fee248f8cdc53a89",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/index.html",
+      "old_entry_sha256": "c9ecfeee2bb8e450f8f30e38b997cd663b0d904021299d5cb400796e1b43eb55",
+      "new_repo_path": "_content/doc/tutorial/index.html",
+      "new_entry_sha256": "c9ecfeee2bb8e450f8f30e38b997cd663b0d904021299d5cb400796e1b43eb55",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/json.md",
+      "old_entry_sha256": "9bb5bed860a71bdb4dc9776c9eff2e5f4a40f1ca9851851bfd1619c1793970be",
+      "new_repo_path": "_content/doc/tutorial/json.md",
+      "new_entry_sha256": "9bb5bed860a71bdb4dc9776c9eff2e5f4a40f1ca9851851bfd1619c1793970be",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/module-conclusion.html",
+      "old_entry_sha256": "94311530fc64ba2d3f5d25e60f68df4d37248d255ecde743214d22d786f70f40",
+      "new_repo_path": "_content/doc/tutorial/module-conclusion.html",
+      "new_entry_sha256": "94311530fc64ba2d3f5d25e60f68df4d37248d255ecde743214d22d786f70f40",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/random-greeting.html",
+      "old_entry_sha256": "9951ede236291e2db0beaa868159e101bc2983f9754c587c3ab3954fa26cdfbe",
+      "new_repo_path": "_content/doc/tutorial/random-greeting.html",
+      "new_entry_sha256": "9951ede236291e2db0beaa868159e101bc2983f9754c587c3ab3954fa26cdfbe",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/web-service-gin.md",
+      "old_entry_sha256": "3342ff17a8b087b5d5a2a3c03d3fbcf4197eafd943c65a05c62c43df0cf33cf4",
+      "new_repo_path": "_content/doc/tutorial/web-service-gin.md",
+      "new_entry_sha256": "3342ff17a8b087b5d5a2a3c03d3fbcf4197eafd943c65a05c62c43df0cf33cf4",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/doc/tutorial/workspaces.md",
+      "old_entry_sha256": "4991323de780ed74be6286cb07f2b1cfae1c03d27aa80ff864a151782bd293de",
+      "new_repo_path": "_content/doc/tutorial/workspaces.md",
+      "new_entry_sha256": "4991323de780ed74be6286cb07f2b1cfae1c03d27aa80ff864a151782bd293de",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/learn/books.yaml",
+      "old_entry_sha256": "929aff40ecf99c211788d4edc7bd88697e290a3f7976559f39ba6403dcc8f19a",
+      "new_repo_path": "_content/learn/books.yaml",
+      "new_entry_sha256": "929aff40ecf99c211788d4edc7bd88697e290a3f7976559f39ba6403dcc8f19a",
+      "role": "website-data"
+    },
+    {
+      "old_entry_path": "_content/learn/cloud.yaml",
+      "old_entry_sha256": "7cdd8b50ec77c3207c7edbcb2cd8920f5180a0937054b5d91f30104da8f83347",
+      "new_repo_path": "_content/learn/cloud.yaml",
+      "new_entry_sha256": "7cdd8b50ec77c3207c7edbcb2cd8920f5180a0937054b5d91f30104da8f83347",
+      "role": "website-data"
+    },
+    {
+      "old_entry_path": "_content/learn/courses.yaml",
+      "old_entry_sha256": "41e32c5136468d2cafed0876c0fddae0c909d408b30616850858f66af5b4b425",
+      "new_repo_path": "_content/learn/courses.yaml",
+      "new_entry_sha256": "41e32c5136468d2cafed0876c0fddae0c909d408b30616850858f66af5b4b425",
+      "role": "website-data"
+    },
+    {
+      "old_entry_path": "_content/learn/guided.yaml",
+      "old_entry_sha256": "6df4750d39a30238a3bb460caa0fd59865d7d84f8e36278a1a92e668deb4935b",
+      "new_repo_path": "_content/learn/guided.yaml",
+      "new_entry_sha256": "6df4750d39a30238a3bb460caa0fd59865d7d84f8e36278a1a92e668deb4935b",
+      "role": "website-data"
+    },
+    {
+      "old_entry_path": "_content/learn/index.md",
+      "old_entry_sha256": "0fde7be422a294f252116fe27325131192cd6931aa1ea84779f2e1d5c0fface9",
+      "new_repo_path": "_content/learn/index.md",
+      "new_entry_sha256": "0fde7be422a294f252116fe27325131192cd6931aa1ea84779f2e1d5c0fface9",
+      "role": "website-source"
+    },
+    {
+      "old_entry_path": "_content/learn/quickstart.yaml",
+      "old_entry_sha256": "89e1c3cd9ccefbb21ef3f83a167924df22dcd51a8412b3e4a9d258dddff45cc7",
+      "new_repo_path": "_content/learn/quickstart.yaml",
+      "new_entry_sha256": "89e1c3cd9ccefbb21ef3f83a167924df22dcd51a8412b3e4a9d258dddff45cc7",
+      "role": "website-data"
+    },
+    {
+      "old_entry_path": "_content/learn/training.yaml",
+      "old_entry_sha256": "f471d8a25ff9751ce9d7e5f260e3e2d3f7a89f969b8dcd09d8cc5485ebbdb9b3",
+      "new_repo_path": "_content/learn/training.yaml",
+      "new_entry_sha256": "f471d8a25ff9751ce9d7e5f260e3e2d3f7a89f969b8dcd09d8cc5485ebbdb9b3",
+      "role": "website-data"
+    },
+    {
+      "old_entry_path": "_content/learn/tutorials.yaml",
+      "old_entry_sha256": "c6bcce772bcc13f0efd1aeb027b48651da5aef2a8ee654ec7d46938b5dc18120",
+      "new_repo_path": "_content/learn/tutorials.yaml",
+      "new_entry_sha256": "c6bcce772bcc13f0efd1aeb027b48651da5aef2a8ee654ec7d46938b5dc18120",
+      "role": "website-data"
+    }
+  ],
+  "equality": "byte-exact",
+  "identity_sha256": "96de000f8ce7b1cfaab21873ffdb414720bee7af8547629f2fa68ede585a5c7c"
+}

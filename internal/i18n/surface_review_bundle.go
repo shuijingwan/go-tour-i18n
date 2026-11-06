@@ -7,9 +7,10 @@ import (
 	"path/filepath"
 )
 
-const localeSurfaceReviewReviewerBundleSchemaVersion = 1
+const localeSurfaceReviewReviewerBundleSchemaVersion = 2
 
 var localeSurfaceReviewReviewerAuthorityPaths = []string{
+	"docs/LANGUAGE_DEFECT_EXHAUSTION.md",
 	"AGENTS.md",
 	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
@@ -22,12 +23,13 @@ var localeSurfaceReviewReviewerAuthorityPaths = []string{
 type LocaleSurfaceReviewReviewerBundleFile = TransportBundleFile
 
 type LocaleSurfaceReviewReviewerBundleManifest struct {
-	SchemaVersion int                                     `json:"schema_version"`
-	Kind          string                                  `json:"kind"`
-	Locale        string                                  `json:"locale"`
-	ReviewPackage LocaleSurfaceReviewReviewerBundleFile   `json:"review_package"`
-	Coverage      LocaleSurfaceReviewPackageCoverage      `json:"coverage"`
-	Authority     []LocaleSurfaceReviewReviewerBundleFile `json:"authority"`
+	SchemaVersion     int                                     `json:"schema_version"`
+	Kind              string                                  `json:"kind"`
+	Locale            string                                  `json:"locale"`
+	ReviewPackage     LocaleSurfaceReviewReviewerBundleFile   `json:"review_package"`
+	LanguageAttention LocaleSurfaceReviewReviewerBundleFile   `json:"language_attention"`
+	Coverage          LocaleSurfaceReviewPackageCoverage      `json:"coverage"`
+	Authority         []LocaleSurfaceReviewReviewerBundleFile `json:"authority"`
 }
 
 // ExportLocaleSurfaceReviewReviewerBundle returns a deterministic ZIP transport
@@ -41,7 +43,16 @@ func ExportLocaleSurfaceReviewReviewerBundle(root, locale string, catalog *Catal
 		return nil, LocaleSurfaceReviewReviewerBundleManifest{}, err
 	}
 
-	entries := []TransportBundleEntry{{Path: "surface-review.json", Data: packageData}}
+	var review LocaleSurfaceReviewPackage
+	if err := json.Unmarshal(packageData, &review); err != nil {
+		return nil, LocaleSurfaceReviewReviewerBundleManifest{}, err
+	}
+	attentionData, err := json.MarshalIndent(review.LanguageAttention, "", "  ")
+	if err != nil {
+		return nil, LocaleSurfaceReviewReviewerBundleManifest{}, err
+	}
+	attentionData = append(attentionData, '\n')
+	entries := []TransportBundleEntry{{Path: "surface-review.json", Data: packageData}, {Path: LanguageAttentionPath, Data: attentionData}}
 	authority := make([]LocaleSurfaceReviewReviewerBundleFile, 0, len(localeSurfaceReviewReviewerAuthorityPaths))
 	for _, repositoryPath := range localeSurfaceReviewReviewerAuthorityPaths {
 		path := filepath.Join(root, filepath.FromSlash(repositoryPath))
@@ -64,12 +75,13 @@ func ExportLocaleSurfaceReviewReviewerBundle(root, locale string, catalog *Catal
 	}
 
 	manifest := LocaleSurfaceReviewReviewerBundleManifest{
-		SchemaVersion: localeSurfaceReviewReviewerBundleSchemaVersion,
-		Kind:          "go-tour-i18n/locale-surface-review-reviewer-bundle",
-		Locale:        locale,
-		ReviewPackage: LocaleSurfaceReviewReviewerBundleFile{BundlePath: "surface-review.json", SHA256: sum(packageData)},
-		Coverage:      coverage,
-		Authority:     authority,
+		SchemaVersion:     localeSurfaceReviewReviewerBundleSchemaVersion,
+		Kind:              "go-tour-i18n/locale-surface-review-reviewer-bundle",
+		Locale:            locale,
+		ReviewPackage:     LocaleSurfaceReviewReviewerBundleFile{BundlePath: "surface-review.json", SHA256: sum(packageData)},
+		Coverage:          coverage,
+		LanguageAttention: NewTransportBundleFile(LanguageAttentionPath, "", attentionData),
+		Authority:         authority,
 	}
 	manifestData, err := json.MarshalIndent(manifest, "", "  ")
 	if err != nil {

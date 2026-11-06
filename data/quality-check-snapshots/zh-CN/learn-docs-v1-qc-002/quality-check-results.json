@@ -1,0 +1,54 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "learn-docs-v1-qc-002",
+  "snapshot_manifest_sha256": "b5f3452f0f997c9883ccb55b1ebd4e4623c70e8ee3e7a8a9596fb8365767e5f8",
+  "previous_snapshot_id": "learn-docs-v1-qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 7,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "a58b321bd863b55022f34c8b3f5b8fb48b6fa77ec9e8b252a88095df48a2d66f",
+      "rating": "B",
+      "finding": "parser/protector 修复后，上一轮缺失的核心操作说明已经完整进入中文，测试创建、运行、故意破坏 `Hello` 以及再次执行测试的流程均已恢复。当前仍有一处明确的自然度缺陷：“`TestHelloName` 测试应当失败，--而 `TestHelloEmpty` 仍然会通过。”其中 source 的 `--` 与新增中文连接词“而”组合成 `--而`，形成不自然的标点/句法衔接。其余当前可翻译自然语言未发现需要升级为 C 的问题；preformatted 中仍为英文的非开放内容不作为本轮漏译 finding。"
+    },
+    {
+      "index": 3,
+      "unit_id": "c85ef7834d7badd0decefc11c5e655fe930e2d9c2059f72c8b3b4329514bc129",
+      "rating": "B",
+      "finding": "parser 修复后，创建 `hello` 目录、初始化模块、调用 `Hello`、配置本地 `replace`、运行 `go mod tidy` 和执行程序等上一轮缺失的教学步骤均已完整翻译。当前主要问题集中在 `go mod tidy` 后的依赖说明：“你在导入 `greetings` 包时 `hello.go` 建立了这个依赖关系”将 `hello.go` 的句法位置放错，使其读起来像是 `hello.go` 自身“建立”依赖，而 source 表达的是“在 `hello.go` 中导入该包时建立了依赖”。同页伪版本说明还出现“，--它”这样的不自然标点组合。技术主旨仍可正确理解，属于局部修订范围。"
+    },
+    {
+      "index": 4,
+      "unit_id": "ac96ff288b73304d3c61dcee7965ec6e2ff3da2d71518b9b952b44af38ec8a22",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "34c60abd7d1eeab6ffafb1ba82914ecc8eeb5aaa0e20e8e3055f65b234e506c2",
+      "rating": "B",
+      "finding": "parser 修复后，进入主目录、创建 `greetings` 目录、执行 `go mod init`、创建 `greetings.go` 以及实现 `Hello` 等上一轮缺失步骤已经完整翻译；模块、模块路径、依赖项、导出名等术语也与 glossary 一致。当前 `go mod init` 段落出现“传入模块路径；-- 在这里使用 `example.com/greetings`”的双重标点衔接，中文阅读明显生硬，需要局部整理。其余页面没有发现影响核心技术含义的缺陷。"
+    },
+    {
+      "index": 9,
+      "unit_id": "dffdb70f0db3cd3fc7a18588bf472129cc62957ec7fbf87482f9ee8ad1f2f625",
+      "rating": "B",
+      "finding": "parser 修复后，Go 入门页此前遗漏的命令行步骤、`go mod init`、创建和运行 `hello.go`、导入 `rsc.io/quote` 以及调用 `quote.Go` 等开放自然语言均已完整翻译，核心教程流程和模块概念准确。当前介绍 pkg.go.dev 时的句子“包发布在模块--中，例如 `rsc.io/quote` --，供其他人使用”保留的 dash 与中文语序组合不自然，使括入示例的位置和“模块中”的关系显得生硬；同类问题属于小范围中文句法/标点润色，不影响整体技术正确性。"
+    },
+    {
+      "index": 12,
+      "unit_id": "27d919dd972c2ef0dc7611e7027723e33323beabbd386307454ee65e4f806d78",
+      "rating": "C",
+      "finding": "页面正文在 parser 修复后已经完整，但正式开放的 Go teaching comments 仍存在多处明显语义破损，不能直接发布。例如：`Hellos` 注释形成“将每个指定的人名 / 与一条问候语关联起来 message.”；“遍历接收到的 `names` 切片……为每个 `message` 获取一条 `name`”反转了 source 中“为每个 name 获取 message”的关系；后续还有“将获取到的 `message` 与 / 关联起来 `name`”“消息 `formats`”“一个 `names`”“名称切片请求 `messages` 各名称的问候语 `names`”等多处中英文 identity 与中文句法错位。这些 teaching comments 属于正式开放自然语言，承担代码教学解释，需要针对本 Page 修订并重新 QC。"
+    },
+    {
+      "index": 13,
+      "unit_id": "c5df58cba15efb86836ec12fba525999556a21919d838b972a44b00e02032b1b",
+      "rating": "C",
+      "finding": "parser 修复后，处理 `Hello` 返回错误、修改调用方、运行程序验证错误等正文步骤已经完整翻译，但第一段代码中的开放 teaching comment 仍发生明显语义/绑定破损。source 的含义是“收到 name 时，返回一个把 name 嵌入 greeting message 的值”，当前却呈现为“如果收到了 `name`，就返回一个把它嵌入 `name` 问候语中的值。 `message`.”，重复 `name`、孤立 `message`，已经无法自然准确表达原来的技术说明。该内容属于正式开放的教学自然语言，必须修订后才能达到发布质量。"
+    }
+  ]
+}

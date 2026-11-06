@@ -27,7 +27,7 @@ func UpgradeFoundation(root string, apply bool) (*FoundationUpgrade, error) {
 	if err := StrictJSON(oldBytes, &old); err != nil {
 		return nil, err
 	}
-	snapshot, err := readRegular(root, SnapshotPath)
+	snapshot, err := ReadSourceSnapshot(root)
 	if err != nil {
 		return nil, err
 	}

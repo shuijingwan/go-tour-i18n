@@ -12,7 +12,82 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/sitecontent"
 )
 
-func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []string) error {
+// run supplies a freshly hydrated/registered Catalog. Both transport operations
+// use the same complete native/registered selector, never a batch Unit subset.
+// Keeping the raw shared CLI entry here also permits isolated full dispatch
+// contract tests without loading a real locale's authority graph.
+func generationBundleLifecycleCommand(root string, catalog *i18n.Catalog, args []string) error {
+	contentPackage, remaining, err := parseTranslationContentPackageArgs(args)
+	if err != nil {
+		return err
+	}
+	if len(remaining) < 2 || remaining[0] != "generation-bundle" {
+		return fmt.Errorf("generation-bundle export/current-check lifecycle command required")
+	}
+	if contentPackage != "" {
+		catalog, err = i18n.SelectCurrentValidationReopenPackage(catalog, contentPackage)
+		if err != nil {
+			return err
+		}
+	}
+	switch remaining[1] {
+	case "export":
+		return exportGenerationBundleCommand(root, catalog, remaining[2:], contentPackage)
+	case "current-check":
+		return checkTranslationUnitGenerationBundleCommand(root, catalog, remaining[2:], contentPackage)
+	default:
+		return fmt.Errorf("generation-bundle export/current-check lifecycle command required")
+	}
+}
+
+// Only canonical exporter output or bytes independently verified CURRENT may
+// reach this helper. It enforces CLI flag presence, never infers authority from
+// an unvalidated manifest or changes the domain API's package proof.
+func requireCurrentValidationBundlePackage(data []byte, contentPackage string) error {
+	if contentPackage != "" {
+		return nil
+	}
+	files, err := i18n.ReadTransportBundle(data, 512, 64<<20)
+	if err != nil {
+		return err
+	}
+	var batch i18n.RetranslationBatchManifest
+	if err := sitecontent.StrictJSON(files["formal/manifest.json"], &batch); err != nil {
+		return err
+	}
+	for _, unit := range batch.Units {
+		if unit.RevisionFeedbackSource == i18n.CurrentValidationRevisionFeedback {
+			return fmt.Errorf("current-validation Generation Bundle requires exactly one explicit --content-package")
+		}
+	}
+	return nil
+}
+
+func checkTranslationUnitGenerationBundleCommand(root string, catalog *i18n.Catalog, args []string, contentPackage string) error {
+	fs := flag.NewFlagSet("generation-bundle current-check", flag.ContinueOnError)
+	path := fs.String("bundle", "", "original TranslationUnit generation ZIP")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *path == "" || fs.NArg() != 0 {
+		return fmt.Errorf("usage: generation-bundle current-check --bundle <generation.zip>")
+	}
+	b, err := readRegularBundleFile(*path)
+	if err != nil {
+		return err
+	}
+	m, err := i18n.VerifyCurrentTranslationUnitGenerationBundle(root, catalog, b)
+	if err != nil {
+		return err
+	}
+	if err := requireCurrentValidationBundlePackage(b, contentPackage); err != nil {
+		return err
+	}
+	fmt.Printf("Generation bundle: CURRENT (locale=%s batch=%s task=%s attempt=%d identity=%s)\n", m.Locale, m.BatchID, m.TaskKind, m.Attempt, m.InputIdentitySHA256)
+	return nil
+}
+
+func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []string, contentPackage string) error {
 	fs := flag.NewFlagSet("generation-bundle export", flag.ContinueOnError)
 	locale := fs.String("locale", "", "locale")
 	batchID := fs.String("batch-id", "", "retranslation batch id")
@@ -26,6 +101,9 @@ func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []st
 	}
 	data, manifest, err := i18n.ExportTranslationUnitGenerationBundle(root, catalog, i18n.GenerationBundleOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID})
 	if err != nil {
+		return err
+	}
+	if err := requireCurrentValidationBundlePackage(data, contentPackage); err != nil {
 		return err
 	}
 	path, err := writeNewTransportOutput(*output, data)

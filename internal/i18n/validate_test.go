@@ -140,8 +140,8 @@ func TestCompleteLinkStructuresMayReorderButCannotRebind(t *testing.T) {
 }
 
 func TestMethods17Attempt3HistoricalResponseValidatesAfterLinkReorder(t *testing.T) {
-	root := repoRoot(t)
-	catalog, err := BuildCatalog(root)
+	sourceRoot := repoRoot(t)
+	catalog, err := BuildCatalog(sourceRoot)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -149,7 +149,23 @@ func TestMethods17Attempt3HistoricalResponseValidatesAfterLinkReorder(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	responsePath := filepath.Join(root, "data", "translation-runs", "zh-CN", "methods", "17", "sources", page.SourceSHA256, "attempt-003", "response.json")
+	root := t.TempDir()
+	for _, path := range []string{"locales/zh-CN/locale.json", "locales/zh-CN/glossary.yaml", filepath.ToSlash(filepath.Join("_content", "tour", page.Article))} {
+		copyQualityBundleTestFile(t, filepath.Join(sourceRoot, filepath.FromSlash(path)), filepath.Join(root, filepath.FromSlash(path)))
+	}
+	// Present loads only this Page's referenced .play files during validation.
+	for _, example := range catalog.Examples {
+		for _, id := range example.ReferencedBy {
+			if id == page.ID {
+				copyQualityBundleTestFile(t, filepath.Join(sourceRoot, filepath.FromSlash(example.SourcePath)), filepath.Join(root, filepath.FromSlash(example.SourcePath)))
+				break
+			}
+		}
+	}
+	responseRelative := filepath.Join("data", "translation-runs", "zh-CN", "methods", "17", "sources", page.SourceSHA256, "attempt-003", "response.json")
+	copyQualityBundleTestFile(t, filepath.Join(sourceRoot, responseRelative), filepath.Join(root, responseRelative))
+	writeTestLanguageAuditAuthority(t, root, "zh-CN", testLanguageAuditAuthority("zh-CN", "Han", map[string]string{".": "。"}))
+	responsePath := filepath.Join(root, responseRelative)
 	responseBytes, err := os.ReadFile(responsePath)
 	if err != nil {
 		t.Fatal(err)

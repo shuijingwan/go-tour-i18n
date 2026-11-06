@@ -53,14 +53,24 @@ de-AT  zh-SG  en-GB  en-CA  en-AU  en-IN  en-SG  en-ZA  he
 
 ### 已完成的非 Google Publisher 支持语言
 
-以下 4 门语言已经完成并进入 `live`，应尽早申请 go.dev 的 Go local 链接：
+以下 4 门语言已经完成并进入 `live`，Go local link 申请也已正式提交；截至 2026-10-23 人工核实，上游 issue 仍为 `open`，尚未 accepted/merged：
 
-- Swahili
-- Kazakh
-- Persian
-- Amharic
+- Swahili — Kiswahili（`sw-TZ`）
+- Kazakh — Қазақша（`kk-KZ`）
+- Persian — فارسی（`fa-IR`）
+- Amharic — አማርኛ（`am-ET`）
 
 这四项的正式实现身份已由 `production/identity.json` 冻结；本节只保留完成状态和 go.dev 链接申请事项，不复制 machine identity。
+
+#### Go local 申请状态
+
+维护者已人工核实的外部运营 evidence 为 [golang/go#81958](https://github.com/golang/go/issues/81958)，标题 `x/website/tour: add four community translations and update four URLs`，由 `shuijingwan` 于 **2026-10-02** 创建。冻结状态为 **`submitted; upstream issue #81958 open as verified 2026-10-23`**：正文请求新增上述四门语言，并分别提交各语言的 canonical `/tour/` URL；不能再将它们描述为 merely planned、尚未提交或仅待申请。
+
+现有 **4 个 Go local links** 仍为 French、German、Korean、Simplified Chinese；同一 #81958 也请求将这四个已有链接更正为 canonical `/tour/` URL。已有收录状态、新增申请状态、URL correction 是否完成是不同事实；issue open 不代表新增链接 accepted/approved/merged，也不证明 URL correction 已合并。
+
+Go maintainer 在该 issue 后续回复中表示愿意更新，但要求 `/tour/` 全部无广告。**2026-10-07**，维护者已在同一 issue 回复：Swahili、Kazakh、Persian、Amharic 的 `/tour/` surface 均已禁用广告并重新部署，Production machine/browser verification PASS。此处持久化已核实的 follow-up，不重新执行部署或验证，也不改变现有 publication/advertising policy 分类。
+
+项目页 source drafting、frontier 与后续 handoff 均以本节区分“existing Go local links”和“submitted / upstream issue open”；不能继续读取旧的 to-pursue 表述推断尚未提交。后续 issue 状态由维护者显式核实后刷新本文，不新增实时 GitHub 查询、持续监控或每次 workflow 联网 gate；这条运营记录不授予语言接受或 publication authority。
 
 ### 固定范围边界
 
@@ -107,7 +117,7 @@ Hebrew 的 Google Search Console 与 Bing Webmaster Tools sitemap 已提交；�
 
 Hebrew 已于 2026-10-06 取得自身 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS`，此前对应 deferred issue 已核销。当前不再存在 IndexNow closeout blocker。V2-C1 前主动冻结 `db076098077c07d3cef1b85a2cf56ff52777f587` 为正式 English source authority，允许 campaign/review/activation/Preview/Production；不表示今天最新 master，不增加联网 drift gate，不 fetch/pull/sync。V2-C1 等待 [Architecture 第 10 节](SITE_V2_ARCHITECTURE.md#10-upstream-contract-与-deferred-v2-c1) 的四个 issue 全部达到预期状态并显式重开，不阻塞第一批 locale。最终 sync 只精确处理 affected scope，复用 unaffected evidence/V2-B lineage，不改写历史、不默认全量重译。
 
-此前完成的 Swahili、Kazakh、Persian、Amharic 仍应按既有运营计划申请或维护 go.dev Go local 链接；该事项不改变它们已经 `live` 的完成状态。
+Swahili、Kazakh、Persian、Amharic 的 Go local link 申请已提交，当前冻结状态仍为 upstream issue open；后续跟进与四个 existing links 的 URL correction 以[Go local 申请状态](#go-local-申请状态)为准，不改变它们已经 `live` 的完成状态，也不表示申请已 accepted/merged。
 
 ## 4. Hebrew 已完成正式实施与质量验收
 

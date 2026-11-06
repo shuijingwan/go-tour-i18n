@@ -1,0 +1,181 @@
+---
+title: FIPS 140-3 合规性
+layout: article
+---
+
+从 Go 1.24 开始，Go 二进制文件可以原生运行在一种
+有助于满足 FIPS 140-3 合规要求的模式下。此外，工具链还可以针对
+构成 Go 密码模块的密码学包的冻结版本进行构建。
+
+
+## FIPS 140-3
+
+NIST FIPS 140-3 是 U.S 政府针对密码学
+应用的一套合规制度，其中要求使用一组经批准的
+算法，并使用经过
+[CMVP](https://csrc.nist.gov/projects/cryptographic-module-validation-program) 验证的
+密码模块，且这些模块需在目标运行环境中接受测试。
+
+本页介绍的机制可帮助 Go 应用程序满足相关合规要求。
+
+不需要满足 FIPS 140-3 合规要求的应用程序可以安全地忽略这些机制，
+也不应启用 FIPS 140-3 模式。
+
+**注意（NOTE）：**仅仅使用符合 FIPS 140-3 要求并通过验证的密码模块，
+本身并不一定能满足所有相关监管要求。Go 团队无法就所提供的 
+FIPS 140-3
+ 模式是否能够满足、或不能满足个别用户的具体监管要求，提供任何
+保证或支持。你需要谨慎判断使用该模块是否满足
+自己的具体要求。
+
+## Go 密码模块
+
+Go 密码模块由标准库中的一组 Go 包构成，
+位于 `crypto/internal/fips140/...` 下，用于实现经 FIPS 140-3 批准的
+算法。
+
+公开的 API 包（例如 `crypto/ecdsa` 和 `crypto/rand`）会透明地使用
+Go 密码模块来实现 FIPS 140-3 算法。
+
+## FIPS 140-3 模式
+
+在 FIPS 140-3 模式下运行时：
+
+ - Go 密码模块会在
+   `init` 时自动执行完整性自检，将构建时计算的模块目标文件校验和
+   与加载到内存中的符号进行比较。
+
+ - 所有算法都会按照相关的 FIPS
+   140-3 实施指南执行已知答案自检，或者在 `init` 时执行，或者在首次使用时执行。
+
+ - 对生成的密码密钥执行成对一致性测试。
+   请注意，对于某些密钥类型，这可能造成最高约 2 倍的性能下降，
+   对临时密钥尤其需要注意。
+
+ - [`crypto/rand.Reader`](/pkg/crypto/rand/#Reader) 的实现基于一个
+   NIST SP 800-90A DRBG。为了保证与未在
+   FIPS 140-3 模式下运行的程序具有相同安全级别，还会从平台的
+   CSPRNG 获取随机字节，并在每次 `Read` 时将其作为不计入熵估算的附加
+   数据混入输出。
+
+ - [`crypto/tls`](/pkg/crypto/tls/) 包会忽略且不会协商
+   任何协议版本、密码套件、签名算法或密钥交换
+   机制，只要其未经 FIPS 140-3 批准。（这等同于旧版
+   可选启用的 `crypto/tls/fipsonly` Go+BoringCrypto 机制。）
+
+ - [`crypto/rsa.SignPSS`](/pkg/crypto/rsa/#SignPSS) 与
+   [`PSSSaltLengthAuto`](/pkg/crypto/rsa/#PSSSaltLengthAuto) 搭配使用时，会把盐的长度
+   限制为哈希长度。
+
+FIPS 140-3 模式不支持 OpenBSD、Wasm、AIX 和 32 位 Windows。
+
+## `crypto/fips140` 包
+
+[`crypto/fips140.Enabled`](/pkg/crypto/fips140/#Enabled) 函数用于报告
+FIPS 140-3 模式是否处于启用状态。
+
+[`crypto/fips140.Version`](/pkg/crypto/fips140/#Version) 函数返回
+当前使用的 Go 密码模块版本。
+
+## `GOFIPS140` 环境变量
+
+`GOFIPS140` 环境变量可以与 `go build`、`go install` 和 
+`go test` 一起使用，用于选择要链接到
+可执行程序中的 Go 密码模块版本，并默认启用 FIPS 140-3 模式。
+
+ - `off` 是默认值，使用当前标准库树中的 `crypto/internal/fips140/...` 包。
+   
+
+ - `latest` 与 `off` 类似，但默认启用 FIPS 140-3 模式。
+
+ - `v1.0.0` 或 `v1.26.0` 分别选择对应的特定 Go 密码模块
+   版本。它们默认启用 FIPS 140-3 模式。
+
+ - `inprocess` 和 `certified` 分别等价于指定最新的版本：
+   前者是进入 [CMVP Modules In Process List][] 的最新版本，后者是
+   已获得 [CMVP validation certificate][] 的最新版本。
+
+[CMVP Modules In Process List]: https://csrc.nist.gov/Projects/cryptographic-module-validation-program/modules-in-process/modules-in-process-list
+[CMVP validation certificate]: https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search?SearchMode=Basic&ModuleName=Go+Cryptographic+Module&CertificateStatus=Active&ValidationYear=0
+
+## `fips140` 的 GODEBUG 选项
+
+运行时 `fips140` 的 [GODEBUG](/doc/godebug) 选项控制 Go
+密码模块是否在 FIPS 140-3 模式下运行。程序启动后不能再更改该选项。
+
+
+其默认值为 `off`，除非在构建时设置了 `GOFIPS140`。
+
+如果设为 `on`，则启用 FIPS 140-3 模式。即使构建时未设置 `GOFIPS140`，
+也可以这样做。
+
+如果设为 `only`，不符合 FIPS 140-3 要求的密码算法
+将返回错误或触发 panic。请注意，这是一种尽力而为的模式，旨在
+用于测试、评估和调试。*它并不适用于
+生产环境*，安全政策也不要求使用它；它按设计会引入崩溃
+和可能未处理的错误，并且可能出现误报或
+漏报。
+
+大多数程序不应直接设置此选项，而应在构建时使用
+`GOFIPS140`。
+
+## 模块版本、验证与兼容性
+
+Google 目前与 [Geomys](https://geomys.org/)
+ 建立了合同关系，以推动 Go 密码模块至少每年进行一次 CMVP 验证。
+在进行验证时，我们会冻结 Go 密码模块，并创建
+一个新的模块版本供提交审核。
+
+这些验证会在覆盖全面的运行
+环境集合中测试，支持许多常见的操作系统和硬件平台
+组合。
+
+
+只要更新版本尚未获得 CMVP 验证
+证书，较旧的 Go 密码模块版本就会继续得到支持并保持可用。更新版本获得 CMVP 验证
+证书后，旧版本将被移除。
+
+如果使用的是从较旧 Go 版本冻结下来的
+Go 密码模块，某些标准库功能可能不可用并返回错误。
+
+### Go 密码模块 v1.26.0
+
+Go 密码模块 v1.26.0 于 2026 年初基于 Go 1.26 冻结。
+
+它可用于 Go 1.26+。
+
+截至 2026-04-28，它在 CMVP Modules In Process List 中处于 Pending Review 状态。
+它由 [CAVP Certificate A8028](https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program/details?validation=40638) 覆盖。
+
+#### 相较于 v1.0.0 的变化
+
+  - 实现了 ML-DSA。
+
+  - [testing/cryptotest.SetGlobalRandom](/pkg/testing/cryptotest#SetGlobalRandom) 现已受支持。
+
+  - 引入新的 AES-GCM 合规 API，供 `crypto/hpke` 以及未来公开的 API 使用。
+
+  - Go 密码模块现在使用一个 CPU 抖动熵源，并具有
+  [ESV Certificate #E318](https://csrc.nist.gov/projects/cryptographic-module-validation-program/entropy-validations/certificate/318)
+  以及 [CAVP Certificate A7715](https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program/details?product=20498)。
+  （平台的 CSPRNG 仍会作为不计入熵估算的附加数据源，用于所有随机字节。）
+
+  - 进行了多项安全性和性能改进。
+
+### Go 密码模块 v1.0.0
+
+Go 密码模块 v1.0.0 于 2024 年初基于 Go 1.24 冻结。
+
+它可用于 Go 1.24+。
+
+它由 [CMVP Certificate #5247](https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/5247)
+以及 [CAVP Certificate A6650](https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program/details?product=19371) 覆盖。
+
+## Go+BoringCrypto
+
+此前使用 BoringCrypto 模块实现部分
+FIPS 140-3 批准算法的、现已不受支持的机制目前仍可使用，但计划在未来版本中
+移除，并以本页介绍的机制取代。
+
+
+Go+BoringCrypto 与原生 FIPS 140-3 模式不兼容。

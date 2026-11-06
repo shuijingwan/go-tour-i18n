@@ -1,5 +1,7 @@
 # 多语言翻译流程入口
 
+全项目执行共同遵守[共享翻译单元生命周期与五角色协作](SHARED_TRANSLATION_UNIT_LIFECYCLE.md)：所有内容表面复用同一生命周期；页面差异限于适配器；传输安全与逐单元机器校验分层；先恢复、先复用，中文说明，交接只给一个执行者、动作和停止条件。本文中 Tour 的 present / Example 细节属于 Tour 适配边界，不另建 Learn/Docs 状态机。Learn/Docs 两批生成和机器校验全部完成后才初审，两批初审全部完成后集中修订。角色与工具分工不替代任何正式 machine authority 或语言质量 gate。
+
 本文档是本项目多语言翻译流程的唯一导航入口。它不重复各规范的具体规则；执行每个阶段时，请以对应链接文档为准。
 
 ## 总流程
@@ -35,7 +37,7 @@ Generation session
 Local terminal
   initial bulk export + Generation ZIP handoff
         ↓
-AI execution environment
+Local terminal
   result landing / process / validation / Candidate Snapshot
         ↓
 Reviewer session
@@ -44,13 +46,13 @@ Reviewer session
 Generation session
   revision generation
         ↓
-AI execution environment
+Local terminal
   small revision lifecycle / new Candidate Snapshot
         ↓
 Reviewer session
   re-QC
         ↓
-AI execution environment
+Local terminal
   record / finalize
         ↓
 Local terminal
@@ -59,13 +61,13 @@ Local terminal
 Generation session
   schema v2 Course SEO localization
         ↓
-AI execution environment
+Local terminal
   result landing / assemble
         ↓
 Local terminal
   build
         ↓
-AI execution environment
+Local terminal
   surface-review reviewer-bundle / record-a
         ↓
 Reviewer session
@@ -79,7 +81,7 @@ Generation session 与 Reviewer session 不得是同一 conversation/session；�
 
 首次大批量 TranslationUnit Generation 仍由维护者 Local terminal 导出 deterministic `generation-bundle export` ZIP 并 handoff 给 Generation session；initial Page 与 Example 输入不得用逐文件 transport 或重复仓库扫描代替。生成者在按 locale + batch 隔离的隐藏 staging 成组保存完整 TranslationUnit；本机具备相同文件访问能力时，默认 `generation-bundle import --input-dir` 直接导入，不制作或下载 outputs ZIP。跨环境传输或目录不可用时保留 outputs ZIP → `result-pack` → Result ZIP import；import 前中断的本地 Generation/transport 则先使用 `generation-bundle recover` 对 CURRENT bundle 做逐 Unit recovery preflight，只补生成 `missing` Unit，不因 partial archive 整体损坏而丢弃此前独立验证通过的完整成员。Reviewer ZIP 仍由维护者上传给独立 Reviewer。generation、locale-assets 与 Course SEO 的其他 Generation ZIP，以及 Glossary、Quality Check、Locale Surface Review 各自的 Reviewer ZIP 合同不变。所有 bundle 绑定 exact inventory 与 SHA-256，只运输上下文，不是 authority 或语言质量 gate。导入器持久保存既有 `GenerationResultBundleManifest` 作为 provenance 记录，不新增 schema，并保留 TranslationUnit generation 身份；recovery staging 不是正式 evidence，补齐后仍必须进入既有 import / process / validation / QC / finalization / promotion。
 
-首次 Generation ZIP handoff 之后，具备仓库终端能力的当前 AI execution environment 默认将 initial / revision / retry 的完整结果写入隐藏 staging 并直接目录 import，再连续执行 process / validation、Snapshot / scope、review result current-check / record / finalize、Surface Reviewer bundle / record-a，以及 Course SEO description 落盘和正式 assemble / refresh / revise；仅跨环境或目录导入不适用时走 Result ZIP 回退。这里只自动化既有机械步骤；Generation / Reviewer 仍是独立 session，任何语言结论仍由对应角色产生，全部 current、schema、A-only 与 provenance gate 保持不变。每轮闭环收口后的 promotion、build、preview / publish / Production，以及按正式顺序需要的最终 Git commit / push 由维护者 Local terminal 成组执行。
+首次 Generation ZIP handoff 之后，initial / revision / retry 的完整结果仍按隐藏 staging 与目录 import contract 传输，仅跨环境或目录导入不适用时走 Result ZIP 回退。所有 deterministic repository / shell workflow 默认由维护者 Local terminal 执行：import / process / validation、Snapshot / scope、review result current-check / record / finalize、Surface Reviewer bundle / record-a、Course SEO description 落盘与 assemble / refresh / revise，以及 promotion、build、preview / publish / Production 和最终 Git。AI 提供完整可复制命令并消费合法 FINAL PASS，不 remote 重验；缺事实、真实 failure diagnosis 或明确 remote 请求才按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)白名单处理，与操作 duration 无关。Generation / Reviewer 仍独立，语言结论由对应角色产生，全部 current、schema、A-only 与 provenance gate 保持不变。
 
 ## 1. 术语准备
 

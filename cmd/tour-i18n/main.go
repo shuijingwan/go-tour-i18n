@@ -16,8 +16,10 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
+	"github.com/shuijingwan/go-tour-i18n/internal/contentidentity"
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
-	"github.com/shuijingwan/go-tour-i18n/internal/tour"
+	"github.com/shuijingwan/go-tour-i18n/internal/site"
+	"github.com/shuijingwan/go-tour-i18n/internal/sitecontent"
 )
 
 func main() {
@@ -36,7 +38,47 @@ func (values *repeatedStrings) Set(value string) error {
 	return nil
 }
 
+func parseTranslationContentPackageArgs(args []string) (string, []string, error) {
+	if len(args) >= 2 && args[0] == "generation-bundle" && args[1] == "legacy-provenance" {
+		return "", args, nil // This authority owns and requires its explicit selector.
+	}
+	// This authority entry point owns a required package flag and scopes a copy
+	// before both inspection and record. Do not consume its explicit selection.
+	if len(args) >= 2 && args[0] == "quality-check" && (args[1] == "snapshot" || args[1] == "current-validation-reopen" || args[1] == "representation-bridge") {
+		return "", args, nil
+	}
+	contentPackage := ""
+	for i := 0; i < len(args); i++ {
+		if args[i] == "--content-package" {
+			if contentPackage != "" || i+1 >= len(args) || args[i+1] == "" {
+				return "", nil, fmt.Errorf("invalid --content-package")
+			}
+			contentPackage = args[i+1]
+			args = append(append([]string{}, args[:i]...), args[i+2:]...)
+			i--
+		}
+	}
+	if contentPackage != "" && len(args) >= 2 && args[0] == "quality-check" && args[1] == "snapshot" {
+		// Even a legacy prefix spelling must reach Snapshot's own parser/options,
+		// never become an invisible catalog selection in the generic dispatcher.
+		owned := append([]string{}, args[:2]...)
+		owned = append(owned, "--content-package", contentPackage)
+		return "", append(owned, args[2:]...), nil
+	}
+	if contentPackage != "" && (len(args) < 2 || (args[0] != "retranslation" && args[0] != "generation-bundle" && args[0] != "quality-check")) {
+		return "", nil, fmt.Errorf("--content-package only supports the shared TranslationUnit lifecycle")
+	}
+	return contentPackage, args, nil
+}
+
 func run(args []string) error {
+	finishMemoization := contentidentity.BeginMemoization()
+	defer finishMemoization()
+	originalArgs := append([]string(nil), args...)
+	contentPackage, args, err := parseTranslationContentPackageArgs(args)
+	if err != nil {
+		return err
+	}
 	root, err := os.Getwd()
 	if err != nil {
 		return err
@@ -45,10 +87,22 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|content-scope|site-content|page|locale|status|candidate|translate|glossary-review|glossary-compatibility|review-evidence|generation-bundle|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|content-scope|site-content|page|locale|status|candidate|translate|glossary-review|glossary-compatibility|review-evidence|generation-bundle|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|preview-browser-plan|publish|publish-batch|release-contract> <command or flags>")
+	}
+	if len(args) >= 2 && args[0] == "locale" && args[1] == "language-policy-adopt" {
+		return localeLanguagePolicyAdoptionCommand(root, args[2:], os.Stdout)
 	}
 	if args[0] == "content-scope" {
 		return contentScopeCommand(root, args[1:])
+	}
+	if args[0] == "code-comments" {
+		return codeCommentsCommand(root, args[1:])
+	}
+	if args[0] == "release-contract" {
+		return releaseContractCommand(root, args[1:])
+	}
+	if args[0] == "preview-browser-plan" {
+		return previewBrowserPlanCommand(root, args[1:])
 	}
 	if args[0] == "site-content" {
 		return siteContentCommand(root, args[1:])
@@ -71,7 +125,7 @@ func run(args []string) error {
 	}
 	if args[0] == "indexnow" {
 		if len(args) < 2 || args[1] != "bootstrap" {
-			return fmt.Errorf("usage: tour-i18n indexnow bootstrap --locale <locale> --key-file <path>")
+			return fmt.Errorf("usage: tour-i18n indexnow bootstrap --locale <locale> --release-dir <current-bundle> --key-file <path>")
 		}
 		return indexNowBootstrapCommand(root, args[2:])
 	}
@@ -108,6 +162,22 @@ func run(args []string) error {
 			return err
 		}
 	}
+	if args[0] == "retranslation" || args[0] == "generation-bundle" || args[0] == "quality-check" {
+		if err := attachCommandTranslationPackages(root, catalog, args); err != nil {
+			return err
+		}
+		sitecontent.AttachIntegratedSurfaceAuthority(catalog)
+		site.AttachPreviewFailureAuthority(catalog)
+		if contentPackage != "" {
+			catalog, err = i18n.SelectCurrentValidationReopenPackage(catalog, contentPackage)
+			if err != nil {
+				return err
+			}
+		}
+		if contentPackage != "" && args[0] == "retranslation" && (args[1] == "promote" || args[1] == "recover-promotion") {
+			return fmt.Errorf("页面 package 使用共享 A-only finalization 后的 package closure；不写 Tour canonical projection")
+		}
+	}
 	if args[0] == "preview" {
 		return previewCandidate(root, catalog, args[1:])
 	}
@@ -121,9 +191,23 @@ func run(args []string) error {
 		return publishBatchCommand(root, catalog, args[1:])
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|content-scope|site-content|page|locale|status|candidate|translate|glossary-review|glossary-compatibility|review-evidence|generation-bundle|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|content-scope|site-content|page|locale|status|candidate|translate|glossary-review|glossary-compatibility|review-evidence|generation-bundle|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|preview-browser-plan|publish|publish-batch|release-contract> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
+	case "quality-check representation-bridge":
+		return sameUnitBridgeCommand(root, catalog, args[2:])
+	case "quality-check surface-transport":
+		return surfaceTransportCommand(root, catalog, args[2:])
+	case "quality-check representation-reconcile":
+		return reconcileRepresentationsCommand(root, catalog, args[2:])
+	case "quality-check representation-revision":
+		return representationRevisionCommand(root, catalog, args[2:])
+	case "quality-check representation-review-bundle":
+		return representationReviewCommand(root, catalog, "bundle", args[2:])
+	case "quality-check representation-review-current-check":
+		return representationReviewCommand(root, catalog, "current-check", args[2:])
+	case "quality-check representation-review-record":
+		return representationReviewCommand(root, catalog, "record", args[2:])
 	case "locale init":
 		result, err := initializeLocaleCommand(root, catalog, args[2:])
 		if err != nil {
@@ -141,7 +225,32 @@ func run(args []string) error {
 	case "glossary-review reviewer-bundle-check":
 		return checkGlossaryReviewerBundleCommand(root, catalog, args[2:])
 	case "generation-bundle export":
-		return exportGenerationBundleCommand(root, catalog, args[2:])
+		return generationBundleLifecycleCommand(root, catalog, originalArgs)
+	case "generation-bundle current-check":
+		return generationBundleLifecycleCommand(root, catalog, originalArgs)
+	case "generation-bundle legacy-provenance":
+		return legacyGenerationProvenanceCommand(root, catalog, args[2:])
+	case "generation-bundle archive-imported":
+		fs := flag.NewFlagSet("generation-bundle archive-imported", flag.ContinueOnError)
+		path := fs.String("bundle", "", "original already imported Generation ZIP")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *path == "" || fs.NArg() != 0 {
+			return fmt.Errorf("--bundle is required")
+		}
+		b, err := readRegularBundleFile(*path)
+		if err != nil {
+			return err
+		}
+		archive, err := i18n.ArchiveImportedGenerationBundle(root, b)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Original imported Generation Bundle archived: %s\n", archive)
+		return nil
+	case "generation-bundle retry-handoff", "generation-bundle retry-handoff-check", "generation-bundle retry-handoff-unpack":
+		return retryHandoffCommand(root, catalog, args[1], args[2:])
 	case "generation-bundle locale-export":
 		return exportLocaleGenerationBundleCommand(root, catalog, args[2:])
 	case "generation-bundle locale-check":
@@ -156,6 +265,8 @@ func run(args []string) error {
 		return assembleCourseMetadata(root, catalog, args[2:])
 	case "course-metadata refresh":
 		return refreshCourseMetadata(root, catalog, args[2:])
+	case "course-metadata recover-history":
+		return recoverCourseMetadataHistory(root, catalog, args[2:])
 	case "course-metadata revise":
 		return reviseCourseMetadata(root, catalog, args[2:])
 	case "course-metadata localization-bundle":
@@ -320,30 +431,7 @@ func run(args []string) error {
 		fmt.Printf("candidate OK: locale=%s page_id=%s\n", *locale, *id)
 		return nil
 	case "retranslation export":
-		exportOptions, jsonOutput, err := parseRetranslationExportOptions(args[2:])
-		if err != nil {
-			return err
-		}
-		result, err := i18n.ExportRetranslationBatch(root, catalog, exportOptions)
-		if err != nil {
-			return err
-		}
-		if result.AllExported {
-			if jsonOutput {
-				return printJSON(result)
-			}
-			completedKind := exportOptions.UnitKind
-			if completedKind == "" {
-				completedKind = i18n.UnitKindPage
-			}
-			fmt.Printf("没有需要导出的翻译单元：%s 的 %s 已全部完成重译输入导出。\n", exportOptions.Locale, completedKind)
-			return nil
-		}
-		if jsonOutput {
-			return printJSON(result)
-		}
-		printRetranslationExportSummary(result)
-		return nil
+		return retranslationExportLifecycleCommand(root, catalog, originalArgs)
 	case "retranslation process":
 		fs := flag.NewFlagSet("retranslation process", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -367,6 +455,33 @@ func run(args []string) error {
 			return nil
 		}
 		return writeRetranslationProcessOutput(os.Stdout, result, *jsonOutput)
+	case "retranslation progress":
+		fs := flag.NewFlagSet("retranslation progress", flag.ContinueOnError)
+		locale := fs.String("locale", "", "locale")
+		jsonOutput := fs.Bool("json", false, "完整 JSON")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || fs.NArg() != 0 {
+			return fmt.Errorf("--locale is required")
+		}
+		r, err := i18n.BuildTranslationUnitProgress(root, catalog, *locale)
+		if err != nil {
+			return err
+		}
+		if *jsonOutput {
+			return printJSON(r)
+		}
+		fmt.Printf("共享翻译单元机器状态：总数=%d，通过=%d，还原失败=%d，校验失败=%d，尚未生成=%d，输入过期=%d\n", r.Total, r.Passed, r.RestoreFailed, r.ValidationFailed, r.Missing, r.Stale)
+		for _, u := range r.Units {
+			if u.Status != "passed" && u.Status != "missing" {
+				fmt.Printf("失败单元：%s；%s；%s\n", u.UnitID, u.Status, u.Error)
+			}
+		}
+		if r.RestoreFailed+r.ValidationFailed+r.Stale > 0 {
+			return errRetranslationProcessFailed
+		}
+		return nil
 	case "retranslation retry":
 		fs := flag.NewFlagSet("retranslation retry", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -388,7 +503,7 @@ func run(args []string) error {
 		fs := flag.NewFlagSet("retranslation revalidate", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
 		batchID := fs.String("batch-id", "", "已处理批次 ID")
-		unitID := fs.String("unit-id", "", "已有 candidate 的翻译单元 ID")
+		unitID := fs.String("unit-id", "", "重验 candidate 或恢复还原失败的翻译单元 ID")
 		jsonOutput := fs.Bool("json", false, "输出 machine-readable JSON")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
@@ -550,6 +665,31 @@ func run(args []string) error {
 			fmt.Printf("review OK: %d units approved, %d units rejected\n", report.Approved, report.Rejected)
 		}
 		return nil
+	case "quality-check authorization":
+		return qualityCheckAuthorizationCommand(root, catalog, args[2:])
+	case "quality-check reattest":
+		return translationReattestationCommand(root, catalog, args[2:])
+	case "retranslation recover-promotion":
+		fs := flag.NewFlagSet("retranslation recover-promotion", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "historical finalized Snapshot")
+		apply := fs.Bool("apply", false, "explicitly save historical recovery authority")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" || fs.NArg() != 0 {
+			return fmt.Errorf("--locale and --snapshot-id are required")
+		}
+		e, path, err := i18n.RecoverHistoricalPromotion(root, catalog, *locale, *snapshotID, *apply)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Historical promotion recovery: PASS locale=%s snapshot=%s units=%d changed=%d applied=%t\n", e.Locale, e.SnapshotID, len(e.Membership), len(e.Units), *apply)
+		for _, u := range e.Units {
+			fmt.Printf("successor: %s old=%s new=%s\n", u.UnitID, u.OldSHA, u.NewSHA)
+		}
+		fmt.Printf("artifact: %s\nidentity: %s\n", path, e.Identity)
+		return nil
 	case "retranslation promote":
 		fs := flag.NewFlagSet("retranslation promote", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -570,27 +710,12 @@ func run(args []string) error {
 			return err
 		}
 		return writeRetranslationPromotionOutput(os.Stdout, result, *apply, *jsonOutput)
+	case "quality-check preview-failure":
+		return previewFailureCommand(root, catalog, args[2:])
 	case "quality-check surface-reopen":
-		fs := flag.NewFlagSet("quality-check surface-reopen", flag.ContinueOnError)
-		locale := fs.String("locale", "", "target locale")
-		reopenID := fs.String("reopen-id", "", "immutable surface correction authorization id")
-		previousSnapshotID := fs.String("previous-snapshot-id", "", "current finalized predecessor Snapshot")
-		surfaceReviewID := fs.String("surface-review-id", "", "formal Surface Review finding id")
-		finding := fs.String("finding", "", "specific correction finding")
-		var unitIDs repeatedStrings
-		fs.Var(&unitIDs, "unit-id", "exact TranslationUnit scope; repeat as needed")
-		if err := fs.Parse(args[2:]); err != nil {
-			return err
-		}
-		if *locale == "" || *reopenID == "" || *previousSnapshotID == "" || *surfaceReviewID == "" || *finding == "" || len(unitIDs) == 0 || fs.NArg() != 0 {
-			return fmt.Errorf("usage: quality-check surface-reopen --locale <locale> --reopen-id <id> --previous-snapshot-id <finalized-snapshot> --surface-review-id <id> --finding <text> --unit-id <id>...")
-		}
-		receipt, path, err := i18n.RecordQualityCheckSurfaceReopen(root, catalog, i18n.QualityCheckSurfaceReopenOptions{Locale: *locale, ReopenID: *reopenID, PreviousSnapshotID: *previousSnapshotID, SurfaceReviewID: *surfaceReviewID, Finding: *finding, UnitIDs: unitIDs})
-		if err != nil {
-			return err
-		}
-		fmt.Printf("Quality Check surface correction reopened: locale=%s predecessor=%s reopen_id=%s units=%d path=%s\n", receipt.Locale, receipt.PreviousSnapshotID, receipt.ReopenID, receipt.UnitCount, path)
-		return nil
+		return qualityCheckSurfaceReopenCommand(root, catalog, args[2:])
+	case "quality-check current-validation-reopen":
+		return currentValidationReopenCommand(root, catalog, args[2:])
 	case "quality-check preflight":
 		fs := flag.NewFlagSet("quality-check preflight", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -688,6 +813,7 @@ func run(args []string) error {
 	case "quality-check record":
 		fs := flag.NewFlagSet("quality-check record", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
+		reviewerSession := fs.String("reviewer-session", "", "独立 Reviewer session")
 		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
 		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
 		fullRereview := fs.Bool("full-rereview", false, "explicitly accept a full repeated review with no predecessor")
@@ -705,7 +831,8 @@ func run(args []string) error {
 			return fmt.Errorf("unexpected quality-check record arguments: %s", strings.Join(fs.Args(), " "))
 		}
 		result, err := i18n.RecordQualityCheckResults(root, catalog, i18n.QualityCheckRecordOptions{
-			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID, FullRereview: *fullRereview,
+			ReviewerSession: *reviewerSession,
+			Locale:          *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID, FullRereview: *fullRereview,
 			UnitIDs: unitIDs, Rating: *rating, Finding: *finding,
 		})
 		if err != nil {
@@ -716,6 +843,7 @@ func run(args []string) error {
 		fs := flag.NewFlagSet("quality-check finalize", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
 		snapshotID := fs.String("snapshot-id", "", "full Candidate Snapshot id")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "finalized predecessor for incremental carry-forward")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
@@ -725,7 +853,7 @@ func run(args []string) error {
 		if fs.NArg() != 0 {
 			return fmt.Errorf("unexpected quality-check finalize arguments: %s", strings.Join(fs.Args(), " "))
 		}
-		_, path, err := i18n.FinalizeQualityCheck(root, catalog, i18n.QualityCheckFinalizeOptions{Locale: *locale, SnapshotID: *snapshotID})
+		_, path, err := i18n.FinalizeQualityCheck(root, catalog, i18n.QualityCheckFinalizeOptions{Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID})
 		if err != nil {
 			return err
 		}
@@ -734,6 +862,7 @@ func run(args []string) error {
 	case "quality-check record-batch":
 		fs := flag.NewFlagSet("quality-check record-batch", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
+		reviewerSession := fs.String("reviewer-session", "", "独立 Reviewer session")
 		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
 		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
 		fullRereview := fs.Bool("full-rereview", false, "explicitly accept a full repeated review with no predecessor")
@@ -751,7 +880,8 @@ func run(args []string) error {
 			return fmt.Errorf("unexpected quality-check record-batch arguments: %s", strings.Join(fs.Args(), " "))
 		}
 		result, err := i18n.RecordQualityCheckResultBatch(root, catalog, i18n.QualityCheckRecordBatchOptions{
-			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID, FullRereview: *fullRereview,
+			ReviewerSession: *reviewerSession,
+			Locale:          *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID, FullRereview: *fullRereview,
 			StartIndex: *startIndex, Limit: *limit, Rating: *rating, Finding: *finding,
 		})
 		if err != nil {
@@ -779,26 +909,7 @@ func run(args []string) error {
 		}
 		return printJSON(result)
 	case "quality-check snapshot":
-		fs := flag.NewFlagSet("quality-check snapshot", flag.ContinueOnError)
-		locale := fs.String("locale", "", "target locale")
-		snapshotID := fs.String("snapshot-id", "", "immutable quality-check candidate snapshot id")
-		if err := fs.Parse(args[2:]); err != nil {
-			return err
-		}
-		if *locale == "" || *snapshotID == "" {
-			return fmt.Errorf("--locale and --snapshot-id are required")
-		}
-		if fs.NArg() != 0 {
-			return fmt.Errorf("unexpected quality-check snapshot arguments: %s", strings.Join(fs.Args(), " "))
-		}
-		manifest, path, err := i18n.CreateQualityCheckCandidateSnapshot(root, catalog, i18n.QualityCheckSnapshotOptions{
-			Locale: *locale, SnapshotID: *snapshotID,
-		})
-		if err != nil {
-			return err
-		}
-		fmt.Printf("wrote quality-check candidate snapshot: %s (%d units: %d pages, %d examples)\n", path, manifest.UnitCount, manifest.PageCount, manifest.ExampleCount)
-		return nil
+		return qualityCheckSnapshotCommand(root, catalog, args[2:])
 	case "translate run":
 		fs := flag.NewFlagSet("translate run", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -897,6 +1008,70 @@ func run(args []string) error {
 	}
 }
 
+// This is run's export dispatch boundary after source/catalog hydration and
+// package registration. It owns shared flag selection, then invokes the real
+// exporter/current receipt reader; the export options parser does not own it.
+func retranslationExportLifecycleCommand(root string, catalog *i18n.Catalog, args []string) error {
+	contentPackage, remaining, err := parseTranslationContentPackageArgs(args)
+	if err != nil {
+		return err
+	}
+	if len(remaining) < 2 || remaining[0] != "retranslation" || remaining[1] != "export" {
+		return fmt.Errorf("retranslation export lifecycle command required")
+	}
+	if contentPackage != "" {
+		// Reuse the complete native/registered selector. Never clear an explicit
+		// caller scope or manufacture a registry entry for canonical native Tour.
+		catalog, err = i18n.SelectCurrentValidationReopenPackage(catalog, contentPackage)
+		if err != nil {
+			return err
+		}
+	} else {
+		options, _, err := parseRetranslationExportOptions(remaining[2:])
+		if err != nil {
+			return err
+		}
+		if options.SurfaceReopenID != "" {
+			// Keep legacy implicit native exports, but a current-validation
+			// authority requires the formal explicit package selector. Let the
+			// existing current reader prove the receipt kind, never infer it
+			// from a filename/reopen ID or an unvalidated JSON header.
+			receipt, err := i18n.CheckQualityCheckSurfaceReopen(root, catalog, options.Locale, options.SurfaceReopenID)
+			if err != nil {
+				return err
+			}
+			if receipt.AuthoritySource == i18n.CurrentValidationAuthority {
+				return fmt.Errorf("current-validation export requires exactly one explicit --content-package")
+			}
+		}
+	}
+	return retranslationExportCommand(root, catalog, remaining[2:])
+}
+
+func retranslationExportCommand(root string, catalog *i18n.Catalog, args []string) error {
+	exportOptions, jsonOutput, err := parseRetranslationExportOptions(args)
+	if err != nil {
+		return err
+	}
+	result, err := i18n.ExportRetranslationBatch(root, catalog, exportOptions)
+	if err != nil {
+		return err
+	}
+	if jsonOutput {
+		return printJSON(result)
+	}
+	if result.AllExported {
+		completedKind := exportOptions.UnitKind
+		if completedKind == "" {
+			completedKind = i18n.UnitKindPage
+		}
+		fmt.Printf("没有需要导出的翻译单元：%s 的 %s 已全部完成重译输入导出。\n", exportOptions.Locale, completedKind)
+		return nil
+	}
+	printRetranslationExportSummary(result)
+	return nil
+}
+
 func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOptions, bool, error) {
 	fs := flag.NewFlagSet("retranslation export", flag.ContinueOnError)
 	locale := fs.String("locale", "", "target locale")
@@ -907,8 +1082,9 @@ func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOpt
 	jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 	allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
 	glossaryStale := fs.Bool("glossary-stale", false, "re-export only requested units whose current glossary regenerates different protected input")
-	previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot containing Quality Check B/C/D revision feedback")
-	surfaceReopenID := fs.String("surface-reopen-id", "", "surface correction authorization for reopening exact prior A units")
+	previousSnapshotID := fs.String("previous-snapshot-id", "", "exact predecessor Snapshot identity containing QC feedback or bound by --surface-reopen-id")
+	bridgeID := fs.String("representation-bridge-id", "", "recorded same-Unit ordinary QC transport bridge; requires exact ordinary revision")
+	surfaceReopenID := fs.String("surface-reopen-id", "", "exact revision authorization receipt: Surface/Preview reopen or QC B/C/D representation reconciliation; requires --allow-reexport and --previous-snapshot-id")
 	var unitIDs repeatedStrings
 	fs.Var(&unitIDs, "id", "optional translation unit id; repeat for multiple units")
 	if err := fs.Parse(args); err != nil {
@@ -933,7 +1109,7 @@ func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOpt
 	return i18n.RetranslationExportOptions{
 		Locale: *locale, BatchID: *batchID, Generator: selectedGenerator,
 		UnitIDs: unitIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit,
-		AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID, SurfaceReopenID: *surfaceReopenID, GlossaryStale: *glossaryStale,
+		RepresentationBridgeID: *bridgeID, AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID, SurfaceReopenID: *surfaceReopenID, GlossaryStale: *glossaryStale,
 	}, *jsonOutput, nil
 }
 
@@ -984,12 +1160,13 @@ func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
 	if err != nil {
 		return fmt.Errorf("create preview directory: %w", err)
 	}
+	defer os.RemoveAll(tempRoot)
 	projection, err := i18n.BuildLocaleProjection(root, catalog, options.Locale, tempRoot)
 	if err != nil {
 		_ = os.RemoveAll(tempRoot)
 		return err
 	}
-	handler, err := tour.NewPreviewHandler(os.DirFS(projection.ContentDir), projection.Locale)
+	handler, err := newFullLocalePreviewHandler(root, projection.ContentDir, projection.Locale)
 	if err != nil {
 		return err
 	}
@@ -1063,7 +1240,7 @@ func buildLocale(root string, catalog *i18n.Catalog, args []string) error {
 		}
 		automatic = true
 	}
-	projection, err := i18n.BuildLocaleProjection(root, catalog, *locale, outputRoot)
+	projection, _, err := buildReleaseContent(root, catalog, *locale, outputRoot)
 	if err != nil {
 		if automatic {
 			_ = os.RemoveAll(outputRoot)
@@ -1190,7 +1367,13 @@ func writeRetranslationRetryOutput(w io.Writer, result *i18n.RetranslationProces
 
 func writeRetranslationRevalidationOutput(w io.Writer, result *i18n.RetranslationRevalidationResult, jsonOutput bool) error {
 	if jsonOutput {
-		return writeJSON(w, result)
+		if err := writeJSON(w, result); err != nil {
+			return err
+		}
+		if result.Status != "passed" {
+			return errRetranslationProcessFailed
+		}
+		return nil
 	}
 	overall := "PASS"
 	if result.Status != "passed" {
@@ -1199,8 +1382,15 @@ func writeRetranslationRevalidationOutput(w io.Writer, result *i18n.Retranslatio
 	fmt.Fprintf(w, "重译重新验证：%s\n", overall)
 	fmt.Fprintf(w, "batch_id: %s\nlocale: %s\nunit_id: %s\nattempt: %d\nrevalidation: %d\nprevious_status: %s\nstatus: %s\n", result.BatchID, result.Locale, result.UnitID, result.Attempt, result.Revalidation, result.PreviousStatus, result.Status)
 	fmt.Fprintf(w, "history_path: %s\nvalidation_path: %s\nresult_path: %s\nvalidation_passed: %d\nvalidation_failed: %d\n", result.HistoryPath, result.ValidationPath, result.ResultPath, result.ValidationPassed, result.ValidationFailed)
+	fmt.Fprintf(w, "restore_passed: %d\nrestore_failed: %d\n", result.RestorePassed, result.RestoreFailed)
+	if result.ResultHistoryPath != "" {
+		fmt.Fprintf(w, "result_history_path: %s\n", result.ResultHistoryPath)
+	}
 	if result.Error != "" {
 		fmt.Fprintf(w, "reason: %q\n", result.Error)
+	}
+	if result.Status != "passed" {
+		return errRetranslationProcessFailed
 	}
 	return nil
 }

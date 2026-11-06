@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 )
@@ -28,6 +29,7 @@ type QualityCheckResult struct {
 // an immutable-Snapshot-bound record used only to derive later Quality Check
 // work. It has no decision field and is never read by promotion.
 type QualityCheckResults struct {
+	ReviewerSession        string               `json:"reviewer_session,omitempty"`
 	SchemaVersion          int                  `json:"schema_version"`
 	EvidenceType           string               `json:"evidence_type"`
 	Locale                 string               `json:"locale"`
@@ -40,6 +42,7 @@ type QualityCheckResults struct {
 }
 
 type QualityCheckRecordOptions struct {
+	ReviewerSession    string
 	FullRereview       bool
 	Locale             string
 	SnapshotID         string
@@ -50,6 +53,7 @@ type QualityCheckRecordOptions struct {
 }
 
 type QualityCheckRecordBatchOptions struct {
+	ReviewerSession    string
 	FullRereview       bool
 	Locale             string
 	SnapshotID         string
@@ -130,12 +134,93 @@ type QualityCheckScope struct {
 }
 
 type effectiveQualityCheckResult struct {
+	currentReattested  bool
 	compatibilityChain []GlossaryArchiveReference
 	rating             string
 	finding            string
 	rubric             string
 	snapshotID         string
 	unit               QualityCheckSnapshotUnit
+}
+
+type effectiveQualityCheckMaterialization struct {
+	snapshot *QualityCheckSnapshotManifest
+	results  map[string]effectiveQualityCheckResult
+}
+
+// qualityCheckEvaluation is invocation-local. Snapshot IDs are unique within
+// its fixed root/locale/catalog authority, so a completed materialization can
+// be reused safely while recursive in-progress IDs remain guarded by seen.
+type qualityCheckEvaluation struct {
+	originalOnly       bool // historical A integrity only; consumers separately check current compatibility
+	root               string
+	locale             string
+	catalog            *Catalog
+	compatibility      *PreparedGlossaryCompatibility
+	effective          map[string]effectiveQualityCheckMaterialization
+	repositoryEvidence map[string]*snapshotUnitRepositoryEvidence
+	machineEvidence    map[string]*machineSelection
+	stats              *qualityCheckEvaluationStats
+	membership         map[string]*qualityCheckMembershipBaseline
+}
+
+type qualityCheckEvaluationStats struct {
+	EffectiveMaterializations   map[string]int
+	EffectiveCacheHits          int
+	RepositoryEvidenceLoads     int
+	RepositoryEvidenceCacheHits int
+}
+
+func newQualityCheckEvaluation(root, locale string, catalog *Catalog) *qualityCheckEvaluation {
+	return newQualityCheckEvaluationWithStats(root, locale, catalog, nil, nil)
+}
+
+func newQualityCheckEvaluationWithStats(root, locale string, catalog *Catalog, stats *qualityCheckEvaluationStats, compatibilityStats *glossaryCompatibilityPrepareStats) *qualityCheckEvaluation {
+	if stats != nil && stats.EffectiveMaterializations == nil {
+		stats.EffectiveMaterializations = map[string]int{}
+	}
+	return &qualityCheckEvaluation{
+		root: root, locale: locale, catalog: catalog,
+		compatibility:      newPreparedGlossaryCompatibility(root, locale, catalog, compatibilityStats),
+		effective:          map[string]effectiveQualityCheckMaterialization{},
+		repositoryEvidence: map[string]*snapshotUnitRepositoryEvidence{},
+		machineEvidence:    map[string]*machineSelection{},
+		stats:              stats,
+	}
+}
+
+func (evaluation *qualityCheckEvaluation) readSnapshotUnitRepositoryEvidence(snapshotID string, unit QualityCheckSnapshotUnit) (*snapshotUnitRepositoryEvidence, error) {
+	key := snapshotID + "\x00" + unit.UnitID
+	if cached, ok := evaluation.repositoryEvidence[key]; ok {
+		if evaluation.stats != nil {
+			evaluation.stats.RepositoryEvidenceCacheHits++
+		}
+		return cached, nil
+	}
+	var evidence *snapshotUnitRepositoryEvidence
+	var err error
+	if unit.RepresentationReconciliation != nil {
+		evidence, _, err = machineSnapshotEvidenceInWorld(evaluation.root, evaluation.catalog, evaluation.locale, unit, evaluation.machineEvidence, evaluation.originalOnly || evaluation.compatibility.historicalSHA != "")
+	} else {
+		evidence, err = readSnapshotUnitRepositoryEvidence(evaluation.root, evaluation.catalog, evaluation.locale, unit)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if evaluation.stats != nil {
+		evaluation.stats.RepositoryEvidenceLoads++
+	}
+	evaluation.repositoryEvidence[key] = evidence
+	return evidence, nil
+}
+
+func cloneEffectiveQualityCheckResults(in map[string]effectiveQualityCheckResult) map[string]effectiveQualityCheckResult {
+	out := make(map[string]effectiveQualityCheckResult, len(in))
+	for id, result := range in {
+		result.compatibilityChain = append([]GlossaryArchiveReference(nil), result.compatibilityChain...)
+		out[id] = result
+	}
+	return out
 }
 
 func RecordQualityCheckResults(root string, catalog *Catalog, options QualityCheckRecordOptions) (*QualityCheckRecordResult, error) {
@@ -169,6 +254,17 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	if len(options.UnitIDs) == 0 {
 		return nil, errors.New("at least one quality-check unit_id is required")
 	}
+	if err := catalog.RequireTranslationInvocation(options.UnitIDs); err != nil {
+		return nil, err
+	}
+	if len(catalog.TranslationScope) > 0 {
+		if options.ReviewerSession == "" {
+			return nil, errors.New("独立质量审核记录必须给出 --reviewer-session")
+		}
+		if err := CheckUnifiedLanguageRole(root, options.Locale, options.ReviewerSession, "reviewer"); err != nil {
+			return nil, err
+		}
+	}
 	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, err
@@ -181,7 +277,7 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 		return nil, errors.New("full_rereview may only authorize the first results write")
 	}
 	if existing == nil && options.PreviousSnapshotID == "" {
-		finalized, err := qualityCheckFinalizedSnapshotIDs(root, options.Locale)
+		finalized, err := qualityCheckFinalizedSnapshotIDs(root, options.Locale, catalog)
 		if err != nil {
 			return nil, err
 		}
@@ -200,9 +296,17 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	if err != nil {
 		return nil, err
 	}
+	if previousSnapshotID == "" {
+		if err := catalog.RequireInitialTranslationWorkingSet(options.UnitIDs); err != nil {
+			return nil, err
+		}
+	}
 	if existing != nil {
 		if existing.Rubric != TranslationQualityRubric {
 			return nil, fmt.Errorf("quality-check results use obsolete rubric %q; create a new full Snapshot", existing.Rubric)
+		}
+		if existing.ReviewerSession != options.ReviewerSession {
+			return nil, errors.New("independent Reviewer session changed within Snapshot")
 		}
 	}
 	if options.PreviousSnapshotID != "" {
@@ -233,7 +337,8 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	}
 
 	results := &QualityCheckResults{
-		SchemaVersion: QualityCheckResultsSchemaVersion, EvidenceType: QualityCheckResultsEvidenceType,
+		ReviewerSession: options.ReviewerSession,
+		SchemaVersion:   QualityCheckResultsSchemaVersion, EvidenceType: QualityCheckResultsEvidenceType,
 		Locale: options.Locale, SnapshotID: options.SnapshotID, PreviousSnapshotID: previousSnapshotID,
 		Rubric: TranslationQualityRubric, Results: []QualityCheckResult{},
 	}
@@ -315,7 +420,8 @@ func RecordQualityCheckResultBatch(root string, catalog *Catalog, options Qualit
 		unitIDs = append(unitIDs, unit.UnitID)
 	}
 	return RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
-		Locale: options.Locale, SnapshotID: options.SnapshotID, PreviousSnapshotID: options.PreviousSnapshotID, FullRereview: options.FullRereview,
+		ReviewerSession: options.ReviewerSession,
+		Locale:          options.Locale, SnapshotID: options.SnapshotID, PreviousSnapshotID: options.PreviousSnapshotID, FullRereview: options.FullRereview,
 		UnitIDs: unitIDs, Rating: options.Rating,
 		Finding: options.Finding,
 	})
@@ -367,6 +473,12 @@ func BackfillQualityCheckFinding(root string, catalog *Catalog, options QualityC
 }
 
 func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckScopeOptions) (*QualityCheckScope, error) {
+	evaluation := newQualityCheckEvaluation(root, options.Locale, catalog)
+	return buildQualityCheckScopeWithEvaluation(evaluation, options)
+}
+
+func buildQualityCheckScopeWithEvaluation(evaluation *qualityCheckEvaluation, options QualityCheckScopeOptions) (*QualityCheckScope, error) {
+	root, catalog := evaluation.root, evaluation.catalog
 	if catalog == nil {
 		return nil, errors.New("quality-check catalog is required")
 	}
@@ -376,7 +488,7 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 	if err := validateSnapshotID(options.SnapshotID); err != nil {
 		return nil, err
 	}
-	current, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
+	current, err := readQualityCheckSnapshotWithCompatibility(root, options.Locale, options.SnapshotID, true, catalog, evaluation.compatibility)
 	if err != nil {
 		return nil, err
 	}
@@ -385,6 +497,18 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 		return nil, err
 	}
 	previousSnapshotID := options.PreviousSnapshotID
+	if previousSnapshotID == "" && currentResults == nil {
+		previousSnapshotID, err = finalizedCarryPredecessor(root, options.Locale, options.SnapshotID)
+		if err != nil {
+			return nil, err
+		}
+		if previousSnapshotID == "" {
+			previousSnapshotID, err = machineBoundPredecessor(root, current)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
 	if previousSnapshotID != "" {
 		if err := validateSnapshotID(previousSnapshotID); err != nil {
 			return nil, err
@@ -399,6 +523,9 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 			return nil, err
 		}
 	}
+	if current.CurrentRevision != nil && previousSnapshotID != "" && previousSnapshotID != filepath.Base(filepath.Dir(current.CurrentRevision.Baseline.Path)) {
+		return nil, errors.New("mixed Snapshot requires its bound revision predecessor")
+	}
 
 	currentByID := map[string]QualityCheckResult{}
 	if currentResults != nil {
@@ -412,7 +539,7 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 		if previousSnapshotID == options.SnapshotID {
 			return nil, errors.New("quality-check result lineage contains a cycle")
 		}
-		previous, previousEffective, err = loadEffectiveQualityCheckResults(root, options.Locale, previousSnapshotID, map[string]bool{}, catalog)
+		previous, previousEffective, err = evaluation.previousQualityCheckResults(current, previousSnapshotID, map[string]bool{})
 		if err != nil {
 			return nil, err
 		}
@@ -425,7 +552,7 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 	}
 	for _, unit := range current.Units {
 		base := QualityCheckScopeUnit{Index: unit.Index, UnitID: unit.UnitID, UnitKind: unit.UnitKind, BatchID: unit.SelectedBatchID}
-		if _, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, unit); err != nil {
+		if _, err := evaluation.readSnapshotUnitRepositoryEvidence(options.SnapshotID, unit); err != nil {
 			base.Reason = QualityCheckScopeReasonIdentityChanged
 			base.RequiredAction = QualityCheckActionRequired
 			scope.Pending = append(scope.Pending, base)
@@ -448,15 +575,31 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 			continue
 		}
 		prior, ok := previousEffective[unit.UnitID]
+		if unit.RepresentationReconciliation != nil && evaluation.membership[options.SnapshotID] == nil {
+			prior, ok, err = evaluation.machineCarry(unit, previousSnapshotID, previousEffective)
+			if err != nil {
+				return nil, err
+			}
+		}
 		if !ok {
 			base.Reason = QualityCheckScopeReasonMissing
+			// A changed content-addressed Unit ID is a new input, even when
+			// the same physical page occupies the predecessor's stable index.
+			// Report the lineage without inheriting its rating or finding.
+			if previous != nil {
+				for _, old := range previous.Units {
+					if old.Index == unit.Index && old.UnitKind == unit.UnitKind && old.SourcePath == unit.SourcePath && old.UnitID != unit.UnitID {
+						base.Reason = QualityCheckScopeReasonIdentityChanged
+					}
+				}
+			}
 			base.RequiredAction = QualityCheckActionRequired
 			scope.Pending = append(scope.Pending, base)
 			continue
 		}
 		resolution := GlossaryCompatibilityResolution{Status: "exact"}
-		if previous != nil {
-			resolution = ResolveGlossaryCompatibility(root, options.Locale, previous.GlossarySHA256, current.GlossarySHA256, "tu:"+unit.UnitID, catalog)
+		if previous != nil && !prior.currentReattested {
+			resolution = evaluation.compatibility.Resolve(previous.GlossarySHA256, current.GlossarySHA256, "tu:"+unit.UnitID)
 		}
 		if resolution.Status != "exact" && resolution.Status != "compatible" {
 			base.Reason = QualityCheckScopeReasonGlossaryChanged
@@ -493,6 +636,9 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 	scope.EffectiveCount = scope.ACount + scope.BCount + scope.CCount + scope.DCount
 	scope.ReadyForFinalization = scope.ACount == scope.UnitCount && scope.PendingCount == 0
 	scope.ReadyForFinalReview = scope.ReadyForFinalization
+	if err := evaluation.membershipChecks(); err != nil {
+		return nil, err
+	}
 	return scope, nil
 }
 
@@ -515,31 +661,133 @@ func loadEffectiveQualityCheckResults(root, locale, snapshotID string, seen map[
 	if len(catalogs) > 0 {
 		catalog = catalogs[0]
 	}
+	return newQualityCheckEvaluation(root, locale, catalog).loadEffectiveQualityCheckResults(snapshotID, seen)
+}
+
+// Materialize only an already verified immutable original-A proof. This never
+// supplies current eligibility. Callers retain their exact dependency rechecks.
+func (evaluation *qualityCheckEvaluation) materializeOriginalFinalization(proof *HistoricalFinalizationIntegrity) error {
+	f := proof.Finalization
+	if !evaluation.originalOnly || f.Locale != evaluation.locale || f.Rubric != TranslationQualityRubric {
+		return fmt.Errorf("original-only finalization materialization required")
+	}
+	s, err := readQualityCheckSnapshot(evaluation.root, evaluation.locale, f.SnapshotID, false)
+	if err != nil {
+		return err
+	}
+	if len(f.Units) != s.UnitCount || len(proof.ReviewerGlossaries) != s.UnitCount {
+		return fmt.Errorf("original finalization materialization scope mismatch")
+	}
+	effective := map[string]effectiveQualityCheckResult{}
+	for i, accepted := range f.Units {
+		if accepted.Rating != "A" || accepted.UnitID != s.Units[i].UnitID || !qualityCheckSnapshotIdentityMatches(accepted.Snapshot, s.Units[i]) {
+			return fmt.Errorf("original finalization materialization identity mismatch")
+		}
+		effective[accepted.UnitID] = effectiveQualityCheckResult{rating: "A", rubric: TranslationQualityRubric, snapshotID: accepted.SourceSnapshotID, unit: accepted.Snapshot}
+	}
+	evaluation.effective[f.SnapshotID] = effectiveQualityCheckMaterialization{snapshot: s, results: effective}
+	return nil
+}
+
+func (evaluation *qualityCheckEvaluation) loadEffectiveQualityCheckResults(snapshotID string, seen map[string]bool) (*QualityCheckSnapshotManifest, map[string]effectiveQualityCheckResult, error) {
 	if seen[snapshotID] {
 		return nil, nil, errors.New("quality-check result lineage contains a cycle")
 	}
+	if cached, ok := evaluation.effective[snapshotID]; ok {
+		if evaluation.stats != nil {
+			evaluation.stats.EffectiveCacheHits++
+		}
+		return cached.snapshot, cloneEffectiveQualityCheckResults(cached.results), nil
+	}
+	// A sealed accepted scope is an explicit boundary, not another predecessor
+	// to traverse. Assess today's exact candidates once; affected/unknown units
+	// are omitted from carry and remain pending in the ordinary QC workflow.
+	proof, proofErr := loadSealedTranslationHistory(evaluation.root, evaluation.catalog, evaluation.locale, snapshotID)
+	if proofErr == nil && proof == nil && evaluation.catalog != nil && len(evaluation.catalog.TranslationScope) > 0 {
+		// First migration may expose affected units, so a complete checkpoint
+		// cannot exist yet. The same historical/current primitive still carries
+		// exact eligible A units into ordinary affected-only QC; it never writes
+		// a partial authorization or consults global compatibility inventory.
+		if _, err := os.Lstat(qualityCheckFinalizationPath(evaluation.root, evaluation.locale, snapshotID)); err == nil {
+			proof, proofErr = VerifyHistoricalQualityCheckFinalization(evaluation.root, evaluation.locale, snapshotID, evaluation.catalog)
+		} else if !os.IsNotExist(err) {
+			proofErr = err
+		}
+	}
+	if proofErr != nil {
+		return nil, nil, proofErr
+	} else if proof != nil {
+		if evaluation.originalOnly {
+			if err := evaluation.materializeOriginalFinalization(proof); err != nil {
+				return nil, nil, err
+			}
+			materialized := evaluation.effective[snapshotID]
+			return materialized.snapshot, cloneEffectiveQualityCheckResults(materialized.results), nil
+		}
+		a, err := assessCurrentTranslationProof(evaluation.root, evaluation.catalog, evaluation.locale, *proof)
+		if err != nil {
+			return nil, nil, err
+		}
+		s, err := readQualityCheckSnapshot(evaluation.root, evaluation.locale, snapshotID, false)
+		if err != nil {
+			return nil, nil, err
+		}
+		effective := map[string]effectiveQualityCheckResult{}
+		for i, u := range a.Units {
+			if u.Classification == "compatible" && u.Validation == "passed" {
+				f := proof.Finalization.Units[i]
+				effective[f.UnitID] = effectiveQualityCheckResult{rating: "A", rubric: TranslationQualityRubric, snapshotID: f.SourceSnapshotID, unit: f.Snapshot, currentReattested: true}
+			}
+		}
+		evaluation.effective[snapshotID] = effectiveQualityCheckMaterialization{snapshot: s, results: effective}
+		return s, cloneEffectiveQualityCheckResults(effective), nil
+	}
 	seen[snapshotID] = true
 	defer delete(seen, snapshotID)
-	snapshot, err := readQualityCheckSnapshot(root, locale, snapshotID, false)
+	snapshot, err := readQualityCheckSnapshot(evaluation.root, evaluation.locale, snapshotID, false)
 	if err != nil {
 		return nil, nil, err
 	}
-	results, err := readQualityCheckResults(root, locale, snapshot)
+	results, err := readQualityCheckResults(evaluation.root, evaluation.locale, snapshot)
 	if err != nil {
 		return nil, nil, err
 	}
 	effective := map[string]effectiveQualityCheckResult{}
 	if results == nil {
-		return snapshot, effective, nil
+		previous, err := finalizedCarryPredecessor(evaluation.root, evaluation.locale, snapshotID)
+		if err != nil {
+			return nil, nil, err
+		}
+		results = &QualityCheckResults{PreviousSnapshotID: previous}
+		if previous == "" {
+			results.PreviousSnapshotID, err = machineBoundPredecessor(evaluation.root, snapshot)
+			if err != nil {
+				return nil, nil, err
+			}
+		}
 	}
 	if results.PreviousSnapshotID != "" {
-		previous, inherited, err := loadEffectiveQualityCheckResults(root, locale, results.PreviousSnapshotID, seen, catalog)
+		previous, inherited, err := evaluation.previousQualityCheckResults(snapshot, results.PreviousSnapshotID, seen)
 		if err != nil {
 			return nil, nil, err
 		}
 		for _, unit := range snapshot.Units {
 			prior, ok := inherited[unit.UnitID]
-			resolution := ResolveGlossaryCompatibility(root, locale, previous.GlossarySHA256, snapshot.GlossarySHA256, "tu:"+unit.UnitID, catalog)
+			if unit.RepresentationReconciliation != nil && evaluation.membership[snapshot.SnapshotID] == nil {
+				prior, ok, err = evaluation.machineCarry(unit, results.PreviousSnapshotID, inherited)
+				if err != nil {
+					return nil, nil, err
+				}
+			}
+			resolution := GlossaryCompatibilityResolution{Status: "exact"}
+			if !prior.currentReattested {
+				compatibility := evaluation.compatibility
+				if evaluation.originalOnly && compatibility.historicalSHA == "" {
+					compatibility = PrepareGlossaryCompatibility(evaluation.root, evaluation.locale, evaluation.catalog)
+					compatibility.historicalSHA = snapshot.GlossarySHA256
+				}
+				resolution = compatibility.Resolve(previous.GlossarySHA256, snapshot.GlossarySHA256, "tu:"+unit.UnitID)
+			}
 			if ok && qualityCheckSnapshotIdentityMatches(unit, prior.unit) && (resolution.Status == "exact" || (prior.rating == "A" && resolution.Status == "compatible")) {
 				prior.compatibilityChain = append(append([]GlossaryArchiveReference(nil), prior.compatibilityChain...), resolution.Chain...)
 				effective[unit.UnitID] = prior
@@ -550,6 +798,13 @@ func loadEffectiveQualityCheckResults(root, locale, snapshotID string, seen map[
 		unit := snapshot.Units[result.Index-1]
 		effective[result.UnitID] = effectiveQualityCheckResult{rating: result.Rating, finding: result.Finding, rubric: results.Rubric, snapshotID: snapshotID, unit: unit}
 	}
+	if evaluation.stats != nil {
+		evaluation.stats.EffectiveMaterializations[snapshotID]++
+	}
+	if err := evaluation.membershipChecks(); err != nil {
+		return nil, nil, err
+	}
+	evaluation.effective[snapshotID] = effectiveQualityCheckMaterialization{snapshot: snapshot, results: cloneEffectiveQualityCheckResults(effective)}
 	return snapshot, effective, nil
 }
 
@@ -645,7 +900,7 @@ func qualityCheckSnapshotIdentityMatches(current, prior QualityCheckSnapshotUnit
 		current.SourcePath == prior.SourcePath && current.SourceSHA256 == prior.SourceSHA256 &&
 		current.CandidatePath == prior.CandidatePath && current.CandidateSHA256 == prior.CandidateSHA256 &&
 		current.ValidationPath == prior.ValidationPath && current.ValidationSHA256 == prior.ValidationSHA256 &&
-		current.Attempt == prior.Attempt
+		current.Attempt == prior.Attempt && reflect.DeepEqual(current.RepresentationReconciliation, prior.RepresentationReconciliation)
 }
 
 func validQualityRating(rating string) bool {

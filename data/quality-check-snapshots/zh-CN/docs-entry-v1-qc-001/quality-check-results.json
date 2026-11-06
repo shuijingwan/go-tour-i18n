@@ -1,0 +1,23 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "docs-entry-v1-qc-001",
+  "snapshot_manifest_sha256": "c54f5da50ebd91b5d4c36aa7bdc556611270c28c5da704e5a29a1c6d1879f3df",
+  "rubric": "translation-quality/v1",
+  "result_count": 2,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "31fea3abbbfefa361e467a9ca5e90c93c07561d619a6e268cce60cf4002fb167",
+      "rating": "B",
+      "finding": "Finding category: Untranslated natural-language navigation labels\nObserved instances: section#references → h3#pkg: canonical \"Package Documentation\", current candidate \"包 Documentation\"; section#references → h3#cmd: canonical \"Command Documentation\", current candidate \"命令 Documentation\".\nRevision scope: exact two navigation labels in section#references; localize the remaining ordinary English word \"Documentation\" so both labels are complete, natural Chinese navigation labels consistent with the surrounding references section.\nSame-class completeness: complete Page scan found exactly these two instances. Effective Go, RESTful API, Gopls, Wiki, Go Talks and other technical/resource proper names are not the same defect category.\nOut of scope: href, id, HTML structure, resource paths, Go API/command identity, code, protected technical identity, information architecture, navigation ordering, unrelated titles/body text, general polishing."
+    },
+    {
+      "index": 2,
+      "unit_id": "4b6d5c2294accb01dad0184b82adbf114a8a74186199fff44f115c880b2d96c7",
+      "rating": "A"
+    }
+  ]
+}

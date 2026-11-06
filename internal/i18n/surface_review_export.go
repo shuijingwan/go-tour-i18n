@@ -15,6 +15,8 @@ import (
 // LocaleSurfaceReviewPackage is deterministic review input, not review
 // evidence or a gate. All content is read from the current working tree.
 type LocaleSurfaceReviewPackage struct {
+	LanguageAttention           *LanguageAttention                 `json:"language_attention"`
+	Examples                    []LanguageReviewExample            `json:"examples"`
 	SchemaVersion               int                                `json:"schema_version"`
 	Kind                        string                             `json:"kind"`
 	Locale                      string                             `json:"locale"`
@@ -214,7 +216,10 @@ func ExportLocaleSurfaceReviewPackage(root, locale string, catalog *Catalog) ([]
 		return nil, LocaleSurfaceReviewPackageCoverage{}, err
 	}
 	coverage := LocaleSurfaceReviewPackageCoverage{Pages: len(pages), UI: len(uiEntries), Articles: len(articles), TranslationUnits: len(workflow), OtherSurfaces: len(others)}
-	pkg := LocaleSurfaceReviewPackage{SchemaVersion: 1, Kind: "go-tour-i18n/locale-surface-review-package", Locale: locale, CourseMetadataSchemaVersion: course.SchemaVersion, Inputs: inputs, ProductionPublicIdentity: public, Coverage: coverage, Glossary: LocaleSurfaceReviewGlossary{Path: filepath.ToSlash(filepath.Join("locales", locale, "glossary.yaml")), SHA256: sum(glossary), Text: string(glossary)}, UI: uiEntries, Articles: articles, CoursePages: pages, OtherSurfaces: others}
+	pkg := LocaleSurfaceReviewPackage{SchemaVersion: 2, Kind: "go-tour-i18n/locale-surface-review-package", Locale: locale, CourseMetadataSchemaVersion: course.SchemaVersion, Inputs: inputs, ProductionPublicIdentity: public, Coverage: coverage, Glossary: LocaleSurfaceReviewGlossary{Path: filepath.ToSlash(filepath.Join("locales", locale, "glossary.yaml")), SHA256: sum(glossary), Text: string(glossary)}, UI: uiEntries, Articles: articles, CoursePages: pages, OtherSurfaces: others}
+	if err := addTourSurfaceLanguageAttention(root, locale, catalog, &pkg, statusByID); err != nil {
+		return nil, LocaleSurfaceReviewPackageCoverage{}, err
+	}
 	data, err := json.MarshalIndent(pkg, "", "  ")
 	if err != nil {
 		return nil, LocaleSurfaceReviewPackageCoverage{}, err

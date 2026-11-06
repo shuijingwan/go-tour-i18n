@@ -1,5 +1,7 @@
 # Codex 正式语言生成执行规范
 
+全项目执行共同遵守[共享翻译单元生命周期与五角色协作](SHARED_TRANSLATION_UNIT_LIFECYCLE.md)：所有内容表面复用同一生命周期；页面差异限于适配器；传输安全与逐单元机器校验分层；先恢复、先复用，中文说明，交接只给一个执行者、动作和停止条件。本文中 Tour 的 present / Example 细节属于 Tour 适配边界，不另建 Learn/Docs 状态机。Learn/Docs 两批生成和机器校验全部完成后才初审，两批初审全部完成后集中修订。角色与工具分工不替代任何正式 machine authority 或语言质量 gate。
+
 本文档定义某个 locale 在开始正式 generation 前选定 `provider=codex` 后，Codex **GPT-5.6 Sol + High** 执行正式语言生成时的仓库内规范，不是需要用户在每次会话中复制的 Prompt 模板。普通 ChatGPT + Remote Desktop Commander 的并列执行规范见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。两种 provider 共用相同的 TranslationUnit contract、validation、Quality Check、revision、A-only、promotion、Course SEO semantic scope 和 Production gate；TranslationUnit 的定义和结构规则以 [翻译任务规范](TRANSLATION_TASK_SPEC.md) 为准。
 
 ## Generation role 与职责边界
@@ -32,7 +34,7 @@ retranslation export（先验证 current Glossary Review coverage）
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式模型输入。Codex 必须在翻译前完整读取 glossary，并遵守其中的 `mandatory`、`preferred`、`forbidden` 和 `keep`；glossary 不是仅供 validator 后置检查的材料。
 
-正式输入 transport 与 ChatGPT 完全相同：新增 locale 的 initial Page / Example bulk batch 必须由维护者 Local terminal 执行 `generation-bundle export` 并把 ZIP handoff 给 Codex；Codex 不以重新扫描工作树代替这次 handoff。Codex 将 exact expected outputs 写入按 locale + batch 隔离的本地隐藏 staging，默认用 `generation-bundle import --input-dir` 直接导入；跨环境传输或目录不可用时才使用 `result-pack` / Result ZIP import。revision / retry 同样复用目录 import。Codex 先将每个完整 TranslationUnit 写入临时文件，再 rename 成 staging 成品；导入及正式 process / automatic validation 通过后，每批停下等待维护者明确“继续”。命令示例：
+正式输入 transport 与 ChatGPT 完全相同：新增 locale 的 initial Page / Example bulk batch 必须由维护者 Local terminal 执行 `generation-bundle export` 并把 ZIP handoff 给 Codex；Codex 不以重新扫描工作树代替这次 handoff。Codex 将 exact expected outputs 写入按 locale + batch 隔离的本地隐藏 staging，默认由维护者 Local terminal 用 `generation-bundle import --input-dir` 直接导入；跨环境传输或目录不可用时才使用 `result-pack` / Result ZIP import。revision / retry 同样复用目录 import。Codex 先将每个完整 TranslationUnit 写入临时文件，再 rename 成 staging 成品；导入及正式 process / automatic validation 通过后，每批停下等待维护者明确“继续”。命令示例：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
@@ -50,7 +52,7 @@ Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](G
 
 新增 locale 的运营目标是单个 Codex 5 小时额度窗口使用不超过 100%。开始正式 generation 前，应把当前 5 小时额度、周额度、历史实测成本和并发计划纳入 provider selection。这些只是成本/运营约束，不是 TranslationUnit quality gate：不得为此降低 A-only Quality Check、跳过 QC、减少必要 revision，或降低正式翻译模型与 thinking effort。暂时不设置新增 locale 的硬 wall-clock 时间目标。
 
-在主要 model-intensive Codex 阶段（TranslationUnit translation / revision、需重新生成译文的 retry、较大的代码理解任务）前后观察当前 5 小时额度与周额度。当前 5 小时窗口已使用约 80% 时，不再启动新的非必要 Codex 重任务；对新的大型 translation、revision 或 code-understanding 任务，若剩余额度明显不足，应留到下一额度窗口，而不是硬顶到超过 100%。额度真正耗尽时可以依 provider-neutral 恢复规则改变执行环境，但必须保留真实 provenance 与全部质量 gate。闭环内不会调用模型的短机械步骤不因 Codex quota 停止，默认由 Codex 连续完成；闭环收口后的 promotion、build、preview / publish、Production / deploy / verifier、checksum / curl、assets，以及最终 Git commit / push 由维护者 Local terminal 成组执行。
+在主要 model-intensive Codex 阶段（TranslationUnit translation / revision、需重新生成译文的 retry、较大的代码理解任务）前后观察当前 5 小时额度与周额度。当前 5 小时窗口已使用约 80% 时，不再启动新的非必要 Codex 重任务；对新的大型 translation、revision 或 code-understanding 任务，若剩余额度明显不足，应留到下一额度窗口，而不是硬顶到超过 100%。额度真正耗尽时可以依 provider-neutral 恢复规则改变执行环境，但必须保留真实 provenance 与全部质量 gate。闭环内外不会调用模型的 deterministic repository / shell workflow 默认由维护者 Local terminal 执行，与预计耗时或 Codex quota 无关；Codex 提供完整命令并消费合法 terminal evidence，remote 例外按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)处理。promotion、build、preview / publish、Production / deploy / verifier、checksum / curl、assets 与最终 Git 同样保持此默认执行者。
 
 ## 非 TranslationUnit 与 Course SEO generation
 
@@ -89,7 +91,7 @@ Page staging 输出为与 bundle `expected_outputs` 对应的 `.article`，Examp
 - 是否残留明显未翻译的自然语言；
 - exact output file set。
 
-initial bulk ZIP handoff 不自行跨越到后续语言审核。进入 Generation / Reviewer 闭环后，Codex 默认自动执行当前小批工作所需的 `process`、validation、Snapshot / scope、reviewer-bundle 和审核结果落盘 / `quality-check finalize`；正式 Quality Check 仍必须由独立 ChatGPT conversation/session 完成。`promote` 属于闭环收口后的维护者 Local terminal 操作，Codex 不自动执行。
+initial bulk ZIP handoff 不自行跨越到后续语言审核。进入 Generation / Reviewer 闭环后，`process`、validation、Snapshot / scope、reviewer-bundle 和审核结果落盘 / `quality-check finalize` 默认由维护者 Local terminal 执行，Codex 提供完整命令并消费合法 FINAL PASS，不为已确认事实 remote 重验；正式 Quality Check 仍必须由独立 ChatGPT conversation/session 完成。`promote` 属于闭环收口后的维护者 Local terminal 操作，Codex 不自动执行。
 
 Codex 生成本轮 TranslationUnit 时，后续正式 Quality Check 必须由独立 ChatGPT conversation/session 执行；生成上下文不得同时充当正式 reviewer。
 

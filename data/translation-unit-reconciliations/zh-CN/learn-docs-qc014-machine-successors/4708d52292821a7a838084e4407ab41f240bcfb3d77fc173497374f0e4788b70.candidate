@@ -1,0 +1,101 @@
+<!--{
+  "Title": "访问关系型数据库",
+  "Breadcrumb": true
+}-->
+
+使用 Go，可以在应用程序中采用各种数据库和数据访问
+方式。本节介绍如何使用
+标准库的 [`database/sql`](https://pkg.go.dev/database/sql)
+包访问关系型数据库。
+
+如果希望通过入门教程学习如何使用 Go 访问数据，请参阅
+[教程：访问关系型数据库](/doc/tutorial/database-access)。
+
+Go 还支持其他数据访问技术，包括用于ORM更高层次访问关系型数据库的库，以及非关系型
+
+NoSQL数据存储。
+
+*   **对象关系映射（ORM）库。** 虽然 `database/sql`
+    包包含用于较低层数据访问逻辑的函数，
+    你也可以使用 Go 在更高抽象层级访问数据存储。有关
+    Go 中两个常用的对象关系映射（ORM）库，请参阅
+    [GORM](https://gorm.io/index.html)（[包参考](https://pkg.go.dev/gorm.io/gorm)）
+    和 [ent](https://entgo.io/)（[包参考](https://pkg.go.dev/entgo.io/ent)）。
+*   **NoSQL数据存储。** Go 社区已经为
+    大多数 NoSQL 数据存储开发了驱动程序，包括 [MongoDB](https://docs.mongodb.com/drivers/go/)
+    和 [Couchbase](https://docs.couchbase.com/go-sdk/current/hello-world/overview.html)。
+    你可以在 [pkg.go.dev](https://pkg.go.dev/) 中搜索更多相关内容。
+
+### 支持的数据库管理系统 {#supported_dbms}
+
+Go 支持最常见的关系型数据库管理系统，
+包括 MySQL、Oracle、Postgres、SQL Server、SQLite 等。
+
+完整的驱动程序列表可以在
+[SQLDrivers](/wiki/SQLDrivers) 页面找到。
+
+### 用于执行查询或修改数据库的函数 {#functions}
+
+`database/sql`包针对不同类型的数据库操作提供了专门设计的函数。
+例如，虽然可以使用
+`Query`或 `QueryRow` 执行查询，但 `QueryRow` 专用于
+只预期返回一行的场景，可以避免返回
+只包含一行的 `sql.Rows` 所带来的额外开销。可以使用 `Exec` 函数
+通过 SQL 语句（例如 `INSERT`、`UPDATE` 或
+`DELETE`）修改数据库。
+
+更多信息请参阅：
+
+*   [执行不返回数据的 SQL 语句](/doc/database/change-data)
+*   [查询数据](/doc/database/querying)
+
+### 事务 {#transactions}
+
+借助 `sql.Tx`，可以编写代码在事务中执行数据库操作。
+在事务中，可以一起执行多个操作，
+最后通过提交把所有更改作为一个原子
+步骤应用，或者通过回滚将其全部丢弃。
+
+有关事务的更多信息，请参阅 [执行事务](/doc/database/execute-transactions)。
+
+### 取消查询 {#query_cancellation}
+
+当希望能够取消数据库操作时，可以使用 `context.Context`，
+例如客户端连接关闭，或操作运行时间
+超过预期时。
+
+对于任何数据库操作，都可以使用接收 `Context` 作为参数的 `database/sql` 包函数
+。借助 `Context`，可以为操作指定
+超时或截止时间。也可以使用 `Context` 把
+取消请求沿应用程序传播到
+执行 SQL 语句的函数，从而确保不再需要资源时能够及时释放。
+
+
+更多信息请参阅 [取消进行中的操作](/doc/database/cancel-operations)。
+
+### 托管连接池 {#connection_pool}
+
+使用 `sql.DB` 数据库句柄时，会通过一个内置
+连接池进行连接；该连接池会根据代码需求创建和释放连接。
+通过 `sql.DB` 句柄访问数据库，是 Go 中最常见的
+数据库访问方式。更多信息请参阅
+[打开数据库句柄](/doc/database/open-handle)。
+
+`database/sql`包会为你管理连接池。不过，对于
+更高级的需求，可以按照
+[设置连接池属性](/doc/database/manage-connections#connection_pool_properties)中的说明设置连接池属性。
+
+对于需要单个保留连接的操作，
+`database/sql`包提供了 [`sql.Conn`](https://pkg.go.dev/database/sql#Conn)。
+当使用 `sql.Tx` 的事务并不合适时，`Conn`尤其有用。
+例如，你的代码可能需要：
+
+
+
+*   通过 DDL 修改 schema，其中的逻辑包含自身的
+    事务语义。把 `sql` 包的事务函数与
+    SQL事务语句混用并不是好的做法，相关说明参见
+    [执行事务](/doc/database/execute-transactions)。
+*   执行会创建临时表的查询锁定操作。
+
+更多信息请参阅 [使用专用连接](/doc/database/manage-connections#dedicated_connections)。

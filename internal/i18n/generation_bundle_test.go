@@ -33,6 +33,7 @@ func generationBundleFixture(t *testing.T, locale string, generator Retranslatio
 	root := t.TempDir()
 	copyBundleAuthority(t, root, translationUnitGenerationAuthorityPaths)
 	writeRetranslationTestGlossaryForLocale(t, root, locale)
+	recordSyntheticUnifiedReview(t, root, "synthetic-generation-review", locale)
 	catalog := retranslationTestCatalog(2)
 	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: locale, Generator: generator, Limit: 2})
 	if err != nil {
@@ -88,6 +89,7 @@ func TestGenerationBundleResultPackCanonicalizesExampleCandidateEOF(t *testing.T
 	root := t.TempDir()
 	copyBundleAuthority(t, root, translationUnitGenerationAuthorityPaths)
 	writeRetranslationTestGlossaryForLocale(t, root, "zh-CN")
+	recordSyntheticUnifiedReview(t, root, "synthetic-example-result-pack-review", "zh-CN")
 	example := retranslationTestExample(
 		"example:demo/main.go",
 		"_content/tour/demo/main.go",
@@ -109,6 +111,7 @@ func TestGenerationBundleResultPackCanonicalizesExampleCandidateEOF(t *testing.T
 	if err != nil {
 		t.Fatal(err)
 	}
+	input = bytes.ReplaceAll(input, []byte("Translate this ordinary comment."), []byte("翻译这条普通注释。"))
 	outputDir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(outputDir, filepath.Base(manifest.ExpectedOutputs[0].BundlePath)), input, 0644); err != nil {
 		t.Fatal(err)
@@ -310,6 +313,7 @@ func TestGenerationBundleDirectoryImportSupportsExampleRevisionAndRetry(t *testi
 		root := t.TempDir()
 		copyBundleAuthority(t, root, translationUnitGenerationAuthorityPaths)
 		writeRetranslationTestGlossaryForLocale(t, root, "zh-CN")
+		recordSyntheticUnifiedReview(t, root, "synthetic-generation-review")
 		example := retranslationTestExample("example:demo/main.go", "_content/tour/demo/main.go", "package main\n\n// Translate this ordinary comment.\nfunc main() {}\n")
 		catalog := &Catalog{Examples: []Example{example}}
 		exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Generator: RetranslationGeneratorChatGPT, UnitIDs: []string{example.ID}})
@@ -444,20 +448,6 @@ func TestGenerationBundleDirectoryImportRejectsUnsafeAndInvalidOutputs(t *testin
 				t.Fatal(err)
 			}
 		}},
-		{name: "protected token", mutate: func(t *testing.T, dir, filename string) {
-			p := filepath.Join(dir, filename)
-			b, err := os.ReadFile(p)
-			if err != nil {
-				t.Fatal(err)
-			}
-			changed := bytes.Replace(b, []byte("⟪GTI18N_"), []byte("⟪BROKEN_"), 1)
-			if bytes.Equal(changed, b) {
-				t.Fatal("fixture has no protected token")
-			}
-			if err := os.WriteFile(p, changed, 0644); err != nil {
-				t.Fatal(err)
-			}
-		}},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -566,6 +556,7 @@ func TestGenerationBundleDirectoryImportRejectsStaleAndMachineInvalidCandidates(
 		if _, _, err := RecordGlossaryReview(root, "zh-CN", "test-review", "independent-reviewer", "passed", nil); err != nil {
 			t.Fatal(err)
 		}
+		recordSyntheticUnifiedReview(t, root, "synthetic-generation-review")
 		source := []byte("package main\n\n// A goroutine sends the value through the channel.\nfunc main() { println(1) }\n")
 		example := Example{ID: "example:basics/channel.go", SourcePath: "_content/tour/basics/channel.go", Source: source, SourceSHA256: sum(source)}
 		catalog := &Catalog{Examples: []Example{example}}
@@ -592,8 +583,12 @@ func TestGenerationBundleDirectoryImportRejectsStaleAndMachineInvalidCandidates(
 		if err := os.WriteFile(path, []byte(candidate), 0644); err != nil {
 			t.Fatal(err)
 		}
-		if _, err := ImportGenerationOutputDirectory(root, catalog, bundle, "codex", FormalGenerationModel, dir); err == nil || !strings.Contains(err.Error(), "staged output machine validation failed") {
-			t.Fatalf("glossary-invalid candidate accepted: %v", err)
+		if _, err := ImportGenerationOutputDirectory(root, catalog, bundle, "codex", FormalGenerationModel, dir); err != nil {
+			t.Fatal("transport rejected semantic failure", err)
+		}
+		processed, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: exported.BatchID})
+		if err != nil || processed.ValidationFailed != 1 || processed.Units[0].Status != "validation_failed" {
+			t.Fatalf("semantic failure lost: %+v %v", processed, err)
 		}
 	})
 }

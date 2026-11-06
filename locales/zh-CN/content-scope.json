@@ -1642,6 +1642,123 @@
       "evidence_identity_sha256": "c3d99eb90f3d405873bced06c6a5fc742550ab2426d4d31ed8a780cf8f981fdc",
       "validated_context_sha256": "eb2f6f79c5463464e95633ca47058ec436ccc06c69dbcf584581588e5de11f68",
       "legacy_surface_gate_state": "historical-verified"
+    },
+    {
+      "package": "learn-docs-v1",
+      "state": "complete",
+      "package_identity_sha256": "bcd457bfd9c459548e391f0e90262c5ef3cd4e2a41d0f7430a6680cfd579696d",
+      "source_authority_sha256": "3cd2840855c4e17073980ed0844df361efa6e195548614f0ee7e9fd4b1a4851e",
+      "completed_surfaces": [
+        "learn",
+        "tutorial",
+        "database",
+        "modules",
+        "security"
+      ],
+      "local_canonical_routes": [
+        "/doc/database/",
+        "/doc/database/cancel-operations",
+        "/doc/database/change-data",
+        "/doc/database/execute-transactions",
+        "/doc/database/manage-connections",
+        "/doc/database/open-handle",
+        "/doc/database/prepared-statements",
+        "/doc/database/querying",
+        "/doc/database/sql-injection",
+        "/doc/modules/developing",
+        "/doc/modules/gomod-ref",
+        "/doc/modules/layout",
+        "/doc/modules/major-version",
+        "/doc/modules/managing-dependencies",
+        "/doc/modules/managing-source",
+        "/doc/modules/publishing",
+        "/doc/modules/release-workflow",
+        "/doc/modules/version-numbers",
+        "/doc/security/",
+        "/doc/security/best-practices",
+        "/doc/security/decisions",
+        "/doc/security/fips140",
+        "/doc/security/fuzz/",
+        "/doc/security/fuzz/technical",
+        "/doc/security/policy",
+        "/doc/security/threat-model",
+        "/doc/security/vuln/",
+        "/doc/security/vuln/cna",
+        "/doc/security/vuln/database",
+        "/doc/security/vuln/editor",
+        "/doc/tutorial/",
+        "/doc/tutorial/add-a-test",
+        "/doc/tutorial/call-module-code",
+        "/doc/tutorial/compile-install",
+        "/doc/tutorial/create-module",
+        "/doc/tutorial/database-access",
+        "/doc/tutorial/fuzz",
+        "/doc/tutorial/generics",
+        "/doc/tutorial/getting-started",
+        "/doc/tutorial/govulncheck",
+        "/doc/tutorial/govulncheck-ide",
+        "/doc/tutorial/greetings-multiple-people",
+        "/doc/tutorial/handle-errors",
+        "/doc/tutorial/json",
+        "/doc/tutorial/module-conclusion",
+        "/doc/tutorial/random-greeting",
+        "/doc/tutorial/web-service-gin",
+        "/doc/tutorial/workspaces",
+        "/learn/"
+      ],
+      "local_route_families": [
+        "/learn/**",
+        "/doc/tutorial/**",
+        "/doc/database/**",
+        "/doc/modules/**",
+        "/doc/security/**"
+      ],
+      "evidence_kind": "independent-package-closure/v1",
+      "evidence": [
+        {
+          "path": "data/site-workflow/zh-CN/learn-docs-v1/closure/67837cd680ff6109a5c77d2a948416ba950051b733f5a3e6c0349069211f4299.json",
+          "sha256": "26bc09578d66b0c5ce60f10e37fd0bb63dbab755989ff71e62aa0a5c7a085936"
+        },
+        {
+          "path": "data/locale-language/zh-CN/surface/20261018-zh-CN-integrated-surface-004.json",
+          "sha256": "63ca51e431e9144c0bbded40e4efa26ee1e21692b0aa86325775f1ef5b10544f"
+        }
+      ],
+      "evidence_identity_sha256": "9f102b8d5f8726453a85cea24703b569e35ca5e849099d09f594a8c1e9ccc341",
+      "validated_context_sha256": "67837cd680ff6109a5c77d2a948416ba950051b733f5a3e6c0349069211f4299",
+      "legacy_surface_gate_state": ""
+    },
+    {
+      "package": "site-v2-shell",
+      "state": "complete",
+      "package_identity_sha256": "72481791c1653a72553632737f02cb9dc88ed891e7d73d3e38fee0308bc34da9",
+      "source_authority_sha256": "68259fd5cd2c4110a3acf45af572c74b63af8461744e087b0de806d9cadc0907",
+      "completed_surfaces": [
+        "homepage",
+        "translation"
+      ],
+      "local_canonical_routes": [
+        "/",
+        "/translation/"
+      ],
+      "local_route_families": [
+        "/",
+        "/translation/"
+      ],
+      "evidence_kind": "independent-package-closure/v1",
+      "evidence": [
+        {
+          "path": "data/site-workflow/zh-CN/site-v2-shell/closure/1f5e9f0fb28b2098c1fff90778f652f9541cfc6ff4d8c75e72ec2093f70dc926.json",
+          "sha256": "38746745af4821aec945899c730b62b61be53de3b450f4ad8c6609f21e98336f"
+        },
+        {
+          "path": "data/locale-language/zh-CN/surface/20261018-zh-CN-integrated-surface-004.json",
+          "sha256": "63ca51e431e9144c0bbded40e4efa26ee1e21692b0aa86325775f1ef5b10544f"
+        }
+      ],
+      "evidence_identity_sha256": "ad3ff1c4182a2c8dce57a3935eb998c7abb356faf2704ed013723576e312201c",
+      "validated_context_sha256": "1f5e9f0fb28b2098c1fff90778f652f9541cfc6ff4d8c75e72ec2093f70dc926",
+      "legacy_surface_gate_state": ""
     }
   ]
 }

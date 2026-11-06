@@ -1,0 +1,41 @@
+---
+title: Go CNA 政策
+layout: article
+---
+
+[返回 Go 漏洞管理](/security/vuln)
+
+## 概述
+
+Go CNA 是一个
+[CVE编号机构](https://www.cve.org/ProgramOrganization/CNAs)，负责签发
+[CVE ID](https://www.cve.org/ResourcesSupport/Glossary?activeTerm=glossaryCVEID)，并发布
+[CVE记录](https://www.cve.org/ResourcesSupport/Glossary?activeTerm=glossaryRecord)，
+用于 Go 生态系统中的公开漏洞。它是 Google CNA 的下级 CNA。
+
+## 范围
+
+Go CNA 的范围包括 Go 项目中的漏洞（Go
+[标准库](/pkg)以及
+[子仓库](https://pkg.go.dev/golang.org/x)），也包括
+可导入、且尚未由其他 CNA 覆盖的 Go 模块中的公开漏洞。
+
+该范围明确排除使用 Go 编写、但不可导入的应用程序或
+包中的漏洞（例如 
+`main` 包中的任何内容）。有关被排除报告的更多信息，请参阅 [go.dev/security/vuln/database#excluded-reports](/security/vuln/database#excluded-reports)。
+
+要报告 Go 项目中潜在的新漏洞，请参阅
+[go.dev/security/policy](/security/policy)。
+
+## 为公开漏洞申请 CVE ID
+
+**IMPORTANT**：下面链接的表单会在 issue 跟踪器上创建公开 issue，因此
+*绝不能*用它报告尚未披露的 Go 漏洞（关于如何报告
+未披露问题，请参阅我们的[安全政策](/security/policy)）。
+要为 Go 生态系统中现有的 
+
+CVE ID 漏洞申请 PUBLIC，
+[请通过此表单提交申请](/s/vulndb-report-new)。
+
+如果某个漏洞已经公开披露，或者它存在于
+你维护的包中且你已准备好公开披露，则该漏洞视为公开漏洞。

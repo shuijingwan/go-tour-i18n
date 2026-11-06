@@ -1,0 +1,36 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "learn-docs-v1-qc-019",
+  "snapshot_manifest_sha256": "5c77cd484fe91c4ca72c67bff937958c2e160e1c81216bbff91d71e62aa0638b",
+  "previous_snapshot_id": "learn-docs-v1-qc-018",
+  "rubric": "translation-quality/v1",
+  "result_count": 4,
+  "results": [
+    {
+      "index": 20,
+      "unit_id": "d799614a9f1efd848505c615a88f2fb0f092ac22f743b3da042e12de1127fd8b",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983",
+      "rating": "B",
+      "finding": "仅修订 DBMS自定义连接请求、sql.Open无法初始化句柄、由表示sql.Stmt预处理语句的对象持有的资源 等局部技术标识与中文之间的空格、标点及资源说明的自然语言表达，并处理导入驱动程序段落中不协调的英文双连字符 --。保持 DBMS、sql.Open、sql.Stmt、database/sql、Connector、DSN、代码及链接 identity 不变。"
+    },
+    {
+      "index": 27,
+      "unit_id": "21946bff61d8f7c52c444edcd122ea398ba80574a8095c37befa936541a9cd4c",
+      "rating": "B",
+      "finding": "修正 Rows结构、QueryRow最多、DBMS和驱动程序、TEXT转换、Rows.NextResultSet会准备 等技术标识周围的中文空格，并收口 Conn.QueryRowContext 与 Conn.QueryContext 的用途说明，使其准确表达这些方法用于已预留连接，而不是负责预留连接本身。不得改变 API、HTML 表格结构、链接与 Go 代码。"
+    },
+    {
+      "index": 47,
+      "unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+      "rating": "C",
+      "finding": "精确修订 NOT_IMPORTABLE 条目，使 only imported by package main 的限定范围与 canonical English source 一致：internal/ package 必须是仅由 package main 导入的该类包，不能把任意 internal/ 包和“仅由 main 导入的包”拆成两个独立排除类别。保持 NOT_IMPORTABLE、main、internal/ 等技术 identity 和其余排除原因不变，不得扩大或缩小 source 定义的排除条件。"
+    }
+  ]
+}

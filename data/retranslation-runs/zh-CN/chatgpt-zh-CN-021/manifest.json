@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-021",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "concurrency/6",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "input_path": "inputs/concurrency-6.article",
+      "input_sha256": "b65274e7c29910bdc6b3a294ae171def398a09355166b8a513bdbbbd3f15b672",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-006",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "两处开放自然语言中的 case 均直接保留为英文：第一段的 default case 和其他 case，以及第二段的使用 default case。同一 working set 的 flowcontrol/9、concurrency/5 已在相同语义下使用一致的中文自然语言表达；这里的中英混用同时使第一句语序明显生硬。技术含义仍可正确理解，因此属于局部、轻微但正式发布前需要修订的语言质量问题。修订时应只处理这两处开放自然语言及相应句式，不改变 default、select 或代码结构。"
+    }
+  ]
+}

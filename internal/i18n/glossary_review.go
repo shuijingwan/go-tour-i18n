@@ -143,18 +143,20 @@ func RecordGlossaryReview(root, locale, reviewID, reviewer, decision string, fin
 // campaign reviews do not shadow exact-valid old Tour evidence. Corrupt unified
 // artifacts still fail closed. New language work must use the strict unified gate.
 func RequireCurrentGlossaryReview(root, locale string) error {
-	if rs, err := currentUnifiedReviews(root, locale); err != nil {
-		return err
-	} else if len(rs) == 1 && rs[0].Decision == "passed" {
-		_, err := RequireUnifiedGlossaryReview(root, locale)
-		return err
-	}
 	if err := ValidateLocaleName(locale); err != nil {
 		return err
 	}
 	glossaryPath := glossaryReviewGlossaryPath(locale)
 	if _, err := LoadGlossary(root, locale); err != nil {
 		return fmt.Errorf("validate Glossary Review input %s: %w", glossaryPath, err)
+	}
+	// Match RequireUnifiedGlossaryReview's order: validate the glossary, then
+	// freshly discover/verify the Review set once. This boolean gate does not
+	// need a second identical scan merely to construct an unused reference.
+	if rs, err := currentUnifiedReviews(root, locale); err != nil {
+		return err
+	} else if len(rs) == 1 && rs[0].Decision == "passed" {
+		return nil
 	}
 	glossary, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(glossaryPath)))
 	if err != nil {

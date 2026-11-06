@@ -9,6 +9,7 @@ import (
 )
 
 type selectedRetranslationUnit struct {
+	machine     *machineSelection
 	number      int
 	batchID     string
 	batchDir    string
@@ -40,7 +41,7 @@ type validatedRetranslationCandidate struct {
 // not have a result to select. A newer failed or identity-mismatching result
 // therefore remains selected and callers cannot fall back to older successful
 // evidence.
-func selectLatestRetranslationUnits(root string, catalog *Catalog, locale string) (*latestRetranslationUnits, error) {
+func selectLatestRetranslationUnits(root string, catalog *Catalog, locale string, skipMachine ...bool) (*latestRetranslationUnits, error) {
 	ordered, pageCount, exampleCount, err := localeWorkflowUnitList(catalog)
 	if err != nil {
 		return nil, err
@@ -55,6 +56,11 @@ func selectLatestRetranslationUnits(root string, catalog *Catalog, locale string
 
 	base := filepath.Join(root, "data", "retranslation-runs", locale)
 	entries, err := os.ReadDir(base)
+	if os.IsNotExist(err) {
+		// A new scope has no processed batches yet. Read-only selection reports
+		// every Unit missing; callers still enforce their complete-set gate.
+		entries, err = nil, nil
+	}
 	if err != nil {
 		return nil, fmt.Errorf("scan retranslation batches: %w", err)
 	}
@@ -122,16 +128,37 @@ func selectLatestRetranslationUnits(root string, catalog *Catalog, locale string
 			}
 		}
 	}
-	return &latestRetranslationUnits{
+	latest := &latestRetranslationUnits{
 		ordered: ordered, selectedByID: selectedByID,
 		pageCount: pageCount, exampleCount: exampleCount,
-	}, nil
+	}
+	if len(skipMachine) == 0 || !skipMachine[0] {
+		if err := attachMachineSelections(root, catalog, locale, latest); err != nil {
+			return nil, err
+		}
+	}
+	return latest, nil
 }
 
 // validateSelectedRetranslationCandidate verifies all immutable evidence for
 // the selected final attempt. It deliberately does not inspect Quality Check
 // review records, so Candidate Snapshot can run before that gate.
-func validateSelectedRetranslationCandidate(root string, catalog *Catalog, locale string, glossary *Glossary, unit *TranslationUnit, choice selectedRetranslationUnit) (*validatedRetranslationCandidate, error) {
+func validateSelectedRetranslationCandidate(root string, catalog *Catalog, locale string, glossary *Glossary, unit *TranslationUnit, choice selectedRetranslationUnit, compatibility ...*PreparedGlossaryCompatibility) (*validatedRetranslationCandidate, error) {
+	return validateSelectedRetranslationCandidateWithOutput(root, catalog, locale, glossary, unit, choice, nil, compatibility...)
+}
+
+func validateSelectedRetranslationCandidateWithOutput(root string, catalog *Catalog, locale string, glossary *Glossary, unit *TranslationUnit, choice selectedRetranslationUnit, output *protectedTranslation, compatibility ...*PreparedGlossaryCompatibility) (*validatedRetranslationCandidate, error) {
+	if choice.machine != nil {
+		e, err := choice.machine.validate(root, catalog)
+		if err != nil {
+			return nil, err
+		}
+		v, err := readSnapshotReferencedFile(root, choice.machine.unit.Validation.Path)
+		if err != nil {
+			return nil, err
+		}
+		return &validatedRetranslationCandidate{candidatePath: choice.machine.unit.Candidate.Path, validationPath: choice.machine.unit.Validation.Path, candidate: e.candidate, validationData: v, attempt: choice.machine.unit.Predecessor.Attempt}, nil
+	}
 	if !selectedRetranslationIdentityMatches(unit, choice) {
 		return nil, fmt.Errorf("%s: latest batch %s manifest source identity does not match current Catalog; refusing fallback", unit.ID, choice.batchID)
 	}
@@ -156,7 +183,11 @@ func validateSelectedRetranslationCandidate(root string, catalog *Catalog, local
 	if err != nil {
 		return nil, fmt.Errorf("%s: read selected candidate: %w", unit.ID, err)
 	}
-	attempt, err := validateUnifiedPromotionEvidence(root, choice.batchDir, catalog, unit, choice.manifest, validation, glossary, candidate, locale)
+	prepared := PrepareGlossaryCompatibility(root, locale, catalog)
+	if len(compatibility) > 0 && compatibility[0] != nil {
+		prepared = compatibility[0]
+	}
+	attempt, err := validateUnifiedPromotionEvidence(root, choice.batchDir, catalog, unit, choice.manifest, validation, glossary, candidate, locale, prepared, output)
 	if err != nil {
 		return nil, err
 	}
@@ -168,6 +199,10 @@ func validateSelectedRetranslationCandidate(root string, catalog *Catalog, local
 }
 
 func selectedRetranslationIdentityMatches(unit *TranslationUnit, choice selectedRetranslationUnit) bool {
+	if choice.machine != nil {
+		p := choice.machine.unit.Replacement
+		return p.CurrentUnitID == unit.ID && unit.Kind == UnitKindPage && p.SourcePath == unit.SourcePath && p.SourceSHA256 == unit.SourceSHA256
+	}
 	return choice.manifest.UnitID == unit.ID && choice.manifest.UnitKind == unit.Kind &&
 		choice.manifest.SourcePath == unit.SourcePath && choice.manifest.SourceSHA256 == unit.SourceSHA256
 }

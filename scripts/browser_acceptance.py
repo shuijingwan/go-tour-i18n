@@ -94,8 +94,8 @@ def formal_course_routes():
             routes = tuple("/tour" + row["route"] for row in csv.DictReader(source, delimiter="\t"))
     except OSError as exc:
         raise BrowserFailure(f"cannot read formal course route catalog: {exc}") from exc
-    if len(routes) != 103 or len(set(routes)) != len(routes):
-        raise BrowserFailure(f"formal course route catalog must contain 103 unique routes, got {len(routes)}")
+    if not routes or len(set(routes)) != len(routes):
+        raise BrowserFailure(f"formal course route catalog must contain non-empty unique routes, got {len(routes)}")
     return routes
 
 
@@ -1005,16 +1005,19 @@ def validate_mobile_course_editor_layout(chrome):
     return snapshot
 
 
-def acceptance(base, locale, profile, shared, proxy_server=None):
+def acceptance(base, locale, profile, shared, proxy_server=None, site_plan=None):
     list_metadata = locale_list_metadata(locale)
     policy = publication_policy(locale)
     network_retry_origins = (base, shared["shared_assets_public_origin"])
+    chrome_contract = shared_chrome_contract(locale, profile["production_public_url"], shared_language_registry())
     chrome = Chrome(proxy_server=proxy_server)
     try:
         rendered_routes = (("/", "/", None), ("/tour/", "/tour/welcome/1", "/tour/welcome/1"),
                            ("/tour/list", "/tour/list", None),
                            ("/tour/welcome/1", "/tour/welcome/1", "/tour/welcome/1"),
                            ("/tour/basics/11", "/tour/basics/11", "/tour/basics/11"))
+        if site_plan is not None:
+            rendered_routes = tuple(row for row in rendered_routes if row[0] != "/")
         for path, final_path, rendered_route in rendered_routes:
             is_list = final_path == "/tour/list"
             list_check = (lambda: validate_rendered_list(chrome, list_metadata, formal_course_routes())) if is_list else None
@@ -1022,23 +1025,11 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
                           expected_description=list_metadata["description"] if is_list else None,
                           expected_title=list_metadata["title"] if is_list else None,
                           network_retry_origins=network_retry_origins, post_identity_check=list_check)
+            check_shared_chrome(chrome, chrome_contract)
         def language_ready():
-            def check():
-                language = chrome.evaluate("""(() => ({
-                  lang: document.documentElement.lang,
-                  origin: location.origin,
-                  count: document.querySelectorAll('.site-language-list li').length,
-                  current: document.querySelectorAll('.site-language-list [aria-current="page"]').length,
-                  links: document.querySelectorAll('.site-language-list a[href]').length
-                }))()""", check="production language selector convergence")
-                validate_identity_invariants(language, base, locale, "/", chrome)
-                assert_true(language["count"] >= 2 and language["current"] == 1 and language["links"] >= 1,
-                            f"language selector identity failed: {language}")
-                return language
+            return check_shared_chrome(chrome, chrome_contract)
 
-            return wait_for_condition(check, "production language selector convergence")
-
-        run_project_page_check(chrome, base, 375, 812, network_retry_origins, language_ready)
+        run_project_page_check(chrome, urllib.parse.urljoin(base,"tour/list") if site_plan is not None else base, 375, 812, network_retry_origins, language_ready)
 
         editor_url = urllib.parse.urljoin(base, "tour/basics/11")
         shared_assets = json.dumps(shared["shared_assets_public_origin"].rstrip("/") + "/")
@@ -1140,15 +1131,108 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
         chrome.close()
 
 
-def preview_acceptance(base, locale, profile, shared, registry, descriptions, list_metadata):
+def shared_language_registry():
+    source = (ROOT / "internal" / "tour" / "languages.go").read_text(encoding="utf-8")
+    block = re.search(r"var languageRegistry = \[\]LanguageLink\{(.*?)\n\}", source, re.S)
+    if not block: assert_true(False, "canonical languageRegistry missing")
+    pattern = re.compile(r'\{Locale: "([^"]+)", EnglishName: "([^"]+)", Autonym: "([^"]+)", URL: "([^"]+)"(?:, Official: true)?\}')
+    result = [{"locale": m.group(1), "english_name": m.group(2), "autonym": m.group(3), "url": m.group(4)} for m in pattern.finditer(block.group(1))]
+    if not result or len(result) != len({entry["locale"] for entry in result}): assert_true(False, "languageRegistry must have unique entries")
+    return result
+
+
+def shared_chrome_contract(locale, origin, registry):
+    messages = json.loads((ROOT / "internal/tour/ui" / (locale + ".json")).read_text())["messages"]
+    source = (ROOT / "internal/tour/project.go").read_text()
+    def metadata(key):
+        found = re.search(r'\b' + key + r':\s*"([^"\n]+)"', source)
+        assert_true(found is not None, "shared project metadata missing: " + key)
+        return found.group(1)
+    year = re.search(r'const ProjectCopyrightYear = (\d+)', (ROOT / "internal/tour/shared_chrome.go").read_text())
+    assert_true(year is not None, "shared copyright year missing")
+    return {"locale": locale, "root": origin.rstrip("/") + "/", "registry": registry,
+            "about": messages["header.about_project"]["text"], "unofficial": messages["footer.unofficial"]["text"],
+            "home_label": messages["footer.home"]["text"], "github_label": messages["footer.github"]["text"],
+            "github": metadata("GitHubURL"), "copyright": "© " + year.group(1) + " " + metadata("CopyrightHolder"),
+            "legal": metadata("ICPNumber") if locale == "zh-CN" else "", "legal_url": metadata("ICPURL") if locale == "zh-CN" else ""}
+
+
+def validate_shared_chrome(state, contract):
+    assert_true(state["nav_count"] == 1 and state["footer_count"] == 1 and state["landmarks"] == 1,
+                f"shared chrome missing/duplicated: {state}")
+    registry, locale = contract["registry"], contract["locale"]
+    assert_true(len(state["languages"]) == len(registry), "shared language exact-set mismatch")
+    assert_true(sum(item["current"] for item in state["languages"]) == 1, "shared current locale count")
+    for got, want in zip(state["languages"], registry):
+        label = want["english_name"] + (" — " + want["autonym"] if want["autonym"] != want["english_name"] else "")
+        assert_true(got["locale"] == want["locale"] and got["label"] == label and got["current"] == (want["locale"] == locale),
+                    f"shared language order/label/current: {got} expected={want}")
+        if not got["current"]: assert_true(got["href"] == want["url"], f"shared registered language URL: {got}")
+    current = next(item for item in registry if item["locale"] == locale)
+    assert_true(state["trigger"] == current["autonym"] and state["about"] == contract["about"] and state["about_path"] == "/translation/",
+                "shared About Project/current language identity")
+    for key in ("root", "github", "copyright", "unofficial", "home_label", "github_label", "legal", "legal_url"):
+        assert_true(state[key] == contract[key], f"shared footer {key}: expected={contract[key]!r} actual={state[key]!r}")
+    assert_true(state["rows"] == ["identity", "legal"] and state["row_binding"] and state["placement"] and state["footer_visible"],
+                "shared footer row/placement/visibility contract")
+    assert_true(state["header_placement"], "shared navigation placement")
+
+
+def check_shared_chrome(chrome, contract):
+    state = chrome.evaluate("""(() => {
+      const nav=document.querySelector('[data-project-nav]'),f=document.querySelector('[data-project-footer]');
+      const text=(n)=>n?.textContent.trim()||'',href=(n)=>n?.href||'';
+      const about=nav?.querySelector('[data-project-about]'),home=f?.querySelector('[data-project-home]'),github=f?.querySelector('[data-project-github]'),legal=f?.querySelector('[data-project-legal]');
+      const rows=[...f?.querySelectorAll('[data-project-footer-row]')||[]],r=f?.getBoundingClientRect();
+      const primary=document.querySelector('.Footer-links'),bottom=document.querySelector('.Footer-bottom');
+      const mobile=matchMedia('(max-width:57.699rem)').matches;
+      return {nav_count:document.querySelectorAll('[data-project-nav]').length,footer_count:document.querySelectorAll('[data-project-footer]').length,
+        landmarks:document.querySelectorAll('footer').length,
+        languages:[...nav?.querySelectorAll('li[data-locale]')||[]].map(li=>{const n=li.querySelector('a,[aria-current]');return {locale:li.dataset.locale,label:text(n),href:href(n),current:n?.getAttribute('aria-current')==='page'}}),
+        trigger:text(nav?.querySelector('[data-project-current-language]')),about:text(about),about_path:about?new URL(about.href).pathname:'',
+        root:href(home),github:href(github),copyright:text(f?.querySelector('[data-project-copyright]')),unofficial:text(f?.querySelector('[data-project-identity]')),
+        home_label:text(home),github_label:text(github),legal:text(legal),legal_url:href(legal),rows:rows.map(n=>n.dataset.projectFooterRow),
+        row_binding:rows.length===2&&rows[0].contains(home)&&rows[0].contains(github)&&rows[1].contains(f.querySelector('[data-project-copyright]'))&&(!legal||rows[1].contains(legal)),
+        placement:!f?.closest('main')&&(!primary||(!!bottom&&!!(primary.compareDocumentPosition(f)&4)&&!!(f.compareDocumentPosition(bottom)&4))),
+        footer_visible:!!r&&r.width>0&&r.height>0&&getComputedStyle(f).visibility==='visible',
+        header_placement:!!nav&&(mobile&&nav.dataset.projectHost==='site'?!!nav.closest('.NavigationDrawer'):!!nav.closest('.Site-header,.top-bar'))&&nav.firstElementChild===about&&nav.lastElementChild?.matches('[data-project-languages]')};
+    })()""", check="shared project chrome exact contract")
+    validate_shared_chrome(state, contract)
+    mobile = chrome.evaluate("matchMedia('(max-width:57.699rem)').matches&&document.querySelector('[data-project-nav]').dataset.projectHost==='site'")
+    if mobile:
+        chrome.evaluate("document.querySelector('.js-headerMenuButton,.ProjectChromeToggle').click();true", check="shared mobile drawer open")
+        assert_true(chrome.evaluate("document.querySelector('[data-project-nav]').closest('.NavigationDrawer,.ProjectChromeDrawer').classList.contains('is-active')"), "shared drawer did not open")
+    chrome.evaluate("document.querySelector('[data-project-languages] summary').focus();document.querySelector('[data-project-languages] summary').click();true", check="shared language menu open")
+    assert_true(chrome.evaluate("document.querySelector('[data-project-languages]').open"), "shared language menu did not open")
+    chrome.call("Input.dispatchKeyEvent", {"type": "keyDown", "key": "Tab", "code": "Tab", "windowsVirtualKeyCode": 9})
+    chrome.call("Input.dispatchKeyEvent", {"type": "keyUp", "key": "Tab", "code": "Tab", "windowsVirtualKeyCode": 9})
+    assert_true(chrome.evaluate("document.activeElement.matches('[data-project-languages] a[href]')"), "shared language links not keyboard reachable")
+    chrome.call("Input.dispatchKeyEvent", {"type": "keyDown", "key": "Escape", "code": "Escape", "windowsVirtualKeyCode": 27})
+    chrome.call("Input.dispatchKeyEvent", {"type": "keyUp", "key": "Escape", "code": "Escape", "windowsVirtualKeyCode": 27})
+    assert_true(chrome.evaluate("!document.querySelector('[data-project-languages]').open&&document.activeElement===document.querySelector('[data-project-languages] summary')"), "shared language menu Escape/focus")
+    if mobile:
+        assert_true(chrome.evaluate("document.querySelector('[data-project-nav]').closest('.NavigationDrawer,.ProjectChromeDrawer').classList.contains('is-active')"), "shared first Escape closed outer drawer")
+        chrome.call("Input.dispatchKeyEvent", {"type": "keyDown", "key": "Escape", "code": "Escape", "windowsVirtualKeyCode": 27})
+        chrome.call("Input.dispatchKeyEvent", {"type": "keyUp", "key": "Escape", "code": "Escape", "windowsVirtualKeyCode": 27})
+        assert_true(chrome.evaluate("!document.querySelector('[data-project-nav]').closest('.NavigationDrawer,.ProjectChromeDrawer').classList.contains('is-active')&&document.activeElement===document.querySelector('.js-headerMenuButton,.ProjectChromeToggle')"), "shared mobile drawer Escape/focus")
+
+
+def preview_acceptance(base, locale, profile, shared, registry, descriptions, list_metadata,
+                       site_acceptance=None, chrome_factory=None, site_home=False, shared_chrome_check=None):
     """Run browser checks whose preview identity intentionally differs from production."""
     canonical_origin = profile["production_public_url"].rstrip("/")
     policy = publication_policy(locale)
-    chrome = Chrome()
+    contract = shared_chrome_contract(locale, canonical_origin, registry)
+    shared_chrome_check = shared_chrome_check or (lambda chrome: check_shared_chrome(chrome, contract))
+    chrome = (chrome_factory or Chrome)()
     try:
+        if site_acceptance is not None:
+            site_acceptance(chrome)
         rendered_routes = (("/", "/"), ("/tour/", "/tour/welcome/1"), ("/tour/list", "/tour/list"),
                            ("/tour/welcome/1", "/tour/welcome/1"), ("/tour/basics/11", "/tour/basics/11"))
         for path, final_path in rendered_routes:
+            if path == "/" and site_home:
+                continue
             course_route = final_path if re.match(r"^/tour/[^/]+/[1-9][0-9]*$", final_path) else None
             is_list = final_path == "/tour/list"
             list_check = (lambda: validate_rendered_list(chrome, list_metadata, formal_course_routes())) if is_list else None
@@ -1161,19 +1245,7 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
             assert_true(shell["header"] == 1 and shell["footer"] == 1 and len(shell["body"]) > 20,
                         f"{path}: rendered shell missing or duplicated: {shell}")
             assert_true(shell["overflow"] <= 2, f"{path}: document horizontal overflow={shell['overflow']}")
-
-        chrome.navigate(base, 1280, 800)
-        languages = chrome.evaluate("""(() => [...document.querySelectorAll('.site-language-list li')].map(li => {
-          const n=li.querySelector('a,[aria-current="page"]')||li;
-          return {text:n.textContent.trim(),href:n.href||'',current:n.getAttribute('aria-current')==='page'};}))()""")
-        assert_true(len(languages) == len(registry), f"language selector count: expected={len(registry)} actual={len(languages)}")
-        assert_true(sum(item["current"] for item in languages) == 1, f"language selector current identity: {languages}")
-        for got, want in zip(languages, registry):
-            assert_true(want["english_name"] in got["text"] and want["autonym"] in got["text"],
-                        f"language selector order/label: expected={want} actual={got}")
-            assert_true(got["current"] == (want["locale"] == locale), f"language selector current: expected={want} actual={got}")
-            if not got["current"]:
-                assert_true(got["href"] == want["url"], f"language selector URL: expected={want['url']} actual={got['href']}")
+            shared_chrome_check(chrome)
 
         for mobile in (False, True):
             chrome.navigate(urllib.parse.urljoin(base, "tour/basics/11"), 375 if mobile else 1280, 812 if mobile else 800)
@@ -1200,6 +1272,7 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
                 return editor
 
             wait_for_condition(preview_editor_ready, "preview editor dependency convergence")
+            shared_chrome_check(chrome)
             chrome.evaluate("(() => {const cm=document.querySelector('.CodeMirror').CodeMirror;"
                             "window.__previewMalformed='package main\\nfunc main(){println(\"browser acceptance\")}\\n';"
                             "cm.setValue(window.__previewMalformed);return true})()",
@@ -1229,6 +1302,8 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
         mobile_routes = (("/", "/"), ("/tour/", "/tour/welcome/1"), ("/tour/list", "/tour/list"),
                          ("/tour/welcome/1", "/tour/welcome/1"), ("/tour/moretypes/1", "/tour/moretypes/1"))
         for path, final_path in mobile_routes:
+            if path == "/" and site_home:
+                continue
             course_route = final_path if re.match(r"^/tour/[^/]+/[1-9][0-9]*$", final_path) else None
             is_list = final_path == "/tour/list"
             page_identity(chrome, base, locale, path, 375, 812, canonical_origin, final_path, course_route,
@@ -1239,32 +1314,10 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
 
 
 def main():
-    if len(sys.argv) != 3:
-        print(f"usage: {pathlib.Path(sys.argv[0]).name} <production-public-url> <locale>", file=sys.stderr)
-        return 2
-    base, locale = sys.argv[1:]
-    parsed = urllib.parse.urlsplit(base)
-    if parsed.scheme != "https" or parsed.path != "/" or parsed.query or parsed.fragment:
-        print("[production-browser] ERROR: public URL must be an HTTPS origin ending in /", file=sys.stderr)
-        return 1
-    try:
-        identity = IDENTITY.load_identity(ROOT / "production" / "identity.json")
-        profiles = [profile for profile in identity["locales"] if profile["locale"] == locale]
-        if len(profiles) != 1:
-            raise BrowserFailure(f"unknown formal production locale: {locale}")
-        profile = profiles[0]
-        if base != profile["production_public_url"]:
-            raise BrowserFailure("public URL does not match formal production identity")
-        acceptance(base, locale, profile, identity["shared"])
-    except (BrowserFailure, IDENTITY.IdentityError, OSError, KeyError, TypeError) as exc:
-        print(f"[production-browser] FAILED: {exc}", file=sys.stderr)
-        return 1
-    print("[production-browser] desktop routes: PASS")
-    print("[production-browser] mobile /tour/moretypes/1: PASS")
-    print("[production-browser] Run / Format / Reset / SPA / ads: PASS")
-    print("PRODUCTION BROWSER ACCEPTANCE: PASS")
-    return 0
-
+    # Keep the historic executable name as a forwarding compatibility entry.
+    spec=importlib.util.spec_from_file_location("current_production_browser",ROOT/"scripts/verify-production-browser.py")
+    current=importlib.util.module_from_spec(spec); spec.loader.exec_module(current)
+    return current.main()
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -1,0 +1,28 @@
+/* Shared authority and behavior; each host retains its own presentation. */
+.ProjectNavigation{display:flex;align-items:center;gap:1rem;white-space:nowrap}
+.ProjectNavigation>a,.ProjectNavigation summary{color:inherit!important;font:inherit;cursor:pointer;text-decoration:none}
+.ProjectAboutIcon::before{content:"ⓘ"}
+.ProjectNavigation details{position:relative}.ProjectNavigation summary{list-style:none}.ProjectNavigation summary::-webkit-details-marker{display:none}
+.ProjectNavigation ul{box-sizing:border-box;position:absolute;inset-inline-end:0;top:100%;width:max-content;min-width:min(22rem,calc(100vw - 2rem));max-width:calc(100vw - 2rem);max-height:60vh;overflow:auto;background:#fff;color:#202124;border:1px solid #bbb;border-radius:.25rem;box-shadow:0 4px 12px #0003;list-style:none;margin:0;padding:.5rem;z-index:1000;text-align:left}
+.ProjectNavigation li{margin:0;padding:0}.ProjectNavigation li a,.ProjectNavigation li span{display:block;padding:.45rem .7rem;color:inherit!important;text-decoration:none;white-space:nowrap;overflow-wrap:normal;text-align:left;font-weight:normal}
+.ProjectNavigation [aria-current=page]{font-weight:bold;background:#e7f6fa}.ProjectNavigation a:focus-visible,.ProjectNavigation summary:focus-visible{outline:2px solid #00add8;outline-offset:2px}
+.ProjectNavigation[data-project-host=site]{order:2;align-self:stretch;gap:.625rem;margin-inline-start:.625rem;font-size:inherit;line-height:inherit}
+.ProjectNavigation[data-project-host=site]>a,.ProjectNavigation[data-project-host=site] summary{display:inline-flex;align-items:center;padding:0 1rem;border-block:.1875rem solid transparent}
+.ProjectNavigation[data-project-host=site] .ProjectAboutIcon{display:none}
+.ProjectNavigation[data-project-host=tour]{gap:8px;margin-inline-end:10px;font-size:14px;line-height:20px}
+.ProjectNavigation[data-project-host=tour]>a,.ProjectNavigation[data-project-host=tour] summary{box-sizing:border-box;display:flex;align-items:center;gap:5px;min-height:32px;padding:4px 7px;border:1px solid #ffffff73;border-radius:4px;font-size:inherit;font-weight:normal}
+.ProjectNavigation[data-project-host=tour] ul{top:calc(100% + 8px)}
+.ProjectFooter{padding:1.5rem 0;border-top:1px solid #8886;font-size:.875rem;line-height:1.8;overflow-wrap:anywhere;color:inherit}
+.ProjectFooter [data-project-footer-row]+[data-project-footer-row]{margin-top:.35rem}.ProjectFooter a{color:inherit!important}
+.ProjectFooter[data-project-host=site]{text-align:left}.ProjectFooter[data-project-host=tour]{text-align:center}
+@media(max-width:57.699rem){
+ .ProjectNavigation[data-project-host=site]{margin:1rem;display:block;white-space:normal}.ProjectNavigation[data-project-host=site]>a{display:block}.ProjectNavigation[data-project-host=site] details{margin-top:1rem}
+ .ProjectNavigation[data-project-host=site] ul{position:static;width:calc(100vw - 4rem);max-width:100%;min-width:0;max-height:45vh;box-shadow:none;margin-top:.5rem}
+}
+@media(max-width:600px){
+ .ProjectNavigation[data-project-host=tour]{gap:3px;margin-inline-end:3px}
+ .ProjectNavigation[data-project-host=tour]>a,.ProjectNavigation[data-project-host=tour] summary{min-height:29px;padding:2px 4px;font-size:12px}
+ .ProjectNavigation[data-project-host=tour] .ProjectAboutLabel{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ .ProjectNavigation[data-project-host=tour] ul{position:fixed;top:48px;inset-inline:8px;width:calc(100vw - 16px);min-width:0;max-width:calc(100vw - 16px);max-height:65vh}
+ .ProjectNavigation[data-project-host=tour] [data-project-current-language],.ProjectNavigation[data-project-host=tour] [data-project-language-arrow]{display:none}
+}

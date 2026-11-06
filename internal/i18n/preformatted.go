@@ -119,12 +119,14 @@ func analyzePreformattedGo(text string) preformattedAnalysis {
 			bodyEnd--
 		}
 		body := text[bodyStart:bodyEnd]
+		kind := classifyGoExampleComment(literal, body)
+		ordinary := kind == goExampleCommentNatural || kind == goExampleCommentNonNatural
 		analysis.Comments = append(analysis.Comments, preformattedComment{
 			Start:        start,
 			End:          end,
 			BodyStart:    bodyStart,
 			BodyEnd:      bodyEnd,
-			Translatable: isTranslatableTeachingComment(body),
+			Translatable: ordinary && isTranslatableTeachingComment(body),
 		})
 	}
 	for i := range analysis.Comments {
@@ -203,6 +205,7 @@ func isASCIIGoIdentifierContinue(b byte) bool {
 
 func isSafeGoFragment(text string) bool {
 	variants := []string{
+		text, // Complete files already have their own package declaration.
 		"package p\n" + text,
 		"package p\nfunc _() {\n" + text + "\n}\n",
 	}
@@ -248,6 +251,9 @@ func isSafeGoFragment(text string) bool {
 
 func isTranslatableTeachingComment(body string) bool {
 	body = strings.TrimSpace(body)
+	if strings.HasPrefix(body, "go:") || strings.HasPrefix(body, "line ") {
+		return false
+	}
 	if body == "" || strings.EqualFold(body, "OK") || strings.ContainsAny(body, "=()[]{}<>") {
 		return false
 	}
@@ -257,6 +263,7 @@ func isTranslatableTeachingComment(body string) bool {
 		return false
 	}
 	markers := map[string]bool{
+		"associate": true, "capture": true, "contains": true, "query": true,
 		"a": true, "an": true, "and": true, "as": true, "assign": true,
 		"alias": true, "block": true, "channel": true, "compile": true,
 		"error": true, "for": true, "from": true, "has": true, "here": true,

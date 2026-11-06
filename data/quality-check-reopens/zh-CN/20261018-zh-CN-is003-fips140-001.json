@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_surface_reopen",
+  "locale": "zh-CN",
+  "reopen_id": "20261018-zh-CN-is003-fips140-001",
+  "previous_snapshot_id": "learn-docs-v1-qc-015",
+  "previous_finalization_path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-015/finalization.json",
+  "previous_finalization_sha256": "530374a7aa563c103f975940b480f998fbd315541c56438e21d2557e22275b1d",
+  "surface_review_id": "20261018-zh-CN-integrated-surface-003",
+  "surface_review_path": "data/locale-language/zh-CN/surface/20261018-zh-CN-integrated-surface-003.json",
+  "surface_review_sha256": "9b6ca3b63d71c55bb6da5e03b8c07c247634d900dbeaa2d31afbb4a140a500b5",
+  "finding": "source 正文为 `NIST FIPS 140-3 is a U.S. Government compliance regime...`，current target 对应位置为 `NIST FIPS 140-3 是 U.S 政府针对密码学应用的一套合规制度...`。其中 `U.S 政府` 是用户可见自然语言，不属于 source representation 的 protected identity；当前写法既保留了不必要的英语国家缩写，又把规范的 `U.S.` 写成缺少终止点的 `U.S`，形成明显的中英混杂和不规范表达。",
+  "unit_count": 1,
+  "units": [
+    {
+      "index": 40,
+      "unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+      "snapshot": {
+        "index": 40,
+        "unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-047",
+        "source_path": "_content/doc/security/fips140.md",
+        "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-047/candidates/8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3.article",
+        "candidate_sha256": "e21a7c6328350a8848bdb5d6cdb3d10b574bed8f4f49e943c37e225966bd53fc",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-047/validation/8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3.json",
+        "validation_sha256": "f3cbabda8036272292fc600c6d89277cbe1c161c9541efae7e3fea800e8fa954",
+        "attempt": 1
+      }
+    }
+  ],
+  "integrated_authority": {
+    "locale": "zh-CN",
+    "review_id": "20261018-zh-CN-integrated-surface-003",
+    "stage": "failed",
+    "receipt": {
+      "path": "data/locale-language/zh-CN/surface/20261018-zh-CN-integrated-surface-003.json",
+      "sha256": "9b6ca3b63d71c55bb6da5e03b8c07c247634d900dbeaa2d31afbb4a140a500b5"
+    },
+    "receipt_identity": "6fc57c855805a7934a7dd08c41f73b5975c5a826c39cfc8d1100ddddda216dd3",
+    "scope_identity": "79ee93c8b12decc6a605b340f8a0f7994fa90675d289bea34fbcc55e8255bb3a",
+    "evidence": {
+      "path": "data/locale-language/zh-CN/surface-evidence/20261018-zh-CN-integrated-surface-003.md",
+      "sha256": "0de0ec2d3eff069ec814049cc1e0e2ac5c62549181041be4c962826267448220"
+    },
+    "context": [
+      {
+        "path": "data/unified-glossary-reviews/zh-CN/20261012-zh-CN-glossary-review-012.review.json",
+        "sha256": "626ce9c4d38ad96a94fbe302520779c493c738535c1631daa7a99e7da5e29860"
+      },
+      {
+        "path": "data/site-workflow/zh-CN/learn-docs-v1/closure/fe866b9aa3a9b9ce2b26757b2bd6da513cabe41fe1f414ef6430ab6fa5202db9.json",
+        "sha256": "47588d761b615abb7f435b488c1058a83cc06e2b833d9118ccac5282a692e88e"
+      },
+      {
+        "path": "data/site-workflow/zh-CN/site-v2-shell/closure/1f5e9f0fb28b2098c1fff90778f652f9541cfc6ff4d8c75e72ec2093f70dc926.json",
+        "sha256": "38746745af4821aec945899c730b62b61be53de3b450f4ad8c6609f21e98336f"
+      },
+      {
+        "path": "production/identity.json",
+        "sha256": "cb0897e4a37c4fe10999f2e905a7fb4e89e2ff26ee2fd84d51d5ad720eac392c"
+      },
+      {
+        "path": "internal/tour/project.go",
+        "sha256": "78ae201af9207dbb74b266fb64614b82688195e8fff3b71f44b618b2a6ac23e3"
+      },
+      {
+        "path": "internal/tour/languages.go",
+        "sha256": "4d25c9c1883b1475b14a4f2b90c9d4acde272da263881e1d6e9f1c8bfc0fd345"
+      },
+      {
+        "path": "internal/tourpolicy/policy.go",
+        "sha256": "d990db32fe59be47ba78b829e44e4a50e9a796bfcb01a0bc658ff7e4349cc932"
+      },
+      {
+        "path": "data/site-content-scope.json",
+        "sha256": "08344fc0332d8d5cc05df76f5a5a293e82a72afaeab51d128c24643d1262a085"
+      },
+      {
+        "path": "data/site-workflow/zh-CN/learn-docs-v1/closure/20eb58e77e2f038cf7207384f36193b7e914f8ae5faebf41188788a73d514fbd.json",
+        "sha256": "bdaf4c20444f7727f5c6b2b1da3181e5223db1c85c9a136e81b788e8684b8171"
+      },
+      {
+        "path": "data/locale-language/zh-CN/surface/20261014-zh-CN-integrated-surface-faa455c8-002.json",
+        "sha256": "13977766b2bcbd7f96f20151f824b60b8cc3df7c25a0604b1a19cd349d34361a"
+      },
+      {
+        "path": "data/site-workflow/zh-CN/site-v2-shell/closure/41ec108c37469562da5f8870b4d3fcc84ce1afefda148da1d8bad091ca9717d3.json",
+        "sha256": "dcb7fcafd1708c4198747356996b51776c2e1c874bd86ff7d0110c31135e8ae9"
+      },
+      {
+        "path": "data/locale-surface-reviews/zh-CN/20261012-zh-CN-tour-current-surface-005.a-gate.json",
+        "sha256": "159ddadc105f3938bb1a5e32fb003ebcb7f301f1badd4e8e36af9cd8187c34c9"
+      },
+      {
+        "path": "data/locale-surface-reviews/zh-CN/20261012-zh-CN-tour-current-surface-005.md",
+        "sha256": "af82901ade74315c3f2c5f8d408eb9945976d24d11b7b038ddc6ec44332c585d"
+      },
+      {
+        "path": "locales/zh-CN/content-scope.json",
+        "sha256": "f6ed27536bcf171fea171cccf29810e3846e949dfccd5f1c76e2e19c6102d290"
+      },
+      {
+        "path": "locales/zh-CN/candidates/.promotion-d190ac2f8b31bebee9c167c49ca9a481f8bd7a8b6ab165f83dac6f3fad459ebe.json",
+        "sha256": "d175435f3ec1676f07a51d72f3c7483e294ca8c8e0baaf77972becc9c3ee7b4c"
+      },
+      {
+        "path": "data/quality-check-snapshots/zh-CN/qc-010/finalization.json",
+        "sha256": "3fb6535667c73809db873438a3f8facb61122359a19baf0b34d0a4faadafd5f9"
+      }
+    ],
+    "findings": [
+      {
+        "id": "_content/doc/security/fips140.md",
+        "finding": "source 正文为 `NIST FIPS 140-3 is a U.S. Government compliance regime...`，current target 对应位置为 `NIST FIPS 140-3 是 U.S 政府针对密码学应用的一套合规制度...`。其中 `U.S 政府` 是用户可见自然语言，不属于 source representation 的 protected identity；当前写法既保留了不必要的英语国家缩写，又把规范的 `U.S.` 写成缺少终止点的 `U.S`，形成明显的中英混杂和不规范表达。",
+        "class": "translation-unit-language",
+        "artifacts": [
+          {
+            "snapshot_id": "learn-docs-v1-qc-015",
+            "unit": {
+              "index": 40,
+              "unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+              "unit_kind": "page",
+              "selected_batch_id": "chatgpt-zh-CN-047",
+              "source_path": "_content/doc/security/fips140.md",
+              "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+              "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-047/candidates/8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3.article",
+              "candidate_sha256": "e21a7c6328350a8848bdb5d6cdb3d10b574bed8f4f49e943c37e225966bd53fc",
+              "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-047/validation/8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3.json",
+              "validation_sha256": "f3cbabda8036272292fc600c6d89277cbe1c161c9541efae7e3fea800e8fa954",
+              "attempt": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

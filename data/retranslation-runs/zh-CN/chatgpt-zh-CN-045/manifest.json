@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-045",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/fips140.md",
+      "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "input_path": "inputs/3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c.article",
+      "input_sha256": "8eb49d799c36782e3b26c4de8329919bc7c9f2d570077f4a1fa26db904cfed27",
+      "protected_token_count": 264,
+      "previous_snapshot_id": "learn-docs-v1-qc-012",
+      "revision_feedback_source": "preview_acceptance",
+      "revision_authorization_id": "20261015-zh-CN-preview-fips140-reopen-001",
+      "previous_rating": "A",
+      "previous_finding": "missing-source-bound-link: route=/doc/security/fips140 source=_content/doc/security/fips140.md missing=[\"https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search?SearchMode=Basic\u0026ModuleName=Go+Cryptographic+Module\u0026CertificateStatus=Active\u0026ValidationYear=0\"]",
+      "previous_review_decision": "reopened",
+      "previous_review_summary": "20261015-zh-CN-preview-fips140-reopen-001",
+      "previous_review_path": "data/preview-tu-failures/zh-CN/20261015-zh-CN-preview-fips140-001.json",
+      "previous_review_sha256": "d2cbc17fbb4401f5190131647a44893fd1c0f37043f24cc53f7fa1001658349c"
+    }
+  ]
+}

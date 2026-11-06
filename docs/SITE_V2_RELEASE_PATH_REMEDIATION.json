@@ -1,0 +1,580 @@
+{
+  "SCHEMA": "go-learning/release-path-remediation/v1",
+  "STAGE": "site-v2-release-path-blocker-remediation",
+  "BASELINE_AUDIT": "docs/SITE_V2_RELEASE_PATH_AUDIT_FINAL.txt",
+  "BASELINE_INVENTORY": "docs/RELEASE_EXECUTABLE_INVENTORY.json",
+  "BLOCKER_COUNT": 12,
+  "RESULT": "PASS",
+  "BLOCKERS": [
+    {
+      "BLOCKER_ID": "G01",
+      "EXACT_NAME": "Release authority/runtime 未接 Site v2",
+      "CURRENT_FAILURE": "build/publish/publish-batch 读取 Tour projection；production runtime 仅 NewProductionHandler。fixture 比较当前 scope/browser plan 与发布 prerender source，漏掉 50 条 canonical route。",
+      "ENTRYPOINTS": [
+        "cmd/tour-i18n/main.go#buildLocale",
+        "cmd/tour-i18n/publish.go#publishBundle",
+        "cmd/tour-i18n/publish_batch.go#executePublishBatch",
+        "cmd/tour-production/main.go#run"
+      ],
+      "ROOT_CAUSE": "build/publish/publish-batch 读取 Tour projection；production runtime 仅 NewProductionHandler。fixture 比较当前 scope/browser plan 与发布 prerender source，漏掉 50 条 canonical route。",
+      "REQUIRED_CONTRACT": "沿现有 build/publish/runtime 接入 LocalCoverage/LoadContent/Compose；导出完整离线 Site payload，runtime 不回读 mutable repo。",
+      "FILES_TO_CHANGE": [
+        "internal/sitecontent/release_content.go",
+        "internal/site/release.go",
+        "cmd/tour-i18n/release_contract.go",
+        "cmd/tour-i18n/main.go",
+        "cmd/tour-i18n/publish.go",
+        "cmd/tour-production/main.go"
+      ],
+      "TARGETED_TEST": [
+        "TestReleaseAuditCurrentCoverageRuntimeAndAssets",
+        "TestPublishBatchIsStrictSerialAndStopsAfterFailure",
+        "ReleaseRegression.test_single_and_batch_same_exact_contract"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "current LocalCoverageFiles → completed reconstruction → sealed Site export → existing publishBundle/runtime; single/batch/first/repeat never select a separate renderer."
+    },
+    {
+      "BLOCKER_ID": "G02",
+      "EXACT_NAME": "发布 Homepage 仍为旧 Tour 首页",
+      "CURRENT_FAILURE": "renderHome 读取 tour/template/home.tmpl；当前 _content/index.md completed Homepage、translation 与共享 structured shell 没有进入 release rendering。没有代码引用 retired data/site-shell/home.html 作为当前源，但缺少所有 release inputs 的 retirement rejection gate。",
+      "ENTRYPOINTS": [
+        "internal/tour/tour.go#renderHome",
+        "internal/i18n/projection.go#BuildLocaleProjection",
+        "internal/site/shell_render.go#renderCurrentShellPage"
+      ],
+      "ROOT_CAUSE": "renderHome 读取 tour/template/home.tmpl；当前 _content/index.md completed Homepage、translation 与共享 structured shell 没有进入 release rendering。没有代码引用 retired data/site-shell/home.html 作为当前源，但缺少所有 release inputs 的 retirement rejection gate。",
+      "REQUIRED_CONTRACT": "保留 Tour renderer，仅由 current Site resolver 接管首页；防止旧模板/retired artifact 从任一 wrapper 重入。",
+      "FILES_TO_CHANGE": [
+        "internal/site/release.go",
+        "internal/releasecontract/contract.go"
+      ],
+      "TARGETED_TEST": [
+        "TestReleaseAuditCurrentCoverageRuntimeAndAssets",
+        "TestSealedReleaseRejectsStaleUnsafeAndRetired"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "current Homepage/translation from completed frozen shell bytes; retired home.html rejected in input/path/checksum contract and never served. Tour library home remains an isolated compatibility component."
+    },
+    {
+      "BLOCKER_ID": "G03",
+      "EXACT_NAME": "build→publish→deploy→runtime identity chain 未闭合",
+      "CURRENT_FAILURE": "publish 不接受既有 reviewed build；重新从 source projection/build/prerender。release.json 无 activated scope/package/structured payload/browser plan/shared dependency identity。正常 staging 只 sha256sum -c listed entries，无安全 checksum path/exact file set/expected tree digest；already-current 分支才完整 tree SHA 对照。verify-production 不核对运行 PID executable/payload SHA。",
+      "ENTRYPOINTS": [
+        "cmd/tour-i18n/publish.go",
+        "scripts/deploy-production.sh#validate_local_release",
+        "scripts/deploy-production.sh#validate_remote_release",
+        "scripts/deploy-production.sh#verify_already_current_release",
+        "scripts/verify-production.sh#verify_remote_and_source"
+      ],
+      "ROOT_CAUSE": "publish 不接受既有 reviewed build；重新从 source projection/build/prerender。release.json 无 activated scope/package/structured payload/browser plan/shared dependency identity。正常 staging 只 sha256sum -c listed entries，无安全 checksum path/exact file set/expected tree digest；already-current 分支才完整 tree SHA 对照。verify-production 不核对运行 PID executable/payload SHA。",
+      "REQUIRED_CONTRACT": "密封 build/publish identity，传递 exact payload hashes 与生产 predecessor；复用 Go validator 验 exact set/safe paths/remote payload/当前运行 binary；拒绝 stale、不做 fallback。",
+      "FILES_TO_CHANGE": [
+        "internal/releasecontract/contract.go",
+        "cmd/tour-i18n/release_contract.go",
+        "cmd/tour-i18n/publish.go",
+        "scripts/release_contract.py",
+        "scripts/deploy-production.sh",
+        "scripts/verify-production.py"
+      ],
+      "TARGETED_TEST": [
+        "TestProductionBundleExactIdentityAndDependency",
+        "TestExactBundleChecksumsRejectSubsetTraversalAndSymlink",
+        "TestReleaseCompilerInputExactSetCurrentAndStale",
+        "TestPublishReviewedBuildRequiresExactIdentityPair",
+        "ReleaseRegression.test_prior_state_rejects_other_locale_and_binds_current_target"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "reviewed build accepted with exact full build SHA; content copied without rerender; manifest records content/input-build/shared identities. Same exact-set/safe-path validator seals publish and verifies remote startup/PID/runtime, with predecessor CAS."
+    },
+    {
+      "BLOCKER_ID": "G04",
+      "EXACT_NAME": "每次部署 freshness 不满足",
+      "CURRENT_FAILURE": "repeat maintenance 单/批 preflight 不验证 shared export/origin/public freshness。完整 maintenance PASS receipt 可在同名目录 payload 改变后跳过全部命令。shared workflow 的 verification PASS 直接 return，可对已损坏 export payload 宣称 PASS。",
+      "ENTRYPOINTS": [
+        "scripts/maintenance-production.py#execute",
+        "scripts/maintenance-production-batch.py#preflight",
+        "scripts/shared-assets-production.py#execute"
+      ],
+      "ROOT_CAUSE": "repeat maintenance 单/批 preflight 不验证 shared export/origin/public freshness。完整 maintenance PASS receipt 可在同名目录 payload 改变后跳过全部命令。shared workflow 的 verification PASS 直接 return，可对已损坏 export payload 宣称 PASS。",
+      "REQUIRED_CONTRACT": "区分 immutable historical PASS 与 current invocation eligibility；每次 read-only preflight 重验 current activated/build/bundle/shared state/target，保留历史 evidence，不重做语言审核。",
+      "FILES_TO_CHANGE": [
+        "scripts/maintenance-production.py",
+        "scripts/shared-assets-production.py",
+        "scripts/release_contract.py",
+        "cmd/tour-i18n/release_contract.go"
+      ],
+      "TARGETED_TEST": [
+        "ReleaseRegression.test_repeat_currentness_every_invocation_and_immutable_carry",
+        "ReleaseRegression.test_stale_input_shared_and_passed_runtime_fail_closed",
+        "ReleaseRegression.test_shared_historical_pass_still_validates_current_export",
+        "TestValidateAssetsRejectsModifiedFormalPath"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "every invocation checks current coverage/compiler/source/target and fresh shared export/origin/public. Historical PASS is immutable evidence; carry revalidates current runtime instead of returning because a file exists."
+    },
+    {
+      "BLOCKER_ID": "G05",
+      "EXACT_NAME": "batch per-locale evidence 不完整",
+      "CURRENT_FAILURE": "已有 serial fail-fast 和 PASS/FAILED/SKIPPED/PENDING 区分；但每个 locale 的 receipt/rows 无 input payload SHA、prior state、显式 mutation status。phase A 对全部 locale deploy/purge，phase B 才 machine/browser；第一个 locale acceptance failure 发现前，后续 locale 已 mutation。batch resume 跳过 passed deploy 阶段，不走 single 的 already-current revalidation。",
+      "ENTRYPOINTS": [
+        "scripts/maintenance-production-batch.py#execute",
+        "scripts/maintenance-production.py#_new_receipt",
+        "scripts/production-release-batch.py#_maintenance_rows"
+      ],
+      "ROOT_CAUSE": "已有 serial fail-fast 和 PASS/FAILED/SKIPPED/PENDING 区分；但每个 locale 的 receipt/rows 无 input payload SHA、prior state、显式 mutation status。phase A 对全部 locale deploy/purge，phase B 才 machine/browser；第一个 locale acceptance failure 发现前，后续 locale 已 mutation。batch resume 跳过 passed deploy 阶段，不走 single 的 already-current revalidation。",
+      "REQUIRED_CONTRACT": "共享单 locale execution contract，每个 locale 保存 PREFLIGHT/INPUT_IDENTITY/PRIOR_STATE/RESULT/VERIFIER/MUTATION_STATUS；失败只报真实边界，unknown 阻止后续和重放。",
+      "FILES_TO_CHANGE": [
+        "scripts/maintenance-production.py",
+        "scripts/maintenance-production-batch.py",
+        "scripts/production-release-batch.py"
+      ],
+      "TARGETED_TEST": [
+        "ReleaseRegression.test_batch_failure_stops_before_later_locale_and_no_false_pass",
+        "ReleaseRegression.test_top_batch_current_failure_cannot_be_hidden_by_historical_pass"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "all locales preflight first; each locale completes deploy/purge/machine/browser before the next mutation. Independent exact per-locale state+exclusive final result; FAILED/UNKNOWN/BLOCKED cannot be hidden by cached PASS."
+    },
+    {
+      "BLOCKER_ID": "G06",
+      "EXACT_NAME": "assets-go-dev 全链未支持 current Site/zh-CN",
+      "CURRENT_FAILURE": "SharedPaths 为旧 Tour 静态 inventory；当前 Site shell 输出 go.dev CSS/JS，不走 project assets policy。实测 plan 有 CSS/JS 不在 export allowlist。zh-CN profile same-origin；assets.URL 有 locale hardcode；first freshness/zh-only batch 不绑定 shared dependency；production browser 仅 shared-cloudflare presence。deploy-shared-assets 自身无 locale allowlist，single 与 batch 使用同一 global helper，但不代表 consumer complete。",
+      "ENTRYPOINTS": [
+        "internal/assets/assets.go",
+        "internal/site/shell_render.go#renderCurrentShellPage",
+        "production/identity.json",
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/production-release-batch.py",
+        "scripts/browser_acceptance.py#acceptance"
+      ],
+      "ROOT_CAUSE": "SharedPaths 为旧 Tour 静态 inventory；当前 Site shell 输出 go.dev CSS/JS，不走 project assets policy。实测 plan 有 CSS/JS 不在 export allowlist。zh-CN profile same-origin；assets.URL 有 locale hardcode；first freshness/zh-only batch 不绑定 shared dependency；production browser 仅 shared-cloudflare presence。deploy-shared-assets 自身无 locale allowlist，single 与 batch 使用同一 global helper，但不代表 consumer complete。",
+      "REQUIRED_CONTRACT": "冻结 locale-neutral current asset authority，覆盖 Site CSS/JS/font/image，统一 renderer/export/validate/deploy/receipt/consumer/verifier；若当前 policy 继续 same-origin，明确与要求的 zh-CN assets-go-dev complete 区分，不伪造迁移。",
+      "FILES_TO_CHANGE": [
+        "internal/assets/assets.go",
+        "cmd/tour-i18n/assets.go",
+        "internal/site/release_resources.go",
+        "internal/site/release.go",
+        "scripts/shared-assets-production.py",
+        "scripts/production-cdn.py",
+        "scripts/deploy-shared-assets.sh",
+        "scripts/shared-assets-public-verification.sh",
+        "scripts/verify-shared-assets-production.sh",
+        "scripts/release_contract.py"
+      ],
+      "TARGETED_TEST": [
+        "TestReleaseAuditCurrentCoverageRuntimeAndAssets",
+        "TestReleaseDeliveryResourcesSharedPolicyAcrossSiteFamilies",
+        "TestURL",
+        "TestAssetsExportContainsOnlyAllowlistedFilesAndValidChecksums",
+        "TestValidateAssetsAcceptsOnlyFormalExport",
+        "TestReleaseSharedHostnameUsesCurrentProductionIdentity",
+        "AtomicAssetsRegression.test_public_font_cors_and_non_html_content_are_required",
+        "ReleaseRegression.test_zh_cn_and_selected_all_modes_require_same_shared_workflow"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "locale-neutral current static inventory and delivery policy include Homepage/Learn/Docs/translation/Tour, zh-CN included. Export/validate/atomic origin/deployed proof/public CORS+hashes/consumer gate/browser share exact dependency and hostname. Raw identity legacy policy remains historical input; it no longer controls current consumers."
+    },
+    {
+      "BLOCKER_ID": "G07",
+      "EXACT_NAME": "Production canonical/sitemap verifier 仍 Tour 固定 contract",
+      "CURRENT_FAILURE": "EXPECTED_SITEMAP_URLS 固定旧数量，prefix root+tour/list，剩余全部强制 Tour Page regex；Site routes 被拒绝。production sitemap 由 Tour lessons 派生，Preview 由 activated Resolver.Sitemap。first/repeat/batch 虽调用同一 verifier，但共享的是旧 contract。 Tour production canonical origin 还读取 hardcoded languageRegistry URL；虽现有测试对照 production profile，runtime 不直接消费唯一 production identity。",
+      "ENTRYPOINTS": [
+        "scripts/verify-production.sh#verify_sitemap",
+        "internal/tour/seo.go#initSEO",
+        "internal/site/runtime.go#Sitemap"
+      ],
+      "ROOT_CAUSE": "EXPECTED_SITEMAP_URLS 固定旧数量，prefix root+tour/list，剩余全部强制 Tour Page regex；Site routes 被拒绝。production sitemap 由 Tour lessons 派生，Preview 由 activated Resolver.Sitemap。first/repeat/batch 虽调用同一 verifier，但共享的是旧 contract。 Tour production canonical origin 还读取 hardcoded languageRegistry URL；虽现有测试对照 production profile，runtime 不直接消费唯一 production identity。",
+      "REQUIRED_CONTRACT": "所有 mode 共用 sealed current coverage/canonical/sitemap exact-set，不固定数量或顺序；校验部署后的 exact URLs/canonical。",
+      "FILES_TO_CHANGE": [
+        "internal/site/release.go",
+        "internal/tour/release.go",
+        "scripts/release_http.py",
+        "scripts/verify-production.py"
+      ],
+      "TARGETED_TEST": [
+        "TestReleaseAuditCurrentCoverageRuntimeAndAssets",
+        "HTTPRegression.test_origin_public_and_direct_share_exact_coverage_and_404",
+        "TestBuildReleaseManifestSchemaV3UsesWorkflowCounts"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "current activated complete route set is the shared sitemap/canonical model. Tour canonical origin must equal sealed production identity; immutable Tour SEO/context source bytes remain unchanged. No fixed route count."
+    },
+    {
+      "BLOCKER_ID": "G08",
+      "EXACT_NAME": "Production HTTP/browser/404 contract 与 Preview 分叉",
+      "CURRENT_FAILURE": "未知 Learn/Docs 请求落到 Tour rootHandler 返回 200 SPA；origin/public 仅 socket negative 与 fixed Tour routes。public browser CORE.acceptance 未读取 Site plan，仅 Tour sample/behavior/shared presence；first direct_origin 也使用固定 Tour samples。",
+      "ENTRYPOINTS": [
+        "internal/tour/local.go#rootHandler",
+        "scripts/verify-production.sh",
+        "scripts/browser_acceptance.py#acceptance",
+        "scripts/verify-production-browser.py",
+        "scripts/first-production.py#direct_origin"
+      ],
+      "ROOT_CAUSE": "未知 Learn/Docs 请求落到 Tour rootHandler 返回 200 SPA；origin/public 仅 socket negative 与 fixed Tour routes。public browser CORE.acceptance 未读取 Site plan，仅 Tour sample/behavior/shared presence；first direct_origin 也使用固定 Tour samples。",
+      "REQUIRED_CONTRACT": "统一 current resolver/browser plan/asset policy；all activated Site pages、family unknown true404、retirement、assets hostname 和 Homepage executable 都进入各 mode verifier。",
+      "FILES_TO_CHANGE": [
+        "internal/site/release.go",
+        "internal/site/render.go",
+        "scripts/release_http.py",
+        "scripts/verify-production.py",
+        "scripts/verify-production.sh",
+        "scripts/verify-production-browser.py",
+        "scripts/browser_acceptance.py",
+        "scripts/first-production.py"
+      ],
+      "TARGETED_TEST": [
+        "TestReleaseAuditCurrentCoverageRuntimeAndAssets",
+        "TestReleaseAuxiliaryNeverDelegatesUncoveredTraversal",
+        "HTTPRegression.test_false_404_stale_sitemap_wrong_renderer_and_assets_fail_closed",
+        "ReleaseRegression.test_browser_uses_carried_preview_plan_and_shared_checks",
+        "ReleaseRegression.test_existing_verifier_wrapper_forwards_current_implementation"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "all origin/public/direct-origin routes, content identities, canonical/sitemap/404 use one sealed model. Production browser consumes carried Preview plan/checks plus Tour interactions and shared hostname gate; compatibility wrapper delegates current implementation."
+    },
+    {
+      "BLOCKER_ID": "G09",
+      "EXACT_NAME": "Site Homepage runtime 辅助输入缺失",
+      "CURRENT_FAILURE": "current Homepage index.js 需要 same-origin /doc/play/hello.go；Compose/tourAuxiliary 不注册，现有 focused test 返回 404。Site CSS/JS 对 go.dev 的引用还不是 reviewed/deployed exact bytes。",
+      "ENTRYPOINTS": [
+        "internal/site/render.go#Compose",
+        "_content/js/index.js",
+        "internal/site/browser_plan_test.go#TestPreviewBrowserPlanHomepageRuntimeBoundary",
+        "docs/SITE_V2_PREVIEW_BROWSER_AUDIT.md"
+      ],
+      "ROOT_CAUSE": "current Homepage index.js 需要 same-origin /doc/play/hello.go；Compose/tourAuxiliary 不注册，现有 focused test 返回 404。Site CSS/JS 对 go.dev 的引用还不是 reviewed/deployed exact bytes。",
+      "REQUIRED_CONTRACT": "在现有 content/auxiliary authority 中冻结 toy/resource 输入并验证，不扩大 canonical coverage 或以 fallback 绕过 formal gate。",
+      "FILES_TO_CHANGE": [
+        "internal/site/release.go",
+        "internal/site/content.go",
+        "internal/site/render.go",
+        "internal/site/release_resources.go",
+        "internal/site/browser_plan.go"
+      ],
+      "TARGETED_TEST": [
+        "TestReleaseAuditCurrentCoverageRuntimeAndAssets",
+        "TestReleasePreviewResourcesUseFrozenLocalBytes",
+        "TestReleaseResourceQueryAndFragmentRemainExact"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "Homepage selected toys are exact frozen auxiliary inputs, not canonical coverage. Preview serves frozen local resource bytes; Production uses the same logical resources through shared delivery. Queries/fragments preserved; no dependency on undeployed Production assets during Preview."
+    },
+    {
+      "BLOCKER_ID": "G10",
+      "EXACT_NAME": "search closeout 不绑定 current activated sitemap",
+      "CURRENT_FAILURE": "IndexNow 动态读取公网 sitemap，无旧固定 URL count，验证 host/unique/key/root，但可接受 stale root-only 或未激活同 host URL set；没有 release/current coverage/canonical 对照。Google/Bing/locale engine 仅 manual Dashboard，没有正式提交/verifier脚本；无 batch search orchestration。",
+      "ENTRYPOINTS": [
+        "cmd/tour-i18n/indexnow.go#fetchIndexNowSitemap",
+        "scripts/indexnow-closeout.py",
+        "docs/PRODUCTION_RUNBOOK.md#新-locale-首次生产部署"
+      ],
+      "ROOT_CAUSE": "IndexNow 动态读取公网 sitemap，无旧固定 URL count，验证 host/unique/key/root，但可接受 stale root-only 或未激活同 host URL set；没有 release/current coverage/canonical 对照。Google/Bing/locale engine 仅 manual Dashboard，没有正式提交/verifier脚本；无 batch search orchestration。",
+      "REQUIRED_CONTRACT": "提交前只读比较 sealed deployed current sitemap exact-set/coverage/canonical，拒绝 incomplete/uncovered/stale；manual dashboards 按同一 current sitemap authority 收口。",
+      "FILES_TO_CHANGE": [
+        "cmd/tour-i18n/indexnow.go",
+        "scripts/indexnow-closeout.py",
+        "docs/PRODUCTION_RUNBOOK.md",
+        "docs/NEW_LOCALE_RUNBOOK.md"
+      ],
+      "TARGETED_TEST": [
+        "TestReleaseAuditSearchRejectsUnboundCoverageBeforePOST",
+        "TestBootstrapIndexNowRejectsDifferentActivatedCoverage",
+        "TestBootstrapIndexNowSparseCoverageProbesLocalTour",
+        "TestBootstrapIndexNowSubmitsProbeThenRemainingSitemapURLs"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "IndexNow requires current sealed release/shared/public proof and compares submission sitemap with exact complete activated canonical coverage before any POST. Probe comes from that set; sparse locale never submits uncovered root. Google/Bing/locale engine remain manual and use the same verified sitemap; no batch engine PASS claimed."
+    },
+    {
+      "BLOCKER_ID": "G11",
+      "EXACT_NAME": "locale retry/uncertain CDN mutation 缺少持久化绑定",
+      "CURRENT_FAILURE": "deploy ALREADY_CURRENT 有 no-mutation exact tree revalidation，shared purge 有 ATTEMPTED guard；但 maintenance receipt 未记录 payload hash/unknown；locale purge API 已成功后若 receipt 写入失败，重试可能再 POST。batch passed-deploy resume 与 single 不同。不能据已有 skip 宣称完整 idempotence。",
+      "ENTRYPOINTS": [
+        "scripts/maintenance-production.py#execute_mutation",
+        "scripts/maintenance-production.py#record",
+        "scripts/production-cdn.py#coordinator",
+        "scripts/production-cdn.py#shared_assets_coordinator",
+        "scripts/maintenance-production-batch.py#execute"
+      ],
+      "ROOT_CAUSE": "deploy ALREADY_CURRENT 有 no-mutation exact tree revalidation，shared purge 有 ATTEMPTED guard；但 maintenance receipt 未记录 payload hash/unknown；locale purge API 已成功后若 receipt 写入失败，重试可能再 POST。batch passed-deploy resume 与 single 不同。不能据已有 skip 宣称完整 idempotence。",
+      "REQUIRED_CONTRACT": "记录 invocation/input identity 和明确尝试/结果，unknown 持久化 fail closed；复用 provider reconciliation，已经成功 mutation 用 exact proof恢复，不盲重放。",
+      "FILES_TO_CHANGE": [
+        "scripts/maintenance-production.py",
+        "scripts/maintenance-production-batch.py",
+        "scripts/production-cdn.py",
+        "scripts/deploy-shared-assets.sh",
+        "scripts/shared-assets-production.py"
+      ],
+      "TARGETED_TEST": [
+        "ReleaseRegression.test_unknown_mutation_and_cdn_attempt_never_replay",
+        "ReleaseRegression.test_failed_before_mutation_can_retry",
+        "ReleaseRegression.test_locale_post_attempt_is_durable_and_unknown_cannot_replay",
+        "ReleaseRegression.test_shared_chunk_failure_retry_carries_successful_exact_urls",
+        "ProductionCDNTest.test_cloudflare_exact_hostname_payload_and_uncertain_no_retry"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "durable exact-input attempts precede POST/apply; unknown stops. Successful locale mutation/result and successful shared purge chunks are carried, never replayed. Failed-before-mutation retries only incomplete scope. Shared origin attempt survives missing result; immutable receipts cannot be overwritten."
+    },
+    {
+      "BLOCKER_ID": "G12",
+      "EXACT_NAME": "service/rollback 无完整 Site+assets predecessor contract",
+      "CURRENT_FAILURE": "language 部署 whole release rename + atomic current CAS + restart、health失败恢复整个旧目录，unknown 保锁；但 payload 本身是 Tour-only，未绑定 Site/全局 shared-assets identity。shared assets in-place rsync --delete，备份回滚只属于自身树，期间可暴露 partial tree。first health recovery narrow，不是通用 rollback。manual service commands 仅刷新进程配置。",
+      "ENTRYPOINTS": [
+        "scripts/deploy-production.sh#activate_release",
+        "scripts/deploy-shared-assets.sh#update_origin",
+        "scripts/recover-first-production-health-failure.sh",
+        "scripts/first-production.py#systemd_unit_text",
+        "docs/PRODUCTION_RUNBOOK.md"
+      ],
+      "ROOT_CAUSE": "language 部署 whole release rename + atomic current CAS + restart、health失败恢复整个旧目录，unknown 保锁；但 payload 本身是 Tour-only，未绑定 Site/全局 shared-assets identity。shared assets in-place rsync --delete，备份回滚只属于自身树，期间可暴露 partial tree。first health recovery narrow，不是通用 rollback。manual service commands 仅刷新进程配置。",
+      "REQUIRED_CONTRACT": "在现有 release/current/lock 模型里验证完整 route+structured+assets predecessor，并按全局资产兼容性 fail closed；不增加平行部署系统。",
+      "FILES_TO_CHANGE": [
+        "scripts/deploy-production.sh",
+        "scripts/deploy-shared-assets.sh",
+        "scripts/recover-first-production-health-failure.sh",
+        "scripts/first-production.py",
+        "docs/PRODUCTION_RUNBOOK.md"
+      ],
+      "TARGETED_TEST": [
+        "LocaleRecoveryRegression.test_locale_rollback_restores_whole_same_assets_predecessor",
+        "LocaleRecoveryRegression.test_different_assets_predecessor_stops_with_unknown_evidence",
+        "LocaleRecoveryRegression.test_first_recovery_never_removes_unhealthy_current_or_rolls_back_binary",
+        "AtomicAssetsRegression.test_assets_apply_switches_complete_tree",
+        "AtomicAssetsRegression.test_assets_failed_apply_restores_whole_predecessor"
+      ],
+      "STATUS": "PASS",
+      "CLOSURE_EVIDENCE": "whole sealed predecessor/input CAS and identical shared dependency required for automatic locale rollback; asset origin uses atomic whole-tree exchange and whole-tree restoration. Unknown preserves evidence/locks; first recovery is narrow exact late-health proof only. Bare runbook service commands retired as independent release paths; approved env/unit updates use a new existing publish/maintenance input."
+    }
+  ],
+  "PREVIEW_BROWSER_AUDIT_CARRY": "PASS",
+  "PREVIEW_BROWSER_REAUDITED": "no",
+  "FORMAL_ARTIFACT_MUTATION": "none",
+  "CODE_MUTATION": "known",
+  "REMAINING_BLOCKERS": [],
+  "STOP": "before-formal-automated-preview-browser-acceptance",
+  "SURFACE_CONTEXT_CLOSURE": {
+    "root_cause": "machine canonical gate had changed whole-file frozen Tour language context; moved to downstream release adapter",
+    "frozen_files": {
+      "internal/site/shell_render.go": "445b25022f68aeec8858bea47f526100d384a1c302ee9b915fd05e9b717362be",
+      "internal/tour/production.go": "04eeecf58d42a55e515067396a25be9b43654232e45df4cc14d97949a2213f50",
+      "internal/tour/seo.go": "dc09d40a9c4a0d3aa9f9699b85a684feb104cb3642b71bca1f08750220397a64"
+    },
+    "historical_receipts": "unchanged",
+    "actual_completed_export": "PASS",
+    "language_review_repeated": false
+  },
+  "MODES": [
+    {
+      "MODE": "SINGLE_LOCALE_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "NORMAL_REPEAT_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "FIRST_PRODUCTION_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "BATCH_LOCALE_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "ALL_LOCALES_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "all-live from production identity; incomplete packages are not local routes"
+    },
+    {
+      "MODE": "SELECTED_LOCALES_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "SHARED_ASSETS_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "ASSETS_GO_DEV_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "ORIGIN_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "PUBLIC/CDN_DEPLOY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "POST_PUBLISH_RESUME",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "MAINTENANCE_ONLY_RECOVERY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "code/fixtures only; no Production mutation/acceptance executed"
+    },
+    {
+      "MODE": "FIRST_HEALTH_FAILURE_RECOVERY",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "narrow exact late-health recovery; unhealthy/unknown state stops with evidence"
+    },
+    {
+      "MODE": "DOCUMENTED_SERVICE_UPDATE",
+      "RESULT": "PASS",
+      "AUTHORITY": "current activated coverage → sealed content/build/publish → exact bundle input → runtime/HTTP/browser model",
+      "GATE": "same current release/shared/predecessor proof; extra lifecycle/infrastructure checks only",
+      "NOTES": "raw standalone commands RETIRED; approved env/unit changes use normal repeat publish/maintenance; unsupported arbitrary vhost recovery stops"
+    }
+  ],
+  "CONTRACT_RESULTS": {
+    "CURRENT_ROUTE_DERIVATION": "PASS",
+    "BUILD_V2_COMPLETE": "PASS",
+    "PUBLISH_V2_COMPLETE": "PASS",
+    "PRODUCTION_BUNDLE_V2_COMPLETE": "PASS",
+    "SINGLE_LOCALE_DEPLOY_V2": "PASS",
+    "NORMAL_REPEAT_DEPLOY_V2": "PASS",
+    "FIRST_PRODUCTION_DEPLOY_V2": "PASS",
+    "BATCH_LOCALE_DEPLOY_V2": "PASS",
+    "ALL_LOCALES_DEPLOY_V2": "PASS",
+    "SELECTED_LOCALES_DEPLOY_V2": "PASS",
+    "SHARED_ASSETS_CURRENTNESS": "PASS",
+    "CANONICAL_COVERAGE": "PASS",
+    "SITEMAP_COVERAGE": "PASS",
+    "TRUE_404_COVERAGE": "PASS",
+    "RETIRED_HOMEPAGE_EXCLUSION": "PASS",
+    "BATCH_PARTIAL_FAILURE_CONTRACT": "PASS",
+    "RETRY_IDEMPOTENCE": "PASS",
+    "ROLLBACK_CONTRACT": "PASS",
+    "SEARCH_CLOSEOUT_V2": "PASS",
+    "ORIGIN_VERIFIER_V2": "PASS",
+    "PUBLIC_VERIFIER_V2": "PASS",
+    "PRODUCTION_BROWSER_VERIFIER_V2": "PASS",
+    "FIRST_VS_REPEAT_CONTRACT": "PASS",
+    "SINGLE_VS_BATCH_CONTRACT": "PASS",
+    "ASSETS_SINGLE_VS_BATCH_CONTRACT": "PASS"
+  },
+  "ZH_CN_ASSETS_GO_DEV_COMPLETE": "yes",
+  "BASELINE_DISCOVERY_REPEATED": false,
+  "TEST_BOUNDARY": "directly changed release/asset modules and offline adapter fixtures only; no package-wide/repository-wide/browser regression",
+  "OBSERVED_FAILURES_RESOLVED": [
+    "frozen shell renderer/context hash drift restored exactly without receipt changes",
+    "duplicated closure validation exceeded test default 10m; same gates reused within one export; full current export passed in 282.952s",
+    "shell regex ampersand escaping corrected; CORS/MIME focused fixture passed",
+    "Go production targeted test cache write denied in sandbox; same targeted test approved and passed"
+  ],
+  "FILES_CHANGED": [
+    "cmd/tour-i18n/assets.go",
+    "cmd/tour-i18n/assets_test.go",
+    "cmd/tour-i18n/first_production_finalize.go",
+    "cmd/tour-i18n/indexnow.go",
+    "cmd/tour-i18n/indexnow_test.go",
+    "cmd/tour-i18n/main.go",
+    "cmd/tour-i18n/publish.go",
+    "cmd/tour-i18n/publish_test.go",
+    "cmd/tour-i18n/release_contract.go",
+    "cmd/tour-i18n/release_path_audit_test.go",
+    "cmd/tour-production/main.go",
+    "internal/assets/assets.go",
+    "internal/assets/assets_test.go",
+    "internal/releasecontract/contract.go",
+    "internal/releasecontract/contract_test.go",
+    "internal/site/content.go",
+    "internal/site/render.go",
+    "internal/site/browser_plan.go",
+    "internal/site/release.go",
+    "internal/site/release_resources.go",
+    "internal/site/release_resources_test.go",
+    "internal/sitecontent/release_content.go",
+    "internal/tour/release.go",
+    "scripts/browser_acceptance.py",
+    "scripts/deploy-production.sh",
+    "scripts/deploy-shared-assets.sh",
+    "scripts/first-production.py",
+    "scripts/indexnow-closeout.py",
+    "scripts/maintenance-production.py",
+    "scripts/maintenance-production-batch.py",
+    "scripts/production-cdn.py",
+    "scripts/production-cdn-test.py",
+    "scripts/production-release-batch.py",
+    "scripts/recover-first-production-health-failure.sh",
+    "scripts/shared-assets-production.py",
+    "scripts/shared-assets-public-verification.sh",
+    "scripts/verify-production.sh",
+    "scripts/verify-production.py",
+    "scripts/verify-production-browser.py",
+    "scripts/verify-shared-assets-production.sh",
+    "scripts/release_contract.py",
+    "scripts/release_http.py",
+    "scripts/release-path-audit-test.py",
+    "docs/PRODUCTION_RUNBOOK.md",
+    "docs/NEW_LOCALE_RUNBOOK.md",
+    "docs/SITE_V2_WORKFLOW.md",
+    "docs/SITE_V2_RELEASE_PATH_REMEDIATION.json",
+    "docs/RELEASE_EXECUTABLE_INVENTORY_DELTA.json",
+    "docs/SITE_V2_RELEASE_PATH_REMEDIATION.md",
+    "docs/SITE_V2_RELEASE_PATH_REMEDIATION_FINAL.txt"
+  ],
+  "TARGETED_TESTS": [
+    "go test -mod=readonly ./cmd/tour-i18n -run '^TestReleaseAuditCurrentCoverageRuntimeAndAssets$' -count=1 -timeout=12m: PASS (282.952s; actual current closure/render/route/runtime evidence)",
+    "go test -mod=readonly ./cmd/tour-i18n -run '^(TestBootstrapIndexNow|TestReleaseAuditSearch|TestValidatePublishProjectionUsesDynamicWorkflowCounts|TestBuildReleaseManifestSchemaV3UsesWorkflowCounts)' -count=1: PASS",
+    "go test -mod=readonly ./cmd/tour-i18n -run '^TestPublishReviewedBuildRequiresExactIdentityPair$' -count=1: PASS",
+    "go test -mod=readonly ./cmd/tour-i18n -run '^(TestValidateBundleRejectsUnsealedTourOnlyPayload|TestPublishBatchIsStrictSerialAndStopsAfterFailure|TestPublishBatchSourceHasNoProductionMutation)$' -count=1: PASS",
+    "go test -mod=readonly ./cmd/tour-i18n -run '^(TestAssetsExportContainsOnlyAllowlistedFilesAndValidChecksums|TestValidateAssets)' -count=1: PASS",
+    "go test -mod=readonly ./cmd/tour-i18n -run '^TestReleaseCompilerInputExactSetCurrentAndStale$' -count=1: PASS",
+    "go test -mod=readonly ./cmd/tour-i18n -run '^TestReleaseSharedHostnameUsesCurrentProductionIdentity$' -count=1: PASS",
+    "go test -mod=readonly ./cmd/tour-i18n -run '^TestAssetsSourceSymlinkNeverBecomesFormalExport$' -count=1: PASS",
+    "go test -mod=readonly ./internal/releasecontract -run '^Test(Sealed|Exact)' -count=1: PASS",
+    "go test -mod=readonly ./internal/releasecontract -run '^TestProductionBundleExactIdentityAndDependency$' -count=1: PASS",
+    "go test -mod=readonly ./internal/site -run '^TestReleaseDeliveryResourcesSharedPolicyAcrossSiteFamilies$' -count=1: PASS",
+    "go test -mod=readonly ./internal/site -run '^TestReleaseAuxiliaryNeverDelegatesUncoveredTraversal$' -count=1: PASS",
+    "go test -mod=readonly ./internal/site -run '^TestReleasePreviewResourcesUseFrozenLocalBytes$' -count=1: PASS",
+    "go test -mod=readonly ./internal/site -run '^TestReleaseResourceQueryAndFragmentRemainExact$' -count=1: PASS",
+    "go test -mod=readonly ./internal/assets -run '^TestURL$' -count=1: PASS",
+    "go test -mod=readonly ./cmd/tour-production -run '^TestRunRequiresBuildInjectedLocale$' -count=1: PASS (same focused test approved after cache sandbox failure)",
+    "python3 scripts/release-path-audit-test.py: PASS (23 offline fixtures; targeted additions/resolved failures tested individually; no network/service execution)",
+    "PYTHONDONTWRITEBYTECODE=1 python3 scripts/production-cdn-test.py ProductionCDNTest.test_remote_helper_is_python_36_parseable ProductionCDNTest.test_cloudflare_exact_hostname_payload_and_uncertain_no_retry ProductionCDNTest.test_cloudflare_exact_url_definite_and_uncertain_failures_do_not_retry ProductionCDNTest.test_shared_assets_definite_failure_resumes_but_uncertain_never_repeats ProductionCDNTest.test_edgeone_purge_job_visibility_polling_exhausts_without_duplicate_create: PASS",
+    "changed Python adapters compile + remote helper AST Python 3.6: PASS",
+    "bash -n individually: deploy-production.sh, deploy-shared-assets.sh, recover-first-production-health-failure.sh, shared-assets-public-verification.sh, verify-shared-assets-production.sh, verify-production.sh: PASS",
+    "python3 scripts/release-path-audit-test.py --check: PASS"
+  ],
+  "VERIFICATION_CARRY": "Already-passed targeted tests were consumed; new compiler/hostname/local-resource/guard branches were tested separately. No repeated language review, Preview audit or formal browser acceptance.",
+  "GIT_DIFF_CHECK": "PASS"
+}

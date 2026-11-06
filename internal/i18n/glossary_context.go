@@ -40,6 +40,12 @@ func compatibilityCatalog(root string) (*Catalog, error) {
 // Inventory does not call downstream freshness gates (which consume this
 // inventory). It binds real bytes even when an artifact needs revision.
 func currentGlossaryCompatibilityContexts(root, locale string, catalog *Catalog) ([]GlossaryCompatibilityContext, error) {
+	return glossaryCompatibilityContextsWithCourse(root, locale, catalog, nil)
+}
+
+// Overrides are confined to exact historical/reconstruction contexts. Ordinary
+// inventory and assessment always read the current formal metadata file.
+func glossaryCompatibilityContextsWithCourse(root, locale string, catalog *Catalog, courseBytes []byte, tuOnly ...bool) ([]GlossaryCompatibilityContext, error) {
 	if catalog == nil {
 		var err error
 		catalog, err = compatibilityCatalog(root)
@@ -57,6 +63,9 @@ func currentGlossaryCompatibilityContexts(root, locale string, catalog *Catalog)
 			}
 			seen[path] = true
 			data, err := readCompatibilityFile(root, path)
+			if path == "locales/"+locale+"/course-metadata.json" && courseBytes != nil {
+				data, err = courseBytes, nil
+			}
 			if err != nil {
 				return err
 			}
@@ -78,6 +87,9 @@ func currentGlossaryCompatibilityContexts(root, locale string, catalog *Catalog)
 			return nil, fmt.Errorf("compatibility inventory missing current-source passed candidate: %s", unit.ID)
 		}
 		candidatePath := filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, choice.batchID, choice.result.CandidatePath))
+		if choice.machine != nil {
+			candidatePath = choice.machine.unit.Candidate.Path
+		}
 		target, err := readCompatibilityFile(root, candidatePath)
 		if err != nil {
 			return nil, err
@@ -96,6 +108,10 @@ func currentGlossaryCompatibilityContexts(root, locale string, catalog *Catalog)
 		if err := add("tu:"+unit.ID, parser, string(unit.Source), string(target), unit.SourcePath, candidatePath); err != nil {
 			return nil, err
 		}
+	}
+	if len(tuOnly) > 0 && tuOnly[0] {
+		sort.Slice(contexts, func(i, j int) bool { return contexts[i].Scope < contexts[j].Scope })
+		return contexts, nil
 	}
 	uiRoot := filepath.Join(root, "internal", "tour", "ui")
 	sourceUI, err := ui.LoadFromFS("en", os.DirFS(uiRoot))
@@ -142,6 +158,9 @@ func currentGlossaryCompatibilityContexts(root, locale string, catalog *Catalog)
 	}
 	coursePath := "locales/" + locale + "/course-metadata.json"
 	courseData, err := readCompatibilityFile(root, coursePath)
+	if courseBytes != nil {
+		courseData, err = courseBytes, nil
+	}
 	if err != nil {
 		return nil, err
 	}

@@ -1,0 +1,117 @@
+{
+  "schema": "go-learning/shell-current-adoption/v1",
+  "frozen_successor_foundation": {
+    "path": "data/site-shell/successor/sources/30d7c2ef242aa2aa13e64aa5a8917baca377710cb0ef77a68dba3cfb27694272.json",
+    "sha256": "3eba68d190fa9381b95ba5c439514bd70d1f38289849fe18954e242a4580f44c"
+  },
+  "historical_global_authority": {
+    "path": "data/site-content-scope.json",
+    "sha256": "08344fc0332d8d5cc05df76f5a5a293e82a72afaeab51d128c24643d1262a085"
+  },
+  "current_source_inventory": [
+    {
+      "source_path": "_content/index.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "site-v2-shell",
+      "surface": "homepage",
+      "canonical_route": "/",
+      "source_sha256": "7765e289fc5abccf8b786fa408c9d60078e2c27168e66778d060590e3c6ba986",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/site.tmpl",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "site-v2-shell",
+      "surface": "homepage",
+      "source_sha256": "88d7b52a319081fa9bf5a93143f152d83fc1f22465a39c5f553ff99c86ad754c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/menus.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "site-v2-shell",
+      "surface": "homepage",
+      "source_sha256": "1bbfb89bdd575b2bc00a45ccebd1b9fb983339746eae220bdc10f5856da7e8c3",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/resources.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "site-v2-shell",
+      "surface": "homepage",
+      "source_sha256": "03bf7818f86cc4b873badc61b3b993642e1cb5daf80b38366865ecabed0b2a53",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/testimonials.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "site-v2-shell",
+      "surface": "homepage",
+      "source_sha256": "ac356b5080759a9d26aec839339263ad05fed58131a4ba9eeea174af6066e13a",
+      "dependencies": []
+    },
+    {
+      "source_path": "data/site-shell/translation.html",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "site-v2-shell",
+      "surface": "translation",
+      "canonical_route": "/translation/",
+      "source_sha256": "04ab70b5086539b36c55c504ee5cf302037b95c3abf4904824b079a8c316be6c",
+      "dependencies": []
+    }
+  ],
+  "current_package": {
+    "id": "site-v2-shell",
+    "activation": "independent-shell-gates",
+    "canonical_routes": [
+      "/",
+      "/translation/"
+    ],
+    "surfaces": [
+      "homepage",
+      "translation"
+    ],
+    "contract_dependencies": [
+      {
+        "kind": "contract",
+        "path": "internal/sitecontent/shell_reconstruction.go",
+        "sha256": "e6382f6c1c4ac4429558658693e80698b1b997547ae85354f6995c36941f1346"
+      },
+      {
+        "kind": "contract",
+        "path": "internal/sitecontent/shell_generation_context.go",
+        "sha256": "c92a6da3548082c286e986e2eff9ed5e098518998e10047351d0326b17700d69"
+      },
+      {
+        "kind": "contract",
+        "path": "internal/sitecontent/shell_runtime_context.go",
+        "sha256": "e89125fbdcb53bc2d872f7885d8663e133f24fdd0f257294c79d4d3dcbbe3107"
+      },
+      {
+        "kind": "contract",
+        "path": "internal/site/shell_render.go",
+        "sha256": "445b25022f68aeec8858bea47f526100d384a1c302ee9b915fd05e9b717362be"
+      },
+      {
+        "kind": "contract",
+        "path": "internal/site/tmplfunc/tmpl.go",
+        "sha256": "832b4c002f3ffbf0ccc4ca4a83a5be52ec65265381cd480986e0ce41cc811326"
+      },
+      {
+        "kind": "contract",
+        "path": "internal/site/tmplfunc/func.go",
+        "sha256": "8c86d7e19881d695f6d1781d1dfe4eb5e6bc279c16f7b7a4ab02f2c3fb6a2882"
+      }
+    ],
+    "source_identity_sha256": "68259fd5cd2c4110a3acf45af572c74b63af8461744e087b0de806d9cadc0907",
+    "identity_sha256": "72481791c1653a72553632737f02cb9dc88ed891e7d73d3e38fee0308bc34da9",
+    "parser_contract": "go-learning/shell-language-source/v1"
+  },
+  "identity_sha256": "2ec50f613ab4b48abf1dd58078b47c89626bae8d6050d24944aa389bbac258c6"
+}

@@ -1,0 +1,21 @@
+===== FINAL =====
+RESULT=FAILED
+LOCALE=zh-CN
+REVIEW_ID=20261015-zh-CN-learn-docs-qc-014-re-qc-page-001
+SNAPSHOT=learn-docs-v1-qc-014
+PREVIOUS_SNAPSHOT=learn-docs-v1-qc-012
+BUNDLE_SHA256=26cba2a249e87972748e6e57a631c878edd8d8f754e32a7306a02c593c046e4e
+BUNDLE_IDENTITY=d39fbe742abe2d436ac56fb93f8edc3844703b6ab8882649f603200923a1c2e2
+FORMAL_UNITS=1
+REVIEWED_UNITS=1/1
+UNIT_ID=3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c
+STABLE_INDEX=40
+RATING=B
+FINDING=原 preview finding 的 collapsed Markdown reference binding 已关闭：current usage `[CMVP validation certificate][]` 与 reference definition label 完全一致，且 definition 仍绑定 canonical source 中的 CMVP validation-certificate external URL，因此 rendered source-bound link 已恢复，未发现 link target、Markdown binding 或邻近 `inprocess` / `certified` 技术语义损坏。但修订后用户可见链接文本 `CMVP validation certificate` 保持为完整英文短语；其中 `CMVP` 可保持正式 identity，而 `validation certificate` 是普通可翻译自然语言，并非代码、API 或必须 keep 的 machine identity。同一 Page 后文对同一概念已经使用中文“CMVP 验证证书”，因此这里形成局部不必要英文残留和页内术语表达不一致。后续 exact revision 应仅在该受影响 reference usage/definition局部闭合此语言问题，继续保持 collapsed-reference label 一致、原 external URL 不变，并不得破坏相邻 `inprocess` / `certified` 对应关系。除此之外，本次 affected local context 未发现新的结构、链接、技术语义或术语缺陷。
+A_COUNT=0
+B_COUNT=1
+C_COUNT=0
+D_COUNT=0
+REPLACEMENT=none
+REPOSITORY_MUTATION=none
+STOP=before-local-review-evidence-record

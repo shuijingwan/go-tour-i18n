@@ -1,0 +1,2736 @@
+{
+  "SCHEMA": "go-learning/release-executable-inventory-delta/v1",
+  "STAGE": "site-v2-release-path-blocker-remediation",
+  "RESULT": "PASS",
+  "BASELINE": "docs/RELEASE_EXECUTABLE_INVENTORY.json",
+  "BASELINE_SHA256": "c1d72610248a7a410ced521548213b3df4eec64f0d212a36d3d237017c730f38",
+  "BASELINE_COUNT": 150,
+  "DISCOVERY_REPEATED": false,
+  "AFFECTED_SOURCE_COUNT": 46,
+  "UPDATES": [
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/indexnow.go#bootstrapIndexNow",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/indexnow.go",
+      "CALLERS": [
+        "tour-i18n indexnow bootstrap"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "public key and public XML sitemap",
+      "OUTPUT": "probe then remaining URL POST",
+      "MUTATION_KIND": "SEARCH_SUBMISSION",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/publish.go#buildProductionBinaryGo",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/publish.go",
+      "CALLERS": [
+        "tour-i18n publish"
+      ],
+      "CALLEES": [
+        "cmd/tour-production/main.go"
+      ],
+      "INPUT_AUTHORITY": "repository Go code + locale",
+      "OUTPUT": "bin/tour",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/publish.go#bundleChecksums",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/publish.go#bundleChecksums",
+      "CALLERS": [
+        "tour-i18n publish"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "Tour projection + current source at invocation; no build input or activated coverage",
+      "OUTPUT": "stage result for tour-i18n publish",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/publish.go#validateBundle",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/publish.go#validateBundle",
+      "CALLERS": [
+        "tour-i18n publish"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "Tour projection + current source at invocation; no build input or activated coverage",
+      "OUTPUT": "stage result for tour-i18n publish",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-production/main.go",
+      "TYPE": "GO_EXECUTABLE",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-production/main.go",
+      "CALLERS": [
+        "cmd/tour-i18n/publish.go#buildProductionBinaryGo"
+      ],
+      "CALLEES": [
+        "cmd/tour-production/main.go#bundleContentDir",
+        "internal/releasecontract/contract.go#VerifyBundle",
+        "internal/site/release.go#NewReleaseHandler",
+        "internal/tour/production.go#NewProductionHandler"
+      ],
+      "INPUT_AUTHORITY": "build injected locale + adjacent _content",
+      "OUTPUT": "loopback production HTTP server",
+      "MUTATION_KIND": "SERVICE_RUNTIME",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-production/main.go#bundleContentDir",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-production/main.go#bundleContentDir",
+      "CALLERS": [
+        "cmd/tour-production/main.go"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "build injected locale + adjacent _content",
+      "OUTPUT": "stage result for cmd/tour-production/main.go",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "internal/assets/assets.go#SharedPaths",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/assets/assets.go",
+      "CALLERS": [
+        "tour-i18n assets export",
+        "tour-i18n assets validate"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "maintained static allowlist",
+      "OUTPUT": "copied exact path set",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "internal/assets/assets.go#URL",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/assets/assets.go",
+      "CALLERS": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "logical path + locale + development flag",
+      "OUTPUT": "same-origin or assets-go-dev URL",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "internal/i18n/projection.go#BuildLocaleProjection",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/i18n/projection.go",
+      "CALLERS": [
+        "tour-i18n build",
+        "tour-i18n preview",
+        "tour-i18n publish"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "canonical Tour workflow sources/candidates/config",
+      "OUTPUT": "Tour projection; copies whole _content",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "internal/site/browser_plan.go#LoadPreviewBrowserPlan",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/browser_plan.go",
+      "CALLERS": [
+        "tour-i18n preview-browser-plan"
+      ],
+      "CALLEES": [
+        "internal/site/shell_render.go#renderCurrentShellPage"
+      ],
+      "INPUT_AUTHORITY": "scope route families + current source rendered structure",
+      "OUTPUT": "exact routes/pages/family browser plan",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "internal/site/content.go#LoadContent",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/content.go",
+      "CALLERS": [
+        "cmd/tour-i18n/preview_runtime.go#newFullLocalePreviewHandler"
+      ],
+      "CALLEES": [
+        "internal/site/runtime.go#Load"
+      ],
+      "INPUT_AUTHORITY": "LocalCoverage + CompletedPackageFiles + CurrentPackageDocuments",
+      "OUTPUT": "exact localized Site pages/structured data",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "internal/site/render.go#Compose",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/render.go",
+      "CALLERS": [
+        "cmd/tour-i18n/preview_runtime.go#newFullLocalePreviewHandler"
+      ],
+      "CALLEES": [
+        "internal/site/release_resources.go#DeliveryResources",
+        "internal/site/runtime.go#Sitemap",
+        "internal/site/shell_render.go#renderCurrentShellPage"
+      ],
+      "INPUT_AUTHORITY": "validated Content + Tour handler",
+      "OUTPUT": "all activated route handlers/true 404/robots/sitemap",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "internal/site/shell_render.go#renderCurrentShellPage",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/site/shell_render.go",
+      "CALLERS": [
+        "internal/site/browser_plan.go#LoadPreviewBrowserPlan",
+        "internal/site/render.go#Compose"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "completed current shell/Page/structured data",
+      "OUTPUT": "localized HTML",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "internal/sitecontent/runtime.go#LocalCoverage",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/sitecontent/runtime.go",
+      "CALLERS": [
+        "internal/site/runtime.go#Load",
+        "internal/sitecontent/release_content.go#LocalCoverageFiles",
+        "tour-i18n release-contract check"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "global+locale content-scope; closure/Surface/package completion",
+      "OUTPUT": "validated activated scope",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "existing immutable evidence/currentness",
+      "NOTES": "Not reached from production publish/deploy"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/appengine.go#registerHandlersLocaleWithRuntimeHead",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/tour/appengine.go",
+      "CALLERS": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "CALLEES": [
+        "internal/tourpolicy/policy.go"
+      ],
+      "INPUT_AUTHORITY": "shared advertising policy + Tour env",
+      "OUTPUT": "runtime Tour shell",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "internal/tour/production.go#NewPrerenderSource",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/tour/production.go",
+      "CALLERS": [
+        "cmd/tour-i18n/prerender.go#prerenderProductionPagesChrome"
+      ],
+      "CALLEES": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "INPUT_AUTHORITY": "Tour projected metadata/course SEO",
+      "OUTPUT": "local Tour handler/course+list routes",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "internal/tour/production.go#NewProductionHandler",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/tour/production.go",
+      "CALLERS": [
+        "cmd/tour-production/main.go",
+        "tour-i18n publish"
+      ],
+      "CALLEES": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "INPUT_AUTHORITY": "projected Tour FS + build locale",
+      "OUTPUT": "Tour production handler",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "internal/tour/production.go#newTourHandlerWithPlaygroundBase",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/tour/production.go",
+      "CALLERS": [
+        "internal/tour/production.go#NewPrerenderSource",
+        "internal/tour/production.go#NewProductionHandler"
+      ],
+      "CALLEES": [
+        "internal/assets/assets.go#URL",
+        "internal/tour/appengine.go#registerHandlersLocaleWithRuntimeHead",
+        "internal/tour/seo.go#initSEO",
+        "internal/tour/tour.go#renderHome"
+      ],
+      "INPUT_AUTHORITY": "Tour content/routes/runtime env",
+      "OUTPUT": "HTTP handlers + robots/sitemap",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "internal/tour/seo.go#initSEO",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/tour/seo.go",
+      "CALLERS": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "CALLEES": [
+        "internal/tour/seo.go#productionOriginForLocale"
+      ],
+      "INPUT_AUTHORITY": "Tour lessons/projected SEO + languageRegistry production URL",
+      "OUTPUT": "Tour sitemap/canonical/robots",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "internal/tour/seo.go#productionOriginForLocale",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/tour/seo.go#productionOriginForLocale",
+      "CALLERS": [
+        "internal/tour/release.go#CheckReleaseCanonicalOrigin",
+        "internal/tour/seo.go#initSEO"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "internal/tour/languages.go languageRegistry; hardcoded locale presentation/production URLs",
+      "OUTPUT": "canonical origin resolved from matching languageRegistry URL",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "internal/tour/tour.go#renderHome",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "internal/tour/tour.go",
+      "CALLERS": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "tour home.tmpl + UI/site metadata",
+      "OUTPUT": "older Tour homepage",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "component constrained by sealed Site adapter",
+      "SHARED_ASSETS_AWARE": "shared current policy downstream",
+      "PRODUCTION_GATE": "current release exporter/runtime controls coverage/canonical/true404; frozen language context retained",
+      "NOTES": "Current caller composes this component with exact activated Site authority; no standalone Tour-only publication truth. Frozen source/receipts unchanged where language-bound."
+    },
+    {
+      "ENTRYPOINT": "runbook:nginx -t && service nginx reload",
+      "TYPE": "DOCUMENTED_SERVICE_COMMAND",
+      "STATUS": "RETIRED",
+      "CLASSIFICATION": "DEAD",
+      "SOURCE": "docs/PRODUCTION_RUNBOOK.md",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "production identity + approved EnvironmentFile/unit/vhost changes",
+      "OUTPUT": "service/config refresh",
+      "MUTATION_KIND": "SERVICE_RELOAD",
+      "LOCALE_SCOPE": "single/shared-infrastructure",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Standalone helper/command removed or retired; current controlled implementation replaces it. No current release caller remains."
+    },
+    {
+      "ENTRYPOINT": "runbook:systemctl daemon-reload",
+      "TYPE": "DOCUMENTED_SERVICE_COMMAND",
+      "STATUS": "RETIRED",
+      "CLASSIFICATION": "DEAD",
+      "SOURCE": "docs/PRODUCTION_RUNBOOK.md",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "production identity + approved EnvironmentFile/unit/vhost changes",
+      "OUTPUT": "service/config refresh",
+      "MUTATION_KIND": "SERVICE_RELOAD",
+      "LOCALE_SCOPE": "single/shared-infrastructure",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Standalone helper/command removed or retired; current controlled implementation replaces it. No current release caller remains."
+    },
+    {
+      "ENTRYPOINT": "runbook:systemctl restart <profile-service>",
+      "TYPE": "DOCUMENTED_SERVICE_COMMAND",
+      "STATUS": "RETIRED",
+      "CLASSIFICATION": "DEAD",
+      "SOURCE": "docs/PRODUCTION_RUNBOOK.md",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "production identity + approved EnvironmentFile/unit/vhost changes",
+      "OUTPUT": "service/config refresh",
+      "MUTATION_KIND": "SERVICE_RELOAD",
+      "LOCALE_SCOPE": "single/shared-infrastructure",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Standalone helper/command removed or retired; current controlled implementation replaces it. No current release caller remains."
+    },
+    {
+      "ENTRYPOINT": "scripts/browser_acceptance.py",
+      "TYPE": "PYTHON_HELPER_EXECUTABLE",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/browser_acceptance.py",
+      "CALLERS": [
+        "scripts/verify-preview-browser.py"
+      ],
+      "CALLEES": [
+        "scripts/browser_acceptance.py#acceptance",
+        "scripts/browser_acceptance.py#formal_course_routes",
+        "scripts/browser_acceptance.py#preview_acceptance",
+        "scripts/production-identity.py",
+        "tour-i18n policy publication"
+      ],
+      "INPUT_AUTHORITY": "identity + catalog + publication policy; standalone public args",
+      "OUTPUT": "Tour Chrome acceptance or shared browser primitives",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/browser_acceptance.py#acceptance",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/browser_acceptance.py#acceptance",
+      "CALLERS": [
+        "scripts/browser_acceptance.py",
+        "scripts/verify-production-browser.py"
+      ],
+      "CALLEES": [
+        "scripts/browser_acceptance.py#formal_course_routes",
+        "tour-i18n policy publication"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/browser_acceptance.py#formal_course_routes",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/browser_acceptance.py#formal_course_routes",
+      "CALLERS": [
+        "scripts/browser_acceptance.py",
+        "scripts/browser_acceptance.py#acceptance"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "identity + catalog + publication policy; standalone public args",
+      "OUTPUT": "stage result for scripts/browser_acceptance.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/browser_acceptance.py#preview_acceptance",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/browser_acceptance.py#preview_acceptance",
+      "CALLERS": [
+        "scripts/browser_acceptance.py",
+        "scripts/verify-preview-browser.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_LOCAL_AND_EXTERNAL_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh",
+      "TYPE": "SHELL_DEPLOY",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:295",
+        "doc:docs/PRODUCTION_RUNBOOK.md:218",
+        "doc:docs/PRODUCTION_RUNBOOK.md:385",
+        "doc:docs/PRODUCTION_RUNBOOK.md:428",
+        "scripts/first-production.py",
+        "scripts/maintenance-production-batch.py",
+        "scripts/maintenance-production.py"
+      ],
+      "CALLEES": [
+        "cmd/tour-production:verify-bundle",
+        "scripts/deploy-production.sh#activate_release",
+        "scripts/deploy-production.sh#check_public",
+        "scripts/deploy-production.sh#prepare_remote",
+        "scripts/deploy-production.sh#upload_release",
+        "scripts/deploy-production.sh#validate_local_release",
+        "scripts/deploy-production.sh#validate_remote_release",
+        "scripts/deploy-production.sh#verify_already_current_release",
+        "scripts/production-identity.sh",
+        "scripts/release_contract.py",
+        "tour-i18n release-contract check"
+      ],
+      "INPUT_AUTHORITY": "release.json locale + SHA256SUMS; profile from identity",
+      "OUTPUT": "immutable remote release/current symlink/service restart",
+      "MUTATION_KIND": "ORIGIN_SERVICE",
+      "LOCALE_SCOPE": "single-first/single-live/resume",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#activate_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#activate_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh#activate_release.rollback"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "ORIGIN_LINK_SERVICE",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#activate_release.rollback",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#activate_release.rollback",
+      "CALLERS": [
+        "scripts/deploy-production.sh#activate_release"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "stage result for scripts/deploy-production.sh#activate_release",
+      "MUTATION_KIND": "ORIGIN_LINK_SERVICE",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#check_public",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#check_public",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#prepare_remote",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#prepare_remote",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "ORIGIN_STAGING_LOCK",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#upload_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#upload_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "ORIGIN_STAGING",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#validate_local_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#validate_local_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh",
+        "scripts/first-production.py#local_bundle_preflight"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#validate_remote_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#validate_remote_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "ORIGIN_STAGING_PERMISSIONS",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#verify_already_current_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#verify_already_current_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh",
+      "TYPE": "SHELL_DEPLOY",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:567",
+        "scripts/shared-assets-production.py"
+      ],
+      "CALLEES": [
+        "scripts/deploy-shared-assets.sh#calculate_changes_with_retry",
+        "scripts/deploy-shared-assets.sh#cleanup_before_mutation",
+        "scripts/deploy-shared-assets.sh#create_backup",
+        "scripts/deploy-shared-assets.sh#prepare_remote",
+        "scripts/deploy-shared-assets.sh#update_origin",
+        "scripts/deploy-shared-assets.sh#upload_export",
+        "scripts/deploy-shared-assets.sh#validate_local_export",
+        "scripts/deploy-shared-assets.sh#validate_remote_staging",
+        "scripts/deploy-shared-assets.sh#write_verification_receipt",
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "origin tree/backup/v1 verification receipt",
+      "MUTATION_KIND": "SHARED_ORIGIN",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#calculate_changes_with_retry",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#calculate_changes_with_retry",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#cleanup_before_mutation",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#cleanup_before_mutation",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_STAGING_LOCK",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#create_backup",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#create_backup",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_BACKUP",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#prepare_remote",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#prepare_remote",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_STAGING_LOCK",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#update_origin",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#update_origin",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-shared-assets.sh#update_origin.rollback"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "SHARED_ORIGIN",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#update_origin.rollback",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#update_origin.rollback",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh#update_origin"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh#update_origin",
+      "MUTATION_KIND": "SHARED_ORIGIN",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#upload_export",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#upload_export",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_STAGING",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#validate_local_export",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#validate_local_export",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#validate_remote_staging",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#validate_remote_staging",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_STAGING_PERMISSIONS",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#write_verification_receipt",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#write_verification_receipt",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "LOCAL_RECEIPT",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py",
+      "CALLERS": [
+        "scripts/first-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh",
+        "scripts/first-production.py#aliyun_preflight",
+        "scripts/first-production.py#bootstrap_infrastructure",
+        "scripts/first-production.py#browser",
+        "scripts/first-production.py#cloudflare_dns",
+        "scripts/first-production.py#configure_playground",
+        "scripts/first-production.py#direct_origin",
+        "scripts/first-production.py#evidence_preflight",
+        "scripts/first-production.py#local_bundle_preflight",
+        "scripts/first-production.py#nginx_vhost_text",
+        "scripts/first-production.py#preflight",
+        "scripts/first-production.py#public_machine",
+        "scripts/first-production.py#setup_cloudflare_network_tunnel",
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/first-production.py#systemd_unit_text",
+        "scripts/first-production.py#zgocloud_preflight",
+        "scripts/production-identity.py",
+        "scripts/release_contract.py",
+        "scripts/verify-production-browser.py",
+        "scripts/verify-production.sh",
+        "tour-i18n first-production evidence-preflight",
+        "tour-i18n policy publication"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "infrastructure/DNS/Playground/current + first receipt ready to finalize",
+      "MUTATION_KIND": "INFRASTRUCTURE_ORIGIN_DNS",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#aliyun_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#aliyun_preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#bootstrap_infrastructure",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#bootstrap_infrastructure",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/first-production.py#nginx_vhost_text",
+        "scripts/first-production.py#systemd_unit_text"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "INFRASTRUCTURE_SERVICE",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#browser",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#browser",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/verify-production-browser.py"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#cloudflare_dns",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#cloudflare_dns",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "DNS",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#configure_playground",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#configure_playground",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "PLAYGROUND_VHOST_RELOAD",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#direct_origin",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#direct_origin",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/verify-production.sh"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#evidence_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#evidence_preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "tour-i18n first-production evidence-preflight"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#local_bundle_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#local_bundle_preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh#validate_local_release"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#nginx_vhost_text",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#nginx_vhost_text",
+      "CALLERS": [
+        "scripts/first-production.py",
+        "scripts/first-production.py#bootstrap_infrastructure"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#public_machine",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#public_machine",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/verify-production.sh"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#setup_cloudflare_network_tunnel",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#setup_cloudflare_network_tunnel",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NETWORK_TUNNEL",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#shared_assets_freshness",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#shared_assets_freshness",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/release_contract.py",
+        "scripts/verify-shared-assets-public.sh",
+        "tour-i18n assets export",
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#systemd_unit_text",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#systemd_unit_text",
+      "CALLERS": [
+        "scripts/first-production.py",
+        "scripts/first-production.py#bootstrap_infrastructure"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#zgocloud_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#zgocloud_preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/indexnow-closeout.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/indexnow-closeout.py",
+      "CALLERS": [
+        "doc:docs/DEFERRED_ISSUES.md:131",
+        "scripts/indexnow-closeout.sh"
+      ],
+      "CALLEES": [
+        "scripts/indexnow-closeout.py#REMOTE_PROVISION",
+        "scripts/production-identity.py",
+        "scripts/release_contract.py",
+        "scripts/release_http.py",
+        "tour-i18n indexnow bootstrap"
+      ],
+      "INPUT_AUTHORITY": "live identity + locale key in secure store",
+      "OUTPUT": "key/vhost exact location + IndexNow submission",
+      "MUTATION_KIND": "KEY_STORE_VHOST_RELOAD_SEARCH",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/indexnow-closeout.py#REMOTE_PROVISION",
+      "TYPE": "PYTHON_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/indexnow-closeout.py#REMOTE_PROVISION",
+      "CALLERS": [
+        "scripts/indexnow-closeout.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "identity data root/vhost/hostname/nginx commands + key bytes",
+      "OUTPUT": "root key + exact Nginx alias",
+      "MUTATION_KIND": "VHOST_RELOAD",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/maintenance-production-batch.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/maintenance-production-batch.py",
+      "CALLERS": [
+        "scripts/maintenance-production-batch.sh",
+        "scripts/production-release-batch.py#_maintenance_preflight"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh",
+        "scripts/maintenance-production.py",
+        "scripts/production-cdn.py"
+      ],
+      "INPUT_AUTHORITY": "ordered release dirs/live identity/per-locale receipts",
+      "OUTPUT": "rows + per-locale maintenance receipts",
+      "MUTATION_KIND": "ORIGIN_CDN",
+      "LOCALE_SCOPE": "selected-release-list",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/maintenance-production.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/maintenance-production.py",
+      "CALLERS": [
+        "scripts/maintenance-production-batch.py",
+        "scripts/maintenance-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh",
+        "scripts/production-cdn.py",
+        "scripts/production-identity.py",
+        "scripts/release_contract.py",
+        "scripts/verify-production-browser.py",
+        "scripts/verify-production.sh"
+      ],
+      "INPUT_AUTHORITY": "live identity/release basename/locale + resumable receipt",
+      "OUTPUT": "stage receipt + summary",
+      "MUTATION_KIND": "ORIGIN_CDN",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py",
+      "TYPE": "PYTHON_CLI_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py",
+      "CALLERS": [
+        "scripts/maintenance-production-batch.py",
+        "scripts/maintenance-production.py",
+        "scripts/shared-assets-production.py",
+        "scripts/verify-edgeone-authority.sh"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#CloudflareClient.purge_files",
+        "scripts/production-cdn.py#CloudflareClient.purge_hostname",
+        "scripts/production-cdn.py#_run_remote_config",
+        "scripts/production-cdn.py#coordinator",
+        "scripts/production-cdn.py#purge_edgeone",
+        "scripts/production-cdn.py#remote_main",
+        "scripts/production-cdn.py#shared_assets_coordinator",
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "CDN preflight/purge result or shared receipt update",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py preflight",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-cdn.py#coordinator"
+      ],
+      "INPUT_AUTHORITY": "formal identity + live locale",
+      "OUTPUT": "provider result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py purge",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-cdn.py#coordinator"
+      ],
+      "INPUT_AUTHORITY": "formal identity + live locale",
+      "OUTPUT": "provider result",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py purge-shared-assets",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-cdn.py#shared_assets_coordinator"
+      ],
+      "INPUT_AUTHORITY": "formal identity + shared receipt",
+      "OUTPUT": "provider result",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py shared-assets-preflight",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-cdn.py#shared_assets_coordinator"
+      ],
+      "INPUT_AUTHORITY": "formal identity + shared receipt",
+      "OUTPUT": "provider result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#_run_remote_config",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#_run_remote_config",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#coordinator",
+        "scripts/production-cdn.py#shared_assets_coordinator"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#remote_main"
+      ],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "stage result for scripts/production-cdn.py",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#CloudflareClient.purge_files",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#CloudflareClient.purge_files",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#remote_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "stage result for scripts/production-cdn.py",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#CloudflareClient.purge_hostname",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#CloudflareClient.purge_hostname",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#remote_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "stage result for scripts/production-cdn.py",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#coordinator",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#coordinator",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py preflight",
+        "scripts/production-cdn.py purge"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#_run_remote_config"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#purge_edgeone",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#purge_edgeone",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#remote_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "stage result for scripts/production-cdn.py",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#remote_main",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#remote_main",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#_run_remote_config"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#CloudflareClient.purge_files",
+        "scripts/production-cdn.py#CloudflareClient.purge_hostname",
+        "scripts/production-cdn.py#purge_edgeone"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#shared_assets_coordinator",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#shared_assets_coordinator",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py purge-shared-assets",
+        "scripts/production-cdn.py shared-assets-preflight"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#_run_remote_config"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-identity.sh",
+      "TYPE": "SHELL_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-identity.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:176",
+        "scripts/deploy-production.sh",
+        "scripts/recover-first-production-health-failure.sh",
+        "scripts/verify-shared-assets-production.sh",
+        "scripts/verify-shared-assets-public.sh"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "Python validated ordered identity fields",
+      "OUTPUT": "shell profile variables",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "eval-free mapping/exact field count",
+      "NOTES": "Shared identity reader; not a release renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py",
+      "CALLERS": [
+        "scripts/production-release-batch.sh"
+      ],
+      "CALLEES": [
+        "scripts/maintenance-production-batch.sh",
+        "scripts/production-identity.py",
+        "scripts/production-release-batch.py#_maintenance_preflight",
+        "scripts/production-release-batch.py#_validate_resume_state",
+        "scripts/production-release-batch.py#_write_state",
+        "scripts/production-release-batch.py#execute_maintenance_recovery",
+        "scripts/shared-assets-production.sh",
+        "tour-i18n assets export",
+        "tour-i18n assets validate",
+        "tour-i18n publish-batch"
+      ],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "shared export + locale bundles + state + maintenance receipts",
+      "MUTATION_KIND": "LOCAL_OUTPUT_ORIGIN_CDN",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py#_maintenance_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py#_maintenance_preflight",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "scripts/maintenance-production-batch.py"
+      ],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "stage result for scripts/production-release-batch.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py#_validate_resume_state",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py#_validate_resume_state",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "stage result for scripts/production-release-batch.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py#_write_state",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py#_write_state",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "stage result for scripts/production-release-batch.py",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py#execute_maintenance_recovery",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py#execute_maintenance_recovery",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "scripts/maintenance-production-batch.sh"
+      ],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "stage result for scripts/production-release-batch.py",
+      "MUTATION_KIND": "ORIGIN_CDN",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/recover-first-production-health-failure.sh",
+      "TYPE": "SHELL_RECOVERY",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/recover-first-production-health-failure.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:235"
+      ],
+      "CALLEES": [
+        "cmd/tour-production:verify-bundle",
+        "scripts/production-identity.sh",
+        "scripts/release_contract.py"
+      ],
+      "INPUT_AUTHORITY": "failed first receipt/exact current/empty lock/manifest/PID exe",
+      "OUTPUT": "unlock or preserved failed release and new-release instruction",
+      "MUTATION_KIND": "ORIGIN_LINK_LOCK_RECEIPT",
+      "LOCALE_SCOPE": "single-first-recovery",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-production.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-production.py",
+      "CALLERS": [
+        "scripts/shared-assets-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-shared-assets.sh",
+        "scripts/production-cdn.py",
+        "scripts/release_contract.py",
+        "scripts/verify-shared-assets-production.sh"
+      ],
+      "INPUT_AUTHORITY": "export dir + manifest-bound v1/v2 receipt",
+      "OUTPUT": "deploy/purge/verify receipt + PASS",
+      "MUTATION_KIND": "SHARED_ORIGIN_CDN",
+      "LOCALE_SCOPE": "shared-global/same-for-batch",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh",
+      "TYPE": "SHELL_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh",
+      "CALLERS": [
+        "scripts/verify-shared-assets-production.sh",
+        "scripts/verify-shared-assets-public.sh"
+      ],
+      "CALLEES": [
+        "scripts/shared-assets-public-verification.sh#shared_assets_public_http_request",
+        "scripts/shared-assets-public-verification.sh#shared_assets_setup_network_ssh",
+        "scripts/shared-assets-public-verification.sh#shared_assets_verify_boundaries",
+        "scripts/shared-assets-public-verification.sh#shared_assets_verify_public_assets"
+      ],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "public SHA results and request evidence",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh#shared_assets_public_http_request",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh#shared_assets_public_http_request",
+      "CALLERS": [
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "stage result for scripts/shared-assets-public-verification.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh#shared_assets_setup_network_ssh",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh#shared_assets_setup_network_ssh",
+      "CALLERS": [
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "stage result for scripts/shared-assets-public-verification.sh",
+      "MUTATION_KIND": "NETWORK_TUNNEL",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh#shared_assets_verify_boundaries",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh#shared_assets_verify_boundaries",
+      "CALLERS": [
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "stage result for scripts/shared-assets-public-verification.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh#shared_assets_verify_public_assets",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh#shared_assets_verify_public_assets",
+      "CALLERS": [
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "stage result for scripts/shared-assets-public-verification.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production-browser.py",
+      "TYPE": "PYTHON_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-production-browser.py",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:385",
+        "doc:docs/PRODUCTION_RUNBOOK.md:431",
+        "doc:docs/PRODUCTION_RUNBOOK.md:466",
+        "scripts/first-production.py",
+        "scripts/first-production.py#browser",
+        "scripts/maintenance-production.py"
+      ],
+      "CALLEES": [
+        "scripts/browser_acceptance.py#acceptance",
+        "scripts/production-identity.py",
+        "scripts/release_contract.py",
+        "tour-i18n preview-browser-plan"
+      ],
+      "INPUT_AUTHORITY": "public origin exact identity + locale + optional explicit SOCKS",
+      "OUTPUT": "Chrome acceptance PASS",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh",
+      "TYPE": "SHELL_WRAPPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-production.sh",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:295",
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:301",
+        "doc:docs/PRODUCTION_RUNBOOK.md:222",
+        "doc:docs/PRODUCTION_RUNBOOK.md:261",
+        "doc:docs/PRODUCTION_RUNBOOK.md:385",
+        "doc:docs/PRODUCTION_RUNBOOK.md:430",
+        "doc:docs/PRODUCTION_RUNBOOK.md:453",
+        "doc:docs/PRODUCTION_RUNBOOK.md:456",
+        "scripts/first-production.py",
+        "scripts/first-production.py#direct_origin",
+        "scripts/first-production.py#public_machine",
+        "scripts/maintenance-production.py"
+      ],
+      "CALLEES": [
+        "scripts/verify-production.py"
+      ],
+      "INPUT_AUTHORITY": "release basename/locale + current production identity",
+      "OUTPUT": "machine PASS or failure",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#public_main",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "RETIRED",
+      "CLASSIFICATION": "DEAD",
+      "SOURCE": "scripts/verify-production.sh#public_main",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Standalone helper/command removed or retired; current controlled implementation replaces it. No current release caller remains."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#verify_html_identity",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "RETIRED",
+      "CLASSIFICATION": "DEAD",
+      "SOURCE": "scripts/verify-production.sh#verify_html_identity",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "release basename/locale + current production identity",
+      "OUTPUT": "stage result for scripts/verify-production.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Standalone helper/command removed or retired; current controlled implementation replaces it. No current release caller remains."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#verify_remote_and_source",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "RETIRED",
+      "CLASSIFICATION": "DEAD",
+      "SOURCE": "scripts/verify-production.sh#verify_remote_and_source",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Standalone helper/command removed or retired; current controlled implementation replaces it. No current release caller remains."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#verify_sitemap",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "RETIRED",
+      "CLASSIFICATION": "DEAD",
+      "SOURCE": "scripts/verify-production.sh#verify_sitemap",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "release basename/locale + current production identity",
+      "OUTPUT": "stage result for scripts/verify-production.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Standalone helper/command removed or retired; current controlled implementation replaces it. No current release caller remains."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#verify_socket_boundary",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "RETIRED",
+      "CLASSIFICATION": "DEAD",
+      "SOURCE": "scripts/verify-production.sh#verify_socket_boundary",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "release basename/locale + current production identity",
+      "OUTPUT": "stage result for scripts/verify-production.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Standalone helper/command removed or retired; current controlled implementation replaces it. No current release caller remains."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-shared-assets-production.sh",
+      "TYPE": "SHELL_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-shared-assets-production.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:619",
+        "scripts/shared-assets-production.py"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.sh",
+        "scripts/shared-assets-public-verification.sh",
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "receipt export absolute path/manifest SHA/changed paths + current assets validate",
+      "OUTPUT": "changed cache + full public digest + boundary PASS",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-shared-assets-public.sh",
+      "TYPE": "SHELL_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-shared-assets-public.sh",
+      "CALLERS": [
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/release_contract.py"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.sh",
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "INPUT_AUTHORITY": "export SHA256SUMS + shared production identity",
+      "OUTPUT": "full public digest/boundary PASS",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global/first-preflight",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "manifest path/public SHA/boundary/runner",
+      "NOTES": "Standalone entry does not itself call assets validate; first-production exports+validates before call"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n assets export",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/assets.go#exportAssets",
+      "CALLERS": [
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/production-release-batch.py",
+        "scripts/release_contract.py"
+      ],
+      "CALLEES": [
+        "internal/assets/assets.go#SharedPaths"
+      ],
+      "INPUT_AUTHORITY": "internal/assets.SharedPaths + current _content bytes",
+      "OUTPUT": "exact static tree + SHA256SUMS",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "tour-i18n assets validate",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/assets.go#validateAssets",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh",
+        "scripts/deploy-shared-assets.sh#validate_local_export",
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/production-release-batch.py",
+        "scripts/production-release-batch.py#_validate_resume_state",
+        "scripts/release_contract.py",
+        "scripts/verify-shared-assets-production.sh"
+      ],
+      "CALLEES": [
+        "internal/assets/assets.go#SharedPaths"
+      ],
+      "INPUT_AUTHORITY": "same allowlist and current repository bytes",
+      "OUTPUT": "validation output",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "tour-i18n build",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/main.go#buildLocale",
+      "CALLERS": [],
+      "CALLEES": [
+        "internal/i18n/projection.go#BuildLocaleProjection",
+        "internal/site/release.go#ExportRelease"
+      ],
+      "INPUT_AUTHORITY": "Tour catalog/status/candidates/UI/Course SEO; no activated coverage",
+      "OUTPUT": "--output projection directory, or temporary go-tour-i18n-build-<locale>-*",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "tour-i18n first-production evidence-preflight",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/first_production_finalize.go#firstProductionEvidencePreflightCommand",
+      "CALLERS": [
+        "scripts/first-production.py",
+        "scripts/first-production.py#evidence_preflight"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "release locale + current Tour Surface A + placeholder + production identity",
+      "OUTPUT": "review identity JSON",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "tour-i18n first-production finalize",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/first_production_finalize.go#finalizeFirstProductionCommand",
+      "CALLERS": [],
+      "CALLEES": [
+        "cmd/tour-i18n/readme_live_locales.go",
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "passed first receipt/current review placeholder/production identity",
+      "OUTPUT": "identity live + production conclusion + README projection",
+      "MUTATION_KIND": "FORMAL_LIFECYCLE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "tour-i18n indexnow bootstrap",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/indexnow.go#indexNowBootstrapCommand",
+      "CALLERS": [
+        "scripts/indexnow-closeout.py"
+      ],
+      "CALLEES": [
+        "cmd/tour-i18n/indexnow.go#bootstrapIndexNow",
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "production live identity + public sitemap + private key",
+      "OUTPUT": "key verification + IndexNow probe/bulk submissions",
+      "MUTATION_KIND": "SEARCH_SUBMISSION",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "tour-i18n preview",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/main.go#previewCandidate",
+      "CALLERS": [],
+      "CALLEES": [
+        "cmd/tour-i18n/preview_runtime.go#newFullLocalePreviewHandler",
+        "internal/i18n/projection.go#BuildLocaleProjection",
+        "tour/main.go"
+      ],
+      "INPUT_AUTHORITY": "full locale gate + Tour projection + activated Site packages; --id is development-only",
+      "OUTPUT": "local preview server",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "tour-i18n preview-browser-plan",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/preview_browser_plan.go#previewBrowserPlanCommand",
+      "CALLERS": [
+        "scripts/verify-preview-browser.py",
+        "scripts/verify-production-browser.py"
+      ],
+      "CALLEES": [
+        "internal/site/browser_plan.go#LoadPreviewBrowserPlan"
+      ],
+      "INPUT_AUTHORITY": "current scope + locale declared activated packages + source structure",
+      "OUTPUT": "JSON browser plan; no language approval",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "structural only; runtime retains completion gates",
+      "NOTES": "Production browser does not call this plan"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n publish",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/publish.go#publishBundle",
+      "CALLERS": [
+        "tour-i18n publish-batch"
+      ],
+      "CALLEES": [
+        "cmd/tour-i18n/prerender.go#prerenderProductionPagesChrome",
+        "cmd/tour-i18n/publish.go#buildProductionBinaryGo",
+        "cmd/tour-i18n/publish.go#bundleChecksums",
+        "cmd/tour-i18n/publish.go#validateBundle",
+        "internal/i18n/projection.go#BuildLocaleProjection",
+        "internal/site/release.go#ExportRelease",
+        "internal/site/release.go#NewReleaseHandler",
+        "internal/tour/production.go#NewProductionHandler",
+        "tour-i18n release-contract check"
+      ],
+      "INPUT_AUTHORITY": "Tour projection + current source at invocation; no build input or activated coverage",
+      "OUTPUT": "release.json + bin/tour + _content + SHA256SUMS",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    },
+    {
+      "ENTRYPOINT": "tour-i18n publish-batch",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/publish_batch.go#executePublishBatch",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "tour-i18n publish"
+      ],
+      "INPUT_AUTHORITY": "ordered explicit locales; Tour readiness; clean repository HEAD",
+      "OUTPUT": "per-locale bundles + ordered summary",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "selected",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed dependency",
+      "PRODUCTION_GATE": "shared exact current release contract",
+      "NOTES": "Remediated by fixed G01–G12 table; delta/source snapshot and focused regressions govern current support."
+    }
+  ],
+  "ADDITIONS": [
+    {
+      "ENTRYPOINT": "tour-i18n release-contract check",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/release_contract.go#releaseContractCommand",
+      "CALLERS": [
+        "scripts/deploy-production.sh",
+        "scripts/release_contract.py",
+        "tour-i18n publish"
+      ],
+      "CALLEES": [
+        "internal/releasecontract/contract.go#VerifyBundle",
+        "internal/sitecontent/runtime.go#LocalCoverage"
+      ],
+      "INPUT_AUTHORITY": "current coverage/compiler/input hashes + sealed build/bundle",
+      "OUTPUT": "exact current JSON proof",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "internal/releasecontract/contract.go#VerifyBundle",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/releasecontract/contract.go#VerifyBundle",
+      "CALLERS": [
+        "cmd/tour-production/main.go",
+        "cmd/tour-production:verify-bundle",
+        "tour-i18n release-contract check"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "exact tree/checksums/content/manifest/compiled consumer",
+      "OUTPUT": "verified bundle identity",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "internal/sitecontent/release_content.go#LocalCoverageFiles",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/sitecontent/release_content.go#LocalCoverageFiles",
+      "CALLERS": [
+        "internal/site/release.go#ExportRelease"
+      ],
+      "CALLEES": [
+        "internal/sitecontent/runtime.go#LocalCoverage"
+      ],
+      "INPUT_AUTHORITY": "existing LocalCoverage + full package closure validation",
+      "OUTPUT": "current completed authority and reconstructed payload",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "internal/site/release.go#ExportRelease",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/release.go#ExportRelease",
+      "CALLERS": [
+        "tour-i18n build",
+        "tour-i18n publish"
+      ],
+      "CALLEES": [
+        "internal/site/release_resources.go#DeliveryResources",
+        "internal/sitecontent/release_content.go#LocalCoverageFiles"
+      ],
+      "INPUT_AUTHORITY": "current completed coverage/source, frozen toys/assets",
+      "OUTPUT": "sealed content/files/plan",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "internal/site/release.go#NewReleaseHandler",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/release.go#NewReleaseHandler",
+      "CALLERS": [
+        "cmd/tour-production/main.go",
+        "tour-i18n publish"
+      ],
+      "CALLEES": [
+        "internal/tour/release.go#CheckReleaseCanonicalOrigin"
+      ],
+      "INPUT_AUTHORITY": "sealed content/hash-bound plan/Tour component",
+      "OUTPUT": "Site runtime/canonical/sitemap/true404/identity",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "internal/site/release_resources.go#DeliveryResources",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/release_resources.go#DeliveryResources",
+      "CALLERS": [
+        "internal/site/release.go#ExportRelease",
+        "internal/site/render.go#Compose"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current logical static policy + rendered bytes",
+      "OUTPUT": "local Preview or shared Production resource URLs",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "internal/tour/release.go#CheckReleaseCanonicalOrigin",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tour/release.go#CheckReleaseCanonicalOrigin",
+      "CALLERS": [
+        "internal/site/release.go#NewReleaseHandler"
+      ],
+      "CALLEES": [
+        "internal/tour/seo.go#productionOriginForLocale"
+      ],
+      "INPUT_AUTHORITY": "sealed production target + frozen canonical renderer",
+      "OUTPUT": "exact target agreement",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "scripts/release_contract.py",
+      "TYPE": "PYTHON_ADAPTER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/release_contract.py",
+      "CALLERS": [
+        "scripts/deploy-production.sh",
+        "scripts/first-production.py",
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/indexnow-closeout.py",
+        "scripts/maintenance-production.py",
+        "scripts/recover-first-production-health-failure.sh",
+        "scripts/shared-assets-production.py",
+        "scripts/verify-production-browser.py",
+        "scripts/verify-production.py"
+      ],
+      "CALLEES": [
+        "scripts/verify-shared-assets-public.sh",
+        "tour-i18n assets export",
+        "tour-i18n assets validate",
+        "tour-i18n release-contract check"
+      ],
+      "INPUT_AUTHORITY": "same Go current proof/production identity",
+      "OUTPUT": "export/origin/public shared proof + exact predecessor",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "scripts/release_http.py",
+      "TYPE": "PYTHON_VERIFIER_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/release_http.py",
+      "CALLERS": [
+        "scripts/indexnow-closeout.py",
+        "scripts/verify-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "sealed current routes/identities/asset policy/browser plan",
+      "OUTPUT": "one origin/public/direct HTTP contract",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.py",
+      "TYPE": "PYTHON_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-production.py",
+      "CALLERS": [
+        "scripts/verify-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/release_contract.py",
+        "scripts/release_http.py"
+      ],
+      "INPUT_AUTHORITY": "current sealed input + profile + shared dependency",
+      "OUTPUT": "current origin/PID/HTTP/public acceptance",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-production:verify-bundle",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-production/main.go#run",
+      "CALLERS": [
+        "scripts/deploy-production.sh",
+        "scripts/recover-first-production-health-failure.sh"
+      ],
+      "CALLEES": [
+        "internal/releasecontract/contract.go#VerifyBundle"
+      ],
+      "INPUT_AUTHORITY": "same current deployed bundle + compiled locale",
+      "OUTPUT": "exact machine JSON proof; no server",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single/global",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "current sealed exact inventory/dependency",
+      "PRODUCTION_GATE": "fail closed on stale/unbound/unknown state",
+      "NOTES": "Known remediation delta entrypoint; not discovered through a repository scan."
+    }
+  ],
+  "EFFECTIVE_COUNT": 161,
+  "RETIRED_ENTRYPOINTS": [
+    "runbook:nginx -t && service nginx reload",
+    "runbook:systemctl daemon-reload",
+    "runbook:systemctl restart <profile-service>",
+    "scripts/verify-production.sh#public_main",
+    "scripts/verify-production.sh#verify_html_identity",
+    "scripts/verify-production.sh#verify_remote_and_source",
+    "scripts/verify-production.sh#verify_sitemap",
+    "scripts/verify-production.sh#verify_socket_boundary"
+  ],
+  "LEGACY_REFERENCED_ENTRYPOINTS": [],
+  "SOURCE_SHA256": {
+    "cmd/tour-i18n/assets.go": "f99f583bd9ca31cee6f7ba427ec1dbe9fb4974da010a906973d0abd3e80e8a09",
+    "cmd/tour-i18n/assets_test.go": "aca256cc4340ac2d671f5fe115a8eae9528534f7f8c307fe83aadcd499d6a99e",
+    "cmd/tour-i18n/first_production_finalize.go": "07b26a1bbab713db0b0ec6a415192dba51a2a556731aa92071b350fe82973ce7",
+    "cmd/tour-i18n/indexnow.go": "d7e3a5b176226efd5313b3a315a1c64c639f3dd142549f9e1d71552ce9107b67",
+    "cmd/tour-i18n/indexnow_test.go": "8e1d272606ec68fd9bf14e04a80f01e52ae5198dbdd394bb378036651c0acd36",
+    "cmd/tour-i18n/main.go": "18f6aca517540591db10555328534fc33e6fe844edb60e5daf7c868c819cae6d",
+    "cmd/tour-i18n/publish.go": "8f2d0548ee4dbbd4c17ccb75b99c252f5d0453e17b5be3fbfe3a4c873d41c470",
+    "cmd/tour-i18n/publish_test.go": "ac2bc2a3c13ee784650c3f73284cbf3e3f6c0bc1c0498a8896fe122361a39e37",
+    "cmd/tour-i18n/release_contract.go": "495e2fead6bcbd70fa334a13547f62c2692569d2b35d8e0326baf2f83a94ad87",
+    "cmd/tour-i18n/release_path_audit_test.go": "747280c83688df81e4abd4b9409187aade11bb9163a5e6b43b323dbe46e40c3d",
+    "cmd/tour-production/main.go": "74c870f88c1a8220354c4fac7a7173da960351ae7e0d932451ed8b86e80e6dc8",
+    "internal/assets/assets.go": "b0e34dac077843b12f0637dcbc1be0c5db1aef2cf893a89eefb1521a8992d93f",
+    "internal/assets/assets_test.go": "11b10fcf43078e74ea1c4a5321afa9cf4008eb29f2f6b94818ce158337116f04",
+    "internal/releasecontract/contract.go": "e55c07b0e2f233e65aa9fc3d6cdba3f069c46efd7ac22517bab62de423dd1544",
+    "internal/releasecontract/contract_test.go": "9d450a877a7b738234551a36b04517b5a2ca8adb27cb91af91cfe8e7c1c0b09b",
+    "internal/site/content.go": "56a75d6b54d1e6f172483e52ea5def8d6505077535104b1be14c7f2c1550973a",
+    "internal/site/render.go": "6e044edf5de0b2383c933bb53ed452abf8b82aaf0a1c023fcbc9cf39833c9970",
+    "internal/site/browser_plan.go": "6d3ea1de28633de532d36e241142b29e8cdc9ce4b5f8e0979bce579e2da92292",
+    "internal/site/release.go": "5df5bd1cc56b784a4577f57864f36051e47506954243554e6472614ad813e018",
+    "internal/site/release_resources.go": "32c6f6732efa4662c4227f74e28266e18eb0af843633a2a2f167b2685654aaa4",
+    "internal/site/release_resources_test.go": "5ce6a426cb91f2fd2ca085f8b289f99f4fd3fe8a3a71ecae2430b5b028f399c1",
+    "internal/sitecontent/release_content.go": "e3cffc3eecbe9a038bab688b77d16023ba8f069d930bc77665795d085d63c7f9",
+    "internal/tour/release.go": "859be524c78eaac69788d92d66b5690dba8fd675b24379b0d09dce97f982ef31",
+    "scripts/browser_acceptance.py": "c1aae57743346294766d2e72087cd289f5b811feb8092535b5649fb3fcb18c93",
+    "scripts/deploy-production.sh": "cc4ed79546250168ae446f028d2ab05a0f82f79d14665af697bf4a0d5014322a",
+    "scripts/deploy-shared-assets.sh": "a70f4b62e68ff1fb88e2e98894a2de4aa260d2618c613f5236c8096fd5360a3d",
+    "scripts/first-production.py": "841f38f65e96cea5d538a1d865dd6af1568de1666a893608946cb4f6c9a671c6",
+    "scripts/indexnow-closeout.py": "d804b24a8fcb975cef9c32d8bfbfed44c81964dc7500a9f21d664f56c81817ad",
+    "scripts/maintenance-production.py": "93d023a9e3b57603fab8c7d99f5efb70a577f020ee3c2109ac4b41a3f6f77a4a",
+    "scripts/maintenance-production-batch.py": "cd9632cec80d4a0b7db3aeadbc5f2f1c82352d988ad3630678c3f0f80db28831",
+    "scripts/production-cdn.py": "b14e1311356f950f8b6fd2efd4a160db7fd9c3d9cef3556866f759e5c84f45a4",
+    "scripts/production-cdn-test.py": "45eab96dfd466fd57cffd2ec58567a442432ded28c02fa02b00cfeab2d521017",
+    "scripts/production-release-batch.py": "621175f085ec6b667e2fe59a9fe75903e0172aeac4d08cca251811bfad0527ad",
+    "scripts/recover-first-production-health-failure.sh": "893b86bde35ac18f804caf3edb874af56bf0a32831a0da0dbb4e75d22fc18e1a",
+    "scripts/shared-assets-production.py": "59856196ceba800f051f354f8e180eeb8689c5c67f5417acb7fe02a318924fe2",
+    "scripts/shared-assets-public-verification.sh": "b155a32622ecd05c3e4f8cc9dd1f7907ccf465d42712ebbe10c0e75fad242df0",
+    "scripts/verify-production.sh": "9a92d7fc7cb862e76ab59ef774efab77d98ac669b79f314683ab6b148ebf07d6",
+    "scripts/verify-production.py": "cb9580d50e155ae4f796ffa0a09c487ca6f7999a5563bea65849b4fd272b1f83",
+    "scripts/verify-production-browser.py": "0e7928d7364c9c2ba0353aeb5ebcbd968bc4175182d2d3c9f84c3f67cfd5ce10",
+    "scripts/verify-shared-assets-production.sh": "a0ec84b84f285088ef616c201bc622f50b2eeda48c189bbd6398f882d1ddc960",
+    "scripts/release_contract.py": "fc67d5bca6bf6dacff9e54c770c6f6d3dd0ef7c13ab9ecc91685de58c86ec626",
+    "scripts/release_http.py": "2479d9ea9573544a49b11d0c2eb0db6909f361722bc6fbf725ab15565eea8cef",
+    "scripts/release-path-audit-test.py": "fd0443e0bdd13e15f9194342d3671d20e5746f72e02e2d91335da7cb771cba4c",
+    "docs/PRODUCTION_RUNBOOK.md": "3d9ead13e20d1ab806922f18cb3d52d2de25741b4a9136d2c7cd0f5afb07db01",
+    "docs/NEW_LOCALE_RUNBOOK.md": "edc08baee3734ccde250fb5a5127956d37f765185e233f816c311f53c454e4c3",
+    "docs/SITE_V2_WORKFLOW.md": "294a08de737c2b2675b9f20d916cdad2f3781ccab4f1f7b842c7eb9f34efb3dc"
+  },
+  "FORMAL_SOURCE_SHA256": {
+    "_content/index.md": "7765e289fc5abccf8b786fa408c9d60078e2c27168e66778d060590e3c6ba986",
+    "_content/js/index.js": "dfa00811f22d6ed979c8e9559415b9e5846263b1d9ce17ffb03a76b8a21e0ecc",
+    "_content/site.tmpl": "88d7b52a319081fa9bf5a93143f152d83fc1f22465a39c5f553ff99c86ad754c",
+    "data/site-content-scope.json": "08344fc0332d8d5cc05df76f5a5a293e82a72afaeab51d128c24643d1262a085",
+    "internal/site/shell_render.go": "445b25022f68aeec8858bea47f526100d384a1c302ee9b915fd05e9b717362be",
+    "internal/tour/production.go": "04eeecf58d42a55e515067396a25be9b43654232e45df4cc14d97949a2213f50",
+    "internal/tour/seo.go": "dc09d40a9c4a0d3aa9f9699b85a684feb104cb3642b71bca1f08750220397a64",
+    "locales/zh-CN/content-scope.json": "f6ed27536bcf171fea171cccf29810e3846e949dfccd5f1c76e2e19c6102d290",
+    "production/identity.json": "cb0897e4a37c4fe10999f2e905a7fb4e89e2ff26ee2fd84d51d5ad720eac392c",
+    "scripts/verify-preview-browser.py": "5b65e9da25e5cf7141dd8fee37e0503f0be0e1e098d98c339bb678ef7e548c7b"
+  },
+  "FORMAL_ARTIFACT_MUTATION": "none",
+  "NOTES": "Baseline remains immutable FAILED evidence; overlay applied only to affected/known appended entrypoints. Bare service commands retired as independent release paths; underlying controlled helper operations remain current."
+}

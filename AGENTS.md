@@ -1,10 +1,20 @@
+# Call-Zero-First（强制 gate）
+
+RDC / repository remote calls 默认 **0** 是成本/风险默认值，不是 zero-call KPI，不机械追求 0。先复用 current conversation / Bundle / terminal evidence；Coordinator / engineering 若一次 targeted readonly RDC 能明显减少维护者手工 discovery、重复粘贴或多轮只读命令，应优先采用。安全推进所缺 exact machine fact、真实 FAILED / unexpected / mutation=unknown diagnosis、当前 conversation 未包含的 canonical docs / exact command contract、避免手工纯读取 discovery 或维护者明确要求，均可按[Call-Zero-First 交接合同](docs/WORKFLOW_HANDOFF.md#call-zero-first-交接合同)执行一次合并 readonly RDC，优先读所需 docs + implementation/tests；第二 call 仅限第一 call 新暴露的具体 blocker。deterministic workflow / lifecycle mutation 默认仍交 Maintainer Local terminal，repository engineering writes 交获授权的本地 Codex；readonly 不授权 remote mutation。完整 current Bundle 的 Generation / Reviewer semantic RDC calls = 0；合法 FINAL PASS 直接消费，除矛盾、缺项或相关 mutation 外禁止 remote 重验，禁止重扫完整 Bundle 或重复确认已知事实。所有 correctness、currentness、exact-set、provenance、machine validation、Independent QC、A-only、Surface、Production 与 HUMAN gate 保持不变。
+
 # Codex 项目导航
 
+全项目共享翻译单元生命周期、五角色协作、中文优先、唯一下一步、恢复/复用优先与工具成本边界，以 [共享翻译单元生命周期与五角色协作](docs/SHARED_TRANSLATION_UNIT_LIFECYCLE.md) 为准。不要因 surface 或 package 目录不同复制状态机；Learn/Docs 先两批生成与机器校验，再两批初审，之后集中修订。
+
 正式阶段完成、失败、跨会话 ZIP 或维护者 Local terminal 交接时，统一遵守 [正式阶段交接合同](docs/WORKFLOW_HANDOFF.md)；AGENTS.md 只保留此导航，不复制详细合同。
+
+**New/modified formal CLI first-real-use gate：**新增 command/subcommand/mutation mode，或修改 input/path/flag、stdout、currentness、idempotence、CAS/recovery contract 后，旧 verification 失效。第一次真实使用/交接前必须在实现完成后按顺序读取 current canonical command docs、implementation、direct CLI parsing/contract tests；三者一致并填完 [Formal Command Contract v3](docs/WORKFLOW_HANDOFF.md#formal-command-contract-v3) 交接字段，才能输出真实 mutation command。命令名和其他 CLI 已完成的 hardening 不能替代此 gate；contract drift/未知信息先 readonly discovery，fail closed。普通不影响 command contract 的 bugfix 不机械重触发。
 
 Locale 采用版本无关的持续演进模型：v1/v2/v3 是 implementation/content-package milestone，不是语言治理 namespace；统一 corpus、glossary、shared assets 与增量 Surface authority 见 [Site v2 Workflow](docs/SITE_V2_WORKFLOW.md)。
 
 Site v2 architecture、Content Scope、增量 content package、coverage-aware routing、glossary compatibility 与 upstream 扩展以 [Site v2 Architecture authority](docs/SITE_V2_ARCHITECTURE.md) 为入口；V2-D executable contract 见 [Site v2 Workflow](docs/SITE_V2_WORKFLOW.md)。Production machine identity 与内容完成状态分离。V2-C1 upstream sync 当前 deferred，只有维护者明确重开才执行；此前允许按正式 frozen baseline 完成 campaign / Preview / Production，不增加联网 drift gate。Site v2 coding 模型选择不改变下述正式 Translation / Reviewer 政策。
+
+已有真实 structured Generation 因 execution authority 或 validator 演进遇到 stale Bundle 时，先按 [Structured carry-forward](docs/SITE_V2_WORKFLOW.md#structured-generation-stale-bundle-carry-forward)进行只读 preflight。保留原 Bundle/output bytes 与 provider/model/session/generated_at；语义输入 exact 且当前 validation PASS 才由维护者 Local terminal 执行 `site-content structured-recover --apply`，复用既有 StructuredGeneration/closure/Surface readers。不手改 output identity、不伪造新 invocation、不把任意 docs drift 当兼容。structured language-semantic authority 见[正式语义 contract](docs/STRUCTURED_GENERATION_SEMANTICS.md)。
 
 当用户要求评估 locale 商业优先级或选择下一门语言时，Codex 必须先读取 `docs/LOCALE_ROADMAP.md`。用户未明确指定 locale 的新增任务也先按该路线图选择；单门 locale 的正式执行仍以 `docs/NEW_LOCALE_RUNBOOK.md` 为准。
 
@@ -34,7 +44,7 @@ manifest、全部 inputs 与 locale glossary 是不可拆分的正式翻译输�
 
 ## 执行职责与正式自动化
 
-每个 locale 固定保持三个不得混用的职责角色：**Generation role/session**、与之独立的 **Reviewer role/session**，以及维护者 **Local terminal**。在该 locale 开始正式 generation 前，根据当时真实的 ChatGPT 可用额度、Codex 5 小时额度与周额度、Remote Desktop Commander 月额度、历史实测成本和并发计划，选择 `chatgpt` 或 `codex` 作为 Generation provider。ChatGPT Generation 与新启动的 Codex Generation 默认均使用 **GPT-5.6 Sol + High**，Codex 正式 provenance 为 `gpt-5.6-sol-high`。已开始的 Generation 沿用已选模型；获批的 `mr-IN` Luna 批次边界切换保留为历史授权，不要求正在执行的 Luna batch 改用 Sol。generation 一旦开始，原则上 glossary、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / retry generation、schema v2 Course SEO localization / refresh / revise replacement，以及 Locale Surface Review finding replacement 全程沿用同一 provider 与已选模型。只有获得维护者明确批准、到达安全批次边界且有额度或 provider/tool 的真实依据时才可切换模型；必须保留真实 provenance，不新增虚假 generation 记录，不弱化任何 gate。当前 `mr-IN` 的批次边界切换授权见 [Codex 正式语言生成执行规范](docs/CODEX_TRANSLATION.md)。provider/model selection 不新增 schema、receipt、machine gate 或 locale state 字段。
+每个 locale 固定保持五个不得混用的职责角色：会话协调 / 基础设施架构、**Generation role/session**、独立 **Reviewer role/session**、Codex 仓库工程，以及维护者 **Local terminal**。在该 locale 开始正式 generation 前，根据当时真实的 ChatGPT 可用额度、Codex 5 小时额度与周额度、Remote Desktop Commander 月额度、历史实测成本和并发计划，选择 `chatgpt` 或 `codex` 作为 Generation provider。ChatGPT Generation 与新启动的 Codex Generation 默认均使用 **GPT-5.6 Sol + High**，Codex 正式 provenance 为 `gpt-5.6-sol-high`。已开始的 Generation 沿用已选模型；获批的 `mr-IN` Luna 批次边界切换保留为历史授权，不要求正在执行的 Luna batch 改用 Sol。generation 一旦开始，原则上 glossary、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / retry generation、schema v2 Course SEO localization / refresh / revise replacement，以及 Locale Surface Review finding replacement 全程沿用同一 provider 与已选模型。只有获得维护者明确批准、到达安全批次边界且有额度或 provider/tool 的真实依据时才可切换模型；必须保留真实 provenance，不新增虚假 generation 记录，不弱化任何 gate。当前 `mr-IN` 的批次边界切换授权见 [Codex 正式语言生成执行规范](docs/CODEX_TRANSLATION.md)。provider/model selection 不新增 schema、receipt、machine gate 或 locale state 字段。
 
 Reviewer role 继续固定使用独立的普通 ChatGPT **GPT-5.6 Sol + High** session，负责 Glossary Review、逐 Unit Quality Check、revision 后 re-QC 与 Locale Surface Review。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担这些正式审核；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement，Reviewer session 不得自行生成 replacement 后批准。Glossary Review 以 [Glossary Review 规范](docs/GLOSSARY_REVIEW.md) 为准；provider 为 `chatgpt` 时以 [ChatGPT 正式语言生成执行规范](docs/CHATGPT_LANGUAGE_GENERATION.md) 为准，provider 为 `codex` 时以 [Codex 正式语言生成执行规范](docs/CODEX_TRANSLATION.md) 为准。canonical English source-description review 是跨 locale 共享 authority，不默认归入单个 locale 的 Reviewer session，仍以 [课程页正式 SEO Metadata 规范](docs/COURSE_SEO_METADATA.md) 为准。
 
@@ -42,11 +52,11 @@ Reviewer role 继续固定使用独立的普通 ChatGPT **GPT-5.6 Sol + High** s
 
 首次大批量 TranslationUnit Generation 仍由维护者 Local terminal 导出 current provider-neutral Generation Bundle ZIP 并交给 Generation session；模型在按 locale + batch 隔离的隐藏 staging 保存完整 TranslationUnit。具备相同本地文件访问能力时，默认用 `generation-bundle import --input-dir` 直接导入，不制作或下载 outputs ZIP。只有确需跨环境传输、目录不可访问或恢复时，才使用 outputs ZIP → `result-pack` → `import` 兼容路径。Generation ZIP 仍只是首次完整输入的 transport container；独立 Reviewer ZIP 继续由维护者上传。任何路径都不替代 validation、独立 QC、finalization 或其他 gate，也不代表已有双向自动附件传输。
 
-新增 locale 的唯一默认调度顺序以 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md#新增-locale-默认调度路径效率优先) 为准；各阶段文档中仍合法的中途 revision、retry 与 stale recovery 是兼容恢复路径，不反向改写历史 evidence，也不取代该默认路径。普通 ChatGPT + Remote Desktop Commander 可直接访问仓库/终端时，结果默认从本地隐藏 staging 目录导入；若确需下载 Reviewer ZIP 或兼容 Result ZIP，仍按产品需要由维护者完成跨 ChatGPT / Ubuntu 或跨 session 的附件传递，不得声称已有无人工双向传输通道。
+新增 locale 的唯一默认调度顺序以 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md#新增-locale-默认调度路径效率优先) 为准；各阶段文档中仍合法的中途 revision、retry 与 stale recovery 是兼容恢复路径，不反向改写历史 evidence，也不取代该默认路径。维护者 Local terminal 可访问输出目录时，默认从隐藏 staging 目录导入；若确需下载 Reviewer ZIP 或兼容 Result ZIP，仍按产品需要由维护者完成跨 ChatGPT / Ubuntu 或跨 session 的附件传递，不得声称已有无人工双向传输通道。
 
-Generation / Reviewer 闭环内部的短时 deterministic 操作默认由具备当前仓库与终端访问能力的 AI execution environment 自动连续完成，不逐步回交维护者。这包括 reviewer finding 后的小批 revision export / bundle / result landing / import / process / validation / Snapshot / scope、审核结果的 current-check / record / finalize、locale-level replacement 落盘、Surface Reviewer bundle / record-a，以及 Course SEO generation 结果落盘与正式 `assemble` / `refresh` / `revise`。自动执行只承担机械操作，不改变 Generation 与 Reviewer 的会话隔离，不替代人工语言判断，也不得跳过 current-check、exact-set、A-only、provenance、schema 或任何现有 gate；缺少终端能力、需要新的用户 handoff 或出现真实 failure / mutation-unknown 时才停下并交回维护者。
+Generation / Reviewer 闭环内外的 deterministic repository / shell workflow 默认均由维护者 Local terminal 执行，与预计耗时无关。这包括 export / bundle / result landing / import / process / validation / Snapshot / scope、Reviewer evidence save/check、current-check / record / finalize / authorization、locale-level replacement 落盘、Surface Reviewer bundle / record-a、package closure / activation，以及 Course SEO 结果落盘与正式 `assemble` / `refresh` / `revise`。AI 基于已确认的 authority、current Bundle 与 terminal evidence 提供完整可复制命令并消费终态；缺 CLI/schema/machine fact 或 canonical command contract 时，若一次合并 readonly RDC 能明显降低手工 discovery 总成本，则按文件顶部 gate 优先采用；不可用或无明显收益时再提供合并 Local terminal discovery command。正常 workflow 不因“短”而 remote 代跑，readonly discovery 也不授权 mutation。Generation / Reviewer 会话隔离与所有现有 gate 保持不变。
 
-闭环结束后的成组 deterministic 操作由维护者 Local terminal 执行，包括 locale init、首次 bulk export / ZIP handoff、promotion、build、preview / browser verifier、publish、shared assets、Production / deploy / verifier、checksum / curl、search closeout，以及最终 Git commit / push。当前 docs/code/production identity 已确认的 machine fact 应直接复用；没有新的 failure evidence 时，不重新探测服务器、不重新设计 Production、广告、IndexNow、shared assets 或 verifier。只有真实 evidence 显示基线变化时，才重新调查并更新正式 docs，避免为了“再确认一次”消耗 Codex reasoning quota。
+locale init、首次 bulk export / ZIP handoff、promotion、build、preview / browser verifier、publish、shared assets、Production / deploy / verifier、checksum / curl、search closeout 与最终 Git commit / push 同样默认由维护者 Local terminal 执行。当前 docs/code/production identity 已确认的 machine fact 应直接复用；用户返回 identity / SHA / counts / stop point 合法的 FINAL PASS 后直接继续，不 remote 重验。只有矛盾、缺项、相关 mutation 或真实 failure evidence 才调查具体未知事实，不重新设计已确认的 Production、广告、IndexNow、shared assets 或 verifier。
 
 ### 测试额度与执行边界（fail-closed）
 
@@ -63,9 +73,20 @@ targeted tests 已足以证明当前改动正确时，不得为了“更保险�
 
 额度优化不得降低正式质量门槛：ChatGPT Generation 与 Codex 新启动的正式 Generation 默认均使用 GPT-5.6 Sol + High（Codex 正式 provenance：`gpt-5.6-sol-high`）；QC 仍为 A-only，revision、validation、Production machine gate 与 HUMAN gate 均不得削弱。应节省的是不必要的 reasoning、重复检查、全面测试和机械执行。ChatGPT 与 Codex Generation 使用同一 provider-neutral deterministic Generation Bundle contract；独立 ChatGPT Reviewer 继续使用 GPT-5.6 Sol + High，并优先使用 Glossary、Quality Check 与 Locale Surface Review 的 deterministic Reviewer Bundle。bundle 只是绑定 current authority/input identity 的传输容器，不是 semantic authority、receipt 或语言质量 gate；当前性检查、result import、existing process/validation/record/finalize 等具体顺序以对应 stage 文档为准。附件完整且 current 时不再通过 Remote Desktop Commander 重复扫描同一批仓库输入。
 
-Remote Desktop Commander 是 ChatGPT 执行上述闭环内短机械操作和 failure diagnosis 的正式辅助工具，但不接管闭环后的维护者批量操作。`preview` + browser verifier、`publish`、`shared-assets-production.sh`、`first-production.sh`、`indexnow-closeout.sh` 等可能持续数十秒到数分钟的成组 deterministic 任务，由维护者本地执行；普通 ChatGPT + Remote Desktop Commander 只提供完整可粘贴命令并读取终态，不通过反复 `read_process_output` 轮询，也不自行执行 Production 或最终 Git commit / push。此协作边界不得跳过任何脚本内部 gate、receipt、bounded retry 或 HUMAN gate。
+Remote Desktop Commander 按 Call-Zero-First 成本/风险规则使用，不机械追求 0，也不因可用就调用。普通 workflow step 最多一个合并 readonly call 采集必要 docs + implementation/tests 与 exact facts；第二 call 只有第一 call 新暴露具体、阻塞安全推进的未知 fact 时才允许。不得用 `start_process` + `read_process_output` 轮询可交 Local terminal 的任务。实际使用 remote call 的 handoff 必须报告 `REMOTE_CALLS_USED=<n>` 与 `REMOTE_CALL_REASON=<missing-machine-fact|failure-diagnosis|canonical-doc-read|maintainer-request>`；0 call 时不增加这些字段。readonly diagnosis 不授权 write / Git mutation / activation / import / record / finalization / Production 或其他 lifecycle mutation，此边界不省略任何脚本内部 gate、receipt、bounded retry 或 HUMAN gate。
 
 新增正式 CLI、validator、manifest/lifecycle logic 或可复用 machine workflow 时，优先使用 Go，并优先集成现有 `cmd/tour-i18n`。Shell/Python 主要用于薄的 OS、SSH、browser 或已有成熟 orchestration；已有稳定 sh/python 不因“统一语言”重写。不得用临时 Python/sed 代替需要 repository context 的正式实现。
+
+### 性能优化的性价比原则
+
+性能优化以工程性价比为准，不追求最低可能执行时间。对于低频 deterministic workflow：
+
+- 优先修复明显、高收益的重复计算和算法瓶颈，优先采用简单的 invocation-local reuse；谨慎引入 persistent cache、复杂 memoization、LRU、cache isolation 或大规模 architecture refactor。
+- 不得为了性能降低 correctness、freshness、stale detection、identity、hash validation、dependency mutation detection 或 fail-closed 保证。
+- 执行时间达到实际可接受范围后，进一步优化属于可选项。原本约 5～10 分钟的低频 workflow，若已降低到约 1～2 分钟或其它实际可接受范围，通常可以停止继续优化。
+- 如果继续节省少量时间需要明显增加实现复杂度、验证成本、维护负担或 correctness 风险，应停止；不得仅为了给低频命令再节省几十秒，就引入明显复杂的缓存架构。
+
+性能任务的默认完成标准是 `REMAINING_HIGH_VALUE_OPTIMIZATION=none`，而不是 `REMAINING_DUPLICATE_WORK=none`。允许保留低收益重复计算，只要 correctness 不受影响，并且继续修复不具有合理工程性价比。
 
 ## 维护协作输出
 

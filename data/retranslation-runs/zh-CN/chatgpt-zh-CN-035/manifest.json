@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-035",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 5,
+  "units": [
+    {
+      "unit_id": "2a2116ee48edd06f9ddac08c7b54b05422d8a34dbae7387166ea1f9de4686bf0",
+      "unit_kind": "page",
+      "source_path": "_content/doc/modules/managing-dependencies.md",
+      "source_sha256": "0d0ba363e0214a23116f0d4e6e016968a31412674970839d0caa7957e17b1ee7",
+      "input_path": "inputs/2a2116ee48edd06f9ddac08c7b54b05422d8a34dbae7387166ea1f9de4686bf0.article",
+      "input_sha256": "303d8702a2a5e80df3c3e2b1d0ba9b13c39958fcf4a8b5912962a8b6d5518c92",
+      "protected_token_count": 635,
+      "previous_snapshot_id": "learn-docs-v1-qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "核心依赖项管理操作、go get、replace、go mod tidy 等说明整体正确。仍存在“在 pkg.go.dev 上搜索后将包导入代码”的流程关系表达不够精确的问题，容易混淆 Go 的 import 声明与命令行获取依赖项。另有“fork、克隆或同时进行两者（and/or）”等生硬表达，以及个别术语与代码边界缺少空格。精确修订要求：区分查找包、在代码中导入包、通过 Go 工具解析和获取模块的不同操作；修复局部中文表达，同时保留 require、replace、GOPROXY 等技术语义。"
+    },
+    {
+      "unit_id": "8a428c4d4268d85836f07a17aaccc3f02f3de97c23f92e6c49984432465c3e9a",
+      "unit_kind": "page",
+      "source_path": "_content/doc/modules/release-workflow.md",
+      "source_sha256": "27cf24c2eb872b60acadfd57f3a39fffdd3bb01ef35880cb640a6724864b6b6d",
+      "input_path": "inputs/8a428c4d4268d85836f07a17aaccc3f02f3de97c23f92e6c49984432465c3e9a.article",
+      "input_sha256": "f3edb815083895dda492231576b3706e0b363832b123131e109237d21d45318a",
+      "protected_token_count": 332,
+      "previous_snapshot_id": "learn-docs-v1-qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "主要发布流程及版本号关系正确，但存在多个具体表达问题：预发布版本的链接写成“模块版本编号[。]”，使标点成为链接标签；“v.0.0.0”版本号拼写不符合预期；“公共 API--（包括函数和方法签名）--”与“主版本号--，例如……”等表达中 dash 与中文标点结合不自然。精确修订要求：恢复版本号说明和链接标签的正常语义，检查 v0.0.0 的文字表示，修复破损的标点组合，保持所有正式代码和版本语义不变。"
+    },
+    {
+      "unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/fips140.md",
+      "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "input_path": "inputs/3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c.article",
+      "input_sha256": "8eb49d799c36782e3b26c4de8329919bc7c9f2d570077f4a1fa26db904cfed27",
+      "protected_token_count": 264,
+      "previous_snapshot_id": "learn-docs-v1-qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "FIPS 模式、GOFIPS140、GODEBUG、密码模块版本与认证关系整体正确。但“美国（U.S）政府”“NOTE：”仍有不自然的本地化表达。有关 GOFIPS140 的 inprocess、certified 以及 CMVP 验证状态的说明需要保持严格一致。精确修订要求：清理不自然的语言表达，并再次核对模式选择、模块验证状态与证书相关术语。不应擅自更新 frozen source 中的时间性事实。"
+    },
+    {
+      "unit_id": "126f2e430e4ad62ded97b90668a9621eb8f9b1b9bd9d316643afd1211cc6a9e6",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/policy.md",
+      "source_sha256": "a5b5e3a901c57743ad9f6da63e0f73668273b1ca17cacd865e7becc32bc69d28",
+      "input_path": "inputs/126f2e430e4ad62ded97b90668a9621eb8f9b1b9bd9d316643afd1211cc6a9e6.article",
+      "input_sha256": "eb8b9fac972ca7971d2d3026562ab7da7aeb2afb233b28a8af70550cbff8f5e0",
+      "protected_token_count": 284,
+      "previous_snapshot_id": "learn-docs-v1-qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "多处涉及正式安全披露流程的表达不符合发布质量。PRIVATE 轨道段落出现“[次版本发布]中修复，”强调与链接绑定不自然；披露流程中“为最新的两个主要版本以及 head/master 修订版准备修复。同时为最新的两个主要版本准备修复并合并到 head/master”具有明显的语义重复与步骤关系混乱；PUBLIC / PRIVATE / URGENT 的英文分类应保持源语义与适用条件，不能因为语言调整改变安全披露责任；and/or、CVSS 与严重性标签说明存在局部语序问题。精确修订要求：对照 source 逐条恢复安全披露、修复及回移植流程，尤其是 PRIVATE 修复时机与安全公告规则。保留分类 identity、原有链接及引用。"
+    },
+    {
+      "unit_id": "aa80c16e03ba1b5a11c8f81678c8d3bdf7e4b27e6ef81663565acbfbfdd2251c",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/vuln/index.md",
+      "source_sha256": "67c5adf783fd88accf098042728568e8c9ad3e2a04fb390ba147678a38a2a823",
+      "input_path": "inputs/aa80c16e03ba1b5a11c8f81678c8d3bdf7e4b27e6ef81663565acbfbfdd2251c.article",
+      "input_sha256": "91fd614e1b7f845b148ff3349050365a0e05e42b428e7cfa1d60594f93e1907a",
+      "protected_token_count": 238,
+      "previous_snapshot_id": "learn-docs-v1-qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "漏洞管理架构、govulncheck、CNA 和严重性标签政策的主要内容正确。但资源与反馈部分的链接文字出现明显破碎表达，例如“[向我们提供关于问题和]……功能请求的反馈”；“我们鼓励包维护者”与下一段的“贡献”被不必要的空行分隔；另有“NOTE”未完成中文化。精确修订要求：修复反馈链接文字及段落连接，保持原始链接目标、报告安全漏洞的指引和严重性标签说明。"
+    }
+  ]
+}

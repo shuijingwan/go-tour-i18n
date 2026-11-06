@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-046",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/fips140.md",
+      "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "input_path": "inputs/3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c.article",
+      "input_sha256": "8eb49d799c36782e3b26c4de8329919bc7c9f2d570077f4a1fa26db904cfed27",
+      "protected_token_count": 264,
+      "previous_snapshot_id": "learn-docs-v1-qc-014",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "原 preview finding 的 collapsed Markdown reference binding 已关闭：current usage `[CMVP validation certificate][]` 与 reference definition label 完全一致，且 definition 仍绑定 canonical source 中的 CMVP validation-certificate external URL，因此 rendered source-bound link 已恢复，未发现 link target、Markdown binding 或邻近 `inprocess` / `certified` 技术语义损坏。但修订后用户可见链接文本 `CMVP validation certificate` 保持为完整英文短语；其中 `CMVP` 可保持正式 identity，而 `validation certificate` 是普通可翻译自然语言，并非代码、API 或必须 keep 的 machine identity。同一 Page 后文对同一概念已经使用中文“CMVP 验证证书”，因此这里形成局部不必要英文残留和页内术语表达不一致。后续 exact revision 应仅在该受影响 reference usage/definition 局部闭合此语言问题，继续保持 collapsed-reference label 一致、原 external URL 不变，并不得破坏相邻 `inprocess` / `certified` 对应关系。除此之外，本次 affected local context 未发现新的结构、链接、技术语义或术语缺陷。"
+    }
+  ]
+}

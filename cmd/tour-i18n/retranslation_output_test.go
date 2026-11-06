@@ -209,6 +209,26 @@ func TestRetranslationRevalidationOutput(t *testing.T) {
 	}
 }
 
+func TestRetranslationRestoreRecoveryOutput(t *testing.T) {
+	result := &i18n.RetranslationRevalidationResult{Status: "passed", PreviousStatus: "restore_failed", Attempt: 1, RestorePassed: 1, ValidationPassed: 1, ResultHistoryPath: "revalidation-history/unit/revalidation-001-result.json"}
+	var output bytes.Buffer
+	if err := writeRetranslationRevalidationOutput(&output, result, false); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"previous_status: restore_failed", "attempt: 1", "restore_passed: 1", "restore_failed: 0", result.ResultHistoryPath} {
+		if !strings.Contains(output.String(), want) {
+			t.Fatalf("missing %q: %s", want, output.String())
+		}
+	}
+	result.Status, result.Error, result.ValidationFailed = "validation_failed", "real defect", 1
+	for _, jsonOutput := range []bool{false, true} {
+		output.Reset()
+		if err := writeRetranslationRevalidationOutput(&output, result, jsonOutput); err == nil || !strings.Contains(output.String(), "real defect") {
+			t.Fatalf("error=%v output=%s", err, output.String())
+		}
+	}
+}
+
 func promotionOutputPlan() *i18n.RetranslationPromotionPlan {
 	return &i18n.RetranslationPromotionPlan{
 		Locale: "ko-KR", UnitCount: 122, PageCount: 103, ExampleCount: 19,

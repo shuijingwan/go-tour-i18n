@@ -175,6 +175,40 @@ func HistoricalTourSurfacePackageForDeltaPlanning(root, locale, reviewID, glossa
 	if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &pkg); err != nil {
 		return nil, err
 	}
+	if gate.Inputs.CourseMetadataSHA256 != pkg.Inputs.CourseMetadataSHA256 {
+		old, err := AuthorizeHistoricalCourseMetadataReference(root, locale, gate.Inputs.CourseMetadataSHA256, catalog)
+		if err != nil {
+			return nil, err
+		}
+		course, err := decodeCourseMetadata(old)
+		if err != nil {
+			return nil, err
+		}
+		entries, err := courseMetadataBaseIndex(course, catalog)
+		if err != nil {
+			return nil, err
+		}
+		_, targets, err := historicalCanonicalTargets(root, locale, catalog)
+		if err != nil {
+			return nil, err
+		}
+		for i := range pkg.CoursePages {
+			page := &pkg.CoursePages[i]
+			entry, ok := entries[page.PageID]
+			if !ok {
+				return nil, fmt.Errorf("missing historical Course SEO page")
+			}
+			oldTarget := targets[canonicalCandidatePath(locale, page.PageID)]
+			if sum(oldTarget) != entry.TargetSHA256 || page.SourceSHA256 != entry.SourceSHA256 || page.Route != entry.Route {
+				return nil, fmt.Errorf("historical Course SEO source/target mismatch: %s", page.PageID)
+			}
+			page.Target = string(oldTarget)
+			page.Description, page.TargetSHA256, page.GlossarySHA256 = entry.Description, entry.TargetSHA256, entry.GlossarySHA256
+			page.SourceDescriptionSHA256 = entry.SourceDescriptionSHA256
+		}
+		pkg.CourseMetadataSchemaVersion = course.SchemaVersion
+		pkg.Inputs.CourseMetadataSHA256 = gate.Inputs.CourseMetadataSHA256
+	}
 	if pkg.Locale != locale || gate.ReviewID != reviewID || !historicalDeltaInputsExact(gate.Inputs, pkg.Inputs) {
 		return nil, fmt.Errorf("historical language/config projection is stale")
 	}

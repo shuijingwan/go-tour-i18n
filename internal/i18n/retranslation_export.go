@@ -28,41 +28,44 @@ const (
 )
 
 type RetranslationExportOptions struct {
-	Locale             string
-	BatchID            string
-	Generator          RetranslationGenerator
-	UnitIDs            []string
-	UnitKind           UnitKind
-	Limit              int
-	AllowReexport      bool
-	PreviousSnapshotID string
-	SurfaceReopenID    string
-	GlossaryStale      bool
+	RepresentationBridgeID string
+	Locale                 string
+	BatchID                string
+	Generator              RetranslationGenerator
+	UnitIDs                []string
+	UnitKind               UnitKind
+	Limit                  int
+	AllowReexport          bool
+	PreviousSnapshotID     string
+	SurfaceReopenID        string
+	GlossaryStale          bool
 }
 
 type RetranslationBatchUnit struct {
-	UnitID                  string   `json:"unit_id"`
-	UnitKind                UnitKind `json:"unit_kind"`
-	SourcePath              string   `json:"source_path"`
-	SourceSHA256            string   `json:"source_sha256"`
-	InputPath               string   `json:"input_path"`
-	InputSHA256             string   `json:"input_sha256"`
-	ProtectedTokenCount     int      `json:"protected_token_count"`
-	PreviousSnapshotID      string   `json:"previous_snapshot_id,omitempty"`
-	RevisionFeedbackSource  string   `json:"revision_feedback_source,omitempty"`
-	RevisionAuthorizationID string   `json:"revision_authorization_id,omitempty"`
-	PreviousRating          string   `json:"previous_rating,omitempty"`
-	PreviousFinding         string   `json:"previous_finding,omitempty"`
-	PreviousReviewDecision  string   `json:"previous_review_decision,omitempty"`
-	PreviousReviewSummary   string   `json:"previous_review_summary,omitempty"`
-	PreviousReviewIssues    []string `json:"previous_review_issues,omitempty"`
-	PreviousReviewPath      string   `json:"previous_review_path,omitempty"`
-	PreviousReviewSHA256    string   `json:"previous_review_sha256,omitempty"`
-	ReexportReason          string   `json:"reexport_reason,omitempty"`
-	PreviousBatchID         string   `json:"previous_batch_id,omitempty"`
-	PreviousInputPath       string   `json:"previous_input_path,omitempty"`
-	PreviousInputSHA256     string   `json:"previous_input_sha256,omitempty"`
-	PreviousProtectedTokens int      `json:"previous_protected_token_count,omitempty"`
+	RepresentationBridge    *GlossaryArchiveReference        `json:"representation_bridge,omitempty"`
+	GenerationOrigin        *TranslationUnitGenerationOrigin `json:"generation_origin,omitempty"`
+	UnitID                  string                           `json:"unit_id"`
+	UnitKind                UnitKind                         `json:"unit_kind"`
+	SourcePath              string                           `json:"source_path"`
+	SourceSHA256            string                           `json:"source_sha256"`
+	InputPath               string                           `json:"input_path"`
+	InputSHA256             string                           `json:"input_sha256"`
+	ProtectedTokenCount     int                              `json:"protected_token_count"`
+	PreviousSnapshotID      string                           `json:"previous_snapshot_id,omitempty"`
+	RevisionFeedbackSource  string                           `json:"revision_feedback_source,omitempty"`
+	RevisionAuthorizationID string                           `json:"revision_authorization_id,omitempty"`
+	PreviousRating          string                           `json:"previous_rating,omitempty"`
+	PreviousFinding         string                           `json:"previous_finding,omitempty"`
+	PreviousReviewDecision  string                           `json:"previous_review_decision,omitempty"`
+	PreviousReviewSummary   string                           `json:"previous_review_summary,omitempty"`
+	PreviousReviewIssues    []string                         `json:"previous_review_issues,omitempty"`
+	PreviousReviewPath      string                           `json:"previous_review_path,omitempty"`
+	PreviousReviewSHA256    string                           `json:"previous_review_sha256,omitempty"`
+	ReexportReason          string                           `json:"reexport_reason,omitempty"`
+	PreviousBatchID         string                           `json:"previous_batch_id,omitempty"`
+	PreviousInputPath       string                           `json:"previous_input_path,omitempty"`
+	PreviousInputSHA256     string                           `json:"previous_input_sha256,omitempty"`
+	PreviousProtectedTokens int                              `json:"previous_protected_token_count,omitempty"`
 }
 
 type RetranslationBatchManifest struct {
@@ -127,6 +130,9 @@ type glossaryStaleProvenance struct {
 // ExportRetranslationBatch writes one isolated batch of Default protected
 // inputs without invoking a model or changing formal translation state.
 func ExportRetranslationBatch(root string, catalog *Catalog, options RetranslationExportOptions) (*RetranslationExportResult, error) {
+	if _, _, err := LoadLanguageAuditPolicy(root, options.Locale, nil); err != nil {
+		return nil, err
+	}
 	if catalog == nil {
 		return nil, errors.New("retranslation catalog is required")
 	}
@@ -177,6 +183,17 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
 		return nil, fmt.Errorf("retranslation export requires current Glossary Review coverage: %w", err)
 	}
+	var initialProgress *TranslationUnitProgress
+	if len(catalog.TranslationScope) > 0 && !options.AllowReexport {
+		progress, err := BuildTranslationUnitProgress(root, catalog, options.Locale)
+		if err != nil {
+			return nil, err
+		}
+		if progress.RestoreFailed+progress.ValidationFailed+progress.Stale > 0 {
+			return nil, fmt.Errorf("先恢复精确失败/过期单元，不启动下一批生成")
+		}
+		initialProgress = progress
+	}
 
 	base := filepath.Join(root, "data", "retranslation-runs", options.Locale)
 	exported, nextNumber, err := scanRetranslationBatches(base, options.Locale, catalog)
@@ -187,6 +204,18 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if err != nil {
 		return nil, err
 	}
+	if initialProgress != nil {
+		for _, row := range initialProgress.Units {
+			if row.Status == "passed" {
+				statuses[row.UnitID] = retranslationStatus{ReadySource: true}
+				for _, id := range options.UnitIDs {
+					if id == row.UnitID {
+						return nil, fmt.Errorf("%s: current passed candidate already exists; exact revision authority required", id)
+					}
+				}
+			}
+		}
+	}
 	units, err := selectRetranslationUnits(catalog, options.UnitIDs, options.UnitKind, exported, statuses, limit, options.AllowReexport)
 	if err != nil {
 		return nil, err
@@ -194,10 +223,45 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if len(units) == 0 {
 		return &RetranslationExportResult{Locale: options.Locale, AllExported: true}, nil
 	}
+	ids := []string{}
+	for _, u := range units {
+		ids = append(ids, u.ID)
+	}
+	if err := catalog.RequireTranslationInvocation(ids); err != nil {
+		return nil, err
+	}
+	// Only formally authorized QC/Surface revision leaves initial partitioning.
+	// Glossary-stale recovery retains its existing scheduling policy.
+	if options.PreviousSnapshotID == "" {
+		if err := catalog.RequireInitialTranslationWorkingSet(ids); err != nil {
+			return nil, err
+		}
+	}
+	if initialProgress != nil {
+		firstGroup := ""
+		for _, row := range initialProgress.Units {
+			if row.Status == "passed" {
+				continue
+			}
+			for _, adapted := range catalog.Adapted {
+				if adapted.Unit.ID == row.UnitID {
+					firstGroup = adapted.WorkingSet
+				}
+			}
+			break
+		}
+		for _, id := range ids {
+			for _, adapted := range catalog.Adapted {
+				if adapted.Unit.ID == id && firstGroup != "" && adapted.WorkingSet != firstGroup {
+					return nil, fmt.Errorf("前一批页面尚未全部机器校验通过，不启动下一批生成")
+				}
+			}
+		}
+	}
 	revisionFeedbackByID := map[string]revisionFeedback{}
 	var surfaceReopen *QualityCheckSurfaceReopen
 	if options.SurfaceReopenID != "" {
-		surfaceReopen, err = readCurrentQualityCheckSurfaceReopen(root, catalog, options.Locale, options.SurfaceReopenID)
+		surfaceReopen, err = readCurrentQualityCheckSurfaceReopen(root, catalog, options.Locale, options.SurfaceReopenID, true)
 		if err != nil {
 			return nil, err
 		}
@@ -216,32 +280,73 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 				return nil, errors.New("revision unit set must exactly match surface reopen scope")
 			}
 		}
+		if surfaceReopen.IntegratedAuthority != nil && surfaceReopen.ReplacementContext == nil {
+			// Export-only successors have no processed result yet, so latest
+			// candidate selection cannot detect an already consumed reopen.
+			for _, unit := range surfaceReopen.Units {
+				if prior, ok := exported[unit.UnitID]; ok && prior.BatchID != unit.Snapshot.SelectedBatchID {
+					return nil, fmt.Errorf("Surface reopen Unit %s already has a successor export in %s; continue existing lifecycle", unit.UnitID, prior.BatchID)
+				}
+			}
+		}
 	}
 	if options.PreviousSnapshotID != "" {
 		snapshot, err := readQualityCheckSnapshot(root, options.Locale, options.PreviousSnapshotID, false)
 		if err != nil {
 			return nil, fmt.Errorf("previous Quality Check Snapshot: %w", err)
 		}
-		effectiveSnapshot, effectiveResults, err := loadEffectiveQualityCheckResults(root, options.Locale, options.PreviousSnapshotID, map[string]bool{}, catalog)
+		predecessorCatalog := catalog
+		if surfaceReopen != nil && surfaceReopen.IntegratedAuthority != nil && surfaceReopen.ReplacementContext == nil {
+			// The current Surface reader above has revalidated the complete
+			// package closure/composition, including sibling predecessors. This
+			// evaluation consumes only this receipt's exact original A world;
+			// today's larger membership is not the predecessor's QC scope.
+			predecessorCatalog, err = surfaceReopenPredecessorCatalog(root, catalog, options.Locale, options.PreviousSnapshotID, surfaceReopen.IntegratedAuthority)
+			if err != nil {
+				return nil, err
+			}
+		} else if surfaceReopen != nil && surfaceReopen.ReplacementContext != nil {
+			resolution, err := replacementResolution(root, catalog, surfaceReopen.ReplacementContext)
+			if err != nil {
+				return nil, err
+			}
+			predecessorCatalog = resolution.HistoricalCatalog
+		}
+		evaluation := newQualityCheckEvaluation(root, options.Locale, predecessorCatalog)
+		if surfaceReopen != nil && (surfaceReopen.AuthoritySource == CurrentValidationAuthority || (surfaceReopen.IntegratedAuthority != nil && surfaceReopen.ReplacementContext == nil)) {
+			// Current eligibility was separately proved by the shared authority.
+			// Revision is anchored to the immutable original A, not a forged B/C/D.
+			evaluation.originalOnly = true
+		}
+		effectiveSnapshot, effectiveResults, err := evaluation.loadEffectiveQualityCheckResults(options.PreviousSnapshotID, map[string]bool{})
 		if err != nil {
 			return nil, err
 		}
 		if effectiveSnapshot.SnapshotID != snapshot.SnapshotID || effectiveSnapshot.GlossarySHA256 != snapshot.GlossarySHA256 {
 			return nil, errors.New("effective Quality Check Snapshot identity mismatch")
 		}
+		// Finish all initial independent working sets before concentrated
+		// revision. Explicit Surface recovery retains its separate authority.
+		if len(catalog.TranslationScope) > 0 && options.SurfaceReopenID == "" && len(effectiveResults) != snapshot.UnitCount {
+			return nil, errors.New("首轮独立质量审核尚未覆盖全部翻译单元；完成全部初审后再集中修订")
+		}
 		byID := map[string]QualityCheckSnapshotUnit{}
 		for _, u := range snapshot.Units {
 			byID[u.UnitID] = u
 		}
 		for _, unit := range units {
-			snapshotUnit, ok := byID[unit.ID]
+			predecessorID := unit.ID
+			if surfaceReopen != nil {
+				predecessorID = surfaceReopen.predecessorUnitID(unit.ID)
+			}
+			snapshotUnit, ok := byID[predecessorID]
 			if !ok {
 				return nil, fmt.Errorf("revision unit %s is absent from previous Snapshot", unit.ID)
 			}
-			if _, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, snapshotUnit); err != nil {
+			if _, err := evaluation.readSnapshotUnitRepositoryEvidence(options.PreviousSnapshotID, snapshotUnit); err != nil {
 				return nil, fmt.Errorf("previous Snapshot unit %s identity: %w", unit.ID, err)
 			}
-			result, ok := effectiveResults[unit.ID]
+			result, ok := effectiveResults[predecessorID]
 			if !ok {
 				return nil, fmt.Errorf("revision unit %s has no effective Quality Check result in previous Snapshot %s", unit.ID, options.PreviousSnapshotID)
 			}
@@ -249,23 +354,62 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 				return nil, fmt.Errorf("revision unit %s has no current, identity-matching effective Quality Check result in previous Snapshot %s", unit.ID, options.PreviousSnapshotID)
 			}
 			if result.rating != "A" {
-				if surfaceReopen != nil {
+				if surfaceReopen != nil && surfaceReopen.AuthoritySource != "quality-check" {
 					return nil, fmt.Errorf("surface reopen unit %s is already non-A and must use ordinary Quality Check revision feedback", unit.ID)
 				}
 				if strings.TrimSpace(result.finding) == "" {
 					return nil, fmt.Errorf("revision unit %s has no finding in previous Snapshot %s; backfill it first", unit.ID, options.PreviousSnapshotID)
 				}
 				revisionFeedbackByID[unit.ID] = revisionFeedback{source: "quality_check", rating: result.rating, finding: result.finding}
+				if surfaceReopen != nil {
+					ref := surfaceReopen.revisionEvidence()
+					revisionFeedbackByID[unit.ID] = revisionFeedback{source: QCRepresentationFeedback, rating: result.rating, finding: result.finding, decision: "representation-reconciled", summary: surfaceReopen.ReopenID, reviewPath: ref.Path, reviewSHA256: ref.SHA256}
+				}
 				continue
 			}
 			if surfaceReopen != nil {
-				revisionFeedbackByID[unit.ID] = revisionFeedback{source: "surface_review", rating: "A", finding: surfaceReopen.Finding, decision: "reopened", summary: surfaceReopen.ReopenID, reviewPath: surfaceReopen.SurfaceReviewPath, reviewSHA256: surfaceReopen.SurfaceReviewSHA256}
+				ref := surfaceReopen.revisionEvidence()
+				revisionFeedbackByID[unit.ID] = revisionFeedback{source: surfaceReopen.revisionFeedbackSource(), rating: "A", finding: surfaceReopen.findingForUnit(unit.ID), decision: "reopened", summary: surfaceReopen.ReopenID, reviewPath: ref.Path, reviewSHA256: ref.SHA256}
 				continue
 			}
 			return nil, fmt.Errorf("revision unit %s is not eligible from previous Snapshot %s: Quality Check is already A; new revision export requires Quality Check B/C/D feedback", unit.ID, options.PreviousSnapshotID)
 		}
 	}
 
+	var bridgeRef *GlossaryArchiveReference
+	if options.RepresentationBridgeID != "" {
+		if !options.AllowReexport || options.PreviousSnapshotID == "" || options.SurfaceReopenID != "" || options.GlossaryStale || len(options.UnitIDs) == 0 {
+			return nil, fmt.Errorf("exclusive ordinary QC bridge revision required")
+		}
+		if !reviewIDPattern.MatchString(options.RepresentationBridgeID) {
+			return nil, fmt.Errorf("invalid bridge ID")
+		}
+		path := filepath.ToSlash(filepath.Join("data/quality-check-reopens", options.Locale, options.RepresentationBridgeID+".json"))
+		ref, err := successorReference(root, path)
+		if err != nil {
+			return nil, err
+		}
+		receipt, _, err := readSameUnitBridgeForInvocation(root, catalog, options.Locale, ref)
+		if err != nil {
+			return nil, err
+		}
+		if receipt.PreviousSnapshotID != options.PreviousSnapshotID || len(receipt.Units) != len(units) {
+			return nil, fmt.Errorf("bridge revision exact-set mismatch")
+		}
+		for _, unit := range units {
+			found := false
+			for _, bound := range receipt.Units {
+				feedback := revisionFeedbackByID[unit.ID]
+				if bound.UnitID == unit.ID && bound.PreviousRating == feedback.rating && bound.Finding == feedback.finding && feedback.source == "quality_check" {
+					found = true
+				}
+			}
+			if !found {
+				return nil, fmt.Errorf("bridge revision per-Unit finding mismatch")
+			}
+		}
+		bridgeRef = &ref
+	}
 	batchID := options.BatchID
 	if batchID == "" {
 		batchID = fmt.Sprintf("%s-%s-%03d", generator, options.Locale, nextNumber)
@@ -350,7 +494,8 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 			return nil, fmt.Errorf("write retranslation input for %s: %w", input.unit.ID, err)
 		}
 		record := RetranslationBatchUnit{
-			UnitID: input.unit.ID, UnitKind: input.unit.Kind, SourcePath: input.unit.SourcePath,
+			RepresentationBridge: bridgeRef,
+			UnitID:               input.unit.ID, UnitKind: input.unit.Kind, SourcePath: input.unit.SourcePath,
 			SourceSHA256: input.unit.SourceSHA256, InputPath: input.path,
 			InputSHA256: input.hash, ProtectedTokenCount: input.tokens,
 		}
@@ -378,6 +523,11 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 	if err := writeTranslationJSON(filepath.Join(staging, "manifest.json"), manifest); err != nil {
 		return nil, fmt.Errorf("write retranslation manifest: %w", err)
+	}
+	if bridgeRef != nil {
+		if _, _, err := readSameUnitBridgeForInvocation(root, catalog, options.Locale, *bridgeRef); err != nil {
+			return nil, err
+		}
 	}
 	if err := requireMissingBatchDirectory(finalDir); err != nil {
 		return nil, err
@@ -410,9 +560,6 @@ func validateGlossaryStaleRetranslationUnit(root, locale string, unit *Translati
 	if choice.result.Status != "passed" {
 		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed batch %s status %q is not passed", unit.ID, choice.batchID, choice.result.Status)
 	}
-	if choice.artifactEOF != retranslationArtifactEOFSingleLF {
-		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed batch %s does not have an unambiguous single-LF protected-input identity", unit.ID, choice.batchID)
-	}
 	wantInputPath := filepath.ToSlash(filepath.Join("inputs", retranslationUnitInputName(unit)))
 	if choice.manifest.InputPath != wantInputPath {
 		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed batch %s has non-canonical input_path %q", unit.ID, choice.batchID, choice.manifest.InputPath)
@@ -424,17 +571,22 @@ func validateGlossaryStaleRetranslationUnit(root, locale string, unit *Translati
 	if sum(savedInput) != choice.manifest.InputSHA256 {
 		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest saved input hash does not match manifest", unit.ID)
 	}
-	tokens := translationTokenRE.FindAll(savedInput, -1)
-	seenTokens := map[string]bool{}
-	for _, token := range tokens {
-		value := string(token)
-		if seenTokens[value] {
-			return glossaryStaleProvenance{}, fmt.Errorf("%s: latest saved input contains duplicate protected token %s", unit.ID, value)
-		}
-		seenTokens[value] = true
+	if _, err := validateSavedRetranslationInputTokens(unit, savedInput, choice.manifest.ProtectedTokenCount); err != nil {
+		return glossaryStaleProvenance{}, err
 	}
-	if len(tokens) != choice.manifest.ProtectedTokenCount {
-		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest saved input protected token count %d does not match manifest %d", unit.ID, len(tokens), choice.manifest.ProtectedTokenCount)
+	comparisonInput := savedInput
+	switch choice.artifactEOF {
+	case retranslationArtifactEOFSingleLF:
+		if err := validateRetranslationArtifactEOF(savedInput); err != nil {
+			return glossaryStaleProvenance{}, fmt.Errorf("%s: latest saved input from batch %s %w", unit.ID, choice.batchID, err)
+		}
+	case "":
+		// The manifest loader has already established that this is supported
+		// historical evidence. Preserve and hash its exact bytes, but ignore a
+		// legacy-only EOF representation difference when deciding real drift.
+		comparisonInput = canonicalizeRetranslationArtifactEOF(savedInput)
+	default:
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed batch %s has unsupported artifact_eof %q", unit.ID, choice.batchID, choice.artifactEOF)
 	}
 	name := filepath.Base(filepath.FromSlash(choice.manifest.InputPath))
 	wantCandidate := filepath.ToSlash(filepath.Join("candidates", retranslationUnitCandidateName(unit)))
@@ -452,13 +604,66 @@ func validateGlossaryStaleRetranslationUnit(root, locale string, unit *Translati
 	if _, err := os.ReadFile(filepath.Join(choice.batchDir, filepath.FromSlash(wantCandidate))); err != nil {
 		return glossaryStaleProvenance{}, fmt.Errorf("%s: read latest candidate: %w", unit.ID, err)
 	}
-	if bytes.Equal(savedInput, currentInput) {
+	if bytes.Equal(comparisonInput, currentInput) {
 		return glossaryStaleProvenance{}, fmt.Errorf("%s: current protected input has no glossary-induced drift from latest processed batch %s", unit.ID, choice.batchID)
 	}
 	return glossaryStaleProvenance{
 		batchID: choice.batchID, inputPath: choice.manifest.InputPath,
 		inputSHA256: choice.manifest.InputSHA256, protectedTokenCount: choice.manifest.ProtectedTokenCount,
 	}, nil
+}
+
+// validateSavedRetranslationInputTokens reads only the representation selected
+// by the exact Unit/source identity above. translationTokenRE belongs to Tour;
+// adapted Pages own their token inventory and canonical restoration checks.
+// Never infer a historical token grammar or bind tokens by numeric position.
+func validateSavedRetranslationInputTokens(unit *TranslationUnit, input []byte, want int) (int, error) {
+	text := string(input)
+	tokens := translationTokenRE.FindAllString(text, -1)
+	if unit.Adapter != nil {
+		// Page inventories are source-owned, independent of the locale glossary.
+		// An adapter unable to supply that inventory must fail closed.
+		_, known, err := unit.Adapter.ProtectedInput(nil)
+		if err != nil {
+			return 0, fmt.Errorf("%s: latest saved input representation: %w", unit.ID, err)
+		}
+		tokens = nil
+		inventory := map[string]bool{}
+		for _, token := range known {
+			if token == "" || inventory[token] {
+				return 0, fmt.Errorf("%s: invalid protected token inventory", unit.ID)
+			}
+			inventory[token] = true
+			n := strings.Count(text, token)
+			if n > 1 {
+				return 0, fmt.Errorf("%s: latest saved input contains duplicate protected token %s", unit.ID, token)
+			}
+			if n == 1 {
+				tokens = append(tokens, token)
+			}
+		}
+	}
+	seen := map[string]bool{}
+	remaining := text
+	for _, token := range tokens {
+		if seen[token] {
+			return 0, fmt.Errorf("%s: latest saved input contains duplicate protected token %s", unit.ID, token)
+		}
+		seen[token] = true
+		remaining = strings.ReplaceAll(remaining, token, "")
+	}
+	if len(tokens) != want {
+		return len(tokens), fmt.Errorf("%s: latest saved input protected token count %d does not match manifest %d", unit.ID, len(tokens), want)
+	}
+	if strings.ContainsAny(remaining, "⟦⟧⟪⟫") {
+		return len(tokens), fmt.Errorf("%s: latest saved input contains unknown or malformed protected token", unit.ID)
+	}
+	if unit.Adapter != nil {
+		if _, err := unit.Adapter.Restore(text); err != nil {
+			return len(tokens), fmt.Errorf("%s: latest saved input representation: %w", unit.ID, err)
+		}
+	}
+	return len(tokens), nil
 }
 
 func readFinalReviewRevisionFeedback(root, locale string, snapshot QualityCheckSnapshotUnit, evidence *snapshotUnitRepositoryEvidence) (revisionFeedback, error) {
@@ -508,6 +713,9 @@ func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKin
 			if err != nil {
 				return nil, err
 			}
+			if !catalog.inTranslationScope(unitID) {
+				return nil, fmt.Errorf("unit outside selected content scope: %s", unitID)
+			}
 			if kind != "" && unit.Kind != kind {
 				return nil, errors.New("一个重译批次不能混合课程页面单元和示例单元")
 			}
@@ -549,12 +757,40 @@ func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKin
 	}
 	units := make([]*TranslationUnit, 0, limit)
 	for _, page := range catalog.Pages {
+		if !catalog.inTranslationScope(page.ID) {
+			continue
+		}
 		unit, err := catalog.Unit(page.ID)
 		if err != nil {
 			return nil, err
 		}
 		if alreadyExportedForCurrentSource(exported[page.ID], unit, statuses[page.ID]) {
 			continue
+		}
+		units = append(units, unit)
+		if len(units) == limit {
+			break
+		}
+	}
+	for _, adapted := range catalog.Adapted {
+		if len(units) >= limit || len(catalog.TranslationScope) == 0 || !catalog.inTranslationScope(adapted.Unit.ID) {
+			continue
+		}
+		unit, err := catalog.Unit(adapted.Unit.ID)
+		if err != nil {
+			return nil, err
+		}
+		if alreadyExportedForCurrentSource(exported[unit.ID], unit, statuses[unit.ID]) {
+			continue
+		}
+		if len(units) > 0 {
+			ids := []string{}
+			for _, u := range units {
+				ids = append(ids, u.ID)
+			}
+			if catalog.RequireInitialTranslationWorkingSet(append(ids, unit.ID)) != nil {
+				break
+			}
 		}
 		units = append(units, unit)
 		if len(units) == limit {
@@ -632,6 +868,9 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 	for _, example := range catalog.Examples {
 		known[example.ID] = UnitKindExample
 	}
+	for _, adapted := range catalog.Adapted {
+		known[adapted.Unit.ID] = adapted.Unit.Kind
+	}
 	nextNumber := 1
 	seenNumbers := map[int]string{}
 	sort.Slice(entries, func(i, j int) bool { return entries[i].Name() < entries[j].Name() })
@@ -686,6 +925,26 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 			unitID, unitKind := record.UnitID, record.UnitKind
 			wantKind, ok := known[unitID]
 			if !ok {
+				// A content-addressed adapter ID can change when its protected
+				// projection changes while the physical source stays identical.
+				// Recognize that immutable export only as historical: never alias
+				// its candidate, review or exported guard to the successor ID.
+				superseded := false
+				for _, current := range catalog.Adapted {
+					if current.Unit.Kind == unitKind && manifest.UnitKind == unitKind && current.Unit.SourcePath == record.SourcePath && current.Unit.SourceSHA256 == record.SourceSHA256 && sum(current.Unit.Source) == record.SourceSHA256 {
+						superseded = true
+					}
+				}
+				if superseded {
+					if record.InputPath != filepath.ToSlash(filepath.Join("inputs", flattenedPageArticleName(unitID))) {
+						return nil, 0, fmt.Errorf("historical adapted unit %s has unsafe input path", unitID)
+					}
+					input, err := os.ReadFile(filepath.Join(base, entry.Name(), filepath.FromSlash(record.InputPath)))
+					if err != nil || sum(input) != record.InputSHA256 {
+						return nil, 0, fmt.Errorf("historical adapted unit %s input identity mismatch", unitID)
+					}
+					continue
+				}
 				return nil, 0, fmt.Errorf("retranslation batch %q has unknown translation unit %q", entry.Name(), unitID)
 			}
 			if unitKind != wantKind || manifest.UnitKind != unitKind {

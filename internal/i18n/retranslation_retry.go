@@ -30,6 +30,11 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if err := ValidateLocaleName(options.Locale); err != nil {
 		return nil, err
 	}
+	if len(catalog.TranslationScope) > 0 {
+		if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
+			return nil, err
+		}
+	}
 	if err := validateBatchID(options.BatchID); err != nil {
 		return nil, err
 	}
@@ -186,6 +191,9 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		retranslationFileUpdate{target: validationPath, data: newValidation},
 		retranslationFileUpdate{target: resultPath, data: newResult},
 	)
+	if err := checkPreparedRetranslationContext(prepared); err != nil {
+		return nil, err
+	}
 	if err := commitRetranslationFileUpdates(batchDir, updates); err != nil {
 		return nil, err
 	}

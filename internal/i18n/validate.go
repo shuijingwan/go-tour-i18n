@@ -46,6 +46,21 @@ func ValidateCandidateForLocale(root string, catalog *Catalog, pageID, locale st
 	if err := ValidateLocaleName(locale); err != nil {
 		return err
 	}
+	glossary, err := LoadGlossary(root, locale)
+	if err != nil {
+		return err
+	}
+	unit, err := catalog.Unit(pageID)
+	if err != nil {
+		return err
+	}
+	return validateTranslationUnitWithGlossary(root, catalog, unit, locale, candidate, glossary)
+}
+
+func validateCandidateWithGlossary(root string, catalog *Catalog, pageID, locale string, candidate []byte, glossary *Glossary) error {
+	if err := ValidateLocaleName(locale); err != nil {
+		return err
+	}
 	page, err := catalog.Page(pageID)
 	if err != nil {
 		return err
@@ -59,10 +74,6 @@ func ValidateCandidateForLocale(root string, catalog *Catalog, pageID, locale st
 	}
 	if bytes.Contains(candidate, []byte("#appengine:")) {
 		return fmt.Errorf("%s: standalone candidate contains #appengine content", pageID)
-	}
-	glossary, err := LoadGlossary(root, locale)
-	if err != nil {
-		return err
 	}
 	if err := validateGlossary(pageID, page.Source, candidate, glossary); err != nil {
 		return err

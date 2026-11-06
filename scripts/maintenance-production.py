@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
-"""Resumable orchestration for an already-live production locale.
-
-This deliberately owns no deployment, CDN client, or acceptance implementation.
-It binds a release to its formal identity, invokes the established commands,
-and records the successful stages needed for strict resume.
-"""
-
+"""Existing single-locale release execution with exact per-locale evidence."""
 from __future__ import annotations
-
 import datetime as dt
 import importlib.util
 import json
@@ -18,292 +11,210 @@ import subprocess
 import sys
 import time
 
-
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-IDENTITY_SPEC = importlib.util.spec_from_file_location(
-    "production_identity", ROOT / "scripts" / "production-identity.py"
-)
-IDENTITY = importlib.util.module_from_spec(IDENTITY_SPEC)
-IDENTITY_SPEC.loader.exec_module(IDENTITY)
-
-RECEIPT_SCHEMA = "go-tour-i18n/maintenance-production-receipt/v1"
-STAGE_LABELS = {
-    "deploy": "deployment",
-    "purge": "automatic hostname purge",
-    "machine": "machine acceptance",
-    "browser": "browser acceptance",
-}
+def module(name, filename):
+    spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / filename)
+    value = importlib.util.module_from_spec(spec); spec.loader.exec_module(value); return value
+IDENTITY = module("production_identity_maintenance", "production-identity.py")
+CONTRACT = module("release_contract_maintenance", "release_contract.py")
+RECEIPT_SCHEMA = "go-learning/maintenance-execution-state/v2"
+STAGE_LABELS = {"deploy": "deployment", "purge": "CDN purge", "machine": "machine acceptance", "browser": "browser acceptance"}
 LEGACY_STAGE = "visual"
 
-
 class MaintenanceProductionError(RuntimeError):
-    def __init__(self, stage: str, expected: str, actual: str, next_step: str):
-        super().__init__(actual)
-        self.stage = stage
-        self.expected = expected
-        self.actual = actual
-        self.next_step = next_step
+    def __init__(self, stage, expected, actual, next_step):
+        super().__init__(actual); self.stage=stage; self.expected=expected; self.actual=actual; self.next_step=next_step
 
-
-def utc_now() -> str:
+def utc_now():
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
+def release_locale(release_dir):
+    data=json.loads((release_dir/"release.json").read_text())
+    if not isinstance(data.get("locale"),str) or not data["locale"]:
+        raise MaintenanceProductionError("preflight","release locale",repr(data),"检查sealed bundle")
+    return data["locale"]
 
-def release_locale(release_dir: pathlib.Path) -> str:
-    try:
-        release = json.loads((release_dir / "release.json").read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise MaintenanceProductionError("preflight", "valid release.json", str(exc), "重新执行 production publish") from exc
-    locale = release.get("locale") if type(release) is dict else None
-    if type(locale) is not str or not locale:
-        raise MaintenanceProductionError("preflight", "release.json locale", repr(locale), "重新执行 production publish")
-    return locale
-
-
-def safe_release_name(release_dir: pathlib.Path) -> str:
-    name = release_dir.name
-    if not name.startswith("go-tour-release-"):
-        raise MaintenanceProductionError("preflight", "go-tour-release-<safe-name>", name, "使用 publish 生成的正式目录")
-    remote = name.removeprefix("go-tour-release-")
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", remote):
-        raise MaintenanceProductionError("preflight", "safe release name", remote, "使用 publish 生成的正式目录")
-    return remote
-
+def safe_release_name(release_dir):
+    name=release_dir.name
+    if not name.startswith("go-tour-release-") or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*",name[len("go-tour-release-"):]):
+        raise MaintenanceProductionError("preflight","safe release name",name,"使用正式publish目录")
+    return name[len("go-tour-release-"):]
 
 class Orchestrator:
-    def __init__(self, release_dir: pathlib.Path):
+    def __init__(self, release_dir):
         if not release_dir.is_dir() or release_dir.is_symlink():
-            raise MaintenanceProductionError("preflight", "real release directory", str(release_dir), "重新执行 production publish")
-        self.release_dir = release_dir.resolve()
-        self.release_name = safe_release_name(self.release_dir)
-        self.locale = release_locale(self.release_dir)
-        self.identity = IDENTITY.load_identity(ROOT / "production" / "identity.json")
-        profiles = [p for p in self.identity["locales"] if p["locale"] == self.locale]
-        if len(profiles) != 1:
-            raise MaintenanceProductionError("preflight", "one formal production identity", self.locale, "先在 production/identity.json 建立并审核 identity")
-        self.profile = profiles[0]
-        if self.profile["production_state"] != "live":
-            raise MaintenanceProductionError(
-                "preflight", "production_state=live", f"production_state={self.profile['production_state']}",
-                "该 locale 尚属首次 production；请使用 scripts/first-production.sh <release-dir>",
-            )
-        self.receipt_path = self.release_dir.parent / f"{self.release_dir.name}.maintenance-production-receipt.json"
-        self.historical_pass = False
-        self.progress_context = None
-        self.receipt = self._load_or_new_receipt()
+            raise MaintenanceProductionError("preflight","real release directory",str(release_dir),"重新检查bundle")
+        self.release_dir=release_dir.resolve(); self.release_name=safe_release_name(self.release_dir)
+        self.info=CONTRACT.load(self.release_dir, current=True)
+        self.locale=self.info["locale"]; self.identity=IDENTITY.load_identity(ROOT/"production/identity.json")
+        matches=[p for p in self.identity["locales"] if p["locale"]==self.locale]
+        if len(matches)!=1 or matches[0]["production_state"]!="live":
+            raise MaintenanceProductionError("preflight","unique live profile",self.locale,"first-production locale使用首次入口")
+        self.profile=matches[0]
+        if self.info["origin"]!=self.profile["production_public_url"].rstrip("/"):
+            raise MaintenanceProductionError("preflight","exact production origin",self.info["origin"],"不要复用不同target的bundle")
+        self.receipt_path=pathlib.Path(str(self.release_dir)+".maintenance-production-state.json")
+        self.result_path=pathlib.Path(str(self.release_dir)+".maintenance-production-result-"+self.info["input_identity"]+".json")
+        self.progress_context=None; self.historical_pass=False; self.preflight_complete=False
+        self.receipt=self._load_or_new_receipt()
 
-    def set_progress_context(self, phase: str, ordinal: int, total: int) -> None:
-        self.progress_context = (phase, ordinal, total)
+    def set_progress_context(self,phase,ordinal,total): self.progress_context=(phase,ordinal,total)
+    def progress(self,stage,result,elapsed=None,detail=None):
+        text="[maintenance-production] locale=%s stage=%s %s"%(self.locale,stage,result)
+        if elapsed is not None: text+=" elapsed=%.1fs"%elapsed
+        if detail: text+=" "+detail
+        print(text,flush=True)
 
-    def progress(self, stage: str, result: str, elapsed: float | None = None, detail: str | None = None) -> None:
-        if self.progress_context is None:
-            prefix = f"[maintenance-production] locale={self.locale}"
-        else:
-            phase, ordinal, total = self.progress_context
-            prefix = f"[phase {phase}] locale={self.locale} {ordinal}/{total}"
-        fields = [prefix, f"stage={stage}", result]
-        if elapsed is not None:
-            fields.append(f"elapsed={elapsed:.1f}s")
-        if detail:
-            fields.append(detail)
-        print(" ".join(fields), flush=True)
+    def _new_receipt(self):
+        return {"schema":RECEIPT_SCHEMA,"locale":self.locale,"hostname":self.profile["production_hostname"],
+                "cdn":self.profile["cdn"],"public_url":self.profile["production_public_url"],"release":self.release_name,
+                "started_at":utc_now(),"completed_at":None,"result":"running","stages":{},
+                "PREFLIGHT":"PENDING","INPUT_IDENTITY":self.info["input_identity"],"CONTENT_IDENTITY":self.info["content"]["identity"],
+                "SHARED_ASSETS_IDENTITY":self.info["content"]["shared_assets_identity"],
+                "PRIOR_STATE":None,"ACTION":"PENDING","RESULT":"PENDING","VERIFIER":{},
+                "MUTATION_STATUS":"NONE"}
 
-    def _new_receipt(self) -> dict:
-        return {
-            "schema": RECEIPT_SCHEMA,
-            "locale": self.locale,
-            "hostname": self.profile["production_hostname"],
-            "cdn": self.profile["cdn"],
-            "public_url": self.profile["production_public_url"],
-            "release": self.release_name,
-            "started_at": utc_now(),
-            "completed_at": None,
-            "result": "running",
-            "stages": {},
-        }
+    def _load_or_new_receipt(self):
+        base=self._new_receipt()
+        if not self.receipt_path.exists(): return base
+        if self.receipt_path.is_symlink(): raise CONTRACT.ContractError("state cannot be a symlink")
+        previous=json.loads(self.receipt_path.read_text())
+        for key in ("schema","locale","hostname","cdn","public_url","release","INPUT_IDENTITY","CONTENT_IDENTITY","SHARED_ASSETS_IDENTITY"):
+            if previous.get(key)!=base[key]: raise CONTRACT.ContractError("stale execution state: "+key)
+        stages=previous.get("stages")
+        if not isinstance(stages,dict) or set(stages)-set(STAGE_LABELS): raise CONTRACT.ContractError("invalid execution stages")
+        if previous.get("MUTATION_STATUS") in ("ATTEMPTED","UNKNOWN"): raise CONTRACT.ContractError("mutation unknown: preserve evidence; never replay")
+        if previous.get("cdn_attempt_started") and stages.get("purge",{}).get("result")!="PASS":
+            raise CONTRACT.ContractError("CDN attempt has no durable successful result; never replay")
+        if pathlib.Path(str(self.receipt_path)+".cdn-attempt").exists() and stages.get("purge",{}).get("result")!="PASS":
+            raise CONTRACT.ContractError("exclusive CDN attempt has no successful result; never replay")
+        for stage,value in stages.items():
+            if value.get("result")!="PASS" or value.get("input_identity")!=base["INPUT_IDENTITY"]:
+                raise CONTRACT.ContractError("stage not bound to current exact input")
+        prefix=[s for s in STAGE_LABELS if s in stages]
+        if prefix!=list(STAGE_LABELS)[:len(prefix)]: raise CONTRACT.ContractError("stage order mismatch")
+        if previous.get("result")=="passed":
+            if set(stages)!=set(STAGE_LABELS) or not self.result_path.is_file() or self.result_path.is_symlink():
+                raise CONTRACT.ContractError("missing immutable result proof")
+            result=json.loads(self.result_path.read_text())
+            if result!=previous: raise CONTRACT.ContractError("immutable result/state mismatch")
+        elif previous.get("result") not in ("running","failed"): raise CONTRACT.ContractError("unknown result")
+        return previous
 
-    def _load_or_new_receipt(self) -> dict:
-        base = self._new_receipt()
-        if not self.receipt_path.exists():
-            return base
-        try:
-            previous = json.loads(self.receipt_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            raise MaintenanceProductionError("preflight", "valid existing receipt", str(self.receipt_path), "移走损坏 receipt 后重试") from exc
-        expected = (RECEIPT_SCHEMA, self.locale, self.profile["production_hostname"], self.profile["cdn"], self.profile["production_public_url"], self.release_name)
-        actual = tuple(previous.get(key) for key in ("schema", "locale", "hostname", "cdn", "public_url", "release"))
-        if actual != expected:
-            raise MaintenanceProductionError("preflight", repr(expected), repr(actual), "不要复用其他 locale、hostname 或 release 的 receipt")
-        stages = previous.get("stages")
-        if type(stages) is not dict or set(stages) - (set(STAGE_LABELS) | {LEGACY_STAGE}):
-            raise MaintenanceProductionError("preflight", "known receipt stages", repr(stages), "移走无效 receipt 并检查 production identity")
-        for stage, value in stages.items():
-            if type(value) is not dict or value.get("result") != "PASS" or type(value.get("completed_at")) is not str:
-                raise MaintenanceProductionError("preflight", "valid passed receipt stage", repr({stage: value}), "移走无效 receipt 并检查 production identity")
-        if previous.get("result") == "passed":
-            current_complete = all(stage in stages for stage in STAGE_LABELS)
-            legacy_complete = all(stage in stages for stage in ("deploy", "machine", "browser", "visual")) and type(previous.get("cdn_purge_confirmed_at")) is str
-            if not current_complete and not legacy_complete:
-                raise MaintenanceProductionError("preflight", "complete passed receipt", repr(stages), "移走无效 receipt 并检查 production identity")
-            self.historical_pass = legacy_complete and not current_complete
-            print("[maintenance-production] 已有同一 release 的完整 PASS receipt；不会重复 deploy/purge/acceptance。")
-            return previous
-        if previous.get("result") not in ("running", "failed"):
-            raise MaintenanceProductionError("preflight", "running or failed resumable receipt", repr(previous.get("result")), "移走无效 receipt 并检查 production identity")
-        base["started_at"] = previous.get("started_at") or base["started_at"]
-        if LEGACY_STAGE in stages or ("purge" not in stages and any(stage in stages for stage in ("machine", "browser"))):
-            stages = {"deploy": stages["deploy"]} if "deploy" in stages else {}
-            print("[maintenance-production] 旧版未完成 receipt 已安全迁移；将执行自动 purge。")
-        ordered = list(STAGE_LABELS)
-        present = [stage for stage in ordered if stage in stages]
-        if present != ordered[:len(present)]:
-            raise MaintenanceProductionError("preflight", "ordered receipt stage prefix", repr(stages), "移走无效 receipt 并检查 production identity")
-        base["stages"] = stages
-        print(f"[maintenance-production] resume receipt 已识别：{self.receipt_path}")
-        return base
-
-    def write_receipt(self, result: str | None = None) -> None:
+    def write_receipt(self,result=None):
         if result is not None:
-            self.receipt["result"] = result
-            if result in ("passed", "failed"):
-                self.receipt["completed_at"] = utc_now()
-        temporary = self.receipt_path.with_name(self.receipt_path.name + f".tmp-{os.getpid()}")
-        temporary.write_text(json.dumps(self.receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n", encoding="utf-8")
-        os.chmod(temporary, 0o644)
-        os.replace(temporary, self.receipt_path)
+            self.receipt["result"]=result
+            self.receipt["RESULT"]={"passed":"PASS","failed":"FAILED","running":"PENDING"}[result]
+            if result in ("passed","failed"): self.receipt["completed_at"]=utc_now()
+        data=json.dumps(self.receipt,ensure_ascii=False,sort_keys=True,separators=(",",":"))+"\n"
+        temporary=self.receipt_path.with_name(self.receipt_path.name+".tmp-%d"%os.getpid())
+        temporary.write_text(data); os.chmod(temporary,0o644); os.replace(temporary,self.receipt_path)
+        if result=="passed":
+            try:
+                with self.result_path.open("x") as output: output.write(data)
+            except FileExistsError:
+                if self.result_path.read_text()!=data: raise CONTRACT.ContractError("refusing to overwrite immutable result")
 
-    def stage_passed(self, stage: str) -> bool:
-        value = self.receipt.get("stages", {}).get(stage)
-        return type(value) is dict and value.get("result") == "PASS"
-
-    def record(self, stage: str) -> None:
-        self.receipt["stages"][stage] = {"completed_at": utc_now(), "result": "PASS"}
+    def stage_passed(self,stage): return self.receipt["stages"].get(stage,{}).get("result")=="PASS"
+    def record(self,stage):
+        # The CDN child persists its attempt before POST. Keep that durable
+        # boundary when the parent records success instead of replacing it
+        # with an older in-memory state.
+        if stage=="purge":
+            current=json.loads(self.receipt_path.read_text())
+            if current.get("INPUT_IDENTITY")!=self.info["input_identity"]:
+                raise CONTRACT.ContractError("execution state changed during purge")
+            self.receipt["cdn_attempt_started"]=current.get("cdn_attempt_started",False)
+        self.receipt["stages"][stage]={"result":"PASS","completed_at":utc_now(),"input_identity":self.info["input_identity"]}
+        self.receipt["MUTATION_STATUS"]="KNOWN"
+        if stage in ("machine","browser"): self.receipt["VERIFIER"][stage]="PASS"
         self.write_receipt()
 
-    def run_command(self, stage: str, command: list[object], timeout: int) -> None:
-        self.progress(stage, "START")
-        started = time.monotonic()
+    def run_command(self,stage,command,timeout):
+        self.progress(stage,"START"); started=time.monotonic()
+        mutating=stage in ("deploy","purge")
+        if mutating:
+            self.receipt["MUTATION_STATUS"]="ATTEMPTED"; self.receipt["ACTION"]=stage.upper(); self.write_receipt()
         try:
-            completed = subprocess.run(
-                [str(value) for value in command], stdin=subprocess.DEVNULL, check=False, timeout=timeout
-            )
-        except (OSError, subprocess.TimeoutExpired) as exc:
-            self.progress(stage, "FAILED", time.monotonic() - started, str(exc))
-            raise MaintenanceProductionError(stage, "command completed", str(exc), "检查本机工具和网络后重试") from exc
-        if completed.returncode:
-            self.progress(stage, "FAILED", time.monotonic() - started, f"exit={completed.returncode}")
-            raise MaintenanceProductionError(stage, "command exit 0", f"exit {completed.returncode}", "按该 stage 的输出检查后重试")
-        self.progress(stage, "PASS", time.monotonic() - started)
+            result=subprocess.run([str(x) for x in command],cwd=ROOT,stdin=subprocess.DEVNULL,check=False,
+                                  timeout=timeout,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+        except OSError as exc:
+            if mutating: self.receipt["MUTATION_STATUS"]="KNOWN" if self.stage_passed("deploy") else "NONE"; self.write_receipt()
+            raise MaintenanceProductionError(stage,"command started",str(exc),"failed-before-mutation可重试") from exc
+        except subprocess.TimeoutExpired as exc:
+            if mutating: self.receipt["MUTATION_STATUS"]="UNKNOWN"; self.write_receipt()
+            raise MaintenanceProductionError(stage,"known mutation outcome",str(exc),"停止，保留现场，先只读recovery") from exc
+        output=result.stdout or ""; print(output,end="",flush=True)
+        if result.returncode:
+            if mutating:
+                self.receipt["MUTATION_STATUS"]=("KNOWN" if self.stage_passed("deploy") else "NONE") if "MUTATION_STATUS=NONE" in output else "UNKNOWN"
+                self.write_receipt()
+            raise MaintenanceProductionError(stage,"command exit 0","exit %d"%result.returncode,"检查exact stage evidence后恢复")
+        self.progress(stage,"PASS",time.monotonic()-started)
 
-    def begin(self) -> bool:
-        if self.receipt.get("result") == "passed":
-            return False
-        self.receipt.pop("failure", None)
-        self.receipt["result"] = "running"
-        self.receipt["completed_at"] = None
-        self.write_receipt()
-        return True
+    def preflight(self,shared_proof=None):
+        current=CONTRACT.load(self.release_dir,current=True)
+        if current["input_identity"]!=self.info["input_identity"]: raise CONTRACT.ContractError("input changed after selection")
+        proof=shared_proof or CONTRACT.shared_freshness(self.info,self.identity["shared"])
+        if proof.get("shared_assets_identity")!=self.info["content"]["shared_assets_identity"]: raise CONTRACT.ContractError("shared dependency mismatch")
+        prior=CONTRACT.prior_state(self.profile,self.info)
+        if self.stage_passed("deploy") and prior.get("input_identity")!=self.info["input_identity"]:
+            raise CONTRACT.ContractError("passed deployment is no longer the exact current runtime")
+        self.run_command("preflight",[ROOT/"scripts/production-cdn.py","preflight","--locale",self.locale],300)
+        self.current_prior=prior; self.shared_proof=proof; self.preflight_complete=True
+        if self.receipt["result"]!="passed":
+            self.receipt["PREFLIGHT"]="PASS"
+            if self.receipt["PRIOR_STATE"] is None: self.receipt["PRIOR_STATE"]=prior
+            self.receipt["CURRENT_STATE"]=prior; self.receipt["SHARED_ASSETS_PROOF"]=proof
+            self.write_receipt()
+        return proof
 
-    def fail(self, exc: BaseException) -> None:
-        if self.receipt.get("result") == "passed":
-            return
-        self.receipt["failure"] = {
-            "stage": getattr(exc, "stage", "maintenance"),
-            "completed_at": utc_now(),
-            "result": "failed",
-        }
+    def begin(self):
+        if self.receipt["result"]=="passed": return False
+        if not self.preflight_complete: raise CONTRACT.ContractError("current preflight required before execution")
+        self.receipt.pop("failure",None); self.receipt["result"]="running"; self.receipt["RESULT"]="PENDING"; self.write_receipt(); return True
+
+    def fail(self,exc):
+        if self.receipt["result"]=="passed": return
+        self.receipt["failure"]={"stage":getattr(exc,"stage","contract"),"result":"FAILED","evidence":str(exc)}
         self.write_receipt("failed")
 
-    def execute_mutation(self, revalidate_passed_deploy: bool = False) -> None:
-        if self.receipt.get("result") == "passed":
-            return
+    def execute_mutation(self,revalidate_passed_deploy=False):
+        if not self.preflight_complete: raise CONTRACT.ContractError("no current preflight")
+        if self.receipt["result"]=="passed": return
         if not self.stage_passed("deploy"):
-            self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
-            self.record("deploy")
-        elif revalidate_passed_deploy:
-            self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
-            self.progress("deploy", "RESUME", detail="同一 release 已重新验证；未重复 deployment mutation")
-        else:
-            self.progress("deploy", "RESUME")
+            self.run_command("deploy",[ROOT/"scripts/deploy-production.sh",self.release_dir],1800); self.record("deploy")
         if not self.stage_passed("purge"):
-            self.run_command("purge", [ROOT / "scripts" / "production-cdn.py", "purge", "--locale", self.locale], 300)
-            self.record("purge")
-        else:
-            self.progress("purge", "RESUME")
+            self.run_command("purge",[ROOT/"scripts/production-cdn.py","purge","--locale",self.locale,"--execution-state",self.receipt_path],300); self.record("purge")
 
-    def execute_acceptance(self) -> None:
-        if self.receipt.get("result") == "passed":
-            return
-        if not all(self.stage_passed(stage) for stage in ("deploy", "purge")):
-            raise MaintenanceProductionError(
-                "acceptance",
-                "deploy PASS and purge PASS",
-                repr(self.receipt.get("stages", {})),
-                "先完成 maintenance mutation phase",
-            )
-        if not self.stage_passed("machine"):
-            self.run_command("machine", [ROOT / "scripts" / "verify-production.sh", self.release_dir], 1800)
-            self.record("machine")
-        else:
-            self.progress("machine", "RESUME")
-        if not self.stage_passed("browser"):
-            self.run_command(
-                "browser",
-                [ROOT / "scripts" / "verify-production-browser.py", self.profile["production_public_url"], self.locale],
-                900,
-            )
-            self.record("browser")
-        else:
-            self.progress("browser", "RESUME")
-        self.write_receipt("passed")
+    def verify_current(self):
+        self.run_command("machine",[ROOT/"scripts/verify-production.sh",self.release_dir],1800)
+        self.run_command("browser",[ROOT/"scripts/verify-production-browser.py",self.profile["production_public_url"],self.locale,"--release-dir",self.release_dir],1800)
 
-    def print_summary(self) -> None:
-        print("\nMAINTENANCE PRODUCTION: PASS")
-        print(f"release: {self.release_name}")
-        print(f"locale: {self.locale}")
-        print(f"hostname: {self.profile['production_hostname']}")
-        if self.historical_pass:
-            print("CDN hostname purge: HISTORICAL HUMAN PASS")
-        else:
-            print("CDN hostname purge: PASS")
-        print("machine acceptance: PASS")
-        print("browser acceptance: PASS")
-        print(f"receipt: {self.receipt_path}")
+    def execute_acceptance(self):
+        if not all(self.stage_passed(s) for s in ("deploy","purge")): raise CONTRACT.ContractError("mutation stages incomplete")
+        for stage,command,timeout in (
+            ("machine",[ROOT/"scripts/verify-production.sh",self.release_dir],1800),
+            ("browser",[ROOT/"scripts/verify-production-browser.py",self.profile["production_public_url"],self.locale,"--release-dir",self.release_dir],1800)):
+            if not self.stage_passed(stage): self.run_command(stage,command,timeout); self.record(stage)
+        self.receipt["ACTION"]="COMPLETED"; self.receipt["MUTATION_STATUS"]="KNOWN"; self.write_receipt("passed")
 
-    def execute(self) -> None:
-        if self.receipt.get("result") == "passed":
-            self.print_summary()
-            return
-        self.begin()
-        self.run_command("preflight", [ROOT / "scripts" / "production-cdn.py", "preflight", "--locale", self.locale], 300)
-        self.execute_mutation(revalidate_passed_deploy=True)
-        self.execute_acceptance()
-        self.print_summary()
+    def execute(self):
+        self.preflight()
+        if self.receipt["result"]=="passed":
+            self.verify_current(); self.print_summary("CARRIED"); return
+        self.begin(); self.execute_mutation(); self.execute_acceptance(); self.print_summary("PASS")
 
+    def print_summary(self,result="PASS"):
+        print("MAINTENANCE PRODUCTION: "+result)
+        print("locale=%s input_identity=%s result=%s mutation_status=%s evidence=%s"%(self.locale,self.info["input_identity"],result,self.receipt["MUTATION_STATUS"],self.result_path))
 
-def usage() -> None:
-    print("usage: maintenance-production.sh <release-dir>", file=sys.stderr)
-
-
-def main() -> int:
-    if len(sys.argv) != 2:
-        usage()
-        return 2
-    orchestrator = None
+def main():
+    if len(sys.argv)!=2: print("usage: maintenance-production.sh <release-dir>",file=sys.stderr); return 2
+    workflow=None
     try:
-        orchestrator = Orchestrator(pathlib.Path(sys.argv[1]))
-        orchestrator.execute()
-        return 0
-    except (MaintenanceProductionError, IDENTITY.IdentityError) as exc:
-        if orchestrator is not None and orchestrator.receipt.get("result") != "passed":
-            orchestrator.fail(exc)
-        print("\n[maintenance-production] FAILED", file=sys.stderr)
-        print(f"stage: {getattr(exc, 'stage', 'identity')}", file=sys.stderr)
-        print(f"expected: {getattr(exc, 'expected', 'valid formal identity')}", file=sys.stderr)
-        print(f"actual: {getattr(exc, 'actual', str(exc))}", file=sys.stderr)
-        print(f"下一步：{getattr(exc, 'next_step', '修复 production identity 后重试')}", file=sys.stderr)
-        return 1
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+        workflow=Orchestrator(pathlib.Path(sys.argv[1])); workflow.execute(); return 0
+    except (MaintenanceProductionError,IDENTITY.IdentityError,CONTRACT.ContractError,OSError,ValueError,subprocess.SubprocessError) as exc:
+        if workflow: workflow.fail(exc)
+        print("[maintenance-production] FAILED: "+str(exc),file=sys.stderr); return 1
+if __name__=="__main__": raise SystemExit(main())

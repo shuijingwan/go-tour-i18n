@@ -1,0 +1,849 @@
+[
+  {
+    "source_path": "_content/doc/modules/layout.md",
+    "raw": "e.g",
+    "source": "A Go package can be split into multiple files, all residing within the same\ndirectory, e.g.:",
+    "old_slot": {
+      "id": "00734695f35ba175870542bcf6ffc743e96fb29efcdc38f7975b4249310674e6",
+      "locator": "_content/doc/modules/layout.md#markdown/Paragraph:806272a1e74a7963b39328eb03182ed631fd41d9eaf8e522af926bf03412fa71:1",
+      "source": "A Go package can be split into multiple files, all residing within the same⟦P0⟧directory, ⟦P1⟧.:",
+      "source_sha256": "806272a1e74a7963b39328eb03182ed631fd41d9eaf8e522af926bf03412fa71",
+      "start": 1475,
+      "end": 1567,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "e.g",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/modules/managing-dependencies.md",
+    "raw": "and/or",
+    "source": "You want to make your own changes to an external module's code, such as\n    after forking and/or cloning it. For example, you might want to prepare a\n    fix to the module, then send it as a pull request to the module's developer.",
+    "old_slot": {
+      "id": "05413609f21db11a5d453bace3a057cd8013bcdd054ff9dc1c114273bb1c0c71",
+      "locator": "_content/doc/modules/managing-dependencies.md#markdown/list-item:a092ede2fbeaa5b8b476c52e9bee976aae0e7faf2caaa49c9cb4940a0862568e:1",
+      "source": "You want to make your own changes to an external module's code, such as⟦P0⟧after forking ⟦P1⟧ cloning it. For example, you might want to prepare a⟦P2⟧fix to the module, then send it as a pull request to the module's developer.",
+      "source_sha256": "a092ede2fbeaa5b8b476c52e9bee976aae0e7faf2caaa49c9cb4940a0862568e",
+      "start": 13535,
+      "end": 13765,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "\n    ",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "and/or",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "\n    ",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/fips140.md",
+    "raw": "U.S",
+    "source": "NIST FIPS 140-3 is a U.S. Government compliance regime for cryptography\napplications that amongst other things requires the use of a set of approved\nalgorithms, and the use of\n[CMVP](https://csrc.nist.gov/projects/cryptographic-module-validation-program)-validated\ncryptographic modules tested in the target operating environments.",
+    "old_slot": {
+      "id": "1b0202a476835f0cac7cff8a0afbd8e6c6baac45cb48a87b77b30a0d1b59681e",
+      "locator": "_content/doc/security/fips140.md#markdown/Paragraph:2eba3bee74afea2090b0cace04983bda32ec6a3e43cbeab0e75166b751d8bc63:1",
+      "source": "⟦P0⟧ ⟦P1⟧ 140-3 is a ⟦P2⟧. Government compliance regime for cryptography⟦P3⟧applications that amongst other things requires the use of a set of approved⟦P4⟧algorithms, and the use of⟦P5⟧⟦P6⟧⟦P7⟧⟦P8⟧-validated⟦P9⟧cryptographic modules tested in the target operating environments.",
+      "source_sha256": "2eba3bee74afea2090b0cace04983bda32ec6a3e43cbeab0e75166b751d8bc63",
+      "start": 308,
+      "end": 639,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "NIST",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "FIPS",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "U.S",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P5⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P6⟧",
+          "raw": "[",
+          "role": "open",
+          "pair": "binding-6"
+        },
+        {
+          "token": "⟦P7⟧",
+          "raw": "CMVP",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P8⟧",
+          "raw": "](https://csrc.nist.gov/projects/cryptographic-module-validation-program)",
+          "role": "close",
+          "pair": "binding-6",
+          "binding": {
+            "version": 1,
+            "kind": "markdown-link",
+            "destination": "https://csrc.nist.gov/projects/cryptographic-module-validation-program"
+          }
+        },
+        {
+          "token": "⟦P9⟧",
+          "raw": "\n",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/fips140.md",
+    "raw": "NOTE",
+    "source": "**NOTE:** Simply using a FIPS 140-3 compliant and validated cryptographic module\nmay not—on its own—satisfy all relevant regulatory requirements. The Go team cannot provide any\nguarantees or support around how usage of the provided FIPS 140-3\nmode may, or may not, satisfy specific regulatory requirements for individual\nusers. Care should be taken in determining if usage of this module satisfies\nyour specific requirements.",
+    "old_slot": {
+      "id": "bb98e8175f40ff310d2b077009662fe8bb45408c4ea33ae7f3816db5c0b3aea0",
+      "locator": "_content/doc/security/fips140.md#markdown/Paragraph:4bc7eae4139252155193a8d8c4a444365b5266ee2128e8c9c4b6f44df23c33eb:1",
+      "source": "⟦P0⟧⟦P1⟧:⟦P2⟧ Simply using a ⟦P3⟧ 140-3 compliant and validated cryptographic module⟦P4⟧may not—on its own—satisfy all relevant regulatory requirements. The Go team cannot provide any⟦P5⟧guarantees or support around how usage of the provided ⟦P6⟧ 140-3⟦P7⟧mode may, or may not, satisfy specific regulatory requirements for individual⟦P8⟧users. Care should be taken in determining if usage of this module satisfies⟦P9⟧your specific requirements.",
+      "source_sha256": "4bc7eae4139252155193a8d8c4a444365b5266ee2128e8c9c4b6f44df23c33eb",
+      "start": 844,
+      "end": 1273,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "**",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "NOTE",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "**",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "FIPS",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P5⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P6⟧",
+          "raw": "FIPS",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P7⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P8⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P9⟧",
+          "raw": "\n",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/fuzz/index.md",
+    "raw": "e.g",
+    "source": "While fuzzing is in progress, the [fuzzing engine](#glos-fuzzing-engine)\ngenerates new inputs and runs them against the provided fuzz target. By default,\nit continues to run until a [failing input](#glos-failing-input) is found, or\nthe user cancels the process (e.g. with Ctrl^C).",
+    "old_slot": {
+      "id": "c713488f987081c550f016e021d0ade3b8e3504c00628d4455c35601fda4f593",
+      "locator": "_content/doc/security/fuzz/index.md#markdown/Paragraph:2bcb4dabab76662ce9a5d063627efa0e0c3d6cdb1a463a016f1861c115fc8568:1",
+      "source": "While fuzzing is in progress, the ⟦P0⟧fuzzing engine⟦P1⟧⟦P2⟧generates new inputs and runs them against the provided fuzz target. By default,⟦P3⟧it continues to run until a ⟦P4⟧failing input⟦P5⟧ is found, or⟦P6⟧the user cancels the process (⟦P7⟧. with Ctrl^C).",
+      "source_sha256": "2bcb4dabab76662ce9a5d063627efa0e0c3d6cdb1a463a016f1861c115fc8568",
+      "start": 4242,
+      "end": 4522,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "[",
+          "role": "open",
+          "pair": "binding-0"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "](#glos-fuzzing-engine)",
+          "role": "close",
+          "pair": "binding-0",
+          "binding": {
+            "version": 1,
+            "kind": "markdown-link",
+            "destination": "#glos-fuzzing-engine"
+          }
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "[",
+          "role": "open",
+          "pair": "binding-4"
+        },
+        {
+          "token": "⟦P5⟧",
+          "raw": "](#glos-failing-input)",
+          "role": "close",
+          "pair": "binding-4",
+          "binding": {
+            "version": 1,
+            "kind": "markdown-link",
+            "destination": "#glos-failing-input"
+          }
+        },
+        {
+          "token": "⟦P6⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P7⟧",
+          "raw": "e.g",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/fuzz/technical.md",
+    "raw": "e.g",
+    "source": "If a non-recoverable error occurs while fuzzing which causes the worker process to shut down (e.g. infinite loop, os.Exit, memory exhaustion, etc), minimization will not be attempted, and the failing input will be written to the testdata directory and reported.",
+    "old_slot": {
+      "id": "701c68a1448d3ae54e3acf5fb92f2bd08850a0e2c0130537253ad47e9d233c7d",
+      "locator": "_content/doc/security/fuzz/technical.md#markdown/Paragraph:d04f4ce03b5f905fd6d109eb2112c74ebcf6e215e32bca65ecb0dc5e52859559:1",
+      "source": "If a non-recoverable error occurs while fuzzing which causes the worker process to shut down (⟦P0⟧. infinite loop, ⟦P1⟧, memory exhaustion, etc), minimization will not be attempted, and the failing input will be written to the testdata directory and reported.",
+      "source_sha256": "d04f4ce03b5f905fd6d109eb2112c74ebcf6e215e32bca65ecb0dc5e52859559",
+      "start": 1734,
+      "end": 1995,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "e.g",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "os.Exit",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/fuzz/technical.md",
+    "raw": "i.e",
+    "source": "The RPC pipe is used by the coordinator to control the worker process, sending it either fuzzing or minimization instructions, and by the worker to relay results of its operations to the coordinator (i.e. whether the input expanded coverage, caused a crash, was successfully minimized, etc).",
+    "old_slot": {
+      "id": "ea25d060a7b891db26919cfe8059e5f62be0105ad9add5434e4166907dfe0589",
+      "locator": "_content/doc/security/fuzz/technical.md#markdown/Paragraph:ab89dae9829feaf52acbcdeba28e66047ed64daaf1c315d0265b3375de01385d:1",
+      "source": "The ⟦P0⟧ pipe is used by the coordinator to control the worker process, sending it either fuzzing or minimization instructions, and by the worker to relay results of its operations to the coordinator (⟦P1⟧. whether the input expanded coverage, caused a crash, was successfully minimized, etc).",
+      "source_sha256": "ab89dae9829feaf52acbcdeba28e66047ed64daaf1c315d0265b3375de01385d",
+      "start": 2456,
+      "end": 2747,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "RPC",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "i.e",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/fuzz/technical.md",
+    "raw": "i.e",
+    "source": "Attempt to replace each non-human readable byte with a human readable byte (i.e. something in the ASCII set of bytes)",
+    "old_slot": {
+      "id": "6a5d8fb128db7f1458b217d550c6887dabde16096f938278973f946489fdac0c",
+      "locator": "_content/doc/security/fuzz/technical.md#markdown/list-item:a296f98ace02e408f0bc63aa6507d244ccf3083df860fc525d1e780103181a42:1",
+      "source": "Attempt to replace each non-human readable byte with a human readable byte (⟦P0⟧. something in the ⟦P1⟧ set of bytes)",
+      "source_sha256": "a296f98ace02e408f0bc63aa6507d244ccf3083df860fc525d1e780103181a42",
+      "start": 7586,
+      "end": 7703,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "i.e",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "ASCII",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/index.md",
+    "raw": "FAQ",
+    "source": "Go’s vulnerability detection aims to provide low-noise, reliable tools for\ndevelopers to learn about known vulnerabilities that may affect their projects.\nFor an overview, start at [this summary and FAQ page](/security/vuln)\nabout Go’s vulnerability management architecture. For an applied approach,\nexplore the tools below.",
+    "old_slot": {
+      "id": "027916a0b2caec03468d494cd16d8bfdbfec59bac947ddc0b1a3a2740e502386",
+      "locator": "_content/doc/security/index.md#markdown/Paragraph:d7cf95a655f5b68c2491ad9173019131bb9aa1309f7a633172774b02334c8339:1",
+      "source": "Go’s vulnerability detection aims to provide low-noise, reliable tools for⟦P0⟧developers to learn about known vulnerabilities that may affect their projects.⟦P1⟧For an overview, start at ⟦P2⟧this summary and ⟦P3⟧ page⟦P4⟧⟦P5⟧about Go’s vulnerability management architecture. For an applied approach,⟦P6⟧explore the tools below.",
+      "source_sha256": "d7cf95a655f5b68c2491ad9173019131bb9aa1309f7a633172774b02334c8339",
+      "start": 252,
+      "end": 580,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "[",
+          "role": "open",
+          "pair": "binding-2"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "FAQ",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "](/security/vuln)",
+          "role": "close",
+          "pair": "binding-2",
+          "binding": {
+            "version": 1,
+            "kind": "markdown-link",
+            "destination": "/security/vuln"
+          }
+        },
+        {
+          "token": "⟦P5⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P6⟧",
+          "raw": "\n",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/policy.md",
+    "raw": "e.g",
+    "source": "The Go Security team does not assign traditional fine-grained severity labels\n(e.g CRITICAL, HIGH, MEDIUM, LOW) to security issues because severity depends\nhighly on how a user is using the affected API or functionality. Additionally,\nwhen issuing CVEs for Go security issues we do not assign CVSS scores, as we\nfundamentally disagree with the applicability of the scoring system to Go for\nthe same reasons. Third parties, such as MITRE or NIST, via the NVD, may assign\nCVSS scores to our vulnerabilities, but we do not endorse these scores as\naccurate reflections of their impact.",
+    "old_slot": {
+      "id": "b6d756dd895fd13a9f84890d5fcfae5bac3ea3c81d7b08d77ec66def37a4d8d9",
+      "locator": "_content/doc/security/policy.md#markdown/Paragraph:f9b8424e1f9489384fc02c3b4bbca8319834213589b85aef9ed9e633b74f2a4e:1",
+      "source": "The Go Security team does not assign traditional fine-grained severity labels⟦P0⟧(⟦P1⟧ ⟦P2⟧, ⟦P3⟧, ⟦P4⟧, ⟦P5⟧) to security issues because severity depends⟦P6⟧highly on how a user is using the affected ⟦P7⟧ or functionality. Additionally,⟦P8⟧when issuing CVEs for Go security issues we do not assign ⟦P9⟧ scores, as we⟦P10⟧fundamentally disagree with the applicability of the scoring system to Go for⟦P11⟧the same reasons. Third parties, such as ⟦P12⟧ or ⟦P13⟧, via the ⟦P14⟧, may assign⟦P15⟧⟦P16⟧ scores to our vulnerabilities, but we do not endorse these scores as⟦P17⟧accurate reflections of their impact.",
+      "source_sha256": "f9b8424e1f9489384fc02c3b4bbca8319834213589b85aef9ed9e633b74f2a4e",
+      "start": 3447,
+      "end": 4028,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "e.g",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "CRITICAL",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "HIGH",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "MEDIUM",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P5⟧",
+          "raw": "LOW",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P6⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P7⟧",
+          "raw": "API",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P8⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P9⟧",
+          "raw": "CVSS",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P10⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P11⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P12⟧",
+          "raw": "MITRE",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P13⟧",
+          "raw": "NIST",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P14⟧",
+          "raw": "NVD",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P15⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P16⟧",
+          "raw": "CVSS",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P17⟧",
+          "raw": "\n",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/policy.md",
+    "raw": "and/or",
+    "source": "That said, the following issue tracks do signal how severe and/or wide-reaching\nthe Security team believes an issue to be. For example, an issue with medium to\nsignificant impact for many users is a PRIVATE track issue in this policy, and\nan issue with negligible to minor impact, or which affects only a small subset\nof users, is a PUBLIC track issue.",
+    "old_slot": {
+      "id": "c5e622e95a3bf00d9df68aee146fb3e079544dbb3e08b2cbdbe32625b293a401",
+      "locator": "_content/doc/security/policy.md#markdown/Paragraph:52b6aaf02bbaa2ce6b589d61d20b04e8593784f52c4eda8c3a6bdd03cd7e93d0:1",
+      "source": "That said, the following issue tracks do signal how severe ⟦P0⟧ wide-reaching⟦P1⟧the Security team believes an issue to be. For example, an issue with medium to⟦P2⟧significant impact for many users is a ⟦P3⟧ track issue in this policy, and⟦P4⟧an issue with negligible to minor impact, or which affects only a small subset⟦P5⟧of users, is a ⟦P6⟧ track issue.",
+      "source_sha256": "52b6aaf02bbaa2ce6b589d61d20b04e8593784f52c4eda8c3a6bdd03cd7e93d0",
+      "start": 4358,
+      "end": 4710,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "and/or",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "PRIVATE",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P5⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P6⟧",
+          "raw": "PUBLIC",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/vuln/cna.md",
+    "raw": "IMPORTANT",
+    "source": "**IMPORTANT**: The form linked below creates a public issue on the issue tracker, and therefore\n*must not* be used to report undisclosed vulnerabilities in Go (see our\n[security policy](/security/policy) for instructions on reporting\nundisclosed issues).",
+    "old_slot": {
+      "id": "8b8d0f6526df091a30a34b29377c81fd2ba023af0931920fe55ef1df41a1dba5",
+      "locator": "_content/doc/security/vuln/cna.md#markdown/Paragraph:faca8ed4983f74e71a2b1f05af55594e90d381f2f3b8a1e2f77bc5e9338bb05e:1",
+      "source": "⟦P0⟧⟦P1⟧⟦P2⟧: The form linked below creates a public issue on the issue tracker, and therefore⟦P3⟧⟦P4⟧must not⟦P5⟧ be used to report undisclosed vulnerabilities in Go (see our⟦P6⟧⟦P7⟧security policy⟦P8⟧ for instructions on reporting⟦P9⟧undisclosed issues).",
+      "source_sha256": "faca8ed4983f74e71a2b1f05af55594e90d381f2f3b8a1e2f77bc5e9338bb05e",
+      "start": 1205,
+      "end": 1459,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "**",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "IMPORTANT",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "**",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "*",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P5⟧",
+          "raw": "*",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P6⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P7⟧",
+          "raw": "[",
+          "role": "open",
+          "pair": "binding-7"
+        },
+        {
+          "token": "⟦P8⟧",
+          "raw": "](/security/policy)",
+          "role": "close",
+          "pair": "binding-7",
+          "binding": {
+            "version": 1,
+            "kind": "markdown-link",
+            "destination": "/security/policy"
+          }
+        },
+        {
+          "token": "⟦P9⟧",
+          "raw": "\n",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/vuln/database.md",
+    "raw": "e.g",
+    "source": "Note that the modified time *should not* be compared to wall clock time,\n  e.g. for purposes of cache invalidation, as there may a delay in making\n  database modifications live.",
+    "old_slot": {
+      "id": "0f1910ad9b843196f4126bcee6d9e594af4f535960fe6eae019d1e6b62ad18f0",
+      "locator": "_content/doc/security/vuln/database.md#markdown/list-item:f7fb4a84d51c62b0adf41719b916d47608cae252886aace6e7bc656ad20b77fb:1",
+      "source": "Note that the modified time ⟦P0⟧should not⟦P1⟧ be compared to wall clock time,⟦P2⟧⟦P3⟧. for purposes of cache invalidation, as there may a delay in making⟦P4⟧database modifications live.",
+      "source_sha256": "f7fb4a84d51c62b0adf41719b916d47608cae252886aace6e7bc656ad20b77fb",
+      "start": 2004,
+      "end": 2181,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "*",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "*",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "\n  ",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "e.g",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "\n  ",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/vuln/database.md",
+    "raw": "e.g",
+    "source": "The `database_specific.url` field is a string representing the fully-qualified\nURL of the Go vulnerability report, e.g, \"https://pkg.go.dev/vuln/GO-2023-1621\".",
+    "old_slot": {
+      "id": "12ce6c96fc3482a7799b7bf42557cc6a9dc0578726295d8d2cd81bb8f6362da8",
+      "locator": "_content/doc/security/vuln/database.md#markdown/Paragraph:86d492a4273af0563efffe1330faede64f9addf5cb99a2940a3e974bf25919bf:1",
+      "source": "The ⟦P0⟧ field is a string representing the fully-qualified⟦P1⟧⟦P2⟧ of the Go vulnerability report, ⟦P3⟧, \"⟦P4⟧\".",
+      "source_sha256": "86d492a4273af0563efffe1330faede64f9addf5cb99a2940a3e974bf25919bf",
+      "start": 7012,
+      "end": 7171,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "`database_specific.url`",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "URL",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "e.g",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "https://pkg.go.dev/vuln/GO-2023-1621",
+          "role": "atom"
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/security/vuln/index.md",
+    "raw": "NOTE",
+    "source": "**NOTE**: To report a vulnerability in the Go project, please see the [Go Security Policy](/security/policy).",
+    "old_slot": {
+      "id": "3f5e27d99d82c416db1e2e7bd7b5ecc39ec2ee69cfb85b07959d3d0f269543fc",
+      "locator": "_content/doc/security/vuln/index.md#markdown/Paragraph:747cdff21773250424d83ecd0f9e74c3f96b6fee7828b460fab1f54d2183a70f:1",
+      "source": "⟦P0⟧⟦P1⟧⟦P2⟧: To report a vulnerability in the Go project, please see the ⟦P3⟧Go Security Policy⟦P4⟧.",
+      "source_sha256": "747cdff21773250424d83ecd0f9e74c3f96b6fee7828b460fab1f54d2183a70f",
+      "start": 734,
+      "end": 843,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "**",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "NOTE",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "**",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "[",
+          "role": "open",
+          "pair": "binding-3"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "](/security/policy)",
+          "role": "close",
+          "pair": "binding-3",
+          "binding": {
+            "version": 1,
+            "kind": "markdown-link",
+            "destination": "/security/policy"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "source_path": "_content/doc/tutorial/json.md",
+    "raw": "and/or",
+    "source": "and the sending party can populate the `Cmd` field and/or the `Msg` field\nof the top-level JSON object,\ndepending on the type of message they want to communicate.\n`Unmarshal`, when decoding the JSON into an `IncomingMessage` struct,\nwill only allocate the data structures present in the JSON data.\nTo know which messages to process, the programmer need simply test that\neither `Cmd` or `Msg` is not `nil`.",
+    "old_slot": {
+      "id": "19697664e3444b0828d28ede38dc70f6a58e07110dd35c25b29fe421708593dc",
+      "locator": "_content/doc/tutorial/json.md#markdown/Paragraph:d83b78f734b9d8b2a7f86b2cc6bf5f1ad2252dba450257d4ac9212f95f3e8aeb:1",
+      "source": "and the sending party can populate the ⟦P0⟧ field ⟦P1⟧ the ⟦P2⟧ field⟦P3⟧of the top-level ⟦P4⟧ object,⟦P5⟧depending on the type of message they want to communicate.⟦P6⟧⟦P7⟧, when decoding the ⟦P8⟧ into an ⟦P9⟧ struct,⟦P10⟧will only allocate the data structures present in the ⟦P11⟧ data.⟦P12⟧To know which messages to process, the programmer need simply test that⟦P13⟧either ⟦P14⟧ or ⟦P15⟧ is not ⟦P16⟧.",
+      "source_sha256": "d83b78f734b9d8b2a7f86b2cc6bf5f1ad2252dba450257d4ac9212f95f3e8aeb",
+      "start": 7417,
+      "end": 7822,
+      "protected": [
+        {
+          "token": "⟦P0⟧",
+          "raw": "`Cmd`",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P1⟧",
+          "raw": "and/or",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P2⟧",
+          "raw": "`Msg`",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P3⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P4⟧",
+          "raw": "JSON",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P5⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P6⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P7⟧",
+          "raw": "`Unmarshal`",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P8⟧",
+          "raw": "JSON",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P9⟧",
+          "raw": "`IncomingMessage`",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P10⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P11⟧",
+          "raw": "JSON",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P12⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P13⟧",
+          "raw": "\n",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P14⟧",
+          "raw": "`Cmd`",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P15⟧",
+          "raw": "`Msg`",
+          "role": "atom"
+        },
+        {
+          "token": "⟦P16⟧",
+          "raw": "`nil`",
+          "role": "atom"
+        }
+      ]
+    }
+  }
+]

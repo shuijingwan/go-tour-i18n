@@ -172,6 +172,7 @@ func legacyQCClosure(root, locale string, catalog *i18n.Catalog, statuses []i18n
 	if err != nil {
 		return nil, err
 	}
+	compatibility := i18n.PrepareGlossaryCompatibility(root, locale, catalog)
 	for _, e := range entries {
 		if !e.IsDir() {
 			continue
@@ -195,7 +196,7 @@ func legacyQCClosure(root, locale string, catalog *i18n.Catalog, statuses []i18n
 		if normalized.GlossarySHA256 != glossarySHA {
 			compatible := true
 			for _, u := range normalized.Units {
-				r := i18n.ResolveGlossaryCompatibility(root, locale, normalized.GlossarySHA256, glossarySHA, "tu:"+u.UnitID, catalog)
+				r := compatibility.Resolve(normalized.GlossarySHA256, glossarySHA, "tu:"+u.UnitID)
 				if r.Status != "compatible" {
 					compatible = false
 					break
@@ -328,11 +329,24 @@ func checkedCatalog(root string) (*i18n.Catalog, error) {
 	if err := i18n.HydrateCatalogSources(c, current); err != nil {
 		return nil, err
 	}
+	c.HistoricalContextReader = readHistoricalLanguageContext
 	return c, nil
 }
 
 func CheckLocale(root string, g *Global, locale string) (*Locale, error) {
+	v := newClosureValidation(root)
+	l, err := v.checkLocale(root, g, locale)
+	if err == nil {
+		err = v.verify()
+	}
+	return l, err
+}
+
+func (v *closureValidation) checkLocale(root string, g *Global, locale string) (*Locale, error) {
 	if err := i18n.ValidateLocaleName(locale); err != nil {
+		return nil, err
+	}
+	if err := v.optional(LocalePath(locale)); err != nil {
 		return nil, err
 	}
 	l, err := readLocaleAuthority(root, g, locale)
@@ -353,7 +367,7 @@ func CheckLocale(root string, g *Global, locale string) (*Locale, error) {
 			legacyGot.Packages = append(legacyGot.Packages, c)
 			continue
 		}
-		if err := checkPackageCompletion(root, g, locale, c); err != nil {
+		if err := v.checkPackageCompletion(root, g, locale, c); err != nil {
 			return nil, err
 		}
 	}
@@ -367,6 +381,11 @@ func CheckLocale(root string, g *Global, locale string) (*Locale, error) {
 	catalog, err := checkedCatalog(root)
 	if err != nil {
 		return nil, err
+	}
+	if _, current, err := currentTourCheckpoint(root, g, catalog, legacyGot); err != nil {
+		return nil, err
+	} else if current {
+		return &got, nil
 	}
 	for _, p := range profiles {
 		if p.Locale == locale {

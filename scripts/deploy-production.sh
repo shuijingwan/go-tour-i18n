@@ -41,6 +41,11 @@ HEALTH_URL=''
 PUBLIC_URL=''
 PUBLIC_ACCEPTANCE_HINT=''
 EXPECTED_DEPLOYMENT_MODE=''
+INPUT_IDENTITY=''
+SHARED_ASSETS_IDENTITY=''
+SHARED_MANIFEST_SHA=''
+PRIMARY_ROUTE=''
+OLD_INPUT_IDENTITY=''
 
 setup_ssh_multiplex() {
     local option quoted
@@ -117,7 +122,7 @@ manual_check_hint() {
 validate_local_tools() {
     local command_name
 
-    for command_name in awk basename curl date find mktemp python3 rsync sha256sum sort ssh xargs; do
+    for command_name in awk basename curl date find go mktemp python3 rsync sha256sum sort ssh xargs; do
         command -v "$command_name" >/dev/null || {
             error "required local command is missing: $command_name"
             return 1
@@ -156,135 +161,22 @@ release_name_from_path() {
 }
 
 validate_local_release() {
-    local input_path=$1
-    local release_dir entry entry_name symlink unsupported checksum_output checksum_count
-    local -a root_entries=()
-
-    if [[ ! -d $input_path || -L $input_path ]]; then
-        error "release path must be a real directory, not a symlink: $input_path"
-        return 1
-    fi
+    local input_path=$1 release_dir info script_root
+    [[ -d $input_path && ! -L $input_path ]] || { error 'real immutable bundle directory required'; return 1; }
     release_dir=$(cd -P -- "$input_path" && pwd -P)
-
-    mapfile -d '' root_entries < <(find "$release_dir" -mindepth 1 -maxdepth 1 -print0)
-    if (( ${#root_entries[@]} != 4 )); then
-        error 'release root must contain exactly bin, _content, release.json, and SHA256SUMS'
-        return 1
-    fi
-    for entry in "${root_entries[@]}"; do
-        entry_name=${entry##*/}
-        case $entry_name in
-            bin|_content|release.json|SHA256SUMS) ;;
-            *)
-                error "unexpected release root entry: $entry_name"
-                return 1
-                ;;
-        esac
-    done
-
-    if [[ ! -d $release_dir/bin || ! -d $release_dir/_content || ! -f $release_dir/release.json || ! -f $release_dir/SHA256SUMS ]]; then
-        error 'release root entries have unexpected types'
-        return 1
-    fi
-    if [[ ! -f $release_dir/bin/tour || ! -x $release_dir/bin/tour ]]; then
-        error 'bin/tour must be a regular executable file'
-        return 1
-    fi
-    symlink=$(find "$release_dir" -type l -print -quit)
-    unsupported=$(find "$release_dir" ! -type d ! -type f -print -quit)
-    if [[ -n $symlink || -n $unsupported ]]; then
-        error "release contains a symlink or unsupported file: ${symlink:-$unsupported}"
-        return 1
-    fi
-
-    RELEASE_LOCALE=$(python3 - "$release_dir" <<'PY'
-import json
-import pathlib
-import sys
-
-root = pathlib.Path(sys.argv[1])
-try:
-    manifest = json.loads((root / "release.json").read_text(encoding="utf-8"))
-except (OSError, json.JSONDecodeError) as exc:
-    raise SystemExit(f"bundle metadata error: {exc}")
-locale = manifest.get("locale")
-if type(locale) is not str or not locale:
-    raise SystemExit(f"release.json constraint failed: locale={locale!r}, want non-empty string")
-print(locale)
-PY
-    ) || {
-        error 'release locale validation failed'
-        return 1
+    script_root=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+    info=$(cd -- "$script_root" && go run -mod=readonly ./cmd/tour-i18n release-contract check --input "$release_dir" --current --json) || {
+        error 'sealed current Site release validation failed'; printf 'MUTATION_STATUS=NONE\n'; return 1;
     }
-
-    # This whitelist is resolved before any SSH, upload, lock, or production change.
+    [[ $(python3 -c 'import json,sys; print(json.load(sys.stdin)["kind"])' <<<"$info") == production ]] || { error 'sealed production bundle required'; return 1; }
+    RELEASE_LOCALE=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["locale"])' <<<"$info") || return 1
     select_deployment_profile "$RELEASE_LOCALE" || return 1
-
-    if ! python3 - "$release_dir" "$RELEASE_LOCALE" <<'PY'
-import json
-import pathlib
-import sys
-
-root = pathlib.Path(sys.argv[1])
-profile_locale = sys.argv[2]
-try:
-    manifest = json.loads((root / "release.json").read_text(encoding="utf-8"))
-    metadata = json.loads(
-        (root / "_content" / "tour" / "site-metadata.json").read_text(encoding="utf-8")
-    )
-except (OSError, json.JSONDecodeError) as exc:
-    raise SystemExit(f"bundle metadata error: {exc}")
-
-expected = {
-    "schema_version": 2,
-    "locale": profile_locale,
-    "pages": 103,
-    "articles": 7,
-    "execution_transport": "http-playground-proxy",
-    "execution_provider": "play.golang.org",
-    "local_socket_enabled": False,
-    "goos": "linux",
-    "goarch": "amd64",
-}
-for key, want in expected.items():
-    if key not in manifest or manifest[key] != want or type(manifest[key]) is not type(want):
-        raise SystemExit(
-            f"release.json constraint failed: {key}={manifest.get(key)!r}, want {want!r}"
-        )
-
-for key in ("translation_units", "eligible_examples"):
-    value = manifest.get(key)
-    if type(value) is not int or value < 0:
-        raise SystemExit(f"release.json constraint failed: {key}={value!r}, want non-negative int")
-if manifest["translation_units"] != manifest["pages"] + manifest["eligible_examples"]:
-    raise SystemExit(
-        "release.json constraint failed: translation_units must equal pages + eligible_examples"
-    )
-
-for key in (
-    "locale",
-    "published_at",
-    "upstream_commit",
-    "upstream_commit_time",
-    "pages",
-    "articles",
-):
-    if key not in manifest or key not in metadata or manifest[key] != metadata[key]:
-        raise SystemExit(f"site-metadata.json does not match release.json field {key}")
-PY
-    then
-        error 'release metadata validation failed'
-        return 1
-    fi
-
-    if ! checksum_output=$(cd -- "$release_dir" && sha256sum -c --strict SHA256SUMS); then
-        printf '%s\n' "$checksum_output" >&2
-        error 'local SHA256 verification failed'
-        return 1
-    fi
-    checksum_count=$(awk 'END { print NR }' "$release_dir/SHA256SUMS")
-    log "SHA256 verification: PASS ($checksum_count files)"
-    log "local release preflight passed: $release_dir"
+    INPUT_IDENTITY=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["input_identity"])' <<<"$info") || return 1
+    SHARED_ASSETS_IDENTITY=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["content"]["shared_assets_identity"])' <<<"$info") || return 1
+    SHARED_MANIFEST_SHA=$(python3 -c 'import hashlib,json,sys; a=json.load(sys.stdin)["content"]["shared_assets"]; print(hashlib.sha256("".join("%s  %s\n"%(h,p) for p,h in sorted(a.items())).encode()).hexdigest())' <<<"$info") || return 1
+    PRIMARY_ROUTE=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["content"]["canonical_routes"][0])' <<<"$info") || return 1
+    HEALTH_URL="${PRODUCTION_LOCALHOST_HEALTH_URL%/}$PRIMARY_ROUTE"
+    log "current sealed release preflight PASS: $RELEASE_LOCALE $INPUT_IDENTITY"
 }
 
 prepare_remote() {
@@ -350,7 +242,9 @@ if ! mkdir -m 0700 -- "$staging"; then
     fail "cannot create staging: $staging"
 fi
 
-printf '%s\t%s\n' "$deployment_mode" "$old"
+old_input='NONE'
+if [[ $old != "$NO_OLD_RELEASE" ]]; then old_input=$(sha256sum "$old/SHA256SUMS"); old_input=${old_input%% *}; fi
+printf '%s\t%s\t%s\n' "$deployment_mode" "$old" "$old_input"
 REMOTE_PREPARE
 }
 
@@ -479,12 +373,13 @@ validate_remote_release() {
     local remote_staging=$1
 
     ssh "${SSH_OPTIONS[@]}" "$SSH_HOST" bash -s -- \
-        "$remote_staging" "$SERVICE_USER" <<'REMOTE_VALIDATE'
+        "$remote_staging" "$SERVICE_USER" "$INPUT_IDENTITY" <<'REMOTE_VALIDATE'
 set -Eeuo pipefail
 IFS=$'\n\t'
 
 staging=$1
 service_user=$2
+expected_input=$3
 
 [[ -d $staging ]] || {
     printf '[deploy:remote] ERROR: staging is missing: %s\n' "$staging" >&2
@@ -505,6 +400,9 @@ if ! checksum_output=$(cd -- "$staging" && sha256sum -c --strict SHA256SUMS); th
     exit 1
 fi
 checksum_count=$(awk 'END { print NR }' "$staging/SHA256SUMS")
+proof=$("$staging/bin/tour" -verify-bundle) || exit 1
+actual_input=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["input_identity"])' <<<"$proof")
+[[ $actual_input == "$expected_input" ]] || { printf 'uploaded bundle identity differs from selected input\n' >&2; exit 1; }
 su -s /bin/sh -c 'test -x "$1" && test -r "$2" && test -r "$3"' \
     "$service_user" sh \
     "$staging/bin/tour" \
@@ -539,7 +437,8 @@ activate_release() {
     ssh "${SSH_OPTIONS[@]}" "$SSH_HOST" bash -s -- \
         "$RELEASES_DIR" "$CURRENT_LINK" "$DEPLOY_LOCK" "$SERVICE" "$HEALTH_URL" \
         "$HEALTH_ATTEMPTS" "$HEALTH_INTERVAL" "$deployment_mode" "$old_release" "$remote_staging" \
-        "$remote_final" "$link_suffix" <<'REMOTE_ACTIVATE'
+        "$remote_final" "$link_suffix" "$SHARED_ASSETS_IDENTITY" "$INPUT_IDENTITY" "$OLD_INPUT_IDENTITY" \
+        "$PRODUCTION_SHARED_ASSETS_ORIGIN_ROOT" "$SHARED_MANIFEST_SHA" <<'REMOTE_ACTIVATE'
 set -Eeuo pipefail
 IFS=$'\n\t'
 
@@ -555,14 +454,33 @@ expected_old=$9
 staging=${10}
 final=${11}
 link_suffix=${12}
+expected_assets=${13}
+expected_input=${14}
+expected_old_input=${15}
+assets_root=${16}
+expected_shared_manifest=${17}
+assets_lock="${assets_root%/*}/.assets-go-dev.deploy.lock"
+assets_leased=0
 readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
 next_link="${current_link}.next-${link_suffix}"
 rollback_link="${current_link}.rollback-${link_suffix}"
+final_owned=0
+
+release_assets_lease() {
+    if (( assets_leased )); then
+        [[ -f $assets_lock/locale-consumer && $(cat "$assets_lock/locale-consumer") == "$link_suffix" ]] || return 1
+        rm -- "$assets_lock/locale-consumer" && rmdir -- "$assets_lock" || return 1
+        rm -- "$deploy_lock/consumer-token" || return 1
+        assets_leased=0
+    fi
+}
 
 failed_before_current_switch() {
     rm -f -- "$next_link" "$rollback_link"
-    rm -rf -- "$staging" "$final"
+    rm -rf -- "$staging"
+    if (( final_owned )); then rm -rf -- "$final"; fi
     rmdir -- "$deploy_lock" || true
+    release_assets_lease || true
     printf '[deploy:remote] RESULT=FAILED_BEFORE_CURRENT_SWITCH\n'
     exit 1
 }
@@ -594,6 +512,18 @@ health_check() {
 rollback() {
     local restart_ok=1
 
+    # An old historical Tour predecessor is preserved for operator recovery,
+    # never automatically reactivated as the current Site truth. Full-tree
+    # rollback is eligible only for a sealed release with identical shared
+    # dependency, so content/routes/sitemap/browser authority travel together.
+    old_proof=$("$expected_old/bin/tour" -verify-bundle) || return 1
+    old_assets=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["content"]["shared_assets_identity"])' <<<"$old_proof") || return 1
+    old_input=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["input_identity"])' <<<"$old_proof") || return 1
+    [[ $old_assets == "$expected_assets" && $old_input == "$expected_old_input" ]] || return 1
+    [[ $(sha256sum "$assets_root/SHA256SUMS" | awk '{print $1}') == "$expected_shared_manifest" ]] || return 1
+    old_route=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["content"]["canonical_routes"][0])' <<<"$old_proof") || return 1
+    health_url=$(python3 -c 'import sys,urllib.parse; u=urllib.parse.urlsplit(sys.argv[1]);print(urllib.parse.urlunsplit((u.scheme,u.netloc,sys.argv[2],"","")))' "$health_url" "$old_route") || return 1
+
     printf '[deploy:remote] new release failed; rolling back to %s\n' "$expected_old" >&2
     rm -f -- "$rollback_link"
     ln -s -- "$expected_old" "$rollback_link" || return 1
@@ -605,6 +535,13 @@ rollback() {
 }
 
 [[ -d $deploy_lock ]] || exit 1
+[[ -d $assets_root && ! -L $assets_root && $(readlink -f "$assets_root") == "$assets_root" ]] || exit 1
+mkdir -- "$assets_lock" || exit 1
+assets_leased=1
+printf '%s\n' "$link_suffix" > "$assets_lock/locale-consumer"
+printf '%s\n' "$link_suffix" > "$deploy_lock/consumer-token"
+[[ $(sha256sum "$assets_root/SHA256SUMS" | awk '{print $1}') == "$expected_shared_manifest" ]] || failed_before_current_switch
+(cd -- "$assets_root" && sha256sum -c --strict SHA256SUMS >/dev/null) || failed_before_current_switch
 case $deployment_mode in
     EXISTING)
         [[ -L $current_link ]] || exit 1
@@ -613,6 +550,9 @@ case $deployment_mode in
             printf '[deploy:remote] ERROR: current changed since preflight: %s\n' "$actual_old" >&2
             exit 1
         }
+        actual_old_input=$(sha256sum "$actual_old/SHA256SUMS"); actual_old_input=${actual_old_input%% *}
+        [[ $actual_old_input == "$expected_old_input" ]] || exit 1
+        (cd -- "$actual_old" && sha256sum -c --strict SHA256SUMS >/dev/null) || exit 1
         case $actual_old in
             "$releases_dir"/*) ;;
             *) exit 1 ;;
@@ -624,32 +564,40 @@ case $deployment_mode in
     *) exit 1 ;;
 esac
 [[ -d $staging ]] || exit 1
+new_proof=$("$staging/bin/tour" -verify-bundle) || exit 1
+[[ $(python3 -c 'import json,sys; print(json.load(sys.stdin)["input_identity"])' <<<"$new_proof") == "$expected_input" ]] || exit 1
 [[ ! -e $final && ! -L $final ]] || exit 1
 [[ ! -e $next_link && ! -L $next_link && ! -e $rollback_link && ! -L $rollback_link ]] || exit 1
 
 if ! mv -T -- "$staging" "$final"; then
     failed_before_current_switch
 fi
+final_owned=1
 if ! ln -s -- "$final" "$next_link"; then
     failed_before_current_switch
 fi
 mv -Tf -- "$next_link" "$current_link"
 printf '[deploy:remote] current switched to %s\n' "$final"
 
-if systemctl restart "$service" && health_check; then
+if systemctl daemon-reload && systemctl restart "$service" && health_check; then
+    release_assets_lease || exit 21
     rmdir -- "$deploy_lock"
     printf '[deploy:remote] deployment completed: %s\n' "$final"
+    printf 'MUTATION_STATUS=KNOWN\n'
     exit 0
 fi
 
 if [[ $deployment_mode == EXISTING ]]; then
     if rollback; then
+        release_assets_lease || exit 21
         rmdir -- "$deploy_lock"
         printf '[deploy:remote] rollback completed; old release is healthy\n' >&2
+        printf 'MUTATION_STATUS=NONE\n'
         exit 20
     fi
 
     printf '[deploy:remote] ERROR: rollback failed; manual recovery is required\n' >&2
+    printf 'MUTATION_STATUS=UNKNOWN\n'
     printf '[deploy:remote] current=%s\n' "$(readlink -f -- "$current_link" 2>/dev/null || printf unresolved)" >&2
     systemctl status "$service" --no-pager -l >&2 || true
     journalctl -u "$service" -n 80 --no-pager >&2 || true
@@ -735,7 +683,12 @@ main() {
     trap cleanup_ssh_multiplex EXIT
     remote_name=$(release_name_from_path "$release_input") || return 1
     validate_local_release "$release_input" || return 1
+    load_production_identity_shared || return 1
     release_dir=$(cd -P -- "$release_input" && pwd -P)
+    local exact_preflight expected_prior_pointer expected_prior_identity
+    exact_preflight=$(python3 "$(dirname -- "${BASH_SOURCE[0]}")/release_contract.py" preflight --input "$release_dir") || { printf 'MUTATION_STATUS=NONE\n'; return 1; }
+    expected_prior_pointer=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["prior"]["pointer"] or "NO_OLD_RELEASE")' <<<"$exact_preflight") || return 1
+    expected_prior_identity=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["prior"]["input_identity"] or "")' <<<"$exact_preflight") || return 1
     local_tree_sha256=$(release_tree_sha256 "$release_dir") || {
         error 'cannot compute local release tree identity'
         return 1
@@ -753,7 +706,12 @@ main() {
         error "if SSH was interrupted, check whether $DEPLOY_LOCK was left behind before retrying"
         return 1
     fi
-    IFS=$'\t' read -r deployment_mode old_release <<<"$prepare_output"
+    IFS=$'\t' read -r deployment_mode old_release OLD_INPUT_IDENTITY <<<"$prepare_output"
+    if [[ $deployment_mode != "$ALREADY_CURRENT" && ( $old_release != "$expected_prior_pointer" || $OLD_INPUT_IDENTITY != "$expected_prior_identity" ) ]]; then
+        error 'production predecessor changed after exact preflight; refusing apply'
+        cleanup_before_activation "$remote_staging" || manual_check_hint
+        printf 'MUTATION_STATUS=NONE\n'; return 1
+    fi
     [[ ( $deployment_mode == EXISTING && -n $old_release ) || \
         ( $deployment_mode == FIRST_DEPLOYMENT && $old_release == "$NO_OLD_RELEASE" ) || \
         ( $deployment_mode == "$ALREADY_CURRENT" && -n $old_release ) ]] || {
@@ -770,6 +728,7 @@ main() {
         fi
         trap - INT TERM HUP
         log "source deployment already completed: deployment already current / RESUME $remote_final"
+        printf 'ACTION=CARRIED MUTATION_STATUS=NONE\n'
         check_public
         return
     fi
@@ -780,6 +739,7 @@ main() {
         error 'upload failed; production current was not changed'
         cleanup_before_activation "$remote_staging" || error "cleanup failed; inspect $DEPLOY_LOCK manually"
         staging_ready=0
+        printf 'MUTATION_STATUS=NONE\n'
         return 1
     fi
 
@@ -788,6 +748,7 @@ main() {
         error 'remote validation failed; production current was not changed'
         cleanup_before_activation "$remote_staging" || error "cleanup failed; inspect $DEPLOY_LOCK manually"
         staging_ready=0
+        printf 'MUTATION_STATUS=NONE\n'
         return 1
     fi
 

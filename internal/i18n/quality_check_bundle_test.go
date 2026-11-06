@@ -60,6 +60,8 @@ func TestQualityCheckReviewerBundleDeterministicAndComplete(t *testing.T) {
 			copyQualityBundleTestFile(t, filepath.Join(sourceRoot, filepath.FromSlash(unit.SourcePath)), filepath.Join(root, filepath.FromSlash(unit.SourcePath)))
 		}
 	}
+	seedLanguageAuditTransportFixture(t, root, "uk-UA", "Cyrillic")
+	copyQualityBundleTestTree(t, filepath.Join(sourceRoot, "_content", "tour"), filepath.Join(root, "_content", "tour"))
 	first, manifest, err := ExportQualityCheckReviewerBundle(root, catalog, QualityCheckReviewerBundleOptions{Locale: "uk-UA", SnapshotID: "qc-001", StartIndex: 1, Limit: 60})
 	if err != nil {
 		t.Fatal(err)
@@ -78,7 +80,7 @@ func TestQualityCheckReviewerBundleDeterministicAndComplete(t *testing.T) {
 	if err := ValidateTransportBundleInventory(files, manifest.Files, true); err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{"quality-check.json", "formal/snapshot-manifest.json", "formal/glossary.yaml"} {
+	for _, required := range []string{"quality-check.json", "formal/snapshot-manifest.json", "formal/glossary.yaml", LanguageAttentionPath, "formal/language-policy.json"} {
 		if _, ok := files[required]; !ok {
 			t.Fatalf("bundle missing %s", required)
 		}

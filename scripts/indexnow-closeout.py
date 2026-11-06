@@ -19,6 +19,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 spec = importlib.util.spec_from_file_location("production_identity", ROOT / "scripts" / "production-identity.py")
 IDENTITY = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(IDENTITY)
+contract_spec=importlib.util.spec_from_file_location("indexnow_release_contract",ROOT/"scripts/release_contract.py")
+CONTRACT=importlib.util.module_from_spec(contract_spec);contract_spec.loader.exec_module(CONTRACT)
+http_spec=importlib.util.spec_from_file_location("indexnow_current_http",ROOT/"scripts/release_http.py")
+HTTP=importlib.util.module_from_spec(http_spec);http_spec.loader.exec_module(HTTP)
 
 class CloseoutError(RuntimeError): pass
 
@@ -179,10 +183,16 @@ print("PROVISIONING PASS")
 '''
 
 class Closeout:
-    def __init__(self, locale, key_file=None, key_store_root=None):
+    def __init__(self, locale, key_file=None, key_store_root=None,release_dir=None):
         self.locale = locale
         identity = IDENTITY.load_identity(ROOT / "production" / "identity.json")
         self.profile, self.shared = profile_for_locale(identity, locale), identity["shared"]
+        if release_dir is None:raise CloseoutError("--release-dir current sealed artifact required")
+        self.release_dir=pathlib.Path(release_dir)
+        self.info=CONTRACT.load(self.release_dir,current=True)
+        if self.info["locale"]!=locale:raise CloseoutError("search release locale mismatch")
+        CONTRACT.shared_freshness(self.info,self.shared)
+        HTTP.public(self.info,self.release_dir,self.shared,self.profile)
         if key_file is None:
             self.key_file, self.key_source = default_key_file(locale, key_store_root)
         else:
@@ -197,15 +207,15 @@ class Closeout:
         if self.key_source in ("generated", "reused"):
             print(f"IndexNow local key: {self.key_source}")
         self.provision()
-        result=subprocess.run(["go","run","-mod=readonly","./cmd/tour-i18n","indexnow","bootstrap","--locale",self.locale,"--key-file",str(self.key_file)])
+        result=subprocess.run(["go","run","-mod=readonly","./cmd/tour-i18n","indexnow","bootstrap","--locale",self.locale,"--key-file",str(self.key_file),"--release-dir",str(self.release_dir)])
         if result.returncode: raise CloseoutError("formal IndexNow bootstrap failed after provisioning")
         print(f"IndexNow closeout: PASS (locale={self.locale})")
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description="provision and submit IndexNow for one live locale")
-    parser.add_argument("--locale",required=True); parser.add_argument("--key-file"); args=parser.parse_args(argv)
-    try: Closeout(args.locale,args.key_file).run()
-    except (CloseoutError,IDENTITY.IdentityError,OSError,subprocess.TimeoutExpired) as exc:
+    parser.add_argument("--locale",required=True); parser.add_argument("--key-file"); parser.add_argument("--release-dir",required=True); args=parser.parse_args(argv)
+    try: Closeout(args.locale,args.key_file,release_dir=args.release_dir).run()
+    except (CloseoutError,IDENTITY.IdentityError,CONTRACT.ContractError,HTTP.HTTPError,OSError,subprocess.TimeoutExpired) as exc:
         print(f"indexnow closeout: FAILED: {exc}",file=sys.stderr); return 1
     return 0
 if __name__ == "__main__": raise SystemExit(main())

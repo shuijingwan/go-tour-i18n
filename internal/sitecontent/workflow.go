@@ -129,7 +129,7 @@ func currentPackage(root, locale, pkg string) (*Global, Package, []Document, map
 	if err != nil {
 		return nil, p, nil, nil, nil, err
 	}
-	docs, raw, err := WorkflowDocuments(root, g, pkg)
+	docs, raw, err := sharedWorkflowDocuments(root, g, pkg)
 	if err != nil {
 		return nil, p, nil, nil, nil, err
 	}
@@ -431,8 +431,12 @@ func ImportPackageGeneration(root string, bundle, output []byte, p Provenance) (
 	if outputSize > MaxGenerationOutputBytes {
 		return nil, "", fmt.Errorf("Generation output exceeds bounded UTF-8 text limit")
 	}
-	if err := validateTargets(root, m.Locale, m.Documents, out.Targets); err != nil {
-		return nil, "", err
+	// This historical JSON transport facade checks transport only. Per-Unit
+	// semantic processing must use the shared lifecycle, not batch acceptance.
+	for _, t := range out.Targets {
+		if err := textBytes([]byte(t.Text)); err != nil {
+			return nil, "", err
+		}
 	}
 	ref := Reference{Path: workflowPath(m.Locale, m.Package, "bundles", digest(bundle)), SHA256: digest(bundle)}
 	result := &Generation{Schema: WorkflowSchema, Batch: *m, Output: out, Provenance: p, Bundle: ref}
@@ -474,7 +478,7 @@ func validateTargets(root, locale string, docs []Document, targets []Target) err
 	if err != nil {
 		return err
 	}
-	_, raw, err := WorkflowDocuments(root, g, func() string {
+	_, raw, err := sharedWorkflowDocuments(root, g, func() string {
 		if strings.HasPrefix(docs[0].Path, "data/site-shell/") {
 			return "site-v2-shell"
 		}
@@ -953,7 +957,7 @@ func RecordPackageReview(root string, input []byte) (*Review, string, error) {
 	}
 	values, err := selections(root, r.Locale, r.Package, r.Generations, func() []Document {
 		g, _ := LoadCurrent(root)
-		d, _, _ := WorkflowDocuments(root, g, r.Package)
+		d, _, _ := sharedWorkflowDocuments(root, g, r.Package)
 		return d
 	}())
 	if err != nil {

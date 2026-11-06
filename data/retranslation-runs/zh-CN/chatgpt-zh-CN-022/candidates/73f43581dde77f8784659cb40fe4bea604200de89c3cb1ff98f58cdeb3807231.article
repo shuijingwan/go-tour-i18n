@@ -1,0 +1,48 @@
+<!--{
+  "Title": "避免 SQL 注入风险"
+}-->
+
+可以把 SQL 参数值作为 `sql`
+包函数的实参传入，从而避免 SQL 注入风险。`sql`包中的许多函数既提供
+用于 SQL 语句的参数，也提供该语句
+参数所使用的值（另一些函数则接收预处理语句参数及其参数值）。
+
+下面的示例代码使用 `?` 符号作为
+`id`参数的占位符，而该参数值作为函数实参传入：
+
+```
+// 带参数执行 SQL 语句的正确格式。
+rows, err := db.Query("SELECT * FROM user WHERE id = ?", id)
+```
+
+执行数据库操作的 `sql` 包函数会根据
+你提供的实参创建预处理语句。运行时，`sql`包会把
+SQL语句转换为预处理语句，并与
+单独的参数一起发送。
+
+**注意：** 参数占位符会因使用的 DBMS 和驱动程序
+而异。例如，Postgres 的 [pq 驱动程序](https://pkg.go.dev/github.com/lib/pq)
+接受类似 `$1` 的占位符形式，而不是 `?`。
+
+你可能会想使用 `fmt` 包中的函数，把包含参数的
+SQL语句拼接成字符串，例如这样：
+
+```
+// SECURITY RISK!
+rows, err := db.Query(fmt.Sprintf("SELECT * FROM user WHERE id = %s", id))
+```
+
+这样做并不安全！此时 Go 会先组装完整的 SQL 语句，
+用参数值替换 `%s` 格式动词，然后再把
+完整语句发送给 DBMS。这会产生
+[SQL注入](https://en.wikipedia.org/wiki/SQL_injection)风险，因为
+代码调用方可能把一段意外的 SQL 片段作为 `id` 实参传入。该
+片段可能以不可预测的方式补全 SQL 语句，
+从而危及应用程序。
+
+例如，传入某个 `%s` 值后，最终可能得到
+类似下面的内容，从而返回数据库中的所有用户记录：
+
+```
+SELECT * FROM user WHERE id = 1 OR 1=1;
+```

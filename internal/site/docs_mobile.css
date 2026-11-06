@@ -1,0 +1,45 @@
+/* Derived Docs presentation; frozen content, styles and text remain intact.
+   Use the upstream narrow-layout breakpoint and leave desktop rules unchanged. */
+@media only screen and (max-width: 48rem) {
+  .Doc.Article {
+    overflow-wrap: anywhere;
+  }
+
+  .Doc.Article .SiteBreadcrumb {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+  .Doc.Article .BreadcrumbNav-li {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+  }
+  .Doc.Article .BreadcrumbNav-link {
+    min-width: 0;
+  }
+  .Doc.Article .BreadcrumbNav-li::after {
+    flex-shrink: 0;
+  }
+
+  .Doc.Article code {
+    white-space: normal;
+  }
+  /* Prose may wrap, but exact preformatted lines keep their native scrolling. */
+  .Doc.Article pre,
+  .Doc.Article pre code {
+    overflow-wrap: normal;
+    white-space: pre;
+    word-break: normal;
+  }
+
+  .Doc.Article table {
+    box-sizing: border-box;
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .Doc.Article .DocTable {
+    margin-inline: 0;
+  }
+}

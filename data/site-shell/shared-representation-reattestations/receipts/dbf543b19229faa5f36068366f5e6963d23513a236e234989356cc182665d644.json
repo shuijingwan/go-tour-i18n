@@ -1,0 +1,2907 @@
+{
+  "schema": "go-learning/shared-structured-representation-reattestation/v1",
+  "base_pointer": {
+    "path": "data/site-shell/shared-representation-successors/current/faa63ec7be68cc698d9c20b72e30b80ae67ae69a4c8a6bcb9e83c380d245614f.json",
+    "sha256": "8d1d7081d43ba18c098e17386ac9f5eae315456cd1ad7ccc42c3dba28f6b652a"
+  },
+  "base_receipt": {
+    "path": "data/site-shell/shared-representation-successors/receipts/758c4e4888a3bb1d7fdbc324ea3cfd0c7ced531c6514deab75520bed0db27fa3.json",
+    "sha256": "0167896bdcab112a6eb7b6810aa70c341be8e411554a116b37e2a3ea9fca0da6"
+  },
+  "base_identity_sha256": "758c4e4888a3bb1d7fdbc324ea3cfd0c7ced531c6514deab75520bed0db27fa3",
+  "base_representation_identity_sha256": "0637431c872c52228c272542d5c20fe0f367ea4d9d7300179e7ecd60688c2579",
+  "base": {
+    "schema": "go-learning/shared-structured-representation-successor/v1",
+    "locale_scope": "all-locales",
+    "request": {
+      "schema": "go-learning/shared-structured-representation-successor/v1/request",
+      "package": "site-v2-shell",
+      "asset_id": "source:_content/site.tmpl",
+      "document_path": "_content/site.tmpl",
+      "raw_source_sha256": "88d7b52a319081fa9bf5a93143f152d83fc1f22465a39c5f553ff99c86ad754c",
+      "previous_representation_identity_sha256": "57df8e7041f924ea37ea64ccd4e53925fb4b426bdb475f5d03e0d703a6a884fa",
+      "consumed_generation": {
+        "path": "data/locale-language/zh-CN/structured-generation/7caebba33580782e5837719efa23a8d1cf4d60f51de84fa3e5c56c8816d25cb5.json",
+        "sha256": "3bdea5f48d19a48c69964d515d87117a095015d9aa6a33e2ad4837b59a10c8c3"
+      },
+      "parser_rule": "go-learning/source-role-slash-prose/v1",
+      "slot_ids": [
+        "0719e14f5f889a9c0dccb5eb291c9fe1de9604b6f5423b3c1497204c4276a85d"
+      ]
+    },
+    "source_package": {
+      "id": "site-v2-shell",
+      "activation": "independent-shell-gates",
+      "canonical_routes": [
+        "/",
+        "/translation/"
+      ],
+      "surfaces": [
+        "homepage",
+        "translation"
+      ],
+      "contract_dependencies": [
+        {
+          "kind": "contract",
+          "path": "internal/sitecontent/shell_reconstruction.go",
+          "sha256": "e6382f6c1c4ac4429558658693e80698b1b997547ae85354f6995c36941f1346"
+        },
+        {
+          "kind": "contract",
+          "path": "internal/sitecontent/shell_generation_context.go",
+          "sha256": "c92a6da3548082c286e986e2eff9ed5e098518998e10047351d0326b17700d69"
+        },
+        {
+          "kind": "contract",
+          "path": "internal/sitecontent/shell_runtime_context.go",
+          "sha256": "e89125fbdcb53bc2d872f7885d8663e133f24fdd0f257294c79d4d3dcbbe3107"
+        },
+        {
+          "kind": "contract",
+          "path": "internal/site/shell_render.go",
+          "sha256": "445b25022f68aeec8858bea47f526100d384a1c302ee9b915fd05e9b717362be"
+        },
+        {
+          "kind": "contract",
+          "path": "internal/site/tmplfunc/tmpl.go",
+          "sha256": "832b4c002f3ffbf0ccc4ca4a83a5be52ec65265381cd480986e0ce41cc811326"
+        },
+        {
+          "kind": "contract",
+          "path": "internal/site/tmplfunc/func.go",
+          "sha256": "8c86d7e19881d695f6d1781d1dfe4eb5e6bc279c16f7b7a4ab02f2c3fb6a2882"
+        }
+      ],
+      "source_identity_sha256": "4bdfce8935eb92f27106efcc29537b46d2e2d4c5402d7ad0edde2f39de99203e",
+      "identity_sha256": "4ff1b1fbf7ca1411468716635ec834a4647120386ff4faa754601c3354002187",
+      "parser_contract": "go-learning/shell-language-source/v1"
+    },
+    "asset_registry_identity_sha256": "d880d7b88ce721a1b16e9e14d676dc9df5697ce6adfc53d0fd8f742b1cfc38a4",
+    "source_authority": [
+      {
+        "path": "data/structured-source-successors/receipts/2d5738afc414c39ad6fd46f5d9cd8dd3d8d67fc6c167621484f85111f76014eb.json",
+        "sha256": "a23c6395902a29cd82cbf106f49e19fe9a76032cb5d7f89f234cf8c1e5033e52"
+      },
+      {
+        "path": "data/site-shell/successor/adoptions/2ec50f613ab4b48abf1dd58078b47c89626bae8d6050d24944aa389bbac258c6.json",
+        "sha256": "229dd61298b389fe9f8fed9814c3762571b1956bbd55e92131a487532d73fb04"
+      },
+      {
+        "path": "data/site-shell/successor/sources/30d7c2ef242aa2aa13e64aa5a8917baca377710cb0ef77a68dba3cfb27694272.json",
+        "sha256": "3eba68d190fa9381b95ba5c439514bd70d1f38289849fe18954e242a4580f44c"
+      }
+    ],
+    "old": {
+      "path": "_content/site.tmpl",
+      "role": "shared-chrome",
+      "source_sha256": "88d7b52a319081fa9bf5a93143f152d83fc1f22465a39c5f553ff99c86ad754c",
+      "structure_sha256": "4e7b6df5d14aa1c665da184491f6cdfa14102239a5dfd016ab144d251715d1e4",
+      "slots": [
+        {
+          "unit": {
+            "id": "80081ef1b8b4419b3f213f1aff6f74ef1c646096672daf59902467d9c5b66a17",
+            "locator": "_content/site.tmpl#html/head/link[href=/blog/feed.atom]/attribute/title:a6af5b8fb108305b166b4880e6a1cfc65ced2b423cbb0ea247d1ad9a11fcde8d:1",
+            "source": "The Go Blog",
+            "source_sha256": "a6af5b8fb108305b166b4880e6a1cfc65ced2b423cbb0ea247d1ad9a11fcde8d",
+            "start": 1229,
+            "end": 1240,
+            "protected": []
+          },
+          "role": "attribute/title",
+          "context": "html/head/link[href=/blog/feed.atom]",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "81d129d63cf650516f3bcb653445e7eafdb27a2896fab4c295f8d27a31e15759",
+            "locator": "_content/site.tmpl#html/head/title/metadata/title:61df627949c1474f82d7e51cfd6109cb2d98e9bf54a61a4d05a4b0bbdfc581e9:1",
+            "source": "⟦P0⟧Go Wiki: ⟦P1⟧⟦P2⟧⟦P3⟧ - The Go Programming Language⟦P4⟧",
+            "source_sha256": "61df627949c1474f82d7e51cfd6109cb2d98e9bf54a61a4d05a4b0bbdfc581e9",
+            "start": 1985,
+            "end": 2104,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{if strings.HasPrefix .URL \"/wiki/\"}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P1⟧",
+                "raw": "{{end}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P2⟧",
+                "raw": "{{.title}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P3⟧",
+                "raw": "{{if ne .URL \"/\"}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P4⟧",
+                "raw": "{{end}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "metadata/title",
+          "context": "html/head/title",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "df35de7308dda1ae10049bc67099ed21f6aa850315db38eb4ba28169f23e507b",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/a[href=/]/img.js-headerLogo Header-logo/attribute/alt:3f6deb4c15bd595a14e38be4e1c0349925365fb71a9247146f8048d9916a26c8:1",
+            "source": "Go",
+            "source_sha256": "3f6deb4c15bd595a14e38be4e1c0349925365fb71a9247146f8048d9916a26c8",
+            "start": 3188,
+            "end": 3190,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/a[href=/]/img.js-headerLogo Header-logo",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "900b9dd9b0eea7e791cbaf1be7d8f2616a9832572e33a4cbf448b46240649132",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.skip-navigation-wrapper/a.skip-to-content-link[href=#main-content]/attribute/aria-label:1e76524e3c46f99f02504d8e48a7c63f939924a6820993d60db8e6d8fc61a5a8:1",
+            "source": "Skip to main content",
+            "source_sha256": "1e76524e3c46f99f02504d8e48a7c63f939924a6820993d60db8e6d8fc61a5a8",
+            "start": 3300,
+            "end": 3320,
+            "protected": []
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.skip-navigation-wrapper/a.skip-to-content-link[href=#main-content]",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "aaae06b2ec39684f4180f63cd4690b1a46eef820244385b368d95610f6f4a6cb",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.skip-navigation-wrapper/a.skip-to-content-link[href=#main-content]/visible-text:d204f7ab02feb310252645249fcb062bb434d0ec4d266d62a5a92f24f5ce85ae:1",
+            "source": "Skip to Main Content",
+            "source_sha256": "d204f7ab02feb310252645249fcb062bb434d0ec4d266d62a5a92f24f5ce85ae",
+            "start": 3344,
+            "end": 3364,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.skip-navigation-wrapper/a.skip-to-content-link[href=#main-content]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "0719e14f5f889a9c0dccb5eb291c9fe1de9604b6f5423b3c1497204c4276a85d",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/div.screen-reader-only#dropdown-description/visible-text:b44575f192021a8f3b3003b30e653dd6c19a507d403f0a370c27d1e66f892381:1",
+            "source": "Press Enter to ⟦P0⟧ dropdown",
+            "source_sha256": "b44575f192021a8f3b3003b30e653dd6c19a507d403f0a370c27d1e66f892381",
+            "start": 4041,
+            "end": 4084,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "activate/deactivate",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/div.screen-reader-only#dropdown-description",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "d1b52dfcf3cd8e81fd43b3a1e9f9a823c98d3cb83bec88eba8a20fab6bcdbcb4",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/ul.Header-submenu js-desktop-submenu-hover/attribute/aria-label:5a5a394c04bad7d6b3da4c96fd06618666261908a8c2a45aa55f449a272004f2:1",
+            "source": "submenu",
+            "source_sha256": "5a5a394c04bad7d6b3da4c96fd06618666261908a8c2a45aa55f449a272004f2",
+            "start": 4213,
+            "end": 4220,
+            "protected": []
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/ul.Header-submenu js-desktop-submenu-hover",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "a0f0eb8df5e307d15838e3a8edf399e7ac0cb30da4f6d2e876105702ed1572ae",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/ul.Header-submenu js-desktop-submenu-hover/li.Header-submenuItem/div.Header-socialIcons/a.Header-socialIcon[href=xxxxxxxx]/attribute/aria-label:b19ac19113d9c737e34c5b708b4f1eeb3abfd1f939f922179ea769231b93ae57:1",
+            "source": "Get connected with ⟦P0⟧ (Opens in new window)",
+            "source_sha256": "b19ac19113d9c737e34c5b708b4f1eeb3abfd1f939f922179ea769231b93ae57",
+            "start": 4964,
+            "end": 5014,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{.name}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/ul.Header-submenu js-desktop-submenu-hover/li.Header-submenuItem/div.Header-socialIcons/a.Header-socialIcon[href=xxxxxxxx]",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "5fc1eee0d9245a0791076693fc5419616c540aef45d1201f59f1d2689e843446",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/button.Header-navOpen js-headerMenuButton Header-navOpen--white/attribute/aria-label:00d0c4424e6deb1dc301cee8f9dabf91346c2d0fdef79e9ceea3d18dc658e190:1",
+            "source": "Open navigation.",
+            "source_sha256": "00d0c4424e6deb1dc301cee8f9dabf91346c2d0fdef79e9ceea3d18dc658e190",
+            "start": 5408,
+            "end": 5424,
+            "protected": []
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/button.Header-navOpen js-headerMenuButton Header-navOpen--white",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "d7d043a4d86b930a424b0bae81bda617f63c350391b30c1ef130f4c81d4b320a",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/div.UseCaseSubNav js-useCaseSubnav/button.UseCaseSubNav-menuHeader js-useCaseSubnavHeader/visible-text:588f166a2da08dde1b1311f2a9b7d707a8230556d1efb8486169923d0ed85144:1",
+            "source": "Jump to",
+            "source_sha256": "588f166a2da08dde1b1311f2a9b7d707a8230556d1efb8486169923d0ed85144",
+            "start": 5635,
+            "end": 5642,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/div.UseCaseSubNav js-useCaseSubnav/button.UseCaseSubNav-menuHeader js-useCaseSubnavHeader",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "b823568dbd95a4ca1b3314ead17cb44d0966dfd7a8d9266ed925757b9ce3abd4",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/div.UseCaseSubNav js-useCaseSubnav/button.UseCaseSubNav-menuHeader js-useCaseSubnavHeader/img.UseCaseSubNav-menuIcon js-useCaseSubnavMenuIcon/attribute/alt:c32ed07c1da3f058d314043971efd60fea00c548b361342c36cde320e67aa2ad:1",
+            "source": "Open menu icon",
+            "source_sha256": "c32ed07c1da3f058d314043971efd60fea00c548b361342c36cde320e67aa2ad",
+            "start": 5737,
+            "end": 5751,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/div.UseCaseSubNav js-useCaseSubnav/button.UseCaseSubNav-menuHeader js-useCaseSubnavHeader/img.UseCaseSubNav-menuIcon js-useCaseSubnavMenuIcon",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "266baa97443f0ee66a7b1ff2ab0e2c25906376bbc33ce5c5638b2dbc5f9773aa",
+            "locator": "_content/site.tmpl#html/body.Site/aside.NavigationDrawer js-header/nav.NavigationDrawer-nav/div.NavigationDrawer-header/a[href=/]/img.NavigationDrawer-logo/attribute/alt:cabe61b7c11d8b7403fd4e497bfdbe70c83856dc1aed5887892202d14fb202df:1",
+            "source": "Go.",
+            "source_sha256": "cabe61b7c11d8b7403fd4e497bfdbe70c83856dc1aed5887892202d14fb202df",
+            "start": 6227,
+            "end": 6230,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/aside.NavigationDrawer js-header/nav.NavigationDrawer-nav/div.NavigationDrawer-header/a[href=/]/img.NavigationDrawer-logo",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "2386546f07186d6907c7dba1329eb0189d6099eb92d067849e16cc7669b9ce8b",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.screen-reader-only#footer-description/visible-text:c102b1e78fadbb1b44606f4b74c08bb5d9222be2e94fe7a79097dc5dba4e5468:1",
+            "source": "Opens in new window.",
+            "source_sha256": "c102b1e78fadbb1b44606f4b74c08bb5d9222be2e94fe7a79097dc5dba4e5468",
+            "start": 9079,
+            "end": 9099,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.screen-reader-only#footer-description",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "b585b94c6e72bbfe69388dcf4d7b11ad073902f17db64f1910c7c36728a716aa",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/img.Footer-gopher/attribute/alt:435999a09cc6f611be041b0e7b4dbfc9e3af3a60e9e7e86c36b7670a82c571e3:1",
+            "source": "The Go Gopher",
+            "source_sha256": "435999a09cc6f611be041b0e7b4dbfc9e3af3a60e9e7e86c36b7670a82c571e3",
+            "start": 9292,
+            "end": 9305,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/img.Footer-gopher",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "7e933946c86759ddd6d8b99b5c0dc3aba5e0e4cd853c365dabf2c8bd13af6156",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/copyright]/visible-text:c90a1a2e96d07886fd41631a561027a338ef570a7bc2f57ba84ace468c77ba6e:1",
+            "source": "Copyright",
+            "source_sha256": "c90a1a2e96d07886fd41631a561027a338ef570a7bc2f57ba84ace468c77ba6e",
+            "start": 9454,
+            "end": 9463,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/copyright]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "2085add1234ebfb2e841c75d19cbf9a6024debebd12ad8ee7d90d3621a4835aa",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/tos]/visible-text:6c6448a8870724943b75a1a98960696135a598d315cab7be89165ab7f1f358ad:1",
+            "source": "Terms of Service",
+            "source_sha256": "6c6448a8870724943b75a1a98960696135a598d315cab7be89165ab7f1f358ad",
+            "start": 9588,
+            "end": 9604,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/tos]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "39a88383b4740f58cdd3cb88d61101d269e3e6b39afaf9b0b02ef64abb662c68",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=http://www.google.com/intl/en/policies/privacy/]/visible-text:8fc6a654ce934e66479e70493d07bb57ea0237a33de57aae694e03088ff431db:1",
+            "source": "Privacy Policy",
+            "source_sha256": "8fc6a654ce934e66479e70493d07bb57ea0237a33de57aae694e03088ff431db",
+            "start": 9846,
+            "end": 9860,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=http://www.google.com/intl/en/policies/privacy/]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "e987625f7b08e23e57a97de9de6d8de1cf402c69084721d7d27fe9f0fecbb6d9",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/s/website-issue]/visible-text:39e84f12abc689202fc991bcb8a1384baba3c6ddf4c5008a9aa455bd210b552e:1",
+            "source": "Report an Issue",
+            "source_sha256": "39e84f12abc689202fc991bcb8a1384baba3c6ddf4c5008a9aa455bd210b552e",
+            "start": 10115,
+            "end": 10130,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/s/website-issue]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "62cca9210e9031382086a78c4fa42dd7b166ae050cdb76e2907aee1cb6476c90",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/attribute/aria-label:b233c76158cc143a15b076cc416bc173520c75232baa6b3a5de312482e964926:1",
+            "source": "Toggle theme",
+            "source_sha256": "b233c76158cc143a15b076cc416bc173520c75232baa6b3a5de312482e964926",
+            "start": 10325,
+            "end": 10337,
+            "protected": []
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "bdcd368b10e3f5948fd9e2f2db956ae35f3a26465721716145f08a57a1c66f3e",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted/attribute/alt:19d30c4a9c9b0ef5ac1b93f306800e39f80c79ff3eb2f0fc4bad52b6bc4a8abe:1",
+            "source": "System theme",
+            "source_sha256": "19d30c4a9c9b0ef5ac1b93f306800e39f80c79ff3eb2f0fc4bad52b6bc4a8abe",
+            "start": 10585,
+            "end": 10597,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "9e0e668fad283eccb194ebf5038002085db7342dcea00a58a60abebcce6215da",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted/attribute/alt:cb5f921f9dc01825f3153d28ebd531247ce9b7024c9a9b1bc16b04710bb5ac51:1",
+            "source": "Dark theme",
+            "source_sha256": "cb5f921f9dc01825f3153d28ebd531247ce9b7024c9a9b1bc16b04710bb5ac51",
+            "start": 10845,
+            "end": 10855,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "cf92d141acb88fecb56c3d23b9dfb06c21958f46f369badb117046b177478fca",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted/attribute/alt:a4b102c505af3e33552a9159224148cbe5d9be7f28c26346240e9813abfb5e84:1",
+            "source": "Light theme",
+            "source_sha256": "a4b102c505af3e33552a9159224148cbe5d9be7f28c26346240e9813abfb5e84",
+            "start": 11102,
+            "end": 11113,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "98315f265244c6a262381d594e4b9d106cc36a585ae0d4e01e84d2ba2e2e8634",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/a.Footer-googleLogo[href=https://google.com]/img.Footer-googleLogoImg/attribute/alt:5dba3b7783dc5e536c88da4b85c756729e3fa5d42c08cc4b1b896433c3289a03:1",
+            "source": "Google logo",
+            "source_sha256": "5dba3b7783dc5e536c88da4b85c756729e3fa5d42c08cc4b1b896433c3289a03",
+            "start": 11343,
+            "end": 11354,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/a.Footer-googleLogo[href=https://google.com]/img.Footer-googleLogoImg",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "7b8f13d0c27adf32fbfc00ff7d2d4e60715a6ba43b80da7ac88663ba30a3a792",
+            "locator": "_content/site.tmpl#html/body.Site/section.Cookie-notice js-cookieNotice/div/visible-text:4e4c8ea6c19ff5b66f7743ffbce9bcc8eb1dede96fdd82b17e522cedf73e7347:1",
+            "source": "⟦P0⟧ uses cookies from Google to deliver and enhance the quality of its services and to⟦P1⟧analyze traffic.",
+            "source_sha256": "4e4c8ea6c19ff5b66f7743ffbce9bcc8eb1dede96fdd82b17e522cedf73e7347",
+            "start": 11803,
+            "end": 11911,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "go.dev",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P1⟧",
+                "raw": "\n  ",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/section.Cookie-notice js-cookieNotice/div",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "73fec224cbafb784d37e90528316cabc03c9e64d3cbd866c985ddda1b478d979",
+            "locator": "_content/site.tmpl#html/body.Site/section.Cookie-notice js-cookieNotice/div/a[href=https://policies.google.com/technologies/cookies]/visible-text:fd9fc4e66f8f61bc6fcec1d02ffea1e35ab325cb99761ed4f21c67fca8647c4d:1",
+            "source": "Learn more.",
+            "source_sha256": "fd9fc4e66f8f61bc6fcec1d02ffea1e35ab325cb99761ed4f21c67fca8647c4d",
+            "start": 11985,
+            "end": 11996,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/section.Cookie-notice js-cookieNotice/div/a[href=https://policies.google.com/technologies/cookies]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "adf65d4e1ac538ad172123eea90dab1c1b376141f0797217c41d7fbd67dbe419",
+            "locator": "_content/site.tmpl#html/body.Site/section.Cookie-notice js-cookieNotice/div/button.go-Button/visible-text:36fcacc3464b83389985d92cdaf0d92541d68156034240e575026df9574f2b23:1",
+            "source": "Okay",
+            "source_sha256": "36fcacc3464b83389985d92cdaf0d92541d68156034240e575026df9574f2b23",
+            "start": 12040,
+            "end": 12044,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/section.Cookie-notice js-cookieNotice/div/button.go-Button",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "8bf6fa8530434fca47ae12571a82b75a9589917eb450c313c05cfcd64f14034a",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:9e327825ae00c35b838bbb772abde224be8df2555698e4958591db10fedc3864:1",
+            "source": "Go gophers with wrench",
+            "source_sha256": "9e327825ae00c35b838bbb772abde224be8df2555698e4958591db10fedc3864",
+            "start": 12692,
+            "end": 12714,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "fc99bd73d8050fc96e2f5ec8669dc7a49ecb0ee4ed9a97e2cf6f42b948617c5c",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:6f06622c401d4ad0b2c3efaed3742848bd4b3913511d435b29a67c62636a9349:1",
+            "source": "Go gopher in a plane",
+            "source_sha256": "6f06622c401d4ad0b2c3efaed3742848bd4b3913511d435b29a67c62636a9349",
+            "start": 13063,
+            "end": 13083,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "6a260454b8b271349f1110ac5e34ee686ee9b034492261afa16ecba5d19c597e",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:1",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13184,
+            "end": 13193,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "38ffa3de5a5cb893a13cdc1a38047e797bf6875005a75ce4ad3ff35549e89f80",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:2",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13307,
+            "end": 13316,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "57168614fb64ff18c03f03ceb3d2602bac4e4254c0f9f3a81e89e78d5561a03e",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:e0ec8a35024f33f6fa77d7f2ce1ff5d937de93ba21595ee3f0ad2ff7521eb8bd:1",
+            "source": "Go gopher graduating",
+            "source_sha256": "e0ec8a35024f33f6fa77d7f2ce1ff5d937de93ba21595ee3f0ad2ff7521eb8bd",
+            "start": 13425,
+            "end": 13445,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "6f8e9497407fc2c0dd3d86813280681062686bda4e695c3ed977da4ce18ba10e",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:e0ec8a35024f33f6fa77d7f2ce1ff5d937de93ba21595ee3f0ad2ff7521eb8bd:2",
+            "source": "Go gopher graduating",
+            "source_sha256": "e0ec8a35024f33f6fa77d7f2ce1ff5d937de93ba21595ee3f0ad2ff7521eb8bd",
+            "start": 13574,
+            "end": 13594,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "43fa30dc8cd386e8f743525d1832ea95cf4a05d0c3929c1e682838d3ae49a669",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:3",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13697,
+            "end": 13706,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "aa2e72e588fee6173786fa5614c153578348975b90f9a12fce0b3666f9b2de57",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:4",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13814,
+            "end": 13823,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "84b49f2ad4b0734374d1ed1fb58ce736a018f69bb868fce5693b45b566b9b835",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:5",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13937,
+            "end": 13946,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "328007a7bc027b6492fa7eccd547fdd5a4cb9a73e5980c47b8c9ff9da7f25b5b",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:d360ae3c01e4b9c29c21b8ac7fe91132a627a9428a3144212ec7d16dcbda55ad:1",
+            "source": "Go gopher with headlamp",
+            "source_sha256": "d360ae3c01e4b9c29c21b8ac7fe91132a627a9428a3144212ec7d16dcbda55ad",
+            "start": 14055,
+            "end": 14078,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "b58e76cd82bd972b55dc52ef4354bfac9b73a35995f3940df0686e42f2d4aeba",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:d360ae3c01e4b9c29c21b8ac7fe91132a627a9428a3144212ec7d16dcbda55ad:2",
+            "source": "Go gopher with headlamp",
+            "source_sha256": "d360ae3c01e4b9c29c21b8ac7fe91132a627a9428a3144212ec7d16dcbda55ad",
+            "start": 14207,
+            "end": 14230,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "e3293d0880606e8ecc41434e889f1463ded18419ef8321cc78d98afd6efdb47a",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:29af733cbc1a34871d00cbd9924a35043f28c55dd055f8f21be340965600b305:1",
+            "source": "Go gopher with ladder",
+            "source_sha256": "29af733cbc1a34871d00cbd9924a35043f28c55dd055f8f21be340965600b305",
+            "start": 14335,
+            "end": 14356,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "1e9be20b7841a48d16499ad7ffb0c1a16a2e846dc0eb8c5b58b7269ad1076c44",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:e09310437322ab597d3449c2a663281cd80f42070380ab86c802e0851d3bb865:1",
+            "source": "Go gophers with a machine",
+            "source_sha256": "e09310437322ab597d3449c2a663281cd80f42070380ab86c802e0851d3bb865",
+            "start": 14463,
+            "end": 14488,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "c010c5f32f441c2d02cb96ffe4b39a8542e1df62f6f27f217fd5e093d346f4f0",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:d563ce6a96d1797cb4ab9678061e6c5347188212e9fd2e7e038a24128259164d:1",
+            "source": "Go gopher with a machine",
+            "source_sha256": "d563ce6a96d1797cb4ab9678061e6c5347188212e9fd2e7e038a24128259164d",
+            "start": 14615,
+            "end": 14639,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "43172832c9950948472c24fbdaab0d79da39fe3b29d45c69c7ebdf989f30d19d",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:67b6d407b9a36be4539d29a46fb7ed765e47ff949c3bbd70d81833662a956566:1",
+            "source": "Go gopher with a megaphone",
+            "source_sha256": "67b6d407b9a36be4539d29a46fb7ed765e47ff949c3bbd70d81833662a956566",
+            "start": 14750,
+            "end": 14776,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "3b07785dab0bbc4e0d61d437ede99e2f2ebce8b7a021fed185a567d5a49305c1",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:6",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 14879,
+            "end": 14888,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "7ea6e5472548771334a0f0020aa340a6cae3384c9b721ce5423b85cafd114afd",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:0c008d1e1fa0a55449db9582ad790d79d30e08bdef8997d62e7d2c6dd5c63dce:1",
+            "source": "Go gopher pilot",
+            "source_sha256": "0c008d1e1fa0a55449db9582ad790d79d30e08bdef8997d62e7d2c6dd5c63dce",
+            "start": 15001,
+            "end": 15016,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "f1004da81b4b25195e252e88d1b5d3af9be2e6991aac05a8db51d53c3b9baea4",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:7",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 15117,
+            "end": 15126,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "8a0254126a979608bbd033a86cb1ca68b4956dcf16ec39d1bd24098bfd698cfa",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:27865578a9e56f93fb14aa5d48ea1b9e6c70e7d6e18158635550a1365ffb2c74:1",
+            "source": "Go gopher running",
+            "source_sha256": "27865578a9e56f93fb14aa5d48ea1b9e6c70e7d6e18158635550a1365ffb2c74",
+            "start": 15233,
+            "end": 15250,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "6a30c4088caa31ec9fdae653f08bb59c2b5917f1447f4eb41221a7f0f81b4508",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:8",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 15353,
+            "end": 15362,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "2e9d662f61e99dec893294fb019ce4f7b4f02bd8282dbb340ffd31fa2b697505",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:8f62dbdf0d3469aa666fb20880e5610ba5ff4b15bf30f039f1ccf5d858a654c0:1",
+            "source": "gopher with a wrench",
+            "source_sha256": "8f62dbdf0d3469aa666fb20880e5610ba5ff4b15bf30f039f1ccf5d858a654c0",
+            "start": 15467,
+            "end": 15487,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "403b6e3fa59a5efca891d3af77e5620f4505d1799c4582b988a0381fbb7caf66",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:9",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 15592,
+            "end": 15601,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "f6c1c3d886198330bf8953664f271912937bcf581ce62f48c4a77579e5ed0b85",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:10",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 15706,
+            "end": 15715,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "bbdda950201e1170ae7789b34d829ec0b4c5f7328baa28614c85b0086c29a915",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:a59cc99522b9bfc2e5772ccd2aa3fb4af5a6b99f33a43f426455058ba9bfdac2:1",
+            "source": "Go gopher factory",
+            "source_sha256": "a59cc99522b9bfc2e5772ccd2aa3fb4af5a6b99f33a43f426455058ba9bfdac2",
+            "start": 15822,
+            "end": 15839,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "aa575b11336a7c8b63acb8812ce53b4d387fb5aa83be03b21f39ef4da7899123",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:f2e12a61440588aba51c7505e2845fbc99f785c16c6e4a6c72d8c2b9577a2fd8:1",
+            "source": "⟦P0⟧Go Wiki: ⟦P1⟧⟦P2⟧",
+            "source_sha256": "f2e12a61440588aba51c7505e2845fbc99f785c16c6e4a6c72d8c2b9577a2fd8",
+            "start": 16705,
+            "end": 16769,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{if strings.HasPrefix .URL \"/wiki/\"}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P1⟧",
+                "raw": "{{end}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P2⟧",
+                "raw": "{{.title}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "ea78b1d1659055c6ce73f3d973811d1754f852009fe78c7940e1df35059758d1",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:01ab28cc567c69ee477b3e44b1d064e7f2d4d60cd718ef44b5d0bfe49610f187:1",
+            "source": "Error",
+            "source_sha256": "01ab28cc567c69ee477b3e44b1d064e7f2d4d60cd718ef44b5d0bfe49610f187",
+            "start": 16810,
+            "end": 16815,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "1e97685dbaaeda223b134ec0e5de505966f1aeef1f07be70b921e337dd848b28",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:b81dd0463efa1d57babe156416eb154e6275263e23882c0614fcea1488f028f7:1",
+            "source": "Directory ⟦P0⟧",
+            "source_sha256": "b81dd0463efa1d57babe156416eb154e6275263e23882c0614fcea1488f028f7",
+            "start": 16854,
+            "end": 16883,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{breadcrumb .URL}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "22aa666aa2dba46f547bf3cf52399f94b5c7d960ebd8fc91ac3f4788835bde2c",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:59af32643899c794e26bdb4e2eda8edcabff7bf28826c306d0571b39e91139cd:1",
+            "source": "Source file ⟦P0⟧",
+            "source_sha256": "59af32643899c794e26bdb4e2eda8edcabff7bf28826c306d0571b39e91139cd",
+            "start": 16964,
+            "end": 16995,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{breadcrumb .URL}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "7d43f36b120ab9569c8b1c8f9f957a0062c82bbd88ebf71a681a42d4734269cc",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:477c2b044c9890f1ee59a3b287010cfb86266238a0887efe0e053be0e8c66507:1",
+            "source": "Text file ⟦P0⟧",
+            "source_sha256": "477c2b044c9890f1ee59a3b287010cfb86266238a0887efe0e053be0e8c66507",
+            "start": 17039,
+            "end": 17068,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{breadcrumb .URL}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "79102ac7b61eb7db7a4b9f0a4fc13aa950327f4631bb175ec842412c2fba4d34",
+            "locator": "_content/site.tmpl#article.Doc Article/p/i/visible-text:9df947a885681845709051b78435f6c879162c321e68f525c944a93ce3057a7f:1",
+            "source": "This content is part of the",
+            "source_sha256": "9df947a885681845709051b78435f6c879162c321e68f525c944a93ce3057a7f",
+            "start": 17514,
+            "end": 17541,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/p/i",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "0d32b70d9f3044a05e2454f1e3d0969f9cb212144b1250b454d3febb87706269",
+            "locator": "_content/site.tmpl#article.Doc Article/p/i/a[href=/wiki/]/visible-text:3de2e4524b9fb5acd97a868379c0fcb3db4257d8eba54f1ddf968c808869f39d:1",
+            "source": "Go Wiki",
+            "source_sha256": "3de2e4524b9fb5acd97a868379c0fcb3db4257d8eba54f1ddf968c808869f39d",
+            "start": 17559,
+            "end": 17566,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/p/i/a[href=/wiki/]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "76473a5bafd2fc058bedaae717089a35af9f3534672ebff7ce481a3de346c8cc",
+            "locator": "_content/site.tmpl#article.Doc Article/p/i/visible-text:48e6bfec1476a81edba0fa9f8bc15a32d0ff618580b060dcc4b3d4f7f5071572:1",
+            "source": "The source files for this documentation can be found beneath",
+            "source_sha256": "48e6bfec1476a81edba0fa9f8bc15a32d0ff618580b060dcc4b3d4f7f5071572",
+            "start": 17641,
+            "end": 17701,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/p/i",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "f4c4ca13fd775996b06b1f0a7a20ecebf5dd5682d36f7b6a7c203ed03e11e940",
+            "locator": "_content/site.tmpl#aside.Sidebar/h4/visible-text:fe4a80cc150373ba086d7906ef15e9fd110b18a555c88669e30e9c14c604fbdb:1",
+            "source": "Report Issues",
+            "source_sha256": "fe4a80cc150373ba086d7906ef15e9fd110b18a555c88669e30e9c14c604fbdb",
+            "start": 17899,
+            "end": 17912,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "780342dec3634993f0ad12e7771bbb4ff6751080556793433ea8ad7586dbf4de",
+            "locator": "_content/site.tmpl#aside.Sidebar/p/visible-text:914d346457a408065e9b6d4a3a1fc333c26c036d2c556397831c97e313f67f78:1",
+            "source": "If you spot bugs, mistakes, or inconsistencies in the Go project's code or documentation, please let us know by filing a ticket on our",
+            "source_sha256": "914d346457a408065e9b6d4a3a1fc333c26c036d2c556397831c97e313f67f78",
+            "start": 17923,
+            "end": 18057,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "4dbc9daa36fbd08ca81fe6967ca4bf21bd94d13c0dc504f8b9fe70b12dd51ed1",
+            "locator": "_content/site.tmpl#aside.Sidebar/p/a[href=https://github.com/golang/go/issues]/visible-text:dd161ee62f550088e93c50934134e1f72329f6bd733004f9928817a9fff6567b:1",
+            "source": "issue tracker.",
+            "source_sha256": "dd161ee62f550088e93c50934134e1f72329f6bd733004f9928817a9fff6567b",
+            "start": 18104,
+            "end": 18118,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/p/a[href=https://github.com/golang/go/issues]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "b3fab3411619d8813702a67babb452ca4b574e2ad1c7bc78ff03c472d3e514d1",
+            "locator": "_content/site.tmpl#aside.Sidebar/p/visible-text:25879f289052decb0f34118543f5de55218601ce1623ec04941690a8de522ad5:1",
+            "source": "Of course, you should check it's not an existing issue before creating a new one.",
+            "source_sha256": "25879f289052decb0f34118543f5de55218601ce1623ec04941690a8de522ad5",
+            "start": 18123,
+            "end": 18204,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "f7877b447cdde8a0cabad5eb4247ffc09b81e219abd6e6399f335643278be0e2",
+            "locator": "_content/site.tmpl#aside.Sidebar/a.btn[href=https://github.com/golang/go/issues]/visible-text:9907d0cb73194b51fba6c6eea11c2e73abfc39966300a15e339119ae7563111f:1",
+            "source": "Filing a ticket",
+            "source_sha256": "9907d0cb73194b51fba6c6eea11c2e73abfc39966300a15e339119ae7563111f",
+            "start": 18307,
+            "end": 18322,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/a.btn[href=https://github.com/golang/go/issues]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "7c958671b3f0691a2b19306d851fe59e69de50767f93f3f1a99e2bc8b69ddc7e",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:52fc00441b0f4c5699dcc95b0a20fb509a1bfef4aca05cb4dfb27bb9ff051533:1",
+            "source": "Release Notes",
+            "source_sha256": "52fc00441b0f4c5699dcc95b0a20fb509a1bfef4aca05cb4dfb27bb9ff051533",
+            "start": 18411,
+            "end": 18424,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "e9016d0645c7db030d62da9b5f5869a7b11a4ca6c91dcbb3e854f49d803e2f23",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/p/visible-text:95046415028ecf00bf44545eeb5355502979020e6cd938e7f626f0a842b908de:1",
+            "source": "Learn about what's new in each Go release.",
+            "source_sha256": "95046415028ecf00bf44545eeb5355502979020e6cd938e7f626f0a842b908de",
+            "start": 18435,
+            "end": 18477,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "7b0ff9bafdaae19e28fd422d3b5a39cb63fe275294804f0b36b7ea2b57f3bb15",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/a.link[href=/doc/devel/release]/visible-text:d3e394516797bed567878eddbac249bb0fcc65178bf522a1365dc2ba8ba58eae:1",
+            "source": "View release notes",
+            "source_sha256": "d3e394516797bed567878eddbac249bb0fcc65178bf522a1365dc2ba8ba58eae",
+            "start": 18564,
+            "end": 18582,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/a.link[href=/doc/devel/release]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "f79844c636d710b65ae65e22aa0149cead0c828c4d8886045ffb04ae9ddb0402",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:b89b888b56f6ae708fad62cd0ee03528ef69bb9ee0114f3a7fea013db168b6b2:1",
+            "source": "Code of Conduct",
+            "source_sha256": "b89b888b56f6ae708fad62cd0ee03528ef69bb9ee0114f3a7fea013db168b6b2",
+            "start": 18594,
+            "end": 18609,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "c5463843b78a50e479961cf23bb6bcb1c396367d8b59a4166dd85d0ec30e41c9",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/p/visible-text:9fd01c30161542daa38769e9ca5ca8c4ea9a889779a1abecbe0bc61b0f71fbd6:1",
+            "source": "Guidelines for participating in Go community spaces and reporting process for handing issues.",
+            "source_sha256": "9fd01c30161542daa38769e9ca5ca8c4ea9a889779a1abecbe0bc61b0f71fbd6",
+            "start": 18620,
+            "end": 18713,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "8204c101daff8e7d8d4b09d5bfe988712720d7b0c6e660027c9d3cbc7334205f",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/a.link[href=/conduct]/visible-text:2c69830308ddaa4bc7bf7480820141728ff22c1d67207fcb86e3876d5896649c:1",
+            "source": "View more",
+            "source_sha256": "2c69830308ddaa4bc7bf7480820141728ff22c1d67207fcb86e3876d5896649c",
+            "start": 18790,
+            "end": 18799,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/a.link[href=/conduct]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "16725df0627d9381dee3c3d818a5dea1e90680a7f239a7067440ef99f572663f",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:52b19a29f4325f31af7f7d8398b41c7bb7a12ed20ab7e63fe96922fca6df71a1:1",
+            "source": "Brand Guidelines",
+            "source_sha256": "52b19a29f4325f31af7f7d8398b41c7bb7a12ed20ab7e63fe96922fca6df71a1",
+            "start": 18811,
+            "end": 18827,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "fe95bdba881573428d699d3dec65f051b5f2322e139eb82416890b094d7fbdaf",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/p/visible-text:1759f387cf81d0e4c0d1fd938e2f2dbd5c7692b50a478ea0b9c963781f1f8df1:1",
+            "source": "Guidance about reusing the Go logo, gopher mascot, etc.",
+            "source_sha256": "1759f387cf81d0e4c0d1fd938e2f2dbd5c7692b50a478ea0b9c963781f1f8df1",
+            "start": 18838,
+            "end": 18893,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "344099369d1fcf0d0022f73ac4c957766b92d4c8e5d6dd9bc967ce37b80cdc85",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/a.link[href=/blog/go-brand]/visible-text:800a916ea26d8692df1fad976117a65804f5e48fea5f155ff6ca7d6995a85c3b:1",
+            "source": "View guidelines",
+            "source_sha256": "800a916ea26d8692df1fad976117a65804f5e48fea5f155ff6ca7d6995a85c3b",
+            "start": 18976,
+            "end": 18991,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/a.link[href=/blog/go-brand]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "f5083b5609493d7cbda23a64e4798c0f9a1e00dc06097279a591834beb8a0ee3",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:9d4d036a240d2240a1057631b09277cc102e52913347b6d2a0a753062c455da1:1",
+            "source": "Contribute Guide",
+            "source_sha256": "9d4d036a240d2240a1057631b09277cc102e52913347b6d2a0a753062c455da1",
+            "start": 19003,
+            "end": 19019,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "470fb65e915454279ad8d607c97834b363ca1e186f322fc9f2e9af8b6bf8a7ef",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/p/visible-text:7e7dd5812b22870a8c1111646e001057fc2e92dfbb6a93e593be55c0678de87a:1",
+            "source": "Learn how to file bugs, pull requests, or otherwise contribute to the Go ecosystem.",
+            "source_sha256": "7e7dd5812b22870a8c1111646e001057fc2e92dfbb6a93e593be55c0678de87a",
+            "start": 19030,
+            "end": 19113,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "4d48d9b0682ea8f0e0654382baecafc14a0b852efa28d02be6f75db2a43a6c5a",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/a.link[href=/doc/contribute]/visible-text:83d0a1f96a142cb37a21bba7d3d5f2c29117a824cf804e764fa78e6e665f97f6:1",
+            "source": "View guide",
+            "source_sha256": "83d0a1f96a142cb37a21bba7d3d5f2c29117a824cf804e764fa78e6e665f97f6",
+            "start": 19197,
+            "end": 19207,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/a.link[href=/doc/contribute]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "a5eb906a8d644b3d55d5eb0195f246d20770420cd6bb0fd252d3e3bc4ac53165",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:d0c5bc7ce1338fa3c2fc255f7f476c4c0c1c37672373e95164ec2e6fc8330a22:1",
+            "source": "Get connected",
+            "source_sha256": "d0c5bc7ce1338fa3c2fc255f7f476c4c0c1c37672373e95164ec2e6fc8330a22",
+            "start": 19219,
+            "end": 19232,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        }
+      ],
+      "locked_visible_identity_locators": []
+    },
+    "new": {
+      "path": "_content/site.tmpl",
+      "role": "shared-chrome",
+      "source_sha256": "88d7b52a319081fa9bf5a93143f152d83fc1f22465a39c5f553ff99c86ad754c",
+      "structure_sha256": "d1e11f26dacb18047fcc372226960f2dfc408829453888d8f3c61944a4ca69cc",
+      "slots": [
+        {
+          "unit": {
+            "id": "80081ef1b8b4419b3f213f1aff6f74ef1c646096672daf59902467d9c5b66a17",
+            "locator": "_content/site.tmpl#html/head/link[href=/blog/feed.atom]/attribute/title:a6af5b8fb108305b166b4880e6a1cfc65ced2b423cbb0ea247d1ad9a11fcde8d:1",
+            "source": "The Go Blog",
+            "source_sha256": "a6af5b8fb108305b166b4880e6a1cfc65ced2b423cbb0ea247d1ad9a11fcde8d",
+            "start": 1229,
+            "end": 1240,
+            "protected": []
+          },
+          "role": "attribute/title",
+          "context": "html/head/link[href=/blog/feed.atom]",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "81d129d63cf650516f3bcb653445e7eafdb27a2896fab4c295f8d27a31e15759",
+            "locator": "_content/site.tmpl#html/head/title/metadata/title:61df627949c1474f82d7e51cfd6109cb2d98e9bf54a61a4d05a4b0bbdfc581e9:1",
+            "source": "⟦P0⟧Go Wiki: ⟦P1⟧⟦P2⟧⟦P3⟧ - The Go Programming Language⟦P4⟧",
+            "source_sha256": "61df627949c1474f82d7e51cfd6109cb2d98e9bf54a61a4d05a4b0bbdfc581e9",
+            "start": 1985,
+            "end": 2104,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{if strings.HasPrefix .URL \"/wiki/\"}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P1⟧",
+                "raw": "{{end}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P2⟧",
+                "raw": "{{.title}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P3⟧",
+                "raw": "{{if ne .URL \"/\"}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P4⟧",
+                "raw": "{{end}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "metadata/title",
+          "context": "html/head/title",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "df35de7308dda1ae10049bc67099ed21f6aa850315db38eb4ba28169f23e507b",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/a[href=/]/img.js-headerLogo Header-logo/attribute/alt:3f6deb4c15bd595a14e38be4e1c0349925365fb71a9247146f8048d9916a26c8:1",
+            "source": "Go",
+            "source_sha256": "3f6deb4c15bd595a14e38be4e1c0349925365fb71a9247146f8048d9916a26c8",
+            "start": 3188,
+            "end": 3190,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/a[href=/]/img.js-headerLogo Header-logo",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "900b9dd9b0eea7e791cbaf1be7d8f2616a9832572e33a4cbf448b46240649132",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.skip-navigation-wrapper/a.skip-to-content-link[href=#main-content]/attribute/aria-label:1e76524e3c46f99f02504d8e48a7c63f939924a6820993d60db8e6d8fc61a5a8:1",
+            "source": "Skip to main content",
+            "source_sha256": "1e76524e3c46f99f02504d8e48a7c63f939924a6820993d60db8e6d8fc61a5a8",
+            "start": 3300,
+            "end": 3320,
+            "protected": []
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.skip-navigation-wrapper/a.skip-to-content-link[href=#main-content]",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "aaae06b2ec39684f4180f63cd4690b1a46eef820244385b368d95610f6f4a6cb",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.skip-navigation-wrapper/a.skip-to-content-link[href=#main-content]/visible-text:d204f7ab02feb310252645249fcb062bb434d0ec4d266d62a5a92f24f5ce85ae:1",
+            "source": "Skip to Main Content",
+            "source_sha256": "d204f7ab02feb310252645249fcb062bb434d0ec4d266d62a5a92f24f5ce85ae",
+            "start": 3344,
+            "end": 3364,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.skip-navigation-wrapper/a.skip-to-content-link[href=#main-content]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "5194305654832324e819fa83a03b7e6d2d4b30782aa27f1b53ad40cab0334d5d",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/div.screen-reader-only#dropdown-description/visible-text:8bbc2b973add068519d3144a3297c9048de04025f3a621444648277e0bf3908b:1",
+            "source": "Press Enter to activate/deactivate dropdown",
+            "source_sha256": "8bbc2b973add068519d3144a3297c9048de04025f3a621444648277e0bf3908b",
+            "start": 4041,
+            "end": 4084,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/div.screen-reader-only#dropdown-description",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "d1b52dfcf3cd8e81fd43b3a1e9f9a823c98d3cb83bec88eba8a20fab6bcdbcb4",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/ul.Header-submenu js-desktop-submenu-hover/attribute/aria-label:5a5a394c04bad7d6b3da4c96fd06618666261908a8c2a45aa55f449a272004f2:1",
+            "source": "submenu",
+            "source_sha256": "5a5a394c04bad7d6b3da4c96fd06618666261908a8c2a45aa55f449a272004f2",
+            "start": 4213,
+            "end": 4220,
+            "protected": []
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/ul.Header-submenu js-desktop-submenu-hover",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "a0f0eb8df5e307d15838e3a8edf399e7ac0cb30da4f6d2e876105702ed1572ae",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/ul.Header-submenu js-desktop-submenu-hover/li.Header-submenuItem/div.Header-socialIcons/a.Header-socialIcon[href=xxxxxxxx]/attribute/aria-label:b19ac19113d9c737e34c5b708b4f1eeb3abfd1f939f922179ea769231b93ae57:1",
+            "source": "Get connected with ⟦P0⟧ (Opens in new window)",
+            "source_sha256": "b19ac19113d9c737e34c5b708b4f1eeb3abfd1f939f922179ea769231b93ae57",
+            "start": 4964,
+            "end": 5014,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{.name}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/ul.Header-menu/li.Header-menuItem xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Header-menuItem--activexxxxxxx/ul.Header-submenu js-desktop-submenu-hover/li.Header-submenuItem/div.Header-socialIcons/a.Header-socialIcon[href=xxxxxxxx]",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "5fc1eee0d9245a0791076693fc5419616c540aef45d1201f59f1d2689e843446",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/button.Header-navOpen js-headerMenuButton Header-navOpen--white/attribute/aria-label:00d0c4424e6deb1dc301cee8f9dabf91346c2d0fdef79e9ceea3d18dc658e190:1",
+            "source": "Open navigation.",
+            "source_sha256": "00d0c4424e6deb1dc301cee8f9dabf91346c2d0fdef79e9ceea3d18dc658e190",
+            "start": 5408,
+            "end": 5424,
+            "protected": []
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/nav.Header-nav/div.Header-rightContent/button.Header-navOpen js-headerMenuButton Header-navOpen--white",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "d7d043a4d86b930a424b0bae81bda617f63c350391b30c1ef130f4c81d4b320a",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/div.UseCaseSubNav js-useCaseSubnav/button.UseCaseSubNav-menuHeader js-useCaseSubnavHeader/visible-text:588f166a2da08dde1b1311f2a9b7d707a8230556d1efb8486169923d0ed85144:1",
+            "source": "Jump to",
+            "source_sha256": "588f166a2da08dde1b1311f2a9b7d707a8230556d1efb8486169923d0ed85144",
+            "start": 5635,
+            "end": 5642,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/div.UseCaseSubNav js-useCaseSubnav/button.UseCaseSubNav-menuHeader js-useCaseSubnavHeader",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "b823568dbd95a4ca1b3314ead17cb44d0966dfd7a8d9266ed925757b9ce3abd4",
+            "locator": "_content/site.tmpl#html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/div.UseCaseSubNav js-useCaseSubnav/button.UseCaseSubNav-menuHeader js-useCaseSubnavHeader/img.UseCaseSubNav-menuIcon js-useCaseSubnavMenuIcon/attribute/alt:c32ed07c1da3f058d314043971efd60fea00c548b361342c36cde320e67aa2ad:1",
+            "source": "Open menu icon",
+            "source_sha256": "c32ed07c1da3f058d314043971efd60fea00c548b361342c36cde320e67aa2ad",
+            "start": 5737,
+            "end": 5751,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/header.Site-header js-siteHeader/div.Header Header--dark/div.UseCaseSubNav js-useCaseSubnav/button.UseCaseSubNav-menuHeader js-useCaseSubnavHeader/img.UseCaseSubNav-menuIcon js-useCaseSubnavMenuIcon",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "266baa97443f0ee66a7b1ff2ab0e2c25906376bbc33ce5c5638b2dbc5f9773aa",
+            "locator": "_content/site.tmpl#html/body.Site/aside.NavigationDrawer js-header/nav.NavigationDrawer-nav/div.NavigationDrawer-header/a[href=/]/img.NavigationDrawer-logo/attribute/alt:cabe61b7c11d8b7403fd4e497bfdbe70c83856dc1aed5887892202d14fb202df:1",
+            "source": "Go.",
+            "source_sha256": "cabe61b7c11d8b7403fd4e497bfdbe70c83856dc1aed5887892202d14fb202df",
+            "start": 6227,
+            "end": 6230,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/aside.NavigationDrawer js-header/nav.NavigationDrawer-nav/div.NavigationDrawer-header/a[href=/]/img.NavigationDrawer-logo",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "2386546f07186d6907c7dba1329eb0189d6099eb92d067849e16cc7669b9ce8b",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.screen-reader-only#footer-description/visible-text:c102b1e78fadbb1b44606f4b74c08bb5d9222be2e94fe7a79097dc5dba4e5468:1",
+            "source": "Opens in new window.",
+            "source_sha256": "c102b1e78fadbb1b44606f4b74c08bb5d9222be2e94fe7a79097dc5dba4e5468",
+            "start": 9079,
+            "end": 9099,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.screen-reader-only#footer-description",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "b585b94c6e72bbfe69388dcf4d7b11ad073902f17db64f1910c7c36728a716aa",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/img.Footer-gopher/attribute/alt:435999a09cc6f611be041b0e7b4dbfc9e3af3a60e9e7e86c36b7670a82c571e3:1",
+            "source": "The Go Gopher",
+            "source_sha256": "435999a09cc6f611be041b0e7b4dbfc9e3af3a60e9e7e86c36b7670a82c571e3",
+            "start": 9292,
+            "end": 9305,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/img.Footer-gopher",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "7e933946c86759ddd6d8b99b5c0dc3aba5e0e4cd853c365dabf2c8bd13af6156",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/copyright]/visible-text:c90a1a2e96d07886fd41631a561027a338ef570a7bc2f57ba84ace468c77ba6e:1",
+            "source": "Copyright",
+            "source_sha256": "c90a1a2e96d07886fd41631a561027a338ef570a7bc2f57ba84ace468c77ba6e",
+            "start": 9454,
+            "end": 9463,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/copyright]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "2085add1234ebfb2e841c75d19cbf9a6024debebd12ad8ee7d90d3621a4835aa",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/tos]/visible-text:6c6448a8870724943b75a1a98960696135a598d315cab7be89165ab7f1f358ad:1",
+            "source": "Terms of Service",
+            "source_sha256": "6c6448a8870724943b75a1a98960696135a598d315cab7be89165ab7f1f358ad",
+            "start": 9588,
+            "end": 9604,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/tos]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "39a88383b4740f58cdd3cb88d61101d269e3e6b39afaf9b0b02ef64abb662c68",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=http://www.google.com/intl/en/policies/privacy/]/visible-text:8fc6a654ce934e66479e70493d07bb57ea0237a33de57aae694e03088ff431db:1",
+            "source": "Privacy Policy",
+            "source_sha256": "8fc6a654ce934e66479e70493d07bb57ea0237a33de57aae694e03088ff431db",
+            "start": 9846,
+            "end": 9860,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=http://www.google.com/intl/en/policies/privacy/]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "e987625f7b08e23e57a97de9de6d8de1cf402c69084721d7d27fe9f0fecbb6d9",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/s/website-issue]/visible-text:39e84f12abc689202fc991bcb8a1384baba3c6ddf4c5008a9aa455bd210b552e:1",
+            "source": "Report an Issue",
+            "source_sha256": "39e84f12abc689202fc991bcb8a1384baba3c6ddf4c5008a9aa455bd210b552e",
+            "start": 10115,
+            "end": 10130,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem/a[href=/s/website-issue]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "62cca9210e9031382086a78c4fa42dd7b166ae050cdb76e2907aee1cb6476c90",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/attribute/aria-label:b233c76158cc143a15b076cc416bc173520c75232baa6b3a5de312482e964926:1",
+            "source": "Toggle theme",
+            "source_sha256": "b233c76158cc143a15b076cc416bc173520c75232baa6b3a5de312482e964926",
+            "start": 10325,
+            "end": 10337,
+            "protected": []
+          },
+          "role": "attribute/aria-label",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "bdcd368b10e3f5948fd9e2f2db956ae35f3a26465721716145f08a57a1c66f3e",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted/attribute/alt:19d30c4a9c9b0ef5ac1b93f306800e39f80c79ff3eb2f0fc4bad52b6bc4a8abe:1",
+            "source": "System theme",
+            "source_sha256": "19d30c4a9c9b0ef5ac1b93f306800e39f80c79ff3eb2f0fc4bad52b6bc4a8abe",
+            "start": 10585,
+            "end": 10597,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "9e0e668fad283eccb194ebf5038002085db7342dcea00a58a60abebcce6215da",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted/attribute/alt:cb5f921f9dc01825f3153d28ebd531247ce9b7024c9a9b1bc16b04710bb5ac51:1",
+            "source": "Dark theme",
+            "source_sha256": "cb5f921f9dc01825f3153d28ebd531247ce9b7024c9a9b1bc16b04710bb5ac51",
+            "start": 10845,
+            "end": 10855,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "cf92d141acb88fecb56c3d23b9dfb06c21958f46f369badb117046b177478fca",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted/attribute/alt:a4b102c505af3e33552a9159224148cbe5d9be7f28c26346240e9813abfb5e84:1",
+            "source": "Light theme",
+            "source_sha256": "a4b102c505af3e33552a9159224148cbe5d9be7f28c26346240e9813abfb5e84",
+            "start": 11102,
+            "end": 11113,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/ul.Footer-listRow/li.Footer-listItem go-Footer-listItem/button.go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme/img.go-Icon go-Icon--inverted",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "98315f265244c6a262381d594e4b9d106cc36a585ae0d4e01e84d2ba2e2e8634",
+            "locator": "_content/site.tmpl#html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/a.Footer-googleLogo[href=https://google.com]/img.Footer-googleLogoImg/attribute/alt:5dba3b7783dc5e536c88da4b85c756729e3fa5d42c08cc4b1b896433c3289a03:1",
+            "source": "Google logo",
+            "source_sha256": "5dba3b7783dc5e536c88da4b85c756729e3fa5d42c08cc4b1b896433c3289a03",
+            "start": 11343,
+            "end": 11354,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "html/body.Site/footer.Site-footer/div.Footer/div.Container Container--fullBleed/div.Footer-bottom/a.Footer-googleLogo[href=https://google.com]/img.Footer-googleLogoImg",
+          "encoding": "html-attribute"
+        },
+        {
+          "unit": {
+            "id": "7b8f13d0c27adf32fbfc00ff7d2d4e60715a6ba43b80da7ac88663ba30a3a792",
+            "locator": "_content/site.tmpl#html/body.Site/section.Cookie-notice js-cookieNotice/div/visible-text:4e4c8ea6c19ff5b66f7743ffbce9bcc8eb1dede96fdd82b17e522cedf73e7347:1",
+            "source": "⟦P0⟧ uses cookies from Google to deliver and enhance the quality of its services and to⟦P1⟧analyze traffic.",
+            "source_sha256": "4e4c8ea6c19ff5b66f7743ffbce9bcc8eb1dede96fdd82b17e522cedf73e7347",
+            "start": 11803,
+            "end": 11911,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "go.dev",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P1⟧",
+                "raw": "\n  ",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/section.Cookie-notice js-cookieNotice/div",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "73fec224cbafb784d37e90528316cabc03c9e64d3cbd866c985ddda1b478d979",
+            "locator": "_content/site.tmpl#html/body.Site/section.Cookie-notice js-cookieNotice/div/a[href=https://policies.google.com/technologies/cookies]/visible-text:fd9fc4e66f8f61bc6fcec1d02ffea1e35ab325cb99761ed4f21c67fca8647c4d:1",
+            "source": "Learn more.",
+            "source_sha256": "fd9fc4e66f8f61bc6fcec1d02ffea1e35ab325cb99761ed4f21c67fca8647c4d",
+            "start": 11985,
+            "end": 11996,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/section.Cookie-notice js-cookieNotice/div/a[href=https://policies.google.com/technologies/cookies]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "adf65d4e1ac538ad172123eea90dab1c1b376141f0797217c41d7fbd67dbe419",
+            "locator": "_content/site.tmpl#html/body.Site/section.Cookie-notice js-cookieNotice/div/button.go-Button/visible-text:36fcacc3464b83389985d92cdaf0d92541d68156034240e575026df9574f2b23:1",
+            "source": "Okay",
+            "source_sha256": "36fcacc3464b83389985d92cdaf0d92541d68156034240e575026df9574f2b23",
+            "start": 12040,
+            "end": 12044,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "html/body.Site/section.Cookie-notice js-cookieNotice/div/button.go-Button",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "8bf6fa8530434fca47ae12571a82b75a9589917eb450c313c05cfcd64f14034a",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:9e327825ae00c35b838bbb772abde224be8df2555698e4958591db10fedc3864:1",
+            "source": "Go gophers with wrench",
+            "source_sha256": "9e327825ae00c35b838bbb772abde224be8df2555698e4958591db10fedc3864",
+            "start": 12692,
+            "end": 12714,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "fc99bd73d8050fc96e2f5ec8669dc7a49ecb0ee4ed9a97e2cf6f42b948617c5c",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:6f06622c401d4ad0b2c3efaed3742848bd4b3913511d435b29a67c62636a9349:1",
+            "source": "Go gopher in a plane",
+            "source_sha256": "6f06622c401d4ad0b2c3efaed3742848bd4b3913511d435b29a67c62636a9349",
+            "start": 13063,
+            "end": 13083,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "6a260454b8b271349f1110ac5e34ee686ee9b034492261afa16ecba5d19c597e",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:1",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13184,
+            "end": 13193,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "38ffa3de5a5cb893a13cdc1a38047e797bf6875005a75ce4ad3ff35549e89f80",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:2",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13307,
+            "end": 13316,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "57168614fb64ff18c03f03ceb3d2602bac4e4254c0f9f3a81e89e78d5561a03e",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:e0ec8a35024f33f6fa77d7f2ce1ff5d937de93ba21595ee3f0ad2ff7521eb8bd:1",
+            "source": "Go gopher graduating",
+            "source_sha256": "e0ec8a35024f33f6fa77d7f2ce1ff5d937de93ba21595ee3f0ad2ff7521eb8bd",
+            "start": 13425,
+            "end": 13445,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "6f8e9497407fc2c0dd3d86813280681062686bda4e695c3ed977da4ce18ba10e",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:e0ec8a35024f33f6fa77d7f2ce1ff5d937de93ba21595ee3f0ad2ff7521eb8bd:2",
+            "source": "Go gopher graduating",
+            "source_sha256": "e0ec8a35024f33f6fa77d7f2ce1ff5d937de93ba21595ee3f0ad2ff7521eb8bd",
+            "start": 13574,
+            "end": 13594,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "43fa30dc8cd386e8f743525d1832ea95cf4a05d0c3929c1e682838d3ae49a669",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:3",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13697,
+            "end": 13706,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "aa2e72e588fee6173786fa5614c153578348975b90f9a12fce0b3666f9b2de57",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:4",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13814,
+            "end": 13823,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "84b49f2ad4b0734374d1ed1fb58ce736a018f69bb868fce5693b45b566b9b835",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:5",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 13937,
+            "end": 13946,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "328007a7bc027b6492fa7eccd547fdd5a4cb9a73e5980c47b8c9ff9da7f25b5b",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:d360ae3c01e4b9c29c21b8ac7fe91132a627a9428a3144212ec7d16dcbda55ad:1",
+            "source": "Go gopher with headlamp",
+            "source_sha256": "d360ae3c01e4b9c29c21b8ac7fe91132a627a9428a3144212ec7d16dcbda55ad",
+            "start": 14055,
+            "end": 14078,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "b58e76cd82bd972b55dc52ef4354bfac9b73a35995f3940df0686e42f2d4aeba",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:d360ae3c01e4b9c29c21b8ac7fe91132a627a9428a3144212ec7d16dcbda55ad:2",
+            "source": "Go gopher with headlamp",
+            "source_sha256": "d360ae3c01e4b9c29c21b8ac7fe91132a627a9428a3144212ec7d16dcbda55ad",
+            "start": 14207,
+            "end": 14230,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "e3293d0880606e8ecc41434e889f1463ded18419ef8321cc78d98afd6efdb47a",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:29af733cbc1a34871d00cbd9924a35043f28c55dd055f8f21be340965600b305:1",
+            "source": "Go gopher with ladder",
+            "source_sha256": "29af733cbc1a34871d00cbd9924a35043f28c55dd055f8f21be340965600b305",
+            "start": 14335,
+            "end": 14356,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "1e9be20b7841a48d16499ad7ffb0c1a16a2e846dc0eb8c5b58b7269ad1076c44",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:e09310437322ab597d3449c2a663281cd80f42070380ab86c802e0851d3bb865:1",
+            "source": "Go gophers with a machine",
+            "source_sha256": "e09310437322ab597d3449c2a663281cd80f42070380ab86c802e0851d3bb865",
+            "start": 14463,
+            "end": 14488,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "c010c5f32f441c2d02cb96ffe4b39a8542e1df62f6f27f217fd5e093d346f4f0",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:d563ce6a96d1797cb4ab9678061e6c5347188212e9fd2e7e038a24128259164d:1",
+            "source": "Go gopher with a machine",
+            "source_sha256": "d563ce6a96d1797cb4ab9678061e6c5347188212e9fd2e7e038a24128259164d",
+            "start": 14615,
+            "end": 14639,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "43172832c9950948472c24fbdaab0d79da39fe3b29d45c69c7ebdf989f30d19d",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:67b6d407b9a36be4539d29a46fb7ed765e47ff949c3bbd70d81833662a956566:1",
+            "source": "Go gopher with a megaphone",
+            "source_sha256": "67b6d407b9a36be4539d29a46fb7ed765e47ff949c3bbd70d81833662a956566",
+            "start": 14750,
+            "end": 14776,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "3b07785dab0bbc4e0d61d437ede99e2f2ebce8b7a021fed185a567d5a49305c1",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:6",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 14879,
+            "end": 14888,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "7ea6e5472548771334a0f0020aa340a6cae3384c9b721ce5423b85cafd114afd",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:0c008d1e1fa0a55449db9582ad790d79d30e08bdef8997d62e7d2c6dd5c63dce:1",
+            "source": "Go gopher pilot",
+            "source_sha256": "0c008d1e1fa0a55449db9582ad790d79d30e08bdef8997d62e7d2c6dd5c63dce",
+            "start": 15001,
+            "end": 15016,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "f1004da81b4b25195e252e88d1b5d3af9be2e6991aac05a8db51d53c3b9baea4",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:7",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 15117,
+            "end": 15126,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "8a0254126a979608bbd033a86cb1ca68b4956dcf16ec39d1bd24098bfd698cfa",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:27865578a9e56f93fb14aa5d48ea1b9e6c70e7d6e18158635550a1365ffb2c74:1",
+            "source": "Go gopher running",
+            "source_sha256": "27865578a9e56f93fb14aa5d48ea1b9e6c70e7d6e18158635550a1365ffb2c74",
+            "start": 15233,
+            "end": 15250,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "6a30c4088caa31ec9fdae653f08bb59c2b5917f1447f4eb41221a7f0f81b4508",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:8",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 15353,
+            "end": 15362,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "2e9d662f61e99dec893294fb019ce4f7b4f02bd8282dbb340ffd31fa2b697505",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:8f62dbdf0d3469aa666fb20880e5610ba5ff4b15bf30f039f1ccf5d858a654c0:1",
+            "source": "gopher with a wrench",
+            "source_sha256": "8f62dbdf0d3469aa666fb20880e5610ba5ff4b15bf30f039f1ccf5d858a654c0",
+            "start": 15467,
+            "end": 15487,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "403b6e3fa59a5efca891d3af77e5620f4505d1799c4582b988a0381fbb7caf66",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:9",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 15592,
+            "end": 15601,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "f6c1c3d886198330bf8953664f271912937bcf581ce62f48c4a77579e5ed0b85",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc:10",
+            "source": "Go gopher",
+            "source_sha256": "32abb7423a748490d6c001c2bbca6fe4e915452b76adbc627ad1e9e751d2e4bc",
+            "start": 15706,
+            "end": 15715,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "bbdda950201e1170ae7789b34d829ec0b4c5f7328baa28614c85b0086c29a915",
+            "locator": "_content/site.tmpl#template/gopher/$alt/attribute/alt:a59cc99522b9bfc2e5772ccd2aa3fb4af5a6b99f33a43f426455058ba9bfdac2:1",
+            "source": "Go gopher factory",
+            "source_sha256": "a59cc99522b9bfc2e5772ccd2aa3fb4af5a6b99f33a43f426455058ba9bfdac2",
+            "start": 15822,
+            "end": 15839,
+            "protected": []
+          },
+          "role": "attribute/alt",
+          "context": "template/gopher/$alt",
+          "encoding": "go-string-interior"
+        },
+        {
+          "unit": {
+            "id": "aa575b11336a7c8b63acb8812ce53b4d387fb5aa83be03b21f39ef4da7899123",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:f2e12a61440588aba51c7505e2845fbc99f785c16c6e4a6c72d8c2b9577a2fd8:1",
+            "source": "⟦P0⟧Go Wiki: ⟦P1⟧⟦P2⟧",
+            "source_sha256": "f2e12a61440588aba51c7505e2845fbc99f785c16c6e4a6c72d8c2b9577a2fd8",
+            "start": 16705,
+            "end": 16769,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{if strings.HasPrefix .URL \"/wiki/\"}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P1⟧",
+                "raw": "{{end}}",
+                "role": "atom"
+              },
+              {
+                "token": "⟦P2⟧",
+                "raw": "{{.title}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "ea78b1d1659055c6ce73f3d973811d1754f852009fe78c7940e1df35059758d1",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:01ab28cc567c69ee477b3e44b1d064e7f2d4d60cd718ef44b5d0bfe49610f187:1",
+            "source": "Error",
+            "source_sha256": "01ab28cc567c69ee477b3e44b1d064e7f2d4d60cd718ef44b5d0bfe49610f187",
+            "start": 16810,
+            "end": 16815,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "1e97685dbaaeda223b134ec0e5de505966f1aeef1f07be70b921e337dd848b28",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:b81dd0463efa1d57babe156416eb154e6275263e23882c0614fcea1488f028f7:1",
+            "source": "Directory ⟦P0⟧",
+            "source_sha256": "b81dd0463efa1d57babe156416eb154e6275263e23882c0614fcea1488f028f7",
+            "start": 16854,
+            "end": 16883,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{breadcrumb .URL}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "22aa666aa2dba46f547bf3cf52399f94b5c7d960ebd8fc91ac3f4788835bde2c",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:59af32643899c794e26bdb4e2eda8edcabff7bf28826c306d0571b39e91139cd:1",
+            "source": "Source file ⟦P0⟧",
+            "source_sha256": "59af32643899c794e26bdb4e2eda8edcabff7bf28826c306d0571b39e91139cd",
+            "start": 16964,
+            "end": 16995,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{breadcrumb .URL}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "7d43f36b120ab9569c8b1c8f9f957a0062c82bbd88ebf71a681a42d4734269cc",
+            "locator": "_content/site.tmpl#article.Doc Article/div.Article-columns/div.Article-content/h1/visible-text:477c2b044c9890f1ee59a3b287010cfb86266238a0887efe0e053be0e8c66507:1",
+            "source": "Text file ⟦P0⟧",
+            "source_sha256": "477c2b044c9890f1ee59a3b287010cfb86266238a0887efe0e053be0e8c66507",
+            "start": 17039,
+            "end": 17068,
+            "protected": [
+              {
+                "token": "⟦P0⟧",
+                "raw": "{{breadcrumb .URL}}",
+                "role": "atom"
+              }
+            ]
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/div.Article-columns/div.Article-content/h1",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "79102ac7b61eb7db7a4b9f0a4fc13aa950327f4631bb175ec842412c2fba4d34",
+            "locator": "_content/site.tmpl#article.Doc Article/p/i/visible-text:9df947a885681845709051b78435f6c879162c321e68f525c944a93ce3057a7f:1",
+            "source": "This content is part of the",
+            "source_sha256": "9df947a885681845709051b78435f6c879162c321e68f525c944a93ce3057a7f",
+            "start": 17514,
+            "end": 17541,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/p/i",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "0d32b70d9f3044a05e2454f1e3d0969f9cb212144b1250b454d3febb87706269",
+            "locator": "_content/site.tmpl#article.Doc Article/p/i/a[href=/wiki/]/visible-text:3de2e4524b9fb5acd97a868379c0fcb3db4257d8eba54f1ddf968c808869f39d:1",
+            "source": "Go Wiki",
+            "source_sha256": "3de2e4524b9fb5acd97a868379c0fcb3db4257d8eba54f1ddf968c808869f39d",
+            "start": 17559,
+            "end": 17566,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/p/i/a[href=/wiki/]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "76473a5bafd2fc058bedaae717089a35af9f3534672ebff7ce481a3de346c8cc",
+            "locator": "_content/site.tmpl#article.Doc Article/p/i/visible-text:48e6bfec1476a81edba0fa9f8bc15a32d0ff618580b060dcc4b3d4f7f5071572:1",
+            "source": "The source files for this documentation can be found beneath",
+            "source_sha256": "48e6bfec1476a81edba0fa9f8bc15a32d0ff618580b060dcc4b3d4f7f5071572",
+            "start": 17641,
+            "end": 17701,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "article.Doc Article/p/i",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "f4c4ca13fd775996b06b1f0a7a20ecebf5dd5682d36f7b6a7c203ed03e11e940",
+            "locator": "_content/site.tmpl#aside.Sidebar/h4/visible-text:fe4a80cc150373ba086d7906ef15e9fd110b18a555c88669e30e9c14c604fbdb:1",
+            "source": "Report Issues",
+            "source_sha256": "fe4a80cc150373ba086d7906ef15e9fd110b18a555c88669e30e9c14c604fbdb",
+            "start": 17899,
+            "end": 17912,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "780342dec3634993f0ad12e7771bbb4ff6751080556793433ea8ad7586dbf4de",
+            "locator": "_content/site.tmpl#aside.Sidebar/p/visible-text:914d346457a408065e9b6d4a3a1fc333c26c036d2c556397831c97e313f67f78:1",
+            "source": "If you spot bugs, mistakes, or inconsistencies in the Go project's code or documentation, please let us know by filing a ticket on our",
+            "source_sha256": "914d346457a408065e9b6d4a3a1fc333c26c036d2c556397831c97e313f67f78",
+            "start": 17923,
+            "end": 18057,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "4dbc9daa36fbd08ca81fe6967ca4bf21bd94d13c0dc504f8b9fe70b12dd51ed1",
+            "locator": "_content/site.tmpl#aside.Sidebar/p/a[href=https://github.com/golang/go/issues]/visible-text:dd161ee62f550088e93c50934134e1f72329f6bd733004f9928817a9fff6567b:1",
+            "source": "issue tracker.",
+            "source_sha256": "dd161ee62f550088e93c50934134e1f72329f6bd733004f9928817a9fff6567b",
+            "start": 18104,
+            "end": 18118,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/p/a[href=https://github.com/golang/go/issues]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "b3fab3411619d8813702a67babb452ca4b574e2ad1c7bc78ff03c472d3e514d1",
+            "locator": "_content/site.tmpl#aside.Sidebar/p/visible-text:25879f289052decb0f34118543f5de55218601ce1623ec04941690a8de522ad5:1",
+            "source": "Of course, you should check it's not an existing issue before creating a new one.",
+            "source_sha256": "25879f289052decb0f34118543f5de55218601ce1623ec04941690a8de522ad5",
+            "start": 18123,
+            "end": 18204,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "f7877b447cdde8a0cabad5eb4247ffc09b81e219abd6e6399f335643278be0e2",
+            "locator": "_content/site.tmpl#aside.Sidebar/a.btn[href=https://github.com/golang/go/issues]/visible-text:9907d0cb73194b51fba6c6eea11c2e73abfc39966300a15e339119ae7563111f:1",
+            "source": "Filing a ticket",
+            "source_sha256": "9907d0cb73194b51fba6c6eea11c2e73abfc39966300a15e339119ae7563111f",
+            "start": 18307,
+            "end": 18322,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar/a.btn[href=https://github.com/golang/go/issues]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "7c958671b3f0691a2b19306d851fe59e69de50767f93f3f1a99e2bc8b69ddc7e",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:52fc00441b0f4c5699dcc95b0a20fb509a1bfef4aca05cb4dfb27bb9ff051533:1",
+            "source": "Release Notes",
+            "source_sha256": "52fc00441b0f4c5699dcc95b0a20fb509a1bfef4aca05cb4dfb27bb9ff051533",
+            "start": 18411,
+            "end": 18424,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "e9016d0645c7db030d62da9b5f5869a7b11a4ca6c91dcbb3e854f49d803e2f23",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/p/visible-text:95046415028ecf00bf44545eeb5355502979020e6cd938e7f626f0a842b908de:1",
+            "source": "Learn about what's new in each Go release.",
+            "source_sha256": "95046415028ecf00bf44545eeb5355502979020e6cd938e7f626f0a842b908de",
+            "start": 18435,
+            "end": 18477,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "7b0ff9bafdaae19e28fd422d3b5a39cb63fe275294804f0b36b7ea2b57f3bb15",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/a.link[href=/doc/devel/release]/visible-text:d3e394516797bed567878eddbac249bb0fcc65178bf522a1365dc2ba8ba58eae:1",
+            "source": "View release notes",
+            "source_sha256": "d3e394516797bed567878eddbac249bb0fcc65178bf522a1365dc2ba8ba58eae",
+            "start": 18564,
+            "end": 18582,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/a.link[href=/doc/devel/release]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "f79844c636d710b65ae65e22aa0149cead0c828c4d8886045ffb04ae9ddb0402",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:b89b888b56f6ae708fad62cd0ee03528ef69bb9ee0114f3a7fea013db168b6b2:1",
+            "source": "Code of Conduct",
+            "source_sha256": "b89b888b56f6ae708fad62cd0ee03528ef69bb9ee0114f3a7fea013db168b6b2",
+            "start": 18594,
+            "end": 18609,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "c5463843b78a50e479961cf23bb6bcb1c396367d8b59a4166dd85d0ec30e41c9",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/p/visible-text:9fd01c30161542daa38769e9ca5ca8c4ea9a889779a1abecbe0bc61b0f71fbd6:1",
+            "source": "Guidelines for participating in Go community spaces and reporting process for handing issues.",
+            "source_sha256": "9fd01c30161542daa38769e9ca5ca8c4ea9a889779a1abecbe0bc61b0f71fbd6",
+            "start": 18620,
+            "end": 18713,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "8204c101daff8e7d8d4b09d5bfe988712720d7b0c6e660027c9d3cbc7334205f",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/a.link[href=/conduct]/visible-text:2c69830308ddaa4bc7bf7480820141728ff22c1d67207fcb86e3876d5896649c:1",
+            "source": "View more",
+            "source_sha256": "2c69830308ddaa4bc7bf7480820141728ff22c1d67207fcb86e3876d5896649c",
+            "start": 18790,
+            "end": 18799,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/a.link[href=/conduct]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "16725df0627d9381dee3c3d818a5dea1e90680a7f239a7067440ef99f572663f",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:52b19a29f4325f31af7f7d8398b41c7bb7a12ed20ab7e63fe96922fca6df71a1:1",
+            "source": "Brand Guidelines",
+            "source_sha256": "52b19a29f4325f31af7f7d8398b41c7bb7a12ed20ab7e63fe96922fca6df71a1",
+            "start": 18811,
+            "end": 18827,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "fe95bdba881573428d699d3dec65f051b5f2322e139eb82416890b094d7fbdaf",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/p/visible-text:1759f387cf81d0e4c0d1fd938e2f2dbd5c7692b50a478ea0b9c963781f1f8df1:1",
+            "source": "Guidance about reusing the Go logo, gopher mascot, etc.",
+            "source_sha256": "1759f387cf81d0e4c0d1fd938e2f2dbd5c7692b50a478ea0b9c963781f1f8df1",
+            "start": 18838,
+            "end": 18893,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "344099369d1fcf0d0022f73ac4c957766b92d4c8e5d6dd9bc967ce37b80cdc85",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/a.link[href=/blog/go-brand]/visible-text:800a916ea26d8692df1fad976117a65804f5e48fea5f155ff6ca7d6995a85c3b:1",
+            "source": "View guidelines",
+            "source_sha256": "800a916ea26d8692df1fad976117a65804f5e48fea5f155ff6ca7d6995a85c3b",
+            "start": 18976,
+            "end": 18991,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/a.link[href=/blog/go-brand]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "f5083b5609493d7cbda23a64e4798c0f9a1e00dc06097279a591834beb8a0ee3",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:9d4d036a240d2240a1057631b09277cc102e52913347b6d2a0a753062c455da1:1",
+            "source": "Contribute Guide",
+            "source_sha256": "9d4d036a240d2240a1057631b09277cc102e52913347b6d2a0a753062c455da1",
+            "start": 19003,
+            "end": 19019,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "470fb65e915454279ad8d607c97834b363ca1e186f322fc9f2e9af8b6bf8a7ef",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/p/visible-text:7e7dd5812b22870a8c1111646e001057fc2e92dfbb6a93e593be55c0678de87a:1",
+            "source": "Learn how to file bugs, pull requests, or otherwise contribute to the Go ecosystem.",
+            "source_sha256": "7e7dd5812b22870a8c1111646e001057fc2e92dfbb6a93e593be55c0678de87a",
+            "start": 19030,
+            "end": 19113,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/p",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "4d48d9b0682ea8f0e0654382baecafc14a0b852efa28d02be6f75db2a43a6c5a",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/a.link[href=/doc/contribute]/visible-text:83d0a1f96a142cb37a21bba7d3d5f2c29117a824cf804e764fa78e6e665f97f6:1",
+            "source": "View guide",
+            "source_sha256": "83d0a1f96a142cb37a21bba7d3d5f2c29117a824cf804e764fa78e6e665f97f6",
+            "start": 19197,
+            "end": 19207,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/a.link[href=/doc/contribute]",
+          "encoding": "html-text"
+        },
+        {
+          "unit": {
+            "id": "a5eb906a8d644b3d55d5eb0195f246d20770420cd6bb0fd252d3e3bc4ac53165",
+            "locator": "_content/site.tmpl#aside.Sidebar Sidebar-faq/h4/visible-text:d0c5bc7ce1338fa3c2fc255f7f476c4c0c1c37672373e95164ec2e6fc8330a22:1",
+            "source": "Get connected",
+            "source_sha256": "d0c5bc7ce1338fa3c2fc255f7f476c4c0c1c37672373e95164ec2e6fc8330a22",
+            "start": 19219,
+            "end": 19232,
+            "protected": []
+          },
+          "role": "visible-text",
+          "context": "aside.Sidebar Sidebar-faq/h4",
+          "encoding": "html-text"
+        }
+      ],
+      "locked_visible_identity_locators": []
+    },
+    "prospective_representation_identity_sha256": "0637431c872c52228c272542d5c20fe0f367ea4d9d7300179e7ecd60688c2579",
+    "released_atoms": [
+      {
+        "old_slot_id": "0719e14f5f889a9c0dccb5eb291c9fe1de9604b6f5423b3c1497204c4276a85d",
+        "protected_binding": {
+          "token": "⟦P0⟧",
+          "raw": "activate/deactivate",
+          "role": "atom"
+        }
+      }
+    ],
+    "currentness_inputs": [
+      {
+        "reference": {
+          "path": "data/glossary-source-corpus.json",
+          "sha256": "de9301ca47d640ec917e61afe8d88c48bc0d2e883ba55c959d76502ac68d3b14"
+        },
+        "mode": 420
+      },
+      {
+        "reference": {
+          "path": "data/locale-language/zh-CN/structured-bundles/92cb327c144d2572228b1a3981177354549380647671411a9992372325aede92.zip",
+          "sha256": "92cb327c144d2572228b1a3981177354549380647671411a9992372325aede92"
+        },
+        "mode": 420
+      },
+      {
+        "reference": {
+          "path": "docs/SHARED_STRUCTURED_REPRESENTATION_SUCCESSOR.md",
+          "sha256": "5b6ac00273280260b8cfd3212a51b8e9a7ac5e5cba43193103a791d66e6b62d0"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "go.mod",
+          "sha256": "41fe21fbd6332398250bd920ee87a07ef8d6c38f3e7b7fba13350d819f5fa41a"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "go.sum",
+          "sha256": "06b236d44298677092df6ad09c647c859fe6f24220d13cc7b52f3fc807bec402"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/linguistic.go",
+          "sha256": "7db421dcdce05edfd859781676353174c890934328c80c3f85aeac8030b71680"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/semantic_go_packages.go",
+          "sha256": "dc4281d1cecf3ebbfc6f687d3f92464415e5e61489f707d83032ff133e2ff78b"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/semantic_role.go",
+          "sha256": "ab828293ac7bb16cc9bb1701a63f127180e6dcb2c82bca0f6b57dd99e6278a12"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/shared_structured_representation.go",
+          "sha256": "95aa49d4e88cd6e0a2be1932d5bc5220a443f5dcfba6c5b83d36658ead1d3869"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/shared_structured_representation_lifecycle.go",
+          "sha256": "f5ad8e2d190a826d953cd6984dda77d0e0e796d4625e0d1ec81dd3a1e573efd0"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/shared_structured_representation_publication.go",
+          "sha256": "24f57e960cb6c89a53e5339e6d69fefcd2fcdec369d2aca174f9c0a777cdf6af"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/shell_adoption.go",
+          "sha256": "3596235559dac84ea0bec772c5b99317a05a949440f16e5e245473540f045f72"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/shell_language_source.go",
+          "sha256": "e1552614dfaaacd29da05053a6202e6a455a539276df68fefbc8cb34718a5267"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/shell_reconstruction.go",
+          "sha256": "8a6f1e4a2eae742918f34bbb8dee413398dd7308abdf646fd820d7fade8cf704"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/structured_historical_representation.go",
+          "sha256": "3a920b47fe9fdf7454988cbd6ecc653b85524ccd60894c8414d1d1559e4ac6e6"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/structured_lifecycle.go",
+          "sha256": "2b2f789b8e7206546d0540eac82d946f5e45a220590070780e8752360bd7cb3a"
+        },
+        "mode": 436
+      },
+      {
+        "reference": {
+          "path": "internal/sitecontent/units.go",
+          "sha256": "9f3a40a53ede92f104462df4c2c193640f99cce3bd38c5e1935bd8d956c1cc41"
+        },
+        "mode": 436
+      }
+    ],
+    "identity_sha256": "758c4e4888a3bb1d7fdbc324ea3cfd0c7ced531c6514deab75520bed0db27fa3"
+  },
+  "old_currentness_inputs": [
+    {
+      "reference": {
+        "path": "data/glossary-source-corpus.json",
+        "sha256": "de9301ca47d640ec917e61afe8d88c48bc0d2e883ba55c959d76502ac68d3b14"
+      },
+      "mode": 420
+    },
+    {
+      "reference": {
+        "path": "data/locale-language/zh-CN/structured-bundles/92cb327c144d2572228b1a3981177354549380647671411a9992372325aede92.zip",
+        "sha256": "92cb327c144d2572228b1a3981177354549380647671411a9992372325aede92"
+      },
+      "mode": 420
+    },
+    {
+      "reference": {
+        "path": "docs/SHARED_STRUCTURED_REPRESENTATION_SUCCESSOR.md",
+        "sha256": "5b6ac00273280260b8cfd3212a51b8e9a7ac5e5cba43193103a791d66e6b62d0"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "go.mod",
+        "sha256": "41fe21fbd6332398250bd920ee87a07ef8d6c38f3e7b7fba13350d819f5fa41a"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "go.sum",
+        "sha256": "06b236d44298677092df6ad09c647c859fe6f24220d13cc7b52f3fc807bec402"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/linguistic.go",
+        "sha256": "7db421dcdce05edfd859781676353174c890934328c80c3f85aeac8030b71680"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/semantic_go_packages.go",
+        "sha256": "dc4281d1cecf3ebbfc6f687d3f92464415e5e61489f707d83032ff133e2ff78b"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/semantic_role.go",
+        "sha256": "ab828293ac7bb16cc9bb1701a63f127180e6dcb2c82bca0f6b57dd99e6278a12"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shared_structured_representation.go",
+        "sha256": "95aa49d4e88cd6e0a2be1932d5bc5220a443f5dcfba6c5b83d36658ead1d3869"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shared_structured_representation_lifecycle.go",
+        "sha256": "f5ad8e2d190a826d953cd6984dda77d0e0e796d4625e0d1ec81dd3a1e573efd0"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shared_structured_representation_publication.go",
+        "sha256": "24f57e960cb6c89a53e5339e6d69fefcd2fcdec369d2aca174f9c0a777cdf6af"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shell_adoption.go",
+        "sha256": "3596235559dac84ea0bec772c5b99317a05a949440f16e5e245473540f045f72"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shell_language_source.go",
+        "sha256": "e1552614dfaaacd29da05053a6202e6a455a539276df68fefbc8cb34718a5267"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shell_reconstruction.go",
+        "sha256": "8a6f1e4a2eae742918f34bbb8dee413398dd7308abdf646fd820d7fade8cf704"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/structured_historical_representation.go",
+        "sha256": "3a920b47fe9fdf7454988cbd6ecc653b85524ccd60894c8414d1d1559e4ac6e6"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/structured_lifecycle.go",
+        "sha256": "2b2f789b8e7206546d0540eac82d946f5e45a220590070780e8752360bd7cb3a"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/units.go",
+        "sha256": "9f3a40a53ede92f104462df4c2c193640f99cce3bd38c5e1935bd8d956c1cc41"
+      },
+      "mode": 436
+    }
+  ],
+  "current_currentness_inputs": [
+    {
+      "reference": {
+        "path": "data/glossary-source-corpus.json",
+        "sha256": "de9301ca47d640ec917e61afe8d88c48bc0d2e883ba55c959d76502ac68d3b14"
+      },
+      "mode": 420
+    },
+    {
+      "reference": {
+        "path": "data/locale-language/zh-CN/structured-bundles/92cb327c144d2572228b1a3981177354549380647671411a9992372325aede92.zip",
+        "sha256": "92cb327c144d2572228b1a3981177354549380647671411a9992372325aede92"
+      },
+      "mode": 420
+    },
+    {
+      "reference": {
+        "path": "docs/SHARED_STRUCTURED_REPRESENTATION_SUCCESSOR.md",
+        "sha256": "95368a15dfdc4c781e032f16bcf8327bec8a2e8e0351b9ced7b9c97dce43c584"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "go.mod",
+        "sha256": "41fe21fbd6332398250bd920ee87a07ef8d6c38f3e7b7fba13350d819f5fa41a"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "go.sum",
+        "sha256": "06b236d44298677092df6ad09c647c859fe6f24220d13cc7b52f3fc807bec402"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/linguistic.go",
+        "sha256": "7db421dcdce05edfd859781676353174c890934328c80c3f85aeac8030b71680"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/semantic_go_packages.go",
+        "sha256": "dc4281d1cecf3ebbfc6f687d3f92464415e5e61489f707d83032ff133e2ff78b"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/semantic_role.go",
+        "sha256": "ab828293ac7bb16cc9bb1701a63f127180e6dcb2c82bca0f6b57dd99e6278a12"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shared_structured_representation.go",
+        "sha256": "82a0255abc8ebeccc5322ddd319bfc0786973830db52daa5f7f5af11f6866d43"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shared_structured_representation_lifecycle.go",
+        "sha256": "f5ad8e2d190a826d953cd6984dda77d0e0e796d4625e0d1ec81dd3a1e573efd0"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shared_structured_representation_publication.go",
+        "sha256": "24f57e960cb6c89a53e5339e6d69fefcd2fcdec369d2aca174f9c0a777cdf6af"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shell_adoption.go",
+        "sha256": "3596235559dac84ea0bec772c5b99317a05a949440f16e5e245473540f045f72"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shell_language_source.go",
+        "sha256": "4ff50ac95b239f8747f2743ab2dcccd4b0741e6de9d35ff81bbd4a173f821d26"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shell_reconstruction.go",
+        "sha256": "8a6f1e4a2eae742918f34bbb8dee413398dd7308abdf646fd820d7fade8cf704"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/structured_historical_representation.go",
+        "sha256": "3a920b47fe9fdf7454988cbd6ecc653b85524ccd60894c8414d1d1559e4ac6e6"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/structured_lifecycle.go",
+        "sha256": "96f9414006af945923b53c3a31f9af857ca2349df6a8099bc56b5476e5612146"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/units.go",
+        "sha256": "9f3a40a53ede92f104462df4c2c193640f99cce3bd38c5e1935bd8d956c1cc41"
+      },
+      "mode": 436
+    }
+  ],
+  "changed_dependencies": [
+    {
+      "old": {
+        "reference": {
+          "path": "docs/SHARED_STRUCTURED_REPRESENTATION_SUCCESSOR.md",
+          "sha256": "5b6ac00273280260b8cfd3212a51b8e9a7ac5e5cba43193103a791d66e6b62d0"
+        },
+        "mode": 436
+      },
+      "current": {
+        "reference": {
+          "path": "docs/SHARED_STRUCTURED_REPRESENTATION_SUCCESSOR.md",
+          "sha256": "95368a15dfdc4c781e032f16bcf8327bec8a2e8e0351b9ced7b9c97dce43c584"
+        },
+        "mode": 436
+      }
+    },
+    {
+      "old": {
+        "reference": {
+          "path": "internal/sitecontent/shared_structured_representation.go",
+          "sha256": "95aa49d4e88cd6e0a2be1932d5bc5220a443f5dcfba6c5b83d36658ead1d3869"
+        },
+        "mode": 436
+      },
+      "current": {
+        "reference": {
+          "path": "internal/sitecontent/shared_structured_representation.go",
+          "sha256": "82a0255abc8ebeccc5322ddd319bfc0786973830db52daa5f7f5af11f6866d43"
+        },
+        "mode": 436
+      }
+    },
+    {
+      "old": {
+        "reference": {
+          "path": "internal/sitecontent/shell_language_source.go",
+          "sha256": "e1552614dfaaacd29da05053a6202e6a455a539276df68fefbc8cb34718a5267"
+        },
+        "mode": 436
+      },
+      "current": {
+        "reference": {
+          "path": "internal/sitecontent/shell_language_source.go",
+          "sha256": "4ff50ac95b239f8747f2743ab2dcccd4b0741e6de9d35ff81bbd4a173f821d26"
+        },
+        "mode": 436
+      }
+    },
+    {
+      "old": {
+        "reference": {
+          "path": "internal/sitecontent/structured_lifecycle.go",
+          "sha256": "2b2f789b8e7206546d0540eac82d946f5e45a220590070780e8752360bd7cb3a"
+        },
+        "mode": 436
+      },
+      "current": {
+        "reference": {
+          "path": "internal/sitecontent/structured_lifecycle.go",
+          "sha256": "96f9414006af945923b53c3a31f9af857ca2349df6a8099bc56b5476e5612146"
+        },
+        "mode": 436
+      }
+    }
+  ],
+  "added_dependencies": [],
+  "removed_dependencies": [],
+  "validation_inputs": [
+    {
+      "reference": {
+        "path": "cmd/tour-i18n/shared_representation_reattestation.go",
+        "sha256": "ea068c9ac500beb76a275864a48f2a38c68c7a526a15d2489d62b4c05a5b929e"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "cmd/tour-i18n/shared_representation_reattestation_test.go",
+        "sha256": "180e7287c7641469aff2882c4f191a568add37a571bc2125f36e2bce1de3a8b0"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "docs/SHARED_STRUCTURED_REPRESENTATION_REATTESTATION.md",
+        "sha256": "18096c9e938ba20de200611fe7fa024f5e4f193dcfd5643e71173e68f2dc9c3e"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/scope.go",
+        "sha256": "20be1133df788652d48aa093584e0fe360331264b4c44b501348aaff8b8a7b23"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shared_representation_reattestation.go",
+        "sha256": "2fc9c16bc3e5d85a6ef57fb0a091c796846d7c609f60ee9239873c48f4428cb1"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/shared_representation_reattestation_publication.go",
+        "sha256": "5cda875a2ec04640dcbf2730f0b6f0160ccc1587f1dd6647c82c405445fb6a94"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/structured.go",
+        "sha256": "147a23dabf00cdc64bc33b44c33cea9ba2a646e1a03f5760cdea6c5b0b3d1005"
+      },
+      "mode": 436
+    },
+    {
+      "reference": {
+        "path": "internal/sitecontent/structured_source_successor.go",
+        "sha256": "24cb17c13340850a1bd7944ad04785ca4480fd25957d7c91dd636616c68a6a8e"
+      },
+      "mode": 436
+    }
+  ],
+  "previous": {
+    "path": "data/site-shell/shared-representation-reattestations/receipts/1834a6b081b40ec60c9bc5ab4b51aeebc632d544999fb0fcec33d906bc199c0d.json",
+    "sha256": "a5577ac99b0c5003d0313c3b99819600f4649e7dd8e2eb621dac1c499a5d30e1"
+  },
+  "identity_sha256": "dbf543b19229faa5f36068366f5e6963d23513a236e234989356cc182665d644"
+}

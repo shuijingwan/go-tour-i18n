@@ -1,0 +1,43 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "qc-006",
+  "snapshot_manifest_sha256": "4496ebcfe5766def3aabe8ee8607bd76d4e7a4f2a164c992561aa11c9ed108b3",
+  "previous_snapshot_id": "qc-005",
+  "rubric": "translation-quality/v1",
+  "result_count": 6,
+  "results": [
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "B",
+      "finding": "两处开放自然语言中的 case 均直接保留为英文：第一段的 default case 和其他 case，以及第二段的使用 default case。同一 working set 的 flowcontrol/9、concurrency/5 已在相同语义下使用一致的中文自然语言表达；这里的中英混用同时使第一句语序明显生硬。技术含义仍可正确理解，因此属于局部、轻微但正式发布前需要修订的语言质量问题。修订时应只处理这两处开放自然语言及相应句式，不改变 default、select 或代码结构。"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    }
+  ]
+}

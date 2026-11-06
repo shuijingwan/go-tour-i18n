@@ -12,6 +12,7 @@ import (
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
 	gmtext "github.com/yuin/goldmark/text"
 	"golang.org/x/net/html"
 )
@@ -20,10 +21,11 @@ import (
 // Paired tokens bind a translated label to its original link/tag destination.
 // Atomic code/literal tokens may move with the target language word order.
 type ProtectedToken struct {
-	Token string `json:"token"`
-	Raw   string `json:"raw"`
-	Role  string `json:"role"`
-	Pair  string `json:"pair,omitempty"`
+	Token   string             `json:"token"`
+	Raw     string             `json:"raw"`
+	Role    string             `json:"role"`
+	Pair    string             `json:"pair,omitempty"`
+	Binding *StructuralBinding `json:"binding,omitempty"`
 }
 
 func unitSourceIdentity(source string, locked []ProtectedToken) string {
@@ -45,7 +47,15 @@ func protectionIdentity(locked []ProtectedToken) string {
 	for _, p := range locked {
 		switch p.Role {
 		case "close":
-			values = append(values, "pair\x00"+pairs[p.Pair]+"\x00"+p.Raw)
+			close := p.Raw
+			if p.Binding != nil {
+				// Implicit and explicit reference spelling share one machine
+				// destination. Only source protection/Unit identity owns spelling.
+				b := *p.Binding
+				b.Implicit, b.Label = false, ""
+				close = identity(b)
+			}
+			values = append(values, "pair\x00"+pairs[p.Pair]+"\x00"+close)
 		case "atom", "suffix":
 			values = append(values, p.Role+"\x00"+p.Raw)
 		}
@@ -120,6 +130,10 @@ func restoreBlock(u Unit, target string) (string, error) {
 	if len(stack) > 0 {
 		return "", fmt.Errorf("unclosed protected binding")
 	}
+	restoredTokens, err := restoreStructuralBindings(u, target, positions)
+	if err != nil {
+		return "", err
+	}
 	// Replace once in one pass; raw bytes containing token-like text cannot be
 	// recursively interpreted as another replacement.
 	var out strings.Builder
@@ -127,7 +141,11 @@ func restoreBlock(u Unit, target string) (string, error) {
 	for _, p := range order {
 		a := positions[p.Token]
 		out.WriteString(target[pos:a])
-		out.WriteString(p.Raw)
+		raw := p.Raw
+		if replacement, ok := restoredTokens[p.Token]; ok {
+			raw = replacement
+		}
+		out.WriteString(raw)
 		pos = a + len(p.Token)
 	}
 	out.WriteString(target[pos:])
@@ -135,6 +153,10 @@ func restoreBlock(u Unit, target string) (string, error) {
 }
 
 func markdownBlocks(b []byte, offset int, add func(int, int, string)) error {
+	return markdownBlocksMode(b, offset, add, true)
+}
+
+func markdownBlocksMode(b []byte, offset int, add func(int, int, string), lexical bool) error {
 	tree := goldmark.New(goldmark.WithExtensions(extension.Table)).Parser().Parse(gmtext.NewReader(b))
 	return ast.Walk(tree, func(n ast.Node, enter bool) (ast.WalkStatus, error) {
 		if !enter {
@@ -152,7 +174,7 @@ func markdownBlocks(b []byte, offset int, add func(int, int, string)) error {
 				if v.HasClosure() {
 					z = v.ClosureLine.Stop
 				}
-				if err := htmlBlocks(b[a:z], offset+a, "html-block", add); err != nil {
+				if err := htmlBlocksMode(b[a:z], offset+a, "html-block", add, lexical); err != nil {
 					return ast.WalkStop, err
 				}
 			}
@@ -203,6 +225,10 @@ func htmlBoundaryTag(tag string) bool {
 // HTML's tokenizer establishes tags/attributes. Complete leaf block elements
 // are units; text/inline runs outside those elements form complete blocks too.
 func htmlBlocks(b []byte, offset int, context string, add func(int, int, string)) error {
+	return htmlBlocksMode(b, offset, context, add, true)
+}
+
+func htmlBlocksMode(b []byte, offset int, context string, add func(int, int, string), lexical bool) error {
 	if err := htmlSpans(b, offset, context, func(int, int, string) {}); err != nil {
 		return err
 	}
@@ -322,6 +348,12 @@ func htmlBlocks(b []byte, offset int, context string, add func(int, int, string)
 	leaves := []span{}
 	for _, s := range blocks {
 		inner := false
+		for _, q := range protected {
+			if q.start <= s.start && q.end >= s.end {
+				inner = true // e.g. apparent paragraph markup inside opaque pre
+				break
+			}
+		}
 		for _, q := range blocks {
 			if q.start > s.start && q.end <= s.end {
 				inner = true
@@ -335,14 +367,27 @@ func htmlBlocks(b []byte, offset int, context string, add func(int, int, string)
 	}
 	for _, s := range runs {
 		overlap := false
-		for _, q := range append(append([]span{}, leaves...), protected...) {
+		for _, q := range leaves {
 			if s.start < q.end && s.end > q.start {
 				overlap = true
 				break
 			}
 		}
-		if !overlap && htmlRunLanguage(b[s.start:s.end]) {
+		// A complete inline protected element belongs to this linguistic run:
+		// protectBlockMode emits its opaque atom/binding alongside the prose.
+		// Runs inside (or cut by) an opaque range remain machine-only. In
+		// particular, pre/script/style flush runs at their block boundaries.
+		for _, q := range protected {
+			if s.start < q.end && s.end > q.start && !(s.start <= q.start && s.end >= q.end) {
+				overlap = true
+				break
+			}
+		}
+		if !overlap && htmlRunLanguage(b[s.start:s.end], lexical) {
 			add(offset+s.start, offset+s.end, s.context)
+			// Attribute prose inside an accepted run belongs to its inline
+			// binding; do not export the same coordinates a second time.
+			leaves = append(leaves, s)
 		}
 	}
 	for _, s := range attributes {
@@ -360,7 +405,7 @@ func htmlBlocks(b []byte, offset int, context string, add func(int, int, string)
 	return nil
 }
 
-func htmlRunLanguage(b []byte) bool {
+func htmlRunLanguage(b []byte, lexical bool) bool {
 	z := html.NewTokenizer(bytes.NewReader(b))
 	for {
 		typ := z.Next()
@@ -368,7 +413,7 @@ func htmlRunLanguage(b []byte) bool {
 			return false
 		}
 		if typ == html.TextToken {
-			visible, _, err := protectBlock(z.Raw(), "html/text")
+			visible, _, err := protectBlockMode(z.Raw(), "html/text", lexical)
 			if err == nil && hasLanguage(visible) {
 				return true
 			}
@@ -380,20 +425,103 @@ func htmlRunLanguage(b []byte) bool {
 // not a Markdown document parser. Unsupported inline syntax is rejected. Its
 // output is re-parsed after restoration to validate the full block structure.
 func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
+	return protectBlockMode(b, context, true)
+}
+
+func protectBlockMode(b []byte, context string, lexical bool) (string, []ProtectedToken, error) {
+	return protectBlockReferences(b, context, lexical, nil)
+}
+
+func protectBlockReferences(b []byte, context string, lexical bool, refs []parser.Reference) (string, []ProtectedToken, error) {
+	return protectBlockPolicy(b, context, lexical, refs, false)
+}
+
+// Only immutable shell source foundations use the pre-semantic lexical reader.
+// Historical Page restoration consumes its persisted inventory, never this flag.
+func protectBlockLegacy(b []byte, context string) (string, []ProtectedToken, error) {
+	return protectBlockPolicy(b, context, true, nil, true)
+}
+
+func protectBlockPolicy(b []byte, context string, lexical bool, refs []parser.Reference, legacy bool) (string, []ProtectedToken, error) {
 	if bytes.ContainsAny(b, "⟦⟧") {
 		return "", nil, fmt.Errorf("reserved protected-token delimiter in source")
+	}
+	if context == "markdown/reference-title" {
+		p := ProtectedToken{Token: "⟦P0⟧", Raw: "", Role: "atom", Binding: &StructuralBinding{Version: 2, Kind: "markdown-reference-title", EditableTitle: true}}
+		tokens := []ProtectedToken{p}
+		parts := strings.Split(string(b), "\n")
+		var value strings.Builder
+		value.WriteString(p.Token)
+		for i, part := range parts {
+			if i > 0 {
+				token := fmt.Sprintf("⟦P%d⟧", len(tokens))
+				tokens = append(tokens, ProtectedToken{Token: token, Raw: "\n", Role: "atom"})
+				value.WriteString(token)
+			}
+			value.WriteString(part)
+		}
+		return value.String(), tokens, nil
 	}
 	locked := []ProtectedToken{}
 	var out strings.Builder
 	emit := func(raw, role, pair string) string {
 		token := fmt.Sprintf("⟦P%d⟧", len(locked))
-		locked = append(locked, ProtectedToken{token, raw, role, pair})
+		locked = append(locked, ProtectedToken{Token: token, Raw: raw, Role: role, Pair: pair})
 		out.WriteString(token)
 		return token
 	}
 	markdown := strings.HasPrefix(context, "markdown/")
-	var scan func([]byte) error
-	scan = func(text []byte) error {
+	// Use the same quoted visible-attribute coordinates as HTML pages. Each
+	// value has a binding; every byte between values stays opaque and ordered.
+	startTag := func(raw string, role, pair string) error {
+		attributes := []span{}
+		if err := htmlAttributeSpans([]byte(raw), 0, "html", func(a, z int, context string) {
+			attributes = append(attributes, span{a, z, context})
+		}); err != nil {
+			return err
+		}
+		if len(attributes) == 0 {
+			emit(raw, role, pair)
+			return nil
+		}
+		if role == "open" {
+			emit("", role, pair)
+		}
+		group := len(locked)
+		pos := 0
+		for i, a := range attributes {
+			binding := fmt.Sprintf("html-attribute/%d/%d", group, i)
+			emit(raw[pos:a.start], "open", binding)
+			value, tokens, err := protectBlockMode([]byte(raw[a.start:a.end]), a.context, lexical)
+			if err != nil {
+				return err
+			}
+			replacements := []string{}
+			for _, p := range tokens {
+				token := fmt.Sprintf("⟦P%d⟧", len(locked))
+				replacements = append(replacements, p.Token, token)
+				p.Token, p.Pair = token, binding+"/"+p.Pair
+				locked = append(locked, p)
+			}
+			if len(replacements) > 0 {
+				value = strings.NewReplacer(replacements...).Replace(value)
+			}
+			out.WriteString(value)
+			end := ""
+			if i == len(attributes)-1 {
+				end = raw[a.end:]
+			}
+			emit(end, "close", binding)
+			pos = a.end
+		}
+		return nil
+	}
+	markup := map[int]bool{}
+	if markdown {
+		markup = emphasisDelimiters(b)
+	}
+	var scan func([]byte, int, bool) error
+	scan = func(text []byte, base int, headingLabel bool) error {
 		for i := 0; i < len(text); {
 			if bytes.HasPrefix(text[i:], []byte("{{")) {
 				end := bytes.Index(text[i+2:], []byte("}}"))
@@ -424,16 +552,10 @@ func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
 				continue
 			}
 			if markdown && text[i] == '`' {
-				n := 1
-				for i+n < len(text) && text[i+n] == '`' {
-					n++
-				}
-				delim := bytes.Repeat([]byte{'`'}, n)
-				end := bytes.Index(text[i+n:], delim)
+				end := codeSpanEnd(text, i)
 				if end < 0 {
 					return fmt.Errorf("unclosed inline code")
 				}
-				end += i + 2*n
 				emit(string(text[i:end]), "atom", "")
 				i = end
 				continue
@@ -463,10 +585,28 @@ func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
 				}
 				pair := fmt.Sprintf("binding-%d", len(locked))
 				emit(string(text[i:label]), "open", pair)
-				if err := scan(text[label:end]); err != nil {
+				if err := scan(text[label:end], base+label, headingLabel); err != nil {
 					return err
 				}
-				emit(string(text[end:finish]), "close", pair)
+				binding := markdownStructuralBinding(text[i:finish], text[label:end], text[end:finish], refs)
+				if a, z, ok := markdownTitleRange(text[end:finish]); ok && binding.Kind != "markdown-literal" {
+					// The destination and title delimiters remain opaque. Only the
+					// parser-approved title interior is editable in this binding.
+					emit(string(text[end:end+a]), "atom", pair)
+					locked[len(locked)-1].Binding = &StructuralBinding{Version: 2, Kind: "markdown-title"}
+					parts := bytes.Split(text[end+a:end+z], []byte("\n"))
+					for i, part := range parts {
+						if i > 0 {
+							emit("\n", "atom", "")
+						}
+						out.Write(part)
+					}
+					emit(string(text[end+z:finish]), "close", pair)
+					binding.Version, binding.EditableTitle = 2, true
+				} else {
+					emit(string(text[end:finish]), "close", pair)
+				}
+				locked[len(locked)-1].Binding = binding
 				i = finish
 				continue
 			}
@@ -477,6 +617,14 @@ func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
 				if typ == html.StartTagToken || typ == html.SelfClosingTagToken {
 					tag, _ := z.TagName()
 					name := string(tag)
+					hiddenInline := false
+					az := html.NewTokenizer(strings.NewReader(raw))
+					az.Next()
+					for _, a := range az.Token().Attr {
+						if strings.HasPrefix(context, "html/inline-run") && ((a.Key == "aria-hidden" && a.Val == "true") || (a.Key == "class" && strings.Contains(a.Val, "material-icons"))) {
+							hiddenInline = true
+						}
+					}
 					if !knownHTMLTag(name) {
 						return fmt.Errorf("unknown HTML structure %s", name)
 					}
@@ -484,7 +632,11 @@ func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
 						return fmt.Errorf("block HTML inside linguistic block")
 					}
 					if typ == html.SelfClosingTagToken || strings.Contains(" br img wbr input source meta link hr ", " "+name+" ") {
-						emit(raw, "atom", "")
+						if strings.Contains(" code var kbd samp tt textarea pre script style ", " "+name+" ") {
+							emit(raw, "atom", "")
+						} else if err := startTag(raw, "atom", ""); err != nil {
+							return err
+						}
 						i += len(raw)
 						continue
 					}
@@ -513,12 +665,26 @@ func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
 							}
 						}
 					}
-					if strings.Contains(" code var kbd samp tt textarea pre script style ", " "+name+" ") {
+					if strings.Contains(" code var kbd samp tt textarea pre script style ", " "+name+" ") || (name == "svg" && strings.HasPrefix(context, "html/inline-run")) {
 						emit(string(text[i:i+consumed]), "atom", "")
+					} else if hiddenInline {
+						pair := fmt.Sprintf("binding-%d", len(locked))
+						if err := startTag(raw, "open", pair); err != nil {
+							return err
+						}
+						emit(string(text[i+len(raw):i+closeStart]), "atom", "")
+						emit(string(text[i+closeStart:i+consumed]), "close", pair)
 					} else {
 						pair := fmt.Sprintf("binding-%d", len(locked))
-						emit(raw, "open", pair)
-						if err := scan(text[i+len(raw) : i+closeStart]); err != nil {
+						if err := startTag(raw, "open", pair); err != nil {
+							return err
+						}
+						// The tokenizer owns the anchor and the block parser owns
+						// its heading role. Do not infer symbol declarations from
+						// words such as Package/Command inside this visible label.
+						heading := strings.TrimPrefix(context, "html/")
+						label := headingLabel || (name == "a" && len(heading) == 2 && heading[0] == 'h' && heading[1] >= '1' && heading[1] <= '6')
+						if err := scan(text[i+len(raw):i+closeStart], base+i+len(raw), label); err != nil {
 							return err
 						}
 						emit(string(text[i+closeStart:i+consumed]), "close", pair)
@@ -550,6 +716,9 @@ func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
 						i += end + 1
 						continue
 					}
+				}
+				if bytes.HasPrefix(text[i:], []byte("</")) || (i+1 < len(text) && unicode.IsLetter(rune(text[i+1]))) {
+					return fmt.Errorf("malformed inline HTML")
 				}
 			}
 			if text[i] == '\n' {
@@ -589,21 +758,33 @@ func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
 			}
 			// Machine words are locked as complete lexical tokens, never split
 			// into independently translated fragments or punctuation units.
-			if !unicode.IsSpace(rune(text[i])) {
+			r, _ := utf8.DecodeRune(text[i:])
+			if !unicode.IsSpace(r) {
 				end := i
-				for end < len(text) && !unicode.IsSpace(rune(text[end])) && !strings.ContainsRune("<>[]{}*`&\\", rune(text[end])) {
-					end++
+				for end < len(text) {
+					r, size := utf8.DecodeRune(text[end:])
+					if unicode.IsSpace(r) || strings.ContainsRune("<>[]{}*`&\\", r) || markup[base+end] {
+						break
+					}
+					end += size
 				}
 				if end > i {
 					word := string(text[i:end])
 					trim := strings.Trim(word, ".,;:!?\"'()")
-					tech := (len(trim) > 1 && strings.ToUpper(trim) == trim && strings.IndexFunc(trim, func(r rune) bool { return r >= 'A' && r <= 'Z' }) >= 0) || strings.ContainsAny(trim, "/\\_") || strings.Contains(trim, "://") || strings.Contains(trim, ".") || strings.Contains(trim, "=") || strings.HasPrefix(trim, "--") || strings.Contains(word, "()")
-					for j := 1; j < len(trim); j++ {
-						if trim[j] >= 'A' && trim[j] <= 'Z' && trim[j-1] >= 'a' && trim[j-1] <= 'z' {
-							tech = true
+					if !legacy && (strings.HasPrefix(word, "./") || strings.HasPrefix(word, "../")) {
+						trim = strings.TrimRight(word, ".,;:!?\"'()")
+					}
+					tech := false
+					if lexical {
+						if legacy {
+							tech = legacyMachineWord(word, trim)
+						} else {
+							// Classification needs only adjacent role-bearing words,
+							// never a growing copy of the paragraph or target prose.
+							tech = classifyProseTokenInRole(trim, string(text[max(0, i-96):i]), string(text[end:min(len(text), end+48)]), !headingLabel) != naturalLanguage
 						}
 					}
-					if tech && trim != "" {
+					if lexical && tech && trim != "" {
 						a := strings.Index(word, trim)
 						out.WriteString(word[:a])
 						emit(trim, "atom", "")
@@ -622,7 +803,7 @@ func protectBlock(b []byte, context string) (string, []ProtectedToken, error) {
 		}
 		return nil
 	}
-	if err := scan(b); err != nil {
+	if err := scan(b, 0, false); err != nil {
 		return "", nil, err
 	}
 	return out.String(), locked, nil
@@ -635,6 +816,12 @@ func balancedEnd(b []byte, start int, open, close byte) int {
 			i++
 			continue
 		}
+		if open == '[' && b[i] == '`' {
+			if end := codeSpanEnd(b, i); end > i {
+				i = end - 1
+				continue
+			}
+		}
 		if b[i] == open {
 			depth++
 		}
@@ -644,6 +831,30 @@ func balancedEnd(b []byte, start int, open, close byte) int {
 				return i
 			}
 		}
+	}
+	return -1
+}
+
+// Delimiter runs inside a code span have no bracket/Markdown semantics. A
+// longer backtick run cannot close a shorter one (CommonMark code-span rule).
+func codeSpanEnd(b []byte, start int) int {
+	n := 1
+	for start+n < len(b) && b[start+n] == '`' {
+		n++
+	}
+	for i := start + n; i < len(b); {
+		if b[i] != '`' {
+			i++
+			continue
+		}
+		end := i + 1
+		for end < len(b) && b[end] == '`' {
+			end++
+		}
+		if end-i == n {
+			return end
+		}
+		i = end
 	}
 	return -1
 }

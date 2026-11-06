@@ -1,0 +1,39 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "learn-docs-v1-qc-022",
+  "snapshot_manifest_sha256": "14b8d72e1ff92732c2b7d4ad253dd8300e8b15ff9bfb1dfcaffa11295d44eb85",
+  "previous_snapshot_id": "learn-docs-v1-qc-021",
+  "rubric": "translation-quality/v1",
+  "result_count": 5,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983",
+      "rating": "B",
+      "finding": "spurious-markdown-paragraph-break: in current _content/doc/database/open-handle.md prose outside fenced code, exactly two blank paragraph boundaries split canonical continuous sentences and leave the first paragraph syntactically incomplete: (1) in \"使用 Connector 打开\", between \"连接属性，通常可以针对所用\" and \"DBMS 自定义连接请求。\"; (2) in \"确认连接\", between \"如果不会立即使用数据库，但希望确认能够建立连接，请调用\" and its Ping/PingContext continuation. Same-class scan found exactly these 2 instances. Preserve DBMS, Ping, PingContext, Connector, technical identities, links, fenced code, teaching comments, unrelated prose/style, and the already-closed FormatDSN/sql.OpenDB residue category."
+    }
+  ]
+}

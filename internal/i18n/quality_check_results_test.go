@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -11,6 +12,12 @@ import (
 
 func recordQualityCheckRatings(t *testing.T, root string, catalog *Catalog, snapshotID, previousSnapshotID, rating string, unitIDs []string) {
 	t.Helper()
+	// Fixture scopes larger than one invocation still record in legal groups.
+	if len(unitIDs) > DefaultQualityCheckBatchLimit {
+		recordQualityCheckRatings(t, root, catalog, snapshotID, previousSnapshotID, rating, unitIDs[:DefaultQualityCheckBatchLimit])
+		recordQualityCheckRatings(t, root, catalog, snapshotID, previousSnapshotID, rating, unitIDs[DefaultQualityCheckBatchLimit:])
+		return
+	}
 	if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
 		Locale: "zh-CN", SnapshotID: snapshotID, PreviousSnapshotID: previousSnapshotID,
 		Rating: rating, UnitIDs: unitIDs, Finding: map[bool]string{true: "test finding"}[rating != "A"],
@@ -758,9 +765,18 @@ func TestRevisionExportRejectsQualityCheckAEvenWithLegacyFinalReview(t *testing.
 }
 
 func TestSurfaceReviewFindingCanExplicitlyReopenFinalizedAWithoutChangingHistory(t *testing.T) {
-	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
-	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1", "lesson/2"})
+	root, catalog, ids := futureContentFixtureSize(t, 2)
+	copyBundleAuthority(t, root, []string{"internal/i18n/surface_transport.go", "internal/sitecontent/surface_transport.go"})
+	copyBundleAuthority(t, root, currentValidationReopenDependencies)
+	checkpointGenerate(t, root, catalog, ids)
+	futureSnapshot(t, root, catalog, "qc-001")
+	for _, id := range ids {
+		futureRecord(t, root, catalog, "qc-001", "", "A", "", []string{id})
+	}
 	if _, _, err := FinalizeQualityCheck(root, catalog, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: "qc-001"}); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := EstablishCurrentTranslationAuthorization(root, catalog, "zh-CN", "qc-001"); err != nil {
 		t.Fatal(err)
 	}
 	evidenceDir := filepath.Join(root, "data", "locale-surface-reviews", "zh-CN")
@@ -768,23 +784,23 @@ func TestSurfaceReviewFindingCanExplicitlyReopenFinalizedAWithoutChangingHistory
 		t.Fatal(err)
 	}
 	evidencePath := filepath.Join(evidenceDir, "surface-failed.md")
-	if err := os.WriteFile(evidencePath, []byte("decision = failed\nTranslationUnit lesson/1: Correct the semantic defect.\n"), 0644); err != nil {
+	if err := os.WriteFile(evidencePath, []byte("decision = failed\nTranslationUnit "+ids[0]+": Correct the semantic defect.\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
 	beforeResults, _ := os.ReadFile(qualityCheckResultsPath(root, "zh-CN", "qc-001"))
 	beforeFinalization, _ := os.ReadFile(qualityCheckFinalizationPath(root, "zh-CN", "qc-001"))
 	receipt, _, err := RecordQualityCheckSurfaceReopen(root, catalog, QualityCheckSurfaceReopenOptions{
 		Locale: "zh-CN", ReopenID: "surface-fix-001", PreviousSnapshotID: "qc-001",
-		SurfaceReviewID: "surface-failed", Finding: "Correct the semantic defect.", UnitIDs: []string{"lesson/1"},
+		SurfaceReviewID: "surface-failed", Finding: "Correct the semantic defect.", UnitIDs: ids[:1],
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if receipt.UnitCount != 1 || receipt.Units[0].UnitID != "lesson/1" {
+	if receipt.UnitCount != 1 || receipt.Units[0].UnitID != ids[0] {
 		t.Fatalf("reopen receipt=%+v", receipt)
 	}
 	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
-		Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true,
+		Locale: "zh-CN", UnitIDs: ids[:1], AllowReexport: true,
 		PreviousSnapshotID: "qc-001", SurfaceReopenID: "surface-fix-001",
 	})
 	if err != nil {
@@ -801,11 +817,39 @@ func TestSurfaceReviewFindingCanExplicitlyReopenFinalizedAWithoutChangingHistory
 		unit.PreviousReviewPath != "data/locale-surface-reviews/zh-CN/surface-failed.md" {
 		t.Fatalf("surface correction provenance=%+v", unit)
 	}
+	copyBundleAuthority(t, root, translationUnitGenerationAuthorityPaths)
+	bundleOptions := GenerationBundleOptions{Locale: "zh-CN", BatchID: exported.BatchID}
+	if _, _, err := ExportTranslationUnitGenerationBundle(root, catalog, bundleOptions); err == nil || !strings.Contains(err.Error(), "capability authority required") {
+		t.Fatalf("missing capability did not fail closed: %v", err)
+	}
+	plan := recordTestSurfaceTransport(t, root, catalog, "zh-CN", exported.BatchID, "message")
+	bundle, bundleManifest, err := ExportTranslationUnitGenerationBundle(root, catalog, bundleOptions)
+	if err != nil || bundleManifest.TaskKind != "translation-unit-revision" {
+		t.Fatalf("Surface revision Bundle: %v", err)
+	}
+	_, files, err := readGenerationBundle(bundle)
+	if err != nil {
+		t.Fatal(err)
+	}
+	capability, err := os.ReadFile(filepath.Join(root, plan.Path))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(files["formal/surface-transport-authority/"+ids[0]+".json"], capability) {
+		t.Fatal("Generation Bundle omitted exact current Surface capability")
+	}
+	assertRevisionCandidates(t, root, catalog, bundleOptions, bundle)
+	if _, _, err := currentGenerationBundle(root, catalog, bundle); err != nil {
+		t.Fatal(err)
+	}
 	afterResults, _ := os.ReadFile(qualityCheckResultsPath(root, "zh-CN", "qc-001"))
 	afterFinalization, _ := os.ReadFile(qualityCheckFinalizationPath(root, "zh-CN", "qc-001"))
 	if !reflect.DeepEqual(beforeResults, afterResults) || !reflect.DeepEqual(beforeFinalization, afterFinalization) {
 		t.Fatal("surface reopen modified historical QC/finalization evidence")
 	}
+	exerciseRevisionRetry(t, root, catalog, bundleOptions, "restore_failed", func(raw []byte) []byte {
+		return []byte(strings.Replace(string(raw), futureCardTokens[2], "局部补充说明。"+futureCardTokens[2], 1))
+	})
 }
 
 func TestSurfaceReviewReopenLimitSixtyAndHistoricalThirtyCompatibility(t *testing.T) {

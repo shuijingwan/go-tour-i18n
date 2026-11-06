@@ -1,0 +1,15 @@
+* Goroutines
+
+A ⟪GTI18N_d0a9c450_000001⟫⟪GTI18N_d0a9c450_000002⟫⟪GTI18N_d0a9c450_000003⟫ is a lightweight thread managed by the ⟪GTI18N_d0a9c450_000004⟫ runtime.
+
+⟪GTI18N_d0a9c450_000005⟫
+
+starts a new ⟪GTI18N_d0a9c450_000006⟫ running
+
+⟪GTI18N_d0a9c450_000007⟫
+
+The evaluation of ⟪GTI18N_d0a9c450_000008⟫f⟪GTI18N_d0a9c450_000009⟫, ⟪GTI18N_d0a9c450_000010⟫x⟪GTI18N_d0a9c450_000011⟫, ⟪GTI18N_d0a9c450_000012⟫y⟪GTI18N_d0a9c450_000013⟫, and ⟪GTI18N_d0a9c450_000014⟫z⟪GTI18N_d0a9c450_000015⟫ happens in the current ⟪GTI18N_d0a9c450_000016⟫ and the execution of ⟪GTI18N_d0a9c450_000017⟫f⟪GTI18N_d0a9c450_000018⟫ happens in the new ⟪GTI18N_d0a9c450_000019⟫.
+
+Goroutines run in the same address space, so access to shared memory must be synchronized. The [[⟪GTI18N_d0a9c450_000020⟫][⟪GTI18N_d0a9c450_000021⟫sync⟪GTI18N_d0a9c450_000022⟫]] package provides useful primitives, although you won't need them much in ⟪GTI18N_d0a9c450_000023⟫ as there are other primitives. (See the next slide.)
+
+⟪GTI18N_d0a9c450_000024⟫

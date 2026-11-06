@@ -1,0 +1,62 @@
+{
+  "current_representation_sha256": "dc97ebf36414be1bcc6bde41f4ee2428234b9c6a0e2a4e7f117f0287e9d2e33c",
+  "current_unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+  "disposition": "BLOCKED_NON_UNIQUE",
+  "formal_artifact_mutation": "none",
+  "formal_impact_sha256": "8fb332e4ba2b8be55de91c057a3f174ac4bb922536c90e9d4e927e21e6b74e0e",
+  "historical_documents_sha256": "e119897a3822d9abc42360c46889ac08c850c870f00ad51f250e3b71e91162e4",
+  "left_anchor": "⟦P345⟧",
+  "old_candidate": {
+    "path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/candidates/2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b.article",
+    "sha256": "44645064a026f2b5e25e92f925ca91ee386e5140ce06ec4aa9cfd932c128469f"
+  },
+  "old_raw_sha256": "05193d04e83729e6e9006154dbcd61a39b877152a1b7e12793e2d6c16536b57b",
+  "old_representation_sha256": "44b0dded4a04ac56bba4e5147efcec6e86e8d615f34fed1b5269c1c6aeb2a936",
+  "old_unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+  "old_validation": {
+    "path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/validation/2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b.json",
+    "sha256": "c1095a734e5e29046d74b8e37d640e33028970467f0899b63dffb3b68133df4d"
+  },
+  "predecessor_snapshot": "learn-docs-v1-qc-014",
+  "predecessor_snapshot_sha256": "234a37330a348590ab3b46e30d720ad42718dc798cb3002e212b86ce47acb619",
+  "reason": "Each source A/B site has two indistinguishable plain-prose target sites between the same verified protected anchors. Swapping either pair preserves every available machine role, sibling/protected binding and enclosing structure. No unique correspondence; selecting by occurrence, nearest text or Chinese meaning is forbidden.",
+  "right_anchor": "⟦P346⟧",
+  "schema": "engineering/representation-binding-proof/v1",
+  "source_interval": [
+    11114,
+    11184
+  ],
+  "source_path": "_content/doc/security/vuln/database.md",
+  "source_prose": "vulnerability, package B depends on package A, and there are separate ",
+  "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+  "source_sites": {
+    "A": [
+      [
+        11158,
+        11159
+      ]
+    ],
+    "B": [
+      [
+        11137,
+        11138
+      ]
+    ]
+  },
+  "target_prose": "漏洞，包 B 依赖包 A，而且包 A 和 B 分别有不同的 ",
+  "target_raw_interval": [
+    9461,
+    9527
+  ],
+  "target_sites": {
+    "A": [
+      9486,
+      9500
+    ],
+    "B": [
+      9474,
+      9506
+    ]
+  },
+  "unknown": true
+}

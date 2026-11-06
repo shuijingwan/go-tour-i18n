@@ -1,0 +1,175 @@
+---
+title: Go 漏洞管理
+layout: article
+---
+
+[返回 Go 安全](/security)
+
+## 概述
+
+Go 帮助开发者检测、评估和解决可能
+被攻击者利用的错误或弱点。在幕后，Go 团队运行一条
+数据流水线来整理漏洞报告，这些报告存储在 Go
+漏洞数据库中。各种库和工具可以读取并分析这些
+报告，以了解具体用户项目可能受到怎样的影响。这项
+功能已集成到
+[Go 包发现网站](https://pkg.go.dev)以及新的 CLI 工具
+govulncheck 中。
+
+该项目仍在持续开发中。
+欢迎提供[反馈](#feedback)，帮助我们不断改进！
+
+注意（**NOTE**）：要报告 Go 项目中的漏洞，请参阅 [Go 安全政策](/security/policy)。
+
+## 架构
+
+<div class="image">
+  <center>
+    <img style="width: 100%" width="2110" height="952" src="architecture.png" alt="Go 漏洞管理架构"></img>
+  </center>
+</div>
+
+Go 漏洞管理由以下几个高层组件组成：
+
+1. 一条**数据流水线**从各种来源收集漏洞信息，
+包括 [National Vulnerability Database（NVD）](https://nvd.nist.gov/)、
+[GitHub Advisory Database](https://github.com/advisories)，
+以及[Go 包维护者直接提供的信息](/s/vulndb-report-new)。
+2. 一个**漏洞数据库**使用数据流水线中的信息填充
+报告。
+数据库中的所有报告都会由 Go 安全团队审核和整理。
+报告采用 [Open Source Vulnerability（OSV）格式](https://ossf.github.io/osv-schema/)，
+并可通过 [API](/security/vuln/database#api) 访问。
+3. **集成**：与 [pkg.go.dev](https://pkg.go.dev) 以及 govulncheck 集成，使开发者能够发现
+自己项目中的漏洞。
+
+[govulncheck 命令](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)会
+分析你的代码库，并根据代码中的哪些函数会传递调用存在漏洞的
+函数，只显示真正会影响你的漏洞。Govulncheck 提供了一种低噪声、可靠的方法，用于发现项目中的已知
+漏洞。
+
+
+## 资源
+
+### Go 漏洞数据库
+
+[Go 漏洞数据库](https://vuln.go.dev)除了 Go 包维护者
+直接向 Go 安全团队提交的报告之外，还包含来自许多现有来源的信息。
+数据库中的每个条目都会经过审核，以确保漏洞说明、
+包和符号信息以及版本详情准确无误。
+有关 Go 漏洞数据库的更多信息，请参阅 
+
+[go.dev/security/vuln/database](/security/vuln/database)，
+也可以在浏览器中通过 
+[pkg.go.dev/vuln](https://pkg.go.dev/vuln) 查看数据库中的漏洞。
+
+
+我们鼓励包维护者[贡献](#feedback)
+自己项目中公开漏洞的信息，并
+[向我们提出建议](/s/vuln-feedback)，帮助降低
+参与门槛。
+
+### Go 漏洞检测
+
+Go 的漏洞检测旨在为 Go
+用户提供低噪声、可靠的方法，帮助他们了解可能影响项目的已知漏洞。
+漏洞检查已集成到 Go 的工具和服务中，包括
+新的命令行工具 [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)、
+[Go 包发现网站](https://pkg.go.dev)，以及[主流编辑器](/security/vuln/editor)，例如安装 Go 扩展的 VS Code。
+
+要开始使用 govulncheck，请在项目中运行以下命令：
+
+```
+$ go install golang.org/x/vuln/cmd/govulncheck@latest
+$ govulncheck ./...
+```
+
+要在编辑器中启用漏洞检测，请参阅[编辑器集成](/security/vuln/editor)页面中的说明。
+
+### Go CNA
+
+Go 安全团队是一个 [CVE编号机构](https://www.cve.org/ProgramOrganization/CNAs)。
+有关更多信息，请参阅 [go.dev/security/vuln/cna](/security/vuln/cna)。
+
+## 反馈
+
+我们非常欢迎你贡献力量，通过以下方式帮助我们不断
+改进：
+
+- [为你维护的 Go 包公开漏洞](/s/vulndb-report-new)贡献新信息，并
+  [更新现有](/s/vulndb-report-feedback)信息
+  
+- [参加这项调查](/s/govulncheck-feedback)，分享你
+  使用 govulncheck 的体验
+- [向我们提供反馈](/s/vuln-feedback)，内容可涉及问题和
+  功能请求
+
+## 常见问题
+
+**如何报告 Go 项目中的漏洞？**
+
+请通过电子邮件将 Go 项目中的所有安全 bug 报告至 [security@golang.org](mailto:security@golang.org)。
+有关我们的处理流程，请阅读 [Go 安全政策](/security/policy)。
+
+**如何向 Go 漏洞数据库添加公开漏洞？**
+
+要申请将公开漏洞添加到 Go 漏洞数据库，
+请[填写此表单](/s/vulndb-report-new)。
+
+如果某个漏洞已经公开披露，
+或者存在于你维护的包中（并且你已经准备好披露），则视为公开漏洞。
+该表单仅适用于 Go 团队未维护的、可导入 Go 包中的公开漏洞
+（即 Go 标准库、
+Go 工具链以及 golang.org 模块之外的内容）。
+
+该表单也可用于申请新的 CVE ID。
+[在此阅读更多信息](/security/vuln/cna)，了解 Go CVE 编号机构。
+
+**如何建议修改某个漏洞？**
+
+要建议修改 Go 漏洞数据库中的现有报告，
+请[填写此处的表单](/s/vulndb-report-feedback)。
+
+**如何报告 govulncheck 的问题或提供反馈？**
+
+请在 [Go issue 跟踪器](/s/vuln-feedback)上提交问题或反馈。
+
+**我在另一个数据库中发现了这个漏洞，为什么 Go 漏洞数据库里没有？**
+
+报告可能因多种原因被排除在 Go 漏洞数据库之外，
+例如相关漏洞并不存在于 Go 包中、
+漏洞位于可安装命令而不是可导入包中，
+或者该漏洞已经被数据库中另一个漏洞完全
+涵盖。
+可以在此了解 Go 安全团队
+[排除报告的原因](/security/vuln/database#excluded-reports)。
+如果你认为某份报告被错误地排除在 vuln.go.dev 之外，
+[请告诉我们](/s/vulndb-report-feedback)。
+
+**为什么 Go 漏洞数据库不使用严重性标签？**
+
+大多数漏洞报告格式都会使用“LOW”“MEDIUM”
+和“CRITICAL”等严重性标签来表示不同漏洞的影响，
+并帮助开发者确定安全问题的处理优先级。
+不过，出于多方面原因，Go 避免使用这种标签。
+
+漏洞的影响很少对所有使用场景都完全一致，
+因此严重性指标常常可能具有误导性。
+例如，解析器崩溃可能是一个严重性极高的问题，如果它
+用于解析用户提供的输入，而且漏洞可以被利用来实施 DoS 攻击；
+但如果解析器只是用于解析本地配置文件，
+即使称为“低”严重性也可能言过其实。
+
+严重性标签的划分也必然带有主观性。
+即使对于 [CVE 程序](https://www.cve.org/About/Overview)也是如此；
+该程序提出一个公式，用于拆分漏洞的各个相关方面，
+例如攻击向量、复杂度和可利用性。
+但所有这些因素仍然需要主观评估。
+
+我们认为，清晰完善的漏洞说明比严重性指标更有用。
+好的说明可以解释问题是什么、
+如何触发，以及使用者在判断问题对自己软件的
+影响时应考虑哪些因素。
+
+如果你愿意就此话题分享想法，欢迎[提交 issue](/s/vuln-feedback)
+。

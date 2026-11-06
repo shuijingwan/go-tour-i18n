@@ -1,0 +1,19 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "learn-docs-v1-qc-016",
+  "snapshot_manifest_sha256": "06132018fe962d02df9b2135dfa7e5821a4d4a22419ef5384b517a5903ba64d2",
+  "previous_snapshot_id": "learn-docs-v1-qc-015",
+  "rubric": "translation-quality/v1",
+  "result_count": 1,
+  "results": [
+    {
+      "index": 40,
+      "unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+      "rating": "B",
+      "finding": "QC016-F001: `_content/doc/security/fips140.md` 的 `## FIPS 140-3` 下首段，source `NIST FIPS 140-3 is a U.S. Government compliance regime...` 对应 current candidate 写成 `NIST FIPS 140-3 是 美国政府针对密码学应用的一套合规制度...`。前序 `U.S 政府` 的中英混杂已经改善为“美国政府”，但中文系词“是”和“美国政府”之间残留一个不必要的空格。该空格属于普通用户可见中文 prose，不属于 protected、inline-code、link 或技术 identity，仍需极小语言/排版修订，因此当前 candidate 未达到无需修改的 A。"
+    }
+  ]
+}

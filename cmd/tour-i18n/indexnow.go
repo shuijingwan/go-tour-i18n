@@ -12,8 +12,11 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"reflect"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 )
@@ -53,10 +56,11 @@ func indexNowBootstrapCommand(root string, args []string) error {
 	fs := flag.NewFlagSet("indexnow bootstrap", flag.ContinueOnError)
 	locale := fs.String("locale", "", "live locale")
 	keyFile := fs.String("key-file", "", "path to the private IndexNow key file")
+	releaseDir := fs.String("release-dir", "", "current sealed deployed release")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
-	if *locale == "" || *keyFile == "" || fs.NArg() != 0 {
+	if *locale == "" || *keyFile == "" || *releaseDir == "" || fs.NArg() != 0 {
 		return fmt.Errorf("usage: tour-i18n indexnow bootstrap --locale <locale> --key-file <path>")
 	}
 	if err := validateProductionIdentity(root, filepath.Join(root, "production", "identity.json")); err != nil {
@@ -66,9 +70,30 @@ func indexNowBootstrapCommand(root string, args []string) error {
 	if err != nil {
 		return err
 	}
+	info, err := inspectRelease(*releaseDir)
+	if err != nil {
+		return err
+	}
+	if info.Locale != *locale {
+		return fmt.Errorf("search release locale mismatch")
+	}
+	if err = checkReleaseCurrent(root, info.Content); err != nil {
+		return err
+	}
+	expected := []string{}
+	for _, route := range info.Content.Routes {
+		expected = append(expected, info.Content.Origin+route)
+	}
 	key, err := readIndexNowKey(*keyFile)
 	if err != nil {
 		return err
+	}
+	verify := exec.Command("bash", filepath.Join(root, "scripts", "verify-production.sh"), *releaseDir)
+	verify.Dir = root
+	verify.Stdout = os.Stdout
+	verify.Stderr = os.Stderr
+	if err = verify.Run(); err != nil {
+		return fmt.Errorf("search current deployment preflight: %w", err)
 	}
 	client := &http.Client{
 		Timeout: 30 * time.Second,
@@ -76,7 +101,7 @@ func indexNowBootstrapCommand(root string, args []string) error {
 		// merely reached after a redirect.
 		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 	}
-	result, err := bootstrapIndexNow(context.Background(), client, indexNowEndpoint, profile, key)
+	result, err := bootstrapIndexNow(context.Background(), client, indexNowEndpoint, profile, key, expected)
 	if err != nil {
 		return err
 	}
@@ -144,7 +169,7 @@ type indexNowBootstrapResult struct {
 	SubmittedURLs int
 }
 
-func bootstrapIndexNow(ctx context.Context, client *http.Client, endpoint string, profile indexNowProfile, key string) (indexNowBootstrapResult, error) {
+func bootstrapIndexNow(ctx context.Context, client *http.Client, endpoint string, profile indexNowProfile, key string, expectedSets ...[]string) (indexNowBootstrapResult, error) {
 	origin, err := parseIndexNowOrigin(profile)
 	if err != nil {
 		return indexNowBootstrapResult{}, err
@@ -157,12 +182,19 @@ func bootstrapIndexNow(ctx context.Context, client *http.Client, endpoint string
 	if err != nil {
 		return indexNowBootstrapResult{}, err
 	}
-	// Keep the identity's validated root URL byte-for-byte for the probe. The
-	// trimmed origin is only for constructing sibling resource URLs.
-	probe := profile.PublicURL
-	if !containsURL(urls, probe) {
-		return indexNowBootstrapResult{}, fmt.Errorf("formal sitemap does not contain fixed probe URL %s", probe)
+	if len(expectedSets) != 1 {
+		return indexNowBootstrapResult{}, fmt.Errorf("current activated sitemap exact-set required before submission")
 	}
+	want := append([]string{}, expectedSets[0]...)
+	got := append([]string{}, urls...)
+	sort.Strings(want)
+	sort.Strings(got)
+	if len(want) == 0 || !reflect.DeepEqual(want, got) {
+		return indexNowBootstrapResult{}, fmt.Errorf("public sitemap differs from current complete activated coverage")
+	}
+	// Probe a complete local canonical URL from the same sealed exact set.
+	// A sparse locale without an activated Homepage must never submit root.
+	probe := urls[0]
 	probeStatus, err := submitIndexNowProbe(ctx, client, endpoint, profile.Hostname, key, keyLocation, probe)
 	if err != nil {
 		return indexNowBootstrapResult{}, err

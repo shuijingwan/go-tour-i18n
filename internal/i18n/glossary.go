@@ -3,6 +3,7 @@ package i18n
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"sort"
@@ -24,10 +25,14 @@ func LoadGlossary(root, locale string) (*Glossary, error) {
 		return nil, fmt.Errorf("read glossary: %w", err)
 	}
 	defer f.Close()
+	return parseGlossary(locale, f)
+}
+
+func parseGlossary(locale string, reader io.Reader) (*Glossary, error) {
 	g := &Glossary{Locale: locale, Mandatory: map[string]string{}, Preferred: map[string]string{}}
 	section := ""
 	keepSeen := map[string]bool{}
-	scanner := bufio.NewScanner(f)
+	scanner := bufio.NewScanner(reader)
 	for scanner.Scan() {
 		line := scanner.Text()
 		trimmed := strings.TrimSpace(line)
@@ -127,7 +132,7 @@ func (g *Glossary) PromptRules(pageID string) string {
 	keep := append([]string(nil), g.Keep...)
 	sort.Strings(keep)
 	for _, value := range keep {
-		rules = append(rules, fmt.Sprintf("- %s（保持原样；不得翻译）", value))
+		rules = append(rules, fmt.Sprintf("- %s（作为对应技术 identity 时保持原样；普通语言中的同形词按上下文翻译）", value))
 	}
 	for _, value := range g.Forbidden {
 		locale := g.Locale

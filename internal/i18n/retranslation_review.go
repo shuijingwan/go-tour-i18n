@@ -631,6 +631,7 @@ func reviewScopePendingDisposition(root string, catalog *Catalog, locale string,
 }
 
 type snapshotUnitRepositoryEvidence struct {
+	machine    *machineSelection
 	unit       *TranslationUnit
 	candidate  []byte
 	batchDir   string
@@ -643,6 +644,10 @@ type snapshotUnitRepositoryEvidence struct {
 // to the exact current source, candidate, validation, and final attempt. Both
 // Quality Check and Final Review scopes use this shared identity boundary.
 func readSnapshotUnitRepositoryEvidence(root string, catalog *Catalog, locale string, snapshot QualityCheckSnapshotUnit) (*snapshotUnitRepositoryEvidence, error) {
+	if snapshot.RepresentationReconciliation != nil {
+		e, _, err := machineSnapshotEvidence(root, catalog, locale, snapshot, nil)
+		return e, err
+	}
 	unit, err := catalog.Unit(snapshot.UnitID)
 	if err != nil || unit.Kind != snapshot.UnitKind || unit.SourcePath != snapshot.SourcePath || unit.SourceSHA256 != snapshot.SourceSHA256 {
 		return nil, errors.New("source identity does not match Candidate Snapshot")
@@ -710,7 +715,11 @@ func reviewMatchesSnapshotIdentity(locale string, snapshot QualityCheckSnapshotU
 }
 
 func readQualityCheckSnapshotForReview(root, locale, snapshotID string, catalogs ...*Catalog) (*QualityCheckSnapshotManifest, error) {
-	return readQualityCheckSnapshot(root, locale, snapshotID, true, catalogs...)
+	var catalog *Catalog
+	if len(catalogs) > 0 {
+		catalog = catalogs[0]
+	}
+	return readQualityCheckSnapshotWithCompatibility(root, locale, snapshotID, true, catalog, nil)
 }
 
 func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlossary bool, catalogs ...*Catalog) (*QualityCheckSnapshotManifest, error) {
@@ -718,6 +727,10 @@ func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlos
 	if len(catalogs) > 0 {
 		catalog = catalogs[0]
 	}
+	return readQualityCheckSnapshotWithCompatibility(root, locale, snapshotID, verifyCurrentGlossary, catalog, nil)
+}
+
+func readQualityCheckSnapshotWithCompatibility(root, locale, snapshotID string, verifyCurrentGlossary bool, catalog *Catalog, compatibility *PreparedGlossaryCompatibility) (*QualityCheckSnapshotManifest, error) {
 	path := filepath.Join(root, "data", "quality-check-snapshots", locale, snapshotID, "manifest.json")
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -732,6 +745,9 @@ func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlos
 	if err := decoder.Decode(&struct{}{}); err != io.EOF {
 		return nil, fmt.Errorf("parse quality-check snapshot %q: multiple JSON values", snapshotID)
 	}
+	if err := strictSnapshotPackageJSON(data, &manifest); err != nil {
+		return nil, err
+	}
 	if manifest.SchemaVersion != QualityCheckSnapshotSchemaVersion || manifest.SnapshotID != snapshotID || manifest.Locale != locale {
 		return nil, fmt.Errorf("quality-check snapshot %q has incompatible identity", snapshotID)
 	}
@@ -744,14 +760,25 @@ func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlos
 	}
 	if verifyCurrentGlossary {
 		glossaryData, err := readSnapshotReferencedFile(root, manifest.GlossaryPath)
+		if compatibility != nil && compatibility.historicalSHA != "" {
+			glossaryData, err = readArchivedGlossary(root, locale, compatibility.historicalSHA)
+		}
 		if err != nil {
 			return nil, fmt.Errorf("quality-check snapshot %q glossary: %w", snapshotID, err)
 		}
 		if sum(glossaryData) != manifest.GlossarySHA256 {
+			if manifest.CurrentReattestation != nil {
+				return nil, fmt.Errorf("quality-check snapshot %q current re-attestation glossary is stale", snapshotID)
+			}
 			// Historical manifests are immutable. Only a verified per-Unit
 			// compatibility proof can admit their original glossary identity.
+			prepared := compatibility
+			if prepared == nil {
+				prepared = PrepareGlossaryCompatibility(root, locale, catalog)
+			}
 			for _, unit := range manifest.Units {
-				if !glossaryScopeCompatible(root, locale, manifest.GlossarySHA256, sum(glossaryData), "tu:"+unit.UnitID, catalog) {
+				resolution := prepared.Resolve(manifest.GlossarySHA256, sum(glossaryData), "tu:"+unit.UnitID)
+				if resolution.Status != "exact" && resolution.Status != "compatible" {
 					return nil, fmt.Errorf("quality-check snapshot %q glossary hash mismatch: %s", snapshotID, unit.UnitID)
 				}
 			}
@@ -785,6 +812,26 @@ func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlos
 	}
 	if pageCount != manifest.PageCount || exampleCount != manifest.ExampleCount {
 		return nil, fmt.Errorf("quality-check snapshot %q has incompatible kind counts", snapshotID)
+	}
+	if err := checkSnapshotPackageBinding(root, catalog, &manifest, verifyCurrentGlossary); err != nil {
+		return nil, err
+	}
+	if catalog != nil && len(catalog.TranslationScope) > 0 {
+		ordered, _, _, err := localeWorkflowUnitList(catalog)
+		if err != nil {
+			return nil, err
+		}
+		if len(ordered) != len(manifest.Units) {
+			return nil, fmt.Errorf("两批页面生成及机器校验全部完成前禁止独立质量审核")
+		}
+		for i, u := range ordered {
+			if manifest.Units[i].UnitID != u.ID {
+				return nil, fmt.Errorf("Snapshot does not cover the complete selected content scope: snapshot=%s index=%d expected=%s actual=%s", snapshotID, i+1, u.ID, manifest.Units[i].UnitID)
+			}
+		}
+	}
+	if err := checkSnapshotReattestation(root, catalog, &manifest, verifyCurrentGlossary); err != nil {
+		return nil, err
 	}
 	return &manifest, nil
 }

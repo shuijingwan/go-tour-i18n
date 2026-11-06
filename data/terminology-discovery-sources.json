@@ -1,0 +1,240 @@
+{
+  "schema": "go-learning/terminology-discovery-sources/v1",
+  "website": {
+    "repository": "https://github.com/golang/website.git",
+    "commit": "db076098077c07d3cef1b85a2cf56ff52777f587"
+  },
+  "go_source": {
+    "version": "go1.27.1",
+    "archive_sha256": "4e408abae126d916b6164627193f2c54f0e3ca1312d693b86db45f862ab238b1"
+  },
+  "sources": [
+    {
+      "id": "discovery:go-source:go/doc/go_mem.html",
+      "namespace": "go-source",
+      "path": "go/doc/go_mem.html",
+      "snapshot_path": "go-source/go/doc/go_mem.html",
+      "parser": "html-visible/v1",
+      "source_sha256": "a7372b4f36c9525ecc7531bbdbb9e53746ae3f58367a25fe8084d5a35bb8ee7c",
+      "source_bytes": 27268
+    },
+    {
+      "id": "discovery:go-source:go/doc/go_spec.html",
+      "namespace": "go-source",
+      "path": "go/doc/go_spec.html",
+      "snapshot_path": "go-source/go/doc/go_spec.html",
+      "parser": "html-visible/v1",
+      "source_sha256": "a249c493e0ad58ccfeac8081426d5b0e77f92b9761b95548f85c9e4d23d0a753",
+      "source_bytes": 296253
+    },
+    {
+      "id": "discovery:go-source:go/src/cmd/compile/doc.go",
+      "namespace": "go-source",
+      "path": "go/src/cmd/compile/doc.go",
+      "snapshot_path": "go-source/go/src/cmd/compile/doc.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "d3298825c634ab137d6974dcd7bacb8544aa75ba1aa46a70b3acd5bffa267bc4",
+      "source_bytes": 13956
+    },
+    {
+      "id": "discovery:go-source:go/src/cmd/go/alldocs.go",
+      "namespace": "go-source",
+      "path": "go/src/cmd/go/alldocs.go",
+      "snapshot_path": "go-source/go/src/cmd/go/alldocs.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "09b0d7570c1695acc0ccad5593e3f5c2f888548cfc7f80a49933a19f3514aa69",
+      "source_bytes": 160461
+    },
+    {
+      "id": "discovery:go-source:go/src/cmd/link/doc.go",
+      "namespace": "go-source",
+      "path": "go/src/cmd/link/doc.go",
+      "snapshot_path": "go-source/go/src/cmd/link/doc.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "5272d2f0625838baa98152b3271737131938c49fa221be066e68ec9bff96a653",
+      "source_bytes": 4458
+    },
+    {
+      "id": "discovery:go-source:go/src/cmd/pprof/doc.go",
+      "namespace": "go-source",
+      "path": "go/src/cmd/pprof/doc.go",
+      "snapshot_path": "go-source/go/src/cmd/pprof/doc.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "23a1b21b85cedcfd9a37fd5f16bf9a00f401d1d5f6bb95b289772caea105508c",
+      "source_bytes": 399
+    },
+    {
+      "id": "discovery:go-source:go/src/cmd/trace/doc.go",
+      "namespace": "go-source",
+      "path": "go/src/cmd/trace/doc.go",
+      "snapshot_path": "go-source/go/src/cmd/trace/doc.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "41a20c92360dcce291ecdc65e59b998f06c71f0d8cf6fbf5de4788117a616808",
+      "source_bytes": 1070
+    },
+    {
+      "id": "discovery:go-source:go/src/cmd/vet/doc.go",
+      "namespace": "go-source",
+      "path": "go/src/cmd/vet/doc.go",
+      "snapshot_path": "go-source/go/src/cmd/vet/doc.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "711dc190b28f9db2f2a799f5591ef3e827335c339252b6cfa59bbef02e52db9e",
+      "source_bytes": 4096
+    },
+    {
+      "id": "discovery:go-source:go/src/runtime/pprof/pprof.go",
+      "namespace": "go-source",
+      "path": "go/src/runtime/pprof/pprof.go",
+      "snapshot_path": "go-source/go/src/runtime/pprof/pprof.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "31477a5cb8a678930eb219f3f533346f6aef262c37e2799f90438166ade5104a",
+      "source_bytes": 35082
+    },
+    {
+      "id": "discovery:go-source:go/src/runtime/trace/trace.go",
+      "namespace": "go-source",
+      "path": "go/src/runtime/trace/trace.go",
+      "snapshot_path": "go-source/go/src/runtime/trace/trace.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "1f13c6a781982a57c733620814cc5238030bfd1ff2518f1e8278e8b59d42ca44",
+      "source_bytes": 4800
+    },
+    {
+      "id": "discovery:go-source:go/src/testing/testing.go",
+      "namespace": "go-source",
+      "path": "go/src/testing/testing.go",
+      "snapshot_path": "go-source/go/src/testing/testing.go",
+      "parser": "go-doc-visible/v1",
+      "source_sha256": "8d2437cfdcfb82fd8807e5063783de1d50f70e589e80cad10e17d8ef23f724d9",
+      "source_bytes": 94214
+    },
+    {
+      "id": "discovery:website:_content/blog/execution-traces-2024.md",
+      "namespace": "website",
+      "path": "_content/blog/execution-traces-2024.md",
+      "snapshot_path": "website/_content/blog/execution-traces-2024.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "18729f0b336e27b896264e1a5b7cb387f1da90818612440cf80c8241b53767c6",
+      "source_bytes": 7711
+    },
+    {
+      "id": "discovery:website:_content/blog/get-familiar-with-workspaces.md",
+      "namespace": "website",
+      "path": "_content/blog/get-familiar-with-workspaces.md",
+      "snapshot_path": "website/_content/blog/get-familiar-with-workspaces.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "85d445a1ddb85c3831235b1e631b024d17b78f338b34d8706c286c3cec13e7f1",
+      "source_bytes": 10043
+    },
+    {
+      "id": "discovery:website:_content/blog/govulncheck.md",
+      "namespace": "website",
+      "path": "_content/blog/govulncheck.md",
+      "snapshot_path": "website/_content/blog/govulncheck.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "20ef3cd0ddcf36b267b014c528d4c19f7482f331d94c0f5992313a9f245f5be4",
+      "source_bytes": 4413
+    },
+    {
+      "id": "discovery:website:_content/blog/pprof.md",
+      "namespace": "website",
+      "path": "_content/blog/pprof.md",
+      "snapshot_path": "website/_content/blog/pprof.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "2b7aba4410b2a0e5ac54cc45ac84e731ae730961451e7d0aae687739c06738d4",
+      "source_bytes": 27266
+    },
+    {
+      "id": "discovery:website:_content/blog/supply-chain.md",
+      "namespace": "website",
+      "path": "_content/blog/supply-chain.md",
+      "snapshot_path": "website/_content/blog/supply-chain.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "5c72437c12a1ee814f836ba7fdf9261ad28e212b7c1424208bf4f541a8a4f4e9",
+      "source_bytes": 9068
+    },
+    {
+      "id": "discovery:website:_content/doc/articles/race_detector.html",
+      "namespace": "website",
+      "path": "_content/doc/articles/race_detector.html",
+      "snapshot_path": "website/_content/doc/articles/race_detector.html",
+      "parser": "html-visible/v1",
+      "source_sha256": "8f5ff5a04485cc62766b42db0d4b9dce1c5475e71929134bb9e7c2743a7b1c53",
+      "source_bytes": 11399
+    },
+    {
+      "id": "discovery:website:_content/doc/build-cover.md",
+      "namespace": "website",
+      "path": "_content/doc/build-cover.md",
+      "snapshot_path": "website/_content/doc/build-cover.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "7923d284dd6d95b42f3de8977fad7d5f70dfc4bfcc921cf72975cc5cc8a65fde",
+      "source_bytes": 13695
+    },
+    {
+      "id": "discovery:website:_content/doc/diagnostics.html",
+      "namespace": "website",
+      "path": "_content/doc/diagnostics.html",
+      "snapshot_path": "website/_content/doc/diagnostics.html",
+      "parser": "html-visible/v1",
+      "source_sha256": "a1ea481194066462e3fb6701f2fe859f87ae218ea237b6fc806742b439681fe1",
+      "source_bytes": 17955
+    },
+    {
+      "id": "discovery:website:_content/doc/effective_go.html",
+      "namespace": "website",
+      "path": "_content/doc/effective_go.html",
+      "snapshot_path": "website/_content/doc/effective_go.html",
+      "parser": "html-visible/v1",
+      "source_sha256": "9c6259ceaec348deabfcef9856955070da5370f3a95cf739b4d9c06b22544e0d",
+      "source_bytes": 112268
+    },
+    {
+      "id": "discovery:website:_content/doc/faq.md",
+      "namespace": "website",
+      "path": "_content/doc/faq.md",
+      "snapshot_path": "website/_content/doc/faq.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "df2ca902ebe7bd8c547ec47f7d25f5f18f80062e577468ace384e9e74f690419",
+      "source_bytes": 95248
+    },
+    {
+      "id": "discovery:website:_content/doc/go1compat.html",
+      "namespace": "website",
+      "path": "_content/doc/go1compat.html",
+      "snapshot_path": "website/_content/doc/go1compat.html",
+      "parser": "html-visible/v1",
+      "source_sha256": "b04b42e4f5e5fbf1d1a1f86bd1b6d2d8c04f0997bfd35776e3ddb00e604f25ed",
+      "source_bytes": 7223
+    },
+    {
+      "id": "discovery:website:_content/doc/pgo.md",
+      "namespace": "website",
+      "path": "_content/doc/pgo.md",
+      "snapshot_path": "website/_content/doc/pgo.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "925a2b840ebf324c98af2e222092f0b9ea79b2e5091d9be9abadd66a84e01966",
+      "source_bytes": 17353
+    },
+    {
+      "id": "discovery:website:_content/doc/toolchain.md",
+      "namespace": "website",
+      "path": "_content/doc/toolchain.md",
+      "snapshot_path": "website/_content/doc/toolchain.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "5f419cbb7776cac472e74f6ca67827e8a2cb6bb1e3e93946f9b9c9ac9a79f78f",
+      "source_bytes": 23289
+    },
+    {
+      "id": "discovery:website:_content/ref/mod.md",
+      "namespace": "website",
+      "path": "_content/ref/mod.md",
+      "snapshot_path": "website/_content/ref/mod.md",
+      "parser": "markdown-visible/v1",
+      "source_sha256": "b3176abbe34fca9ab499843e378b5c5f04b2ea3e46e2071d1195495995f08e37",
+      "source_bytes": 221363
+    }
+  ],
+  "snapshot_sha256": "8780a33ee63fabe67fcb36cc8525985dbf73b846bec9f0bac6cf493e5ec4990e",
+  "identity_sha256": "e09e870a44c31e23e96417cb8b985707c1c8e23f8f7377bc69ad12f23acf22a9"
+}

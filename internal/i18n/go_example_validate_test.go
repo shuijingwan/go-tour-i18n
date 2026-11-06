@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"sort"
@@ -9,6 +10,12 @@ import (
 )
 
 func writeGoExampleValidationGlossary(t *testing.T, root string) {
+	t.Helper()
+	ensureTestCurrentLocaleAuthority(t, root, "zh-CN", testLanguageAuditAuthority("zh-CN", "Han", map[string]string{".": "。"}))
+	writeGoExampleValidationGlossaryWithoutCurrentAuthority(t, root)
+}
+
+func writeGoExampleValidationGlossaryWithoutCurrentAuthority(t *testing.T, root string) {
 	t.Helper()
 	dir := filepath.Join(root, "locales", "zh-CN")
 	if err := os.MkdirAll(dir, 0755); err != nil {
@@ -39,26 +46,23 @@ func TestValidateGoExampleCandidateAllowsNaturalCommentTranslation(t *testing.T)
 }
 
 func TestValidateGoExampleCandidateAllowsNumericConstantsShiftVerbTranslation(t *testing.T) {
-	root := repoRoot(t)
-	catalog, err := BuildCatalog(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	unit, err := catalog.Unit("example:basics/numeric-constants.go")
-	if err != nil {
-		t.Fatal(err)
-	}
-	candidate := strings.Replace(string(unit.Source), "Shift it right again 99 places, so we end up with 1<<1, or 2.", "再向右移位 99 位，最终得到 1<<1，即 2。", 1)
-	if candidate == string(unit.Source) {
-		t.Fatal("numeric-constants Shift comment was not found")
-	}
-	if err := ValidateGoExampleCandidate(root, unit, "zh-CN", []byte(candidate)); err != nil {
+	root := t.TempDir()
+	writeGoExampleValidationGlossary(t, root)
+	// Isolate the ordinary verb from unrelated teaching comments in the corpus.
+	source := "package main\n\nconst Small = 2\n\n// Shift Small left by 99 places to compute Big.\nconst Big = Small << 99\n"
+	unit := goExampleValidationUnit(source)
+	target := []byte(strings.Replace(source, "Shift Small left by 99 places to compute Big.", "将 Small 向左移位 99 位以计算 Big。", 1))
+	if err := ValidateGoExampleCandidate(root, unit, "zh-CN", target); err != nil {
 		t.Fatalf("translated Shift verb candidate: %v", err)
+	}
+	if err := ValidateGoExampleCandidate(root, unit, "zh-CN", []byte(strings.Replace(string(target), "const Big =", "const Large =", 1))); err == nil {
+		t.Fatal("technical Go identity change accepted")
 	}
 }
 
 func TestValidateGoExampleCandidateAllowsSliceVerbTranslationButKeepsSliceNoun(t *testing.T) {
 	root := t.TempDir()
+	ensureTestCurrentLocaleAuthority(t, root, "ca-ES", testLanguageAuditAuthority("ca-ES", "Latin", map[string]string{"。": "."}))
 	dir := filepath.Join(root, "locales", "ca-ES")
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		t.Fatal(err)
@@ -279,11 +283,7 @@ func TestValidateGoExampleCandidateRejectsParseFailureAndSourceHashMismatch(t *t
 }
 
 func TestValidateGoExampleCandidateCorpusBaseline(t *testing.T) {
-	root := repoRoot(t)
-	catalog, err := BuildCatalog(root)
-	if err != nil {
-		t.Fatal(err)
-	}
+	root, catalog := isolatedTourValidationFixture(t, "zh-CN", testLanguageAuditAuthority("zh-CN", "Han", map[string]string{".": "。"}))
 	translatable := 0
 	for i := range catalog.Examples {
 		example := &catalog.Examples[i]
@@ -291,15 +291,23 @@ func TestValidateGoExampleCandidateCorpusBaseline(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if err := ValidateGoExampleCandidate(root, unit, "zh-CN", unit.Source); err != nil {
-			t.Fatalf("%s source baseline: %v", unit.ID, err)
+		// Structural baselines are not localized-language eligibility proofs.
+		if err := validateGoExampleWithGlossary(root, unit, "", unit.Source, &Glossary{}); err != nil {
+			t.Fatalf("%s structural source baseline: %v", unit.ID, err)
 		}
 		hasContent, err := hasTranslatableGoExampleComment(unit.Source)
 		if err != nil {
 			t.Fatal(err)
 		}
+		err = ValidateGoExampleCandidate(root, unit, "zh-CN", unit.Source)
 		if hasContent {
 			translatable++
+			var failure *CommentGateError
+			if !errors.As(err, &failure) || failure.Reason != "non-English teaching-comment exact source carry" {
+				t.Fatalf("%s English teaching carry must fail closed: %v", unit.ID, err)
+			}
+		} else if err != nil {
+			t.Fatalf("%s non-teaching exact source baseline: %v", unit.ID, err)
 		}
 	}
 	if len(catalog.Examples) != 93 || translatable != 19 {
@@ -312,7 +320,13 @@ func TestValidateTranslationUnitCandidateDispatchesExample(t *testing.T) {
 	writeGoExampleValidationGlossary(t, root)
 	example := retranslationTestExample("example:demo/main.go", "_content/tour/demo/main.go", "package main\n\n// Translate this ordinary comment.\nfunc main() {}\n")
 	catalog := &Catalog{Examples: []Example{example}}
-	if err := ValidateTranslationUnitCandidate(root, catalog, example.ID, "zh-CN", example.Source); err != nil {
+	target := []byte(strings.Replace(string(example.Source), "Translate this ordinary comment.", "翻译此普通注释。", 1))
+	if err := ValidateTranslationUnitCandidate(root, catalog, example.ID, "zh-CN", target); err != nil {
 		t.Fatal(err)
+	}
+	err := ValidateTranslationUnitCandidate(root, catalog, example.ID, "zh-CN", example.Source)
+	var failure *CommentGateError
+	if !errors.As(err, &failure) || failure.Reason != "non-English teaching-comment exact source carry" {
+		t.Fatalf("Example dispatch bypassed current comment gate: %v", err)
 	}
 }

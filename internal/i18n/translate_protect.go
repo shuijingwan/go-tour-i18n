@@ -14,6 +14,7 @@ var whereToGoPrefixRE = regexp.MustCompile(`(?i)\bwhere[\t \r\n]+to[\t \r\n]+$`)
 var directiveLineRE = regexp.MustCompile(`(?m)^\.(?:play|image)\s+[^\n]+$`)
 
 type protectedTranslation struct {
+	Adapter           TranslationUnitAdapter
 	Text              string
 	Tokens            []string
 	Values            []string
@@ -294,6 +295,13 @@ func shouldProtectTranslationKeep(text string, start, end int) bool {
 }
 
 func (p protectedTranslation) restore(output string) (string, []string) {
+	if p.Adapter != nil {
+		b, err := p.Adapter.Restore(output)
+		if err != nil {
+			return "", []string{err.Error()}
+		}
+		return string(b), nil
+	}
 	var failures []string
 	found := translationTokenRE.FindAllString(output, -1)
 	if len(found) != len(p.Tokens) {

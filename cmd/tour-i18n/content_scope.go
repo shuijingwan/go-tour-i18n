@@ -75,7 +75,7 @@ func contentScopeCommand(root string, args []string) error {
 		if err != nil {
 			return err
 		}
-		b, err := os.ReadFile(filepath.Join(root, sitecontent.SnapshotPath))
+		b, err := sitecontent.ReadSourceSnapshot(root)
 		if err != nil {
 			return err
 		}

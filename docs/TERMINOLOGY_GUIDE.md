@@ -6,6 +6,16 @@
 
 术语决策应服务于目标语言读者的理解，而不是追求逐词对应或将某一语言的表达机械迁移到另一种语言。
 
+### 1.1 Glossary scope：尽量少，但必须有价值
+
+`glossary.yaml` 是经过筛选的高价值术语 authority，不是 exhaustive dictionary，也不以条目数量作为完整度或质量指标。默认原则是**尽量少，但必须有价值**：只记录值得在后续 Generation / Review 中反复复用、能够显著降低术语漂移或技术误解风险的决定。
+
+通常只有满足至少一种下列条件的对象才值得进入 glossary：跨 Page / surface 反复出现且需要稳定表达；存在多个合理译法而项目需要固定偏好；属于 Go 或项目特有的概念边界；属于必须保持的技术 identity；属于 UI / navigation / project naming 等高影响决定。普通、稳定、无明显歧义且目标语言自然译法不会造成项目级漂移的词，即使出现在 corpus 中，也可以不列入 glossary。
+
+本文及其他 workflow 中的“完整 glossary”是指**当前这份 glossary 作为一个不可拆分的 locale authority 被完整生成、完整审核**，不是要求为 corpus 中每个可翻译英文词建立条目。缺少某个普通术语 entry 本身不构成缺陷；不得以“术语表越大越完整”为目标。
+
+冻结 terminology-discovery corpus 用于提前提供 Go specification、memory model、toolchain、modules、testing/profiling/security 等高价值 source context；它不是待逐项抄入 glossary 的候选词表，也不产生 discovery/core/Docs extension glossary。future content package 不带来 governance-significant terminology 时，完整 refresh 可以保持 glossary bytes 不变；带来新高价值术语或 collision 时，仍由同一 Generation session 刷新单一完整 glossary，并由独立 Reviewer 完整审核。无论 glossary bytes 是否变化，只要 unified corpus identity 改变就必须取得新的 full Unified Review；不得把 discovery 用作缩小 Review 的捷径，也不得采用“新增一个 Page 就新增一个术语”的机械规则。
+
 ## 2. Terminology decision principles
 
 ### 2.1 Community consensus

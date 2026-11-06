@@ -36,6 +36,7 @@ func writeRetranslationTestGlossary(t *testing.T, root string) {
 
 func writeRetranslationTestGlossaryForLocale(t *testing.T, root, locale string) {
 	t.Helper()
+	ensureTestCurrentLocaleAuthority(t, root, locale, testLanguageAuditAuthority(locale, "Han", map[string]string{".": "。"}))
 	dir := filepath.Join(root, "locales", locale)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		t.Fatal(err)
@@ -536,6 +537,7 @@ func TestRetranslationExportExplicitIDLimit(t *testing.T) {
 		t.Run(fmtInt(count)+" succeeds", func(t *testing.T) {
 			root := t.TempDir()
 			writeRetranslationTestGlossary(t, root)
+			recordSyntheticUnifiedReview(t, root, "explicit-id-current-review")
 			catalog := retranslationTestCatalog(count)
 			ids := make([]string, 0, count)
 			for _, page := range catalog.Pages {
@@ -554,6 +556,7 @@ func TestRetranslationExportExplicitIDLimit(t *testing.T) {
 	t.Run("61 is rejected before batch creation", func(t *testing.T) {
 		root := t.TempDir()
 		writeRetranslationTestGlossary(t, root)
+		recordSyntheticUnifiedReview(t, root, "explicit-id-limit-current-review")
 		catalog := retranslationTestCatalog(61)
 		ids := make([]string, 0, len(catalog.Pages))
 		for _, page := range catalog.Pages {
@@ -723,6 +726,7 @@ func TestRetranslationExportCanonicalizesPageAndExampleInputEOF(t *testing.T) {
 func TestRetranslationExportExplicitUnitKindValidation(t *testing.T) {
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
+	recordSyntheticUnifiedReview(t, root, "explicit-kind-current-review")
 	example := retranslationTestExample("example:demo/comment.go", "_content/tour/demo/comment.go", "package main\n\n// Translate this comment.\nfunc main() {}\n")
 	catalog := retranslationTestCatalog(1)
 	catalog.Examples = []Example{example}
@@ -732,6 +736,7 @@ func TestRetranslationExportExplicitUnitKindValidation(t *testing.T) {
 
 	root = t.TempDir()
 	writeRetranslationTestGlossary(t, root)
+	recordSyntheticUnifiedReview(t, root, "explicit-kind-mismatch-current-review")
 	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage, UnitIDs: []string{example.ID}}); err == nil || !strings.Contains(err.Error(), "不一致") {
 		t.Fatalf("mismatched explicit kind error=%v", err)
 	}

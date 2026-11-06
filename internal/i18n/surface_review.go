@@ -311,6 +311,64 @@ func CurrentLocaleSurfaceReviewAGate(root, locale string, catalog *Catalog) (Loc
 	return gates[0], nil
 }
 
+// CurrentExactLocaleSurfaceReviewAGate admits only an unambiguous exact-current
+// v4 full Tour review, not a historical/compatible Surface carry.
+func CurrentExactLocaleSurfaceReviewAGate(root, locale string, catalog *Catalog) (LocaleSurfaceReviewAGate, error) {
+	inputs, err := CurrentLocaleSurfaceReviewAInputs(root, locale, catalog)
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	directory := "data/locale-surface-reviews/" + locale
+	fullPath, err := compatibilityPath(root, directory+"/.inventory", false)
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	entries, err := os.ReadDir(filepath.Dir(fullPath))
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	var selected *LocaleSurfaceReviewAGate
+	for _, entry := range entries {
+		if entry.IsDir() || !regexp.MustCompile(`\.a-gate\.json$`).MatchString(entry.Name()) {
+			continue
+		}
+		path := directory + "/" + entry.Name()
+		b, err := readCompatibilityFile(root, path)
+		if err != nil {
+			return LocaleSurfaceReviewAGate{}, err
+		}
+		var gate LocaleSurfaceReviewAGate
+		if err := decodeStrictCourseSourceDescriptionReviewJSON(b, &gate); err != nil {
+			return LocaleSurfaceReviewAGate{}, err
+		}
+		if err := validateLocaleSurfaceReviewAGate(gate, locale); err != nil {
+			return LocaleSurfaceReviewAGate{}, err
+		}
+		if entry.Name() != gate.ReviewID+".a-gate.json" {
+			return LocaleSurfaceReviewAGate{}, fmt.Errorf("Surface gate path identity mismatch")
+		}
+		if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV4 || !localeSurfaceReviewInputsCurrent(gate.Inputs, inputs, gate.SchemaVersion) {
+			continue
+		}
+		if _, err := RequireCurrentLocaleSurfaceReviewAByReviewID(root, locale, gate.ReviewID, catalog); err != nil {
+			return LocaleSurfaceReviewAGate{}, err
+		}
+		if selected != nil {
+			return LocaleSurfaceReviewAGate{}, fmt.Errorf("ambiguous exact-current Surface A")
+		}
+		md, err := readCompatibilityFile(root, "data/locale-surface-reviews/"+locale+"/"+gate.ReviewID+".md")
+		if err != nil || len(md) == 0 {
+			return LocaleSurfaceReviewAGate{}, fmt.Errorf("missing exact-current Surface Markdown")
+		}
+		copy := gate
+		selected = &copy
+	}
+	if selected == nil {
+		return LocaleSurfaceReviewAGate{}, fmt.Errorf("missing exact-current schema-v4 Surface A")
+	}
+	return *selected, nil
+}
+
 // RequireUniqueCurrentLocaleSurfaceReviewAGate requires exactly one current A
 // gate where an operation must bind its evidence to an unambiguous review ID.
 func RequireUniqueCurrentLocaleSurfaceReviewAGate(root, locale string, catalog *Catalog) (LocaleSurfaceReviewAGate, error) {

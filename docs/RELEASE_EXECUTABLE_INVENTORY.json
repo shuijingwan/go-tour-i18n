@@ -1,0 +1,3668 @@
+{
+  "SCHEMA": "go-learning/release-executable-inventory/v1",
+  "STAGE": "site-v2-downstream-release-path-audit",
+  "AUDIT_RESULT": "FAILED",
+  "AS_OF": "2026-10-14 working tree (not HEAD alone)",
+  "COUNT": 150,
+  "COUNT_CONTRACT": "Every listed repository executable, release-relevant helper, documented service command, and script test is counted once. External binaries and historical prose are boundaries, not repository entrypoints.",
+  "DISCOVERY": {
+    "ROOTS": [
+      "scripts/**",
+      "cmd/**",
+      "tour/**",
+      "internal/**",
+      "content.go",
+      "README*.md",
+      "docs/**",
+      "production/identity.json"
+    ],
+    "METHOD": [
+      "enumerate all shell/Python files outside source content/fixtures/staging, not a name allowlist",
+      "read Go main dispatchers and build/publish/export/runtime helpers backwards from formal docs and scripts",
+      "follow Python imports, shell source/exec, Go calls, embedded remote stdin helpers and service/API sinks",
+      "scan every current README/docs script reference and keep referenced old contracts ACTIVE"
+    ],
+    "MAKEFILE_TASK_WRAPPERS": [],
+    "DEPLOYMENT_CONFIG_FILES": [],
+    "CI_WORKFLOWS": [],
+    "EXCLUDED": [
+      {
+        "PATH": "_content/**",
+        "REASON": "frozen Go teaching/source content; included .sh/.py examples are not repository deployment authority"
+      },
+      {
+        "PATH": "data/**;locales/**;hidden staging",
+        "REASON": "formal content/evidence/outputs, not executable release entrypoints"
+      }
+    ],
+    "HISTORICAL_NON_EXECUTABLE": [
+      {
+        "PATH": "tour/TRANSLATE",
+        "STATUS": "RETIRED",
+        "REASON": "upstream App Engine translation instructions; no current app.yaml/gcloud deployment entrypoint or current runbook caller"
+      }
+    ],
+    "EXTERNAL_BOUNDARIES": [
+      "go run/build",
+      "google-chrome/CDP",
+      "ssh/control master/SOCKS/reverse-forward",
+      "rsync",
+      "sha256sum/find/sort/xargs/readlink/stat/diff/cmp",
+      "systemctl/daemon-reload/enable/restart/is-active/show",
+      "nginx -t/service nginx reload",
+      "acme.sh/dns_cf",
+      "Cloudflare/Tencent EdgeOne APIs",
+      "IndexNow API",
+      "manual Google/Bing/locale-specific sitemap dashboards"
+    ],
+    "NONEXISTENT_FORMAL_MODES": [
+      "batch first-production bootstrap",
+      "all 65 locales deploy including first-production profiles",
+      "standalone selected/all-locale shared-assets exporter/deployer (one global tree reused)",
+      "operator-selected historical release rollback CLI"
+    ],
+    "STATUS_RULE": "ACTIVE means still supported/called, not Site v2 accepted. LEGACY_REFERENCED remains ACTIVE and blocks PASS. Compatibility wrappers forward current implementation. No active entrypoint is retired merely to pass this audit."
+  },
+  "DOCUMENT_SCRIPT_REFERENCES": [
+    {
+      "caller": "docs/PROJECT_STATE.md:49",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/PROJECT_STATE.md:59",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/PROJECT_STATE.md:66",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/PROJECT_STATE.md:72",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/SITE_V2_RELEASE_PATH_AUDIT.md:100",
+      "entrypoint": "scripts/release-path-audit-test.py"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:56",
+      "entrypoint": "scripts/maintenance-production.sh"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:280",
+      "entrypoint": "scripts/verify-preview-browser.py"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:291",
+      "entrypoint": "scripts/shared-assets-production.sh"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:295",
+      "entrypoint": "scripts/deploy-production.sh"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:295",
+      "entrypoint": "scripts/verify-production.sh"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:301",
+      "entrypoint": "scripts/verify-production.sh"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:305",
+      "entrypoint": "scripts/first-production.sh"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:305",
+      "entrypoint": "scripts/maintenance-production.sh"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:305",
+      "entrypoint": "scripts/maintenance-production-batch.sh"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:320",
+      "entrypoint": "scripts/production-identity.py"
+    },
+    {
+      "caller": "docs/NEW_LOCALE_RUNBOOK.md:330",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/WORKFLOW_HANDOFF.md:188",
+      "entrypoint": "scripts/verify-preview-browser.py"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:37",
+      "entrypoint": "scripts/production-identity.py"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:38",
+      "entrypoint": "scripts/production-identity.py"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:176",
+      "entrypoint": "scripts/production-identity.py"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:176",
+      "entrypoint": "scripts/production-identity.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:192",
+      "entrypoint": "scripts/verify-edgeone-authority.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:206",
+      "entrypoint": "scripts/first-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:218",
+      "entrypoint": "scripts/deploy-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:222",
+      "entrypoint": "scripts/verify-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:235",
+      "entrypoint": "scripts/recover-first-production-health-failure.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:241",
+      "entrypoint": "scripts/first-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:241",
+      "entrypoint": "scripts/first-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:261",
+      "entrypoint": "scripts/verify-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:265",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:322",
+      "entrypoint": "scripts/production-release-batch.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:325",
+      "entrypoint": "scripts/production-release-batch.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:349",
+      "entrypoint": "scripts/production-release-batch.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:357",
+      "entrypoint": "scripts/production-release-batch.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:381",
+      "entrypoint": "scripts/maintenance-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:385",
+      "entrypoint": "scripts/deploy-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:385",
+      "entrypoint": "scripts/verify-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:385",
+      "entrypoint": "scripts/verify-production-browser.py"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:427",
+      "entrypoint": "scripts/maintenance-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:428",
+      "entrypoint": "scripts/deploy-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:430",
+      "entrypoint": "scripts/verify-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:431",
+      "entrypoint": "scripts/verify-production-browser.py"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:444",
+      "entrypoint": "scripts/maintenance-production-batch.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:453",
+      "entrypoint": "scripts/verify-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:456",
+      "entrypoint": "scripts/verify-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:466",
+      "entrypoint": "scripts/verify-production-browser.py"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:517",
+      "entrypoint": "scripts/shared-assets-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:525",
+      "entrypoint": "scripts/shared-assets-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:551",
+      "entrypoint": "scripts/shared-assets-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:567",
+      "entrypoint": "scripts/deploy-shared-assets.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:579",
+      "entrypoint": "scripts/shared-assets-production.sh"
+    },
+    {
+      "caller": "docs/PRODUCTION_RUNBOOK.md:619",
+      "entrypoint": "scripts/verify-shared-assets-production.sh"
+    },
+    {
+      "caller": "docs/LOCALE_SURFACE_REVIEW.md:166",
+      "entrypoint": "scripts/verify-preview-browser.py"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:110",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:114",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:121",
+      "entrypoint": "scripts/verify-preview-browser.py"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:130",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:131",
+      "entrypoint": "scripts/indexnow-closeout.py"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:131",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:134",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:134",
+      "entrypoint": "scripts/indexnow-closeout-test.py"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:140",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:150",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:154",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:160",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:164",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:179",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:183",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:189",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:193",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:199",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:203",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:209",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:213",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:218",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:222",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:227",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:231",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:237",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    },
+    {
+      "caller": "docs/DEFERRED_ISSUES.md:241",
+      "entrypoint": "scripts/indexnow-closeout.sh"
+    }
+  ],
+  "SOURCE_SHA256": {
+    "_content/index.md": "7765e289fc5abccf8b786fa408c9d60078e2c27168e66778d060590e3c6ba986",
+    "_content/js/index.js": "dfa00811f22d6ed979c8e9559415b9e5846263b1d9ce17ffb03a76b8a21e0ecc",
+    "_content/site.tmpl": "88d7b52a319081fa9bf5a93143f152d83fc1f22465a39c5f553ff99c86ad754c",
+    "cmd/tour-i18n/assets.go": "380243c40f5fb7701daa9f5113a97d376029af717574fef57f900d14d1e3a5e9",
+    "cmd/tour-i18n/first_production_finalize.go": "81e4cc0ce9d1557a08fdceac49bb10f975f341aca5c1e7cc799872daaa5df813",
+    "cmd/tour-i18n/indexnow.go": "4d0faf481af6d62839dd2e4471bfc1850c5d724cdbf694fde09995eadc54c8c5",
+    "cmd/tour-i18n/main.go": "d55905f76f9054741dd13edeac7b43f22ce2cc62970c6c873eeefaf6bf2ccaa7",
+    "cmd/tour-i18n/policy.go": "b3185c585cc37140bfba6fd3ef87c12ff68e83aa79b1f86f60cb25bb37dade51",
+    "cmd/tour-i18n/prerender.go": "72983a376052eec76676fc1fa5533e16f1b340305cd7dfc9db8d7151aac95a93",
+    "cmd/tour-i18n/preview_browser_plan.go": "13baa1958ef8c4d7cfb85482fb0b6a06b786dcc4a4c1a329701773715f2b0203",
+    "cmd/tour-i18n/preview_runtime.go": "a0b332227455698eadd32fa60c285aa9abdc13e0284bb4e7e770705a793b1acb",
+    "cmd/tour-i18n/publish.go": "bb98f649b50c18238f114b13603e9099ec7f8d2ee219de0b94913dc582ecfe6e",
+    "cmd/tour-i18n/publish_batch.go": "ca055715d1e8cf1a0589e9da62443aedb6010d8c942fb6699fdb32efc1e50a4f",
+    "cmd/tour-i18n/readme_live_locales.go": "6b179b44fa5e91830afb6d9120c745a15d24f83d9e90d2fa7d6192c410d05afe",
+    "cmd/tour-i18n/release_path_audit_test.go": "7fa5eb0084aefed8c450d0a3b23f6bda2e3d51defca3043495ad31def0ad2899",
+    "cmd/tour-production/main.go": "c8bf8b0581ecc9f558fe85d7f6b94d45ab53b72a1c02418cf1b35116b5381d03",
+    "content.go": "7ecb9cd67910a21463369f8204dd772902b563e760ee9518cd6a403203722c3b",
+    "data/site-content-scope.json": "08344fc0332d8d5cc05df76f5a5a293e82a72afaeab51d128c24643d1262a085",
+    "docs/DEFERRED_ISSUES.md": "10e556ffa4019e8fc7e73d1090cb5f59bdd6cca89a08ba021a1ee48880a7df5f",
+    "docs/LOCALE_SURFACE_REVIEW.md": "df9042f9d62a2eb97cadb699a24ba1c88f03e325b1e5623abd8835eefa36c769",
+    "docs/NEW_LOCALE_RUNBOOK.md": "86eb409b4f57fc940bbb85079c9e26c514c7be1df71b1b4e5daf268aa3aa4535",
+    "docs/PRODUCTION_RUNBOOK.md": "cc39a31c02b0e1e6a5869a0e64ae90b094140b2c059df02883af7a4b862ca94c",
+    "docs/PROJECT_STATE.md": "7e2f8b837d57ff45d2c234912f61deeda59d9ab7fb212f80cf232f444991440f",
+    "docs/SITE_V2_ARCHITECTURE.md": "a5f9d1aa33d28cf7d30d233727fa8a50a52a17cfdb0c9e77f84f244bba435e3c",
+    "docs/SITE_V2_RELEASE_PATH_AUDIT.json": "48fc4f4967bcc21ce43b12b49372b92e2e63f0a2b2687398f33de2b1d4d4d060",
+    "docs/SITE_V2_RELEASE_PATH_AUDIT.md": "0d8af807e7cda8e98a9686b5bbc7d5a87d260e5d66a0377cd17ad2da6d20ff0e",
+    "docs/SITE_V2_WORKFLOW.md": "017c11f101608cd886d2d8a24ef636ee50fd920bae6bba3a4e804ec24270eb54",
+    "docs/WORKFLOW_HANDOFF.md": "e86ba7fac8de759b082c04b2c59e62a623ab3c5f8dded0a401f53e3d351a5189",
+    "internal/assets/assets.go": "efe0f33c716b0fca318f73163bce065e8cc8e3d117165ba1ef7e232fd621aab1",
+    "internal/i18n/projection.go": "d26f5273498739db8537a9d965334a3cce867b757a81e3ec12dc565525007ce8",
+    "internal/site/browser_plan.go": "3545ddcac625c3f5e305e2b62684993b1e1e261ddaa6b86a6792b41e11103c13",
+    "internal/site/content.go": "0447f1354d1fcd7bee2c320a56fb3054f361d49b1d6e4e57e615876a8aea9dd2",
+    "internal/site/render.go": "0c2daed6b421d2f855ae98c821abfbe1191b4eddfe9ba4d5f7130e59c485e0c0",
+    "internal/site/runtime.go": "05b00cc40ea2788dae1789c8e7f0ceab0381bed73d869bdd60d49b9c25e8bd66",
+    "internal/site/shell_render.go": "445b25022f68aeec8858bea47f526100d384a1c302ee9b915fd05e9b717362be",
+    "internal/sitecontent/runtime.go": "400a33f1efb15bac8921b7391ec12b2dfce93b00fcd51ec2eca3b8b2564cbfcd",
+    "internal/tour/appengine.go": "2860369a943baa2ce7b3b88d63b63937160bac895bb2425fe61720081f376057",
+    "internal/tour/languages.go": "4d25c9c1883b1475b14a4f2b90c9d4acde272da263881e1d6e9f1c8bfc0fd345",
+    "internal/tour/local.go": "c4af3926ce11795e72f8b3f0ef88e7ae0861b385e6e1805b539eec06d3efd19a",
+    "internal/tour/production.go": "04eeecf58d42a55e515067396a25be9b43654232e45df4cc14d97949a2213f50",
+    "internal/tour/seo.go": "dc09d40a9c4a0d3aa9f9699b85a684feb104cb3642b71bca1f08750220397a64",
+    "internal/tour/tour.go": "e5d7bf8252abff3b024bc791114e7b18b5f532c8c02d5d9158482d2079875b40",
+    "internal/tourpolicy/policy.go": "d990db32fe59be47ba78b829e44e4a50e9a796bfcb01a0bc658ff7e4349cc932",
+    "locales/zh-CN/content-scope.json": "f6ed27536bcf171fea171cccf29810e3846e949dfccd5f1c76e2e19c6102d290",
+    "production/identity.json": "cb0897e4a37c4fe10999f2e905a7fb4e89e2ff26ee2fd84d51d5ad720eac392c",
+    "scripts/browser_acceptance.py": "0060bd8c79d436184a3b108fae688e2e651de30212d3b11b7123af98d77df877",
+    "scripts/deploy-production-test.sh": "6433fb9071413b36f10de34e8aeb1c8a591fd38b0eb50b9192796f00cda1b71b",
+    "scripts/deploy-production.sh": "3e2bc4314d5ef34863f141fc8ab7a569b21487ad27e2fa3aa0e74a5f0986cbd2",
+    "scripts/deploy-shared-assets-test.sh": "6934aaefe88d683bd9ca149c7d75cbc72ffa261f55b0cda566c815a97eadb08c",
+    "scripts/deploy-shared-assets.sh": "0bf4558692cd995aceb5de98100ceef0342a221a58f02db7c57eb48189621a55",
+    "scripts/first-production-test.py": "e531f61af08878917ec4abedf37be134bda5a28d91c863a87b5a0941ce82714b",
+    "scripts/first-production.py": "0cd39089eaf5a4c04c10b29fc137320e1caedb2845d0d5eed3aff3492da69233",
+    "scripts/first-production.sh": "7e6ee71cd5cabea0231680447066ce7f0c656d4a473b736d59bff4cbe03882a5",
+    "scripts/indexnow-closeout-test.py": "c78fee5a2b79616663b0a2ceb0a149f0a4f16e5d0608903301d5aa64457912a2",
+    "scripts/indexnow-closeout.py": "618f6e79256aed9b087dd8a21092f465e38e84ca130e389ca463cce356169929",
+    "scripts/indexnow-closeout.sh": "a21c7c62fd8e270a5dae891f5891f679cec29dfbe8d0177f02af04e306efc6e2",
+    "scripts/maintenance-production-batch-test.py": "fbab09c66846d58270099251d37e5e4c639b52b7102a2219ff7a3814f7b46eac",
+    "scripts/maintenance-production-batch.py": "d4077562ab7512f9b1bd16bb70a94d58eb8b8507b7c5564aebf37a9f264804e5",
+    "scripts/maintenance-production-batch.sh": "e8f93737afe911883ad62cdfb124338033243e15eaf48907f7f0971fa8735ab2",
+    "scripts/maintenance-production-test.py": "b14aac314ad5a5416d5b4b020e3f63945d403047b0e75abd8f8c091e1c1e8431",
+    "scripts/maintenance-production.py": "297ca14d622e90398feb6d2b7cecade4639c870146be1a676b6a2628dce52b70",
+    "scripts/maintenance-production.sh": "30b558b54ae130a52c25f4d7c78512bae38b15878e8390c9b14f7e72e2929cf8",
+    "scripts/production-cdn-test.py": "054dc6ead4e1682a202952a934a9f1d95066e7611e267c98e9b33f5dd8f1b287",
+    "scripts/production-cdn.py": "c9e7883551732dcfb3287d0b1e4aaa31330b833e585b6210bd3d41287805dad2",
+    "scripts/production-identity-test.py": "93ba4eb0a1c3cf884ad05e3453e8bc1da76797f93ded6e45e31ccd0b750a76b4",
+    "scripts/production-identity.py": "5d079c1b83181c2ff1cc189c17e0e4f87780cafc2d6bb7a8d7081d3036718387",
+    "scripts/production-identity.sh": "4ffa73a8050f1b81c18e65e0274a67200500f486df5fdf64e9ebfcc9d4eb3798",
+    "scripts/production-release-batch-test.py": "3f2f82b50e2b9df1aeaf52fcb3f0b5f5e613b3418db1f41e3cc57507522bfe5c",
+    "scripts/production-release-batch.py": "0684bf62f3cbd6a89cee422fbbb605efe93b9e53f07b133d9f033e541d9cc372",
+    "scripts/production-release-batch.sh": "1d32cb046b4e0851c9ee5181ac08cac62093fc84927127a9ba81e7269cad1fb6",
+    "scripts/recover-first-production-health-failure.sh": "70f52f0b38a87ebd426ff71638b49d5e64a654e754347fc822ee2e9985032b47",
+    "scripts/release-path-audit-test.py": "9498d605dc4717dddf1840423cbf1595c1cafa2e042fb1eb2e849951657b0fed",
+    "scripts/shared-assets-production-test.py": "681504af4afd44e00b3b65e9344cb199981510759b52d8d170e1ee0df7c5a25a",
+    "scripts/shared-assets-production.py": "5a7184143fd89993f2e132fa2ad4d96619d7f671a770fcbda460076d97fd0537",
+    "scripts/shared-assets-production.sh": "4f6215ff4c9d0ddf2797b357344e1d89e9da2c5ee029a2d1c876831c2a08c1ab",
+    "scripts/shared-assets-public-verification.sh": "1b01dd76226c31dc50076d8d47c79dc532ab30c345e264eeee70632de9426db7",
+    "scripts/verify-edgeone-authority.sh": "f8a5a8e53a29a1a63c5804a54184ed85879d8e75801be17c223ce8df034b16ea",
+    "scripts/verify-preview-browser-test.py": "46635406315c3358601ba6480d369190b70490cbeb758d36615ce329a7c15a0e",
+    "scripts/verify-preview-browser.py": "5b65e9da25e5cf7141dd8fee37e0503f0be0e1e098d98c339bb678ef7e548c7b",
+    "scripts/verify-production-browser.py": "c51b50475a13fa305521d15c4f74acaa4075ea42cc288545ed9faa2443537556",
+    "scripts/verify-production-test.sh": "c765ca3b24f363675620516bbef1f38ae5b0ae1b998aeb63e4a47f0cb4459146",
+    "scripts/verify-production.sh": "da6094733ddd188380405dce990604596c2d4b5f0ba0e006bcfc4aeb302c7084",
+    "scripts/verify-shared-assets-production-test.sh": "ac02e4d26820743a6f7ab679fed528975070f5e8b0984641ff4ae4345f5eff29",
+    "scripts/verify-shared-assets-production.sh": "157953ce2c74a364585c303544ad1bbdefe1b4babe7e643d90c6176a0e4d4538",
+    "scripts/verify-shared-assets-public.sh": "0a7c7684d87f6cc5d8c3f4a21ffce62989ddf48e66735a462c9f73b2d6cc97f7",
+    "tour/main.go": "d4c4281a5371f6c3d29ce5116cd1cd907a97ba770a9d93787fad767d74a6a520"
+  },
+  "ENTRIES": [
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/indexnow.go#bootstrapIndexNow",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/indexnow.go",
+      "CALLERS": [
+        "tour-i18n indexnow bootstrap"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "public key and public XML sitemap",
+      "OUTPUT": "probe then remaining URL POST",
+      "MUTATION_KIND": "SEARCH_SUBMISSION",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "partial",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "unique same-host sitemap; 202 probe bounded; bulk no retry",
+      "NOTES": "G10: accepts stale same-host or uncovered URL sets without current coverage comparison"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/prerender.go#prerenderProductionPagesChrome",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/prerender.go",
+      "CALLERS": [
+        "tour-i18n publish"
+      ],
+      "CALLEES": [
+        "internal/tour/production.go#NewPrerenderSource"
+      ],
+      "INPUT_AUTHORITY": "NewPrerenderSource Tour course/list routes",
+      "OUTPUT": "Tour prerender files",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "bounded Chrome render/readiness validation",
+      "NOTES": "No Homepage/Learn/Docs render plan"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/preview_runtime.go#newFullLocalePreviewHandler",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/preview_runtime.go",
+      "CALLERS": [
+        "tour-i18n preview"
+      ],
+      "CALLEES": [
+        "internal/site/content.go#LoadContent",
+        "internal/site/render.go#Compose"
+      ],
+      "INPUT_AUTHORITY": "activated completed packages + Tour projection",
+      "OUTPUT": "composed Site/Tour preview",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "Site LocalCoverage/CompletedPackageFiles",
+      "NOTES": "Only preview adapter consumes Site content"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/publish.go#buildProductionBinaryGo",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/publish.go",
+      "CALLERS": [
+        "tour-i18n publish"
+      ],
+      "CALLEES": [
+        "cmd/tour-production/main.go"
+      ],
+      "INPUT_AUTHORITY": "repository Go code + locale",
+      "OUTPUT": "bin/tour",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "CGO=0; trimpath; fixed target",
+      "NOTES": "Compiles cmd/tour-production; no production mutation"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/publish.go#bundleChecksums",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/publish.go#bundleChecksums",
+      "CALLERS": [
+        "tour-i18n publish"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "Tour projection + current source at invocation; no build input or activated coverage",
+      "OUTPUT": "stage result for tour-i18n publish",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "local-copy",
+      "PRODUCTION_GATE": "Tour readiness/prerender/startup/checksum",
+      "NOTES": "Go safe sorted actual-file checksums; rejects symlinks"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/publish.go#validateBundle",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/publish.go#validateBundle",
+      "CALLERS": [
+        "tour-i18n publish"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "Tour projection + current source at invocation; no build input or activated coverage",
+      "OUTPUT": "stage result for tour-i18n publish",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "local-copy",
+      "PRODUCTION_GATE": "Tour readiness/prerender/startup/checksum",
+      "NOTES": "builder root/manifest/checksum equality; not consumed by deploy"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/readme_live_locales.go",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/readme_live_locales.go",
+      "CALLERS": [
+        "tour-i18n first-production finalize"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "production live identity",
+      "OUTPUT": "README live projection",
+      "MUTATION_KIND": "REPOSITORY_DOC",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "identity/live projection",
+      "NOTES": "Only first finalize; no deployment"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-i18n/release_path_audit_test.go",
+      "TYPE": "GO_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "cmd/tour-i18n/release_path_audit_test.go",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "temp Tour/Site composition + export/sitemap fixtures",
+      "OUTPUT": "reproduced gap evidence",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not release acceptance",
+      "NOTES": "No real publish/browser/deploy"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-production/main.go",
+      "TYPE": "GO_EXECUTABLE",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "LEGACY_REFERENCED",
+      "SOURCE": "cmd/tour-production/main.go",
+      "CALLERS": [
+        "cmd/tour-i18n/publish.go#buildProductionBinaryGo"
+      ],
+      "CALLEES": [
+        "cmd/tour-production/main.go#bundleContentDir",
+        "internal/tour/production.go#NewProductionHandler"
+      ],
+      "INPUT_AUTHORITY": "build injected locale + adjacent _content",
+      "OUTPUT": "loopback production HTTP server",
+      "MUTATION_KIND": "SERVICE_RUNTIME",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "Tour prerender + SEO startup",
+      "NOTES": "G01: resolves content relative to binary symlink; stable data root but Tour-only handler"
+    },
+    {
+      "ENTRYPOINT": "cmd/tour-production/main.go#bundleContentDir",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-production/main.go#bundleContentDir",
+      "CALLERS": [
+        "cmd/tour-production/main.go"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "build injected locale + adjacent _content",
+      "OUTPUT": "stage result for cmd/tour-production/main.go",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "Tour prerender + SEO startup",
+      "NOTES": "binary realpath -> adjacent _content; no source repo read"
+    },
+    {
+      "ENTRYPOINT": "content.go#TourOnly",
+      "TYPE": "GO_HELPER",
+      "STATUS": "DIAGNOSTIC_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "content.go",
+      "CALLERS": [
+        "tour/main.go"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "embedded Tour-specific allowlist",
+      "OUTPUT": "embedded FS",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-dev",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "not release coverage",
+      "NOTES": "No independent deployment; production uses on-disk FS"
+    },
+    {
+      "ENTRYPOINT": "internal/assets/assets.go#SharedPaths",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/assets/assets.go",
+      "CALLERS": [
+        "tour-i18n assets export",
+        "tour-i18n assets validate"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "maintained static allowlist",
+      "OUTPUT": "copied exact path set",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "single shared-assets source",
+      "NOTES": "G06: current paths do not include Site shell assets"
+    },
+    {
+      "ENTRYPOINT": "internal/assets/assets.go#URL",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/assets/assets.go",
+      "CALLERS": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "logical path + locale + development flag",
+      "OUTPUT": "same-origin or assets-go-dev URL",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "allowlisted logical paths",
+      "NOTES": "G06: zh-CN production remains same-origin via hardcoded legacy condition; renderer policy not unified with profile"
+    },
+    {
+      "ENTRYPOINT": "internal/i18n/projection.go#BuildLocaleProjection",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/i18n/projection.go",
+      "CALLERS": [
+        "tour-i18n build",
+        "tour-i18n preview",
+        "tour-i18n publish"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "canonical Tour workflow sources/candidates/config",
+      "OUTPUT": "Tour projection; copies whole _content",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "local-copy",
+      "PRODUCTION_GATE": "Tour readiness/current TU validation",
+      "NOTES": "G01/G02: no completed Site rendering; copies raw frozen English Site inputs to projection"
+    },
+    {
+      "ENTRYPOINT": "internal/site/browser_plan.go#LoadPreviewBrowserPlan",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/browser_plan.go",
+      "CALLERS": [
+        "tour-i18n preview-browser-plan"
+      ],
+      "CALLEES": [
+        "internal/site/shell_render.go#renderCurrentShellPage"
+      ],
+      "INPUT_AUTHORITY": "scope route families + current source rendered structure",
+      "OUTPUT": "exact routes/pages/family browser plan",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "structural plan only",
+      "NOTES": "Production browser has no consumer"
+    },
+    {
+      "ENTRYPOINT": "internal/site/content.go#LoadContent",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/content.go",
+      "CALLERS": [
+        "cmd/tour-i18n/preview_runtime.go#newFullLocalePreviewHandler"
+      ],
+      "CALLEES": [
+        "internal/site/runtime.go#Load"
+      ],
+      "INPUT_AUTHORITY": "LocalCoverage + CompletedPackageFiles + CurrentPackageDocuments",
+      "OUTPUT": "exact localized Site pages/structured data",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "current completion",
+      "NOTES": "Language evidence read only; no parallel lifecycle"
+    },
+    {
+      "ENTRYPOINT": "internal/site/render.go#Compose",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/render.go",
+      "CALLERS": [
+        "cmd/tour-i18n/preview_runtime.go#newFullLocalePreviewHandler"
+      ],
+      "CALLEES": [
+        "internal/site/runtime.go#Sitemap",
+        "internal/site/shell_render.go#renderCurrentShellPage"
+      ],
+      "INPUT_AUTHORITY": "validated Content + Tour handler",
+      "OUTPUT": "all activated route handlers/true 404/robots/sitemap",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "covered route requires exact handler",
+      "NOTES": "G09: transport forwarded, /doc/play toy route not forwarded"
+    },
+    {
+      "ENTRYPOINT": "internal/site/runtime.go#Load",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/runtime.go",
+      "CALLERS": [
+        "internal/site/content.go#LoadContent"
+      ],
+      "CALLEES": [
+        "internal/sitecontent/runtime.go#LocalCoverage"
+      ],
+      "INPUT_AUTHORITY": "formal locale origin/activated coverage/redirect contracts",
+      "OUTPUT": "resolver",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "current Site completion + exact origin",
+      "NOTES": "Current authority available but release adapters not connected"
+    },
+    {
+      "ENTRYPOINT": "internal/site/runtime.go#Sitemap",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/runtime.go",
+      "CALLERS": [
+        "internal/site/render.go#Compose"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "resolver covered canonical routes",
+      "OUTPUT": "exact activated sitemap",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "no fallback/uncovered route",
+      "NOTES": "Not reached from production verifier/search adapter"
+    },
+    {
+      "ENTRYPOINT": "internal/site/shell_render.go#renderCurrentShellPage",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/site/shell_render.go",
+      "CALLERS": [
+        "internal/site/browser_plan.go#LoadPreviewBrowserPlan",
+        "internal/site/render.go#Compose"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "completed current shell/Page/structured data",
+      "OUTPUT": "localized HTML",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "rejects historical home.html",
+      "NOTES": "G06/G09: ResolveLink sends uncovered asset URLs to go.dev, not project shared-assets"
+    },
+    {
+      "ENTRYPOINT": "internal/sitecontent/runtime.go#LocalCoverage",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/sitecontent/runtime.go",
+      "CALLERS": [
+        "internal/site/runtime.go#Load"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "global+locale content-scope; closure/Surface/package completion",
+      "OUTPUT": "validated activated scope",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "existing immutable evidence/currentness",
+      "NOTES": "Not reached from production publish/deploy"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/appengine.go#registerHandlersLocaleWithRuntimeHead",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tour/appengine.go",
+      "CALLERS": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "CALLEES": [
+        "internal/tourpolicy/policy.go"
+      ],
+      "INPUT_AUTHORITY": "shared advertising policy + Tour env",
+      "OUTPUT": "runtime Tour shell",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "ads policy",
+      "NOTES": "Filename is historical but implementation remains actively called; not a dead App Engine deploy script"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/local.go#Main",
+      "TYPE": "GO_HELPER",
+      "STATUS": "DIAGNOSTIC_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "internal/tour/local.go",
+      "CALLERS": [
+        "tour/main.go"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "development content/flags",
+      "OUTPUT": "development runtime",
+      "MUTATION_KIND": "LOCAL_RUNTIME",
+      "LOCALE_SCOPE": "single-dev",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "development only",
+      "NOTES": "Not formal production path"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/production.go#NewPrerenderSource",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tour/production.go",
+      "CALLERS": [
+        "cmd/tour-i18n/prerender.go#prerenderProductionPagesChrome"
+      ],
+      "CALLEES": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "INPUT_AUTHORITY": "Tour projected metadata/course SEO",
+      "OUTPUT": "local Tour handler/course+list routes",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "Tour parsing",
+      "NOTES": "Owns only Tour prerender source"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/production.go#NewProductionHandler",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tour/production.go",
+      "CALLERS": [
+        "cmd/tour-production/main.go",
+        "tour-i18n publish"
+      ],
+      "CALLEES": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "INPUT_AUTHORITY": "projected Tour FS + build locale",
+      "OUTPUT": "Tour production handler",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "prerender/course SEO complete",
+      "NOTES": "No Resolver/Content.Compose; older Homepage persists"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/production.go#newTourHandlerWithPlaygroundBase",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tour/production.go",
+      "CALLERS": [
+        "internal/tour/production.go#NewPrerenderSource",
+        "internal/tour/production.go#NewProductionHandler"
+      ],
+      "CALLEES": [
+        "internal/assets/assets.go#URL",
+        "internal/tour/appengine.go#registerHandlersLocaleWithRuntimeHead",
+        "internal/tour/seo.go#initSEO",
+        "internal/tour/tour.go#renderHome"
+      ],
+      "INPUT_AUTHORITY": "Tour content/routes/runtime env",
+      "OUTPUT": "HTTP handlers + robots/sitemap",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "Tour prerequired files; socket blocked",
+      "NOTES": "G01/G08: no Site families/coverage negatives"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/seo.go#initSEO",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tour/seo.go",
+      "CALLERS": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "CALLEES": [
+        "internal/tour/seo.go#productionOriginForLocale"
+      ],
+      "INPUT_AUTHORITY": "Tour lessons/projected SEO + languageRegistry production URL",
+      "OUTPUT": "Tour sitemap/canonical/robots",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "Tour routes",
+      "NOTES": "G07: no activated coverage model; differs from Site Resolver.Sitemap"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/seo.go#productionOriginForLocale",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tour/seo.go#productionOriginForLocale",
+      "CALLERS": [
+        "internal/tour/seo.go#initSEO"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "internal/tour/languages.go languageRegistry; hardcoded locale presentation/production URLs",
+      "OUTPUT": "canonical origin resolved from matching languageRegistry URL",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "identity projection",
+      "NOTES": "Existing Python preview tests compare profiles with registry, but runtime origin is not read directly from production identity; duplicate authority can drift"
+    },
+    {
+      "ENTRYPOINT": "internal/tour/tour.go#renderHome",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tour/tour.go",
+      "CALLERS": [
+        "internal/tour/production.go#newTourHandlerWithPlaygroundBase"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "tour home.tmpl + UI/site metadata",
+      "OUTPUT": "older Tour homepage",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "Tour template rendering",
+      "NOTES": "G02: not retired data/site-shell/home.html, but also not current _content/index.md Homepage"
+    },
+    {
+      "ENTRYPOINT": "internal/tourpolicy/policy.go",
+      "TYPE": "GO_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "internal/tourpolicy/policy.go",
+      "CALLERS": [
+        "internal/tour/appengine.go#registerHandlersLocaleWithRuntimeHead",
+        "tour-i18n policy publication"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "maintainer frozen publication/advertising policy",
+      "OUTPUT": "publication and ads eligibility",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "one shared ads authority",
+      "NOTES": "Does not decide shared asset policy"
+    },
+    {
+      "ENTRYPOINT": "runbook:nginx -t && service nginx reload",
+      "TYPE": "DOCUMENTED_SERVICE_COMMAND",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "docs/PRODUCTION_RUNBOOK.md",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "production identity + approved EnvironmentFile/unit/vhost changes",
+      "OUTPUT": "service/config refresh",
+      "MUTATION_KIND": "SERVICE_RELOAD",
+      "LOCALE_SCOPE": "single/shared-infrastructure",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "operator-run current configuration; subsequent production verifier required",
+      "NOTES": "G01/G03/G12: cannot independently make Site artifact current; no release identity verification"
+    },
+    {
+      "ENTRYPOINT": "runbook:systemctl daemon-reload",
+      "TYPE": "DOCUMENTED_SERVICE_COMMAND",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "docs/PRODUCTION_RUNBOOK.md",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "production identity + approved EnvironmentFile/unit/vhost changes",
+      "OUTPUT": "service/config refresh",
+      "MUTATION_KIND": "SERVICE_RELOAD",
+      "LOCALE_SCOPE": "single/shared-infrastructure",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "operator-run current configuration; subsequent production verifier required",
+      "NOTES": "G01/G03/G12: cannot independently make Site artifact current; no release identity verification"
+    },
+    {
+      "ENTRYPOINT": "runbook:systemctl restart <profile-service>",
+      "TYPE": "DOCUMENTED_SERVICE_COMMAND",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "docs/PRODUCTION_RUNBOOK.md",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "production identity + approved EnvironmentFile/unit/vhost changes",
+      "OUTPUT": "service/config refresh",
+      "MUTATION_KIND": "SERVICE_RELOAD",
+      "LOCALE_SCOPE": "single/shared-infrastructure",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "operator-run current configuration; subsequent production verifier required",
+      "NOTES": "G01/G03/G12: cannot independently make Site artifact current; no release identity verification"
+    },
+    {
+      "ENTRYPOINT": "scripts/browser_acceptance.py",
+      "TYPE": "PYTHON_HELPER_EXECUTABLE",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/browser_acceptance.py",
+      "CALLERS": [
+        "scripts/verify-preview-browser.py"
+      ],
+      "CALLEES": [
+        "scripts/browser_acceptance.py#acceptance",
+        "scripts/browser_acceptance.py#formal_course_routes",
+        "scripts/browser_acceptance.py#preview_acceptance",
+        "scripts/production-identity.py",
+        "tour-i18n policy publication"
+      ],
+      "INPUT_AUTHORITY": "identity + catalog + publication policy; standalone public args",
+      "OUTPUT": "Tour Chrome acceptance or shared browser primitives",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "partial",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "Tour CDP/assertions/network/ads/playground",
+      "NOTES": "Direct main remains a production entrypoint; preview uses preview_acceptance and shared primitives"
+    },
+    {
+      "ENTRYPOINT": "scripts/browser_acceptance.py#acceptance",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/browser_acceptance.py#acceptance",
+      "CALLERS": [
+        "scripts/browser_acceptance.py",
+        "scripts/verify-production-browser.py"
+      ],
+      "CALLEES": [
+        "scripts/browser_acceptance.py#formal_course_routes",
+        "tour-i18n policy publication"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "G08: Tour fixed sample routes/list/layout/Run/Format/Reset/SPA/ads/shared presence; no Site plan"
+    },
+    {
+      "ENTRYPOINT": "scripts/browser_acceptance.py#formal_course_routes",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/browser_acceptance.py#formal_course_routes",
+      "CALLERS": [
+        "scripts/browser_acceptance.py",
+        "scripts/browser_acceptance.py#acceptance"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "identity + catalog + publication policy; standalone public args",
+      "OUTPUT": "stage result for scripts/browser_acceptance.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "Tour CDP/assertions/network/ads/playground",
+      "NOTES": "Tour TSV fixed legacy unique route count; no Site families"
+    },
+    {
+      "ENTRYPOINT": "scripts/browser_acceptance.py#preview_acceptance",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/browser_acceptance.py#preview_acceptance",
+      "CALLERS": [
+        "scripts/browser_acceptance.py",
+        "scripts/verify-preview-browser.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_LOCAL_AND_EXTERNAL_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "partial",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "Tour preview primitive; Site samples/executable widget orchestration owned by verify-preview-browser.py"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production-test.sh",
+      "TYPE": "SHELL_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/deploy-production-test.sh",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh",
+      "TYPE": "SHELL_DEPLOY",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "LEGACY_REFERENCED",
+      "SOURCE": "scripts/deploy-production.sh",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:295",
+        "doc:docs/PRODUCTION_RUNBOOK.md:218",
+        "doc:docs/PRODUCTION_RUNBOOK.md:385",
+        "doc:docs/PRODUCTION_RUNBOOK.md:428",
+        "scripts/first-production.py",
+        "scripts/maintenance-production-batch.py",
+        "scripts/maintenance-production.py"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh#activate_release",
+        "scripts/deploy-production.sh#check_public",
+        "scripts/deploy-production.sh#prepare_remote",
+        "scripts/deploy-production.sh#upload_release",
+        "scripts/deploy-production.sh#validate_local_release",
+        "scripts/deploy-production.sh#validate_remote_release",
+        "scripts/deploy-production.sh#verify_already_current_release",
+        "scripts/production-identity.sh"
+      ],
+      "INPUT_AUTHORITY": "release.json locale + SHA256SUMS; profile from identity",
+      "OUTPUT": "immutable remote release/current symlink/service restart",
+      "MUTATION_KIND": "ORIGIN_SERVICE",
+      "LOCALE_SCOPE": "single-first/single-live/resume",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "metadata/Tour counts/checksum/root; lock; predecessor CAS; health",
+      "NOTES": "G01/G03/G05: initial transfer does not compare full remote tree SHA to recorded local SHA; no current activated authority/shared freshness"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#activate_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#activate_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh#activate_release.rollback"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "ORIGIN_LINK_SERVICE",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "predecessor current CAS; whole directory rename/current atomic link; restart; health; full locale tree rollback"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#activate_release.rollback",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#activate_release.rollback",
+      "CALLERS": [
+        "scripts/deploy-production.sh#activate_release"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "stage result for scripts/deploy-production.sh#activate_release",
+      "MUTATION_KIND": "ORIGIN_LINK_SERVICE",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "nested remote restore whole locale release; restart/health; no shared predecessor binding"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#check_public",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#check_public",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "root HTTP 200 only; failure retains healthy source; not final verifier"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#prepare_remote",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#prepare_remote",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "ORIGIN_STAGING_LOCK",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "exclusive lock; current release boundary and lifecycle check; captures predecessor"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#upload_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#upload_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "ORIGIN_STAGING",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "rsync exact supplied directory; no renderer; local directory not sealed between validation/upload"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#validate_local_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#validate_local_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh",
+        "scripts/first-production.py#local_bundle_preflight"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "G03/G07: metadata schema/count constraints; sha256sum -c checks listed files, not exact file set or safe paths"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#validate_remote_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#validate_remote_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "ORIGIN_STAGING_PERMISSIONS",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "normalizes permissions and checks listed checksum entries; no initial full-tree SHA match"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-production.sh#verify_already_current_release",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-production.sh#verify_already_current_release",
+      "CALLERS": [
+        "scripts/deploy-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "exact full tree SHA and current/no-lock + service health; no deployment replay"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets-test.sh",
+      "TYPE": "SHELL_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/deploy-shared-assets-test.sh",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh",
+      "TYPE": "SHELL_DEPLOY",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:567",
+        "scripts/shared-assets-production.py"
+      ],
+      "CALLEES": [
+        "scripts/deploy-shared-assets.sh#calculate_changes_with_retry",
+        "scripts/deploy-shared-assets.sh#cleanup_before_mutation",
+        "scripts/deploy-shared-assets.sh#create_backup",
+        "scripts/deploy-shared-assets.sh#prepare_remote",
+        "scripts/deploy-shared-assets.sh#update_origin",
+        "scripts/deploy-shared-assets.sh#upload_export",
+        "scripts/deploy-shared-assets.sh#validate_local_export",
+        "scripts/deploy-shared-assets.sh#validate_remote_staging",
+        "scripts/deploy-shared-assets.sh#write_verification_receipt",
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "origin tree/backup/v1 verification receipt",
+      "MUTATION_KIND": "SHARED_ORIGIN",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "G06/G12: no locale allowlist on deploy; fixed profile duplicates identity; in-place rsync exposes partial tree during update"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#calculate_changes_with_retry",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#calculate_changes_with_retry",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "bounded read-only diff before mutation"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#cleanup_before_mutation",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#cleanup_before_mutation",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_STAGING_LOCK",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "only owned staging/empty lock cleanup"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#create_backup",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#create_backup",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_BACKUP",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "complete non-public verified copy before mutation"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#prepare_remote",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#prepare_remote",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_STAGING_LOCK",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "fixed origin/tool/permissions/baseline and exclusive lock/staging"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#update_origin",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#update_origin",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-shared-assets.sh#update_origin.rollback"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "SHARED_ORIGIN",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "rsync --delete bounded fixed root; permissions/checksum; full backup restore; unknown retains evidence"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#update_origin.rollback",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#update_origin.rollback",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh#update_origin"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh#update_origin",
+      "MUTATION_KIND": "SHARED_ORIGIN",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "nested REMOTE_UPDATE full backup rsync/normalize/checksum/diff; unknown preserves evidence"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#upload_export",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#upload_export",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_STAGING",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "rsync supplied export; no renderer/export bypass"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#validate_local_export",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#validate_local_export",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "real canonical export; Go assets validate; current source/exact files/checksums"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#validate_remote_staging",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#validate_remote_staging",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "SHARED_STAGING_PERMISSIONS",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "expected manifest SHA/exact files/checksum/permission model"
+    },
+    {
+      "ENTRYPOINT": "scripts/deploy-shared-assets.sh#write_verification_receipt",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/deploy-shared-assets.sh#write_verification_receipt",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "current formal assets validate/export + fixed assets profile",
+      "OUTPUT": "stage result for scripts/deploy-shared-assets.sh",
+      "MUTATION_KIND": "LOCAL_RECEIPT",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/current source/staging/permissions/backup/rollback",
+      "NOTES": "v1 manifest-bound receipt/changed paths; never unknown PASS"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/first-production-test.py",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py",
+      "CALLERS": [
+        "scripts/first-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh",
+        "scripts/first-production.py#aliyun_preflight",
+        "scripts/first-production.py#bootstrap_infrastructure",
+        "scripts/first-production.py#browser",
+        "scripts/first-production.py#cloudflare_dns",
+        "scripts/first-production.py#configure_playground",
+        "scripts/first-production.py#direct_origin",
+        "scripts/first-production.py#evidence_preflight",
+        "scripts/first-production.py#local_bundle_preflight",
+        "scripts/first-production.py#nginx_vhost_text",
+        "scripts/first-production.py#preflight",
+        "scripts/first-production.py#public_machine",
+        "scripts/first-production.py#setup_cloudflare_network_tunnel",
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/first-production.py#systemd_unit_text",
+        "scripts/first-production.py#zgocloud_preflight",
+        "scripts/production-identity.py",
+        "scripts/verify-production-browser.py",
+        "scripts/verify-production.sh",
+        "tour-i18n first-production evidence-preflight",
+        "tour-i18n policy publication"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "infrastructure/DNS/Playground/current + first receipt ready to finalize",
+      "MUTATION_KIND": "INFRASTRUCTURE_ORIGIN_DNS",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "G01/G03/G06/G07/G08: same old Tour artifact; shared freshness only shared-cloudflare profile"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#aliyun_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#aliyun_preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "service/port/data/root/env/cert/vhost/secret conflict; embedded Python36 scanner"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#bootstrap_infrastructure",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#bootstrap_infrastructure",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/first-production.py#nginx_vhost_text",
+        "scripts/first-production.py#systemd_unit_text"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "INFRASTRUCTURE_SERVICE",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "profile unit/cert/vhost; data/current service; nginx -t/reload; conflicts fail closed"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#browser",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#browser",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/verify-production-browser.py"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "current invocation SOCKS + same Production browser implementation"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#cloudflare_dns",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#cloudflare_dns",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "DNS",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "profile DNS absent/exact/conflict; re-query uncertain results; proxied DNS"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#configure_playground",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#configure_playground",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "PLAYGROUND_VHOST_RELOAD",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "preserve existing exact Origins; nginx test/reload+restore; OPTIONS/compile/fmt boundaries"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#direct_origin",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#direct_origin",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "G08: external --resolve; fixed root/Tour/static/socket/SEO checks; no Site route families"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#evidence_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#evidence_preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "tour-i18n first-production evidence-preflight"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "unique current Tour Surface placeholder via existing Go"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#local_bundle_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#local_bundle_preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh#validate_local_release"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "sources existing deploy validator; old Tour metadata contract"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#nginx_vhost_text",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#nginx_vhost_text",
+      "CALLERS": [
+        "scripts/first-production.py",
+        "scripts/first-production.py#bootstrap_infrastructure"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "profile hostname/port/certs; entire app proxy; no Tour static intercept"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "evidence before external action; full current infrastructure+ads+shared freshness"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#public_machine",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#public_machine",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/verify-production.sh"
+      ],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "root/Tour bounded readiness then exactly one formal verifier"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#setup_cloudflare_network_tunnel",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#setup_cloudflare_network_tunnel",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NETWORK_TUNNEL",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "invocation-scoped -D/-R controls; no content mutation"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#shared_assets_freshness",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#shared_assets_freshness",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "scripts/verify-shared-assets-public.sh",
+        "tour-i18n assets export",
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "current export+validate/origin manifest/public SHA; skipped by same-origin policy"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#systemd_unit_text",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#systemd_unit_text",
+      "CALLERS": [
+        "scripts/first-production.py",
+        "scripts/first-production.py#bootstrap_infrastructure"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "profile current/bin/tour/loopback/env/hardening; no hardcoded data root"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.py#zgocloud_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/first-production.py#zgocloud_preflight",
+      "CALLERS": [
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "first-production identity/Tour Surface evidence/release/infrastructure/ads/shared freshness",
+      "OUTPUT": "stage result for scripts/first-production.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full preflight/direct-origin/DNS/readiness/formal machine/browser",
+      "NOTES": "Playground/vhost/OneinStack network authority"
+    },
+    {
+      "ENTRYPOINT": "scripts/first-production.sh",
+      "TYPE": "SHELL_WRAPPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "scripts/first-production.sh",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:305",
+        "doc:docs/PRODUCTION_RUNBOOK.md:206",
+        "doc:docs/PRODUCTION_RUNBOOK.md:241"
+      ],
+      "CALLEES": [
+        "scripts/first-production.py"
+      ],
+      "INPUT_AUTHORITY": "forwarded exact argv",
+      "OUTPUT": "exec Python implementation",
+      "MUTATION_KIND": "FORWARD",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "inherited current implementation",
+      "NOTES": "Compatibility wrapper retained; no separate deployment renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/indexnow-closeout-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/indexnow-closeout-test.py",
+      "CALLERS": [
+        "doc:docs/DEFERRED_ISSUES.md:134"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/indexnow-closeout.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/indexnow-closeout.py",
+      "CALLERS": [
+        "doc:docs/DEFERRED_ISSUES.md:131",
+        "scripts/indexnow-closeout.sh"
+      ],
+      "CALLEES": [
+        "scripts/indexnow-closeout.py#REMOTE_PROVISION",
+        "scripts/production-identity.py",
+        "tour-i18n indexnow bootstrap"
+      ],
+      "INPUT_AUTHORITY": "live identity + locale key in secure store",
+      "OUTPUT": "key/vhost exact location + IndexNow submission",
+      "MUTATION_KIND": "KEY_STORE_VHOST_RELOAD_SEARCH",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "partial",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "one key; exact location; nginx test/reload+restore; Go submission",
+      "NOTES": "G10: provisions before Go fetch; no current coverage comparison; Google/Bing/locale dashboards manual"
+    },
+    {
+      "ENTRYPOINT": "scripts/indexnow-closeout.py#REMOTE_PROVISION",
+      "TYPE": "PYTHON_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/indexnow-closeout.py#REMOTE_PROVISION",
+      "CALLERS": [
+        "scripts/indexnow-closeout.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "identity data root/vhost/hostname/nginx commands + key bytes",
+      "OUTPUT": "root key + exact Nginx alias",
+      "MUTATION_KIND": "VHOST_RELOAD",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "strict insertion/conflict; restore on explicit failure",
+      "NOTES": "Not crash-atomic; rollback reload failure is swallowed, no durable unknown receipt"
+    },
+    {
+      "ENTRYPOINT": "scripts/indexnow-closeout.sh",
+      "TYPE": "SHELL_WRAPPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "scripts/indexnow-closeout.sh",
+      "CALLERS": [
+        "doc:docs/DEFERRED_ISSUES.md:110",
+        "doc:docs/DEFERRED_ISSUES.md:114",
+        "doc:docs/DEFERRED_ISSUES.md:130",
+        "doc:docs/DEFERRED_ISSUES.md:131",
+        "doc:docs/DEFERRED_ISSUES.md:134",
+        "doc:docs/DEFERRED_ISSUES.md:140",
+        "doc:docs/DEFERRED_ISSUES.md:150",
+        "doc:docs/DEFERRED_ISSUES.md:154",
+        "doc:docs/DEFERRED_ISSUES.md:160",
+        "doc:docs/DEFERRED_ISSUES.md:164",
+        "doc:docs/DEFERRED_ISSUES.md:179",
+        "doc:docs/DEFERRED_ISSUES.md:183",
+        "doc:docs/DEFERRED_ISSUES.md:189",
+        "doc:docs/DEFERRED_ISSUES.md:193",
+        "doc:docs/DEFERRED_ISSUES.md:199",
+        "doc:docs/DEFERRED_ISSUES.md:203",
+        "doc:docs/DEFERRED_ISSUES.md:209",
+        "doc:docs/DEFERRED_ISSUES.md:213",
+        "doc:docs/DEFERRED_ISSUES.md:218",
+        "doc:docs/DEFERRED_ISSUES.md:222",
+        "doc:docs/DEFERRED_ISSUES.md:227",
+        "doc:docs/DEFERRED_ISSUES.md:231",
+        "doc:docs/DEFERRED_ISSUES.md:237",
+        "doc:docs/DEFERRED_ISSUES.md:241",
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:330",
+        "doc:docs/PRODUCTION_RUNBOOK.md:265",
+        "doc:docs/PROJECT_STATE.md:49",
+        "doc:docs/PROJECT_STATE.md:59",
+        "doc:docs/PROJECT_STATE.md:66",
+        "doc:docs/PROJECT_STATE.md:72"
+      ],
+      "CALLEES": [
+        "scripts/indexnow-closeout.py"
+      ],
+      "INPUT_AUTHORITY": "forwarded exact argv",
+      "OUTPUT": "exec Python implementation",
+      "MUTATION_KIND": "FORWARD",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "partial",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "inherited current implementation",
+      "NOTES": "Compatibility wrapper retained; no separate deployment renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/maintenance-production-batch-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/maintenance-production-batch-test.py",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/maintenance-production-batch.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/maintenance-production-batch.py",
+      "CALLERS": [
+        "scripts/maintenance-production-batch.sh",
+        "scripts/production-release-batch.py#_maintenance_preflight"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh",
+        "scripts/maintenance-production.py",
+        "scripts/production-cdn.py"
+      ],
+      "INPUT_AUTHORITY": "ordered release dirs/live identity/per-locale receipts",
+      "OUTPUT": "rows + per-locale maintenance receipts",
+      "MUTATION_KIND": "ORIGIN_CDN",
+      "LOCALE_SCOPE": "selected-release-list",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "all local+CDN preflight; phase A mutations then phase B acceptance",
+      "NOTES": "G04/G05/G11: fail-fast but no per-locale input SHA/prior state/mutation status; no shared freshness preflight"
+    },
+    {
+      "ENTRYPOINT": "scripts/maintenance-production-batch.sh",
+      "TYPE": "SHELL_WRAPPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "scripts/maintenance-production-batch.sh",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:305",
+        "doc:docs/PRODUCTION_RUNBOOK.md:444",
+        "scripts/production-release-batch.py",
+        "scripts/production-release-batch.py#execute_maintenance_recovery"
+      ],
+      "CALLEES": [
+        "scripts/maintenance-production-batch.py"
+      ],
+      "INPUT_AUTHORITY": "forwarded exact argv",
+      "OUTPUT": "exec Python implementation",
+      "MUTATION_KIND": "FORWARD",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "inherited current implementation",
+      "NOTES": "Compatibility wrapper retained; no separate deployment renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/maintenance-production-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/maintenance-production-test.py",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/maintenance-production.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/maintenance-production.py",
+      "CALLERS": [
+        "scripts/maintenance-production-batch.py",
+        "scripts/maintenance-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-production.sh",
+        "scripts/production-cdn.py",
+        "scripts/production-identity.py",
+        "scripts/verify-production-browser.py",
+        "scripts/verify-production.sh"
+      ],
+      "INPUT_AUTHORITY": "live identity/release basename/locale + resumable receipt",
+      "OUTPUT": "stage receipt + summary",
+      "MUTATION_KIND": "ORIGIN_CDN",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "CDN preflight -> deploy -> purge -> machine -> browser",
+      "NOTES": "G04/G05/G11: PASS receipt bypasses current verification; receipt no payload hash/prior state/uncertain mutation"
+    },
+    {
+      "ENTRYPOINT": "scripts/maintenance-production.sh",
+      "TYPE": "SHELL_WRAPPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "scripts/maintenance-production.sh",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:305",
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:56",
+        "doc:docs/PRODUCTION_RUNBOOK.md:381",
+        "doc:docs/PRODUCTION_RUNBOOK.md:427"
+      ],
+      "CALLEES": [
+        "scripts/maintenance-production.py"
+      ],
+      "INPUT_AUTHORITY": "forwarded exact argv",
+      "OUTPUT": "exec Python implementation",
+      "MUTATION_KIND": "FORWARD",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "inherited current implementation",
+      "NOTES": "Compatibility wrapper retained; no separate deployment renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/production-cdn-test.py",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py",
+      "TYPE": "PYTHON_CLI_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py",
+      "CALLERS": [
+        "scripts/maintenance-production-batch.py",
+        "scripts/maintenance-production.py",
+        "scripts/shared-assets-production.py",
+        "scripts/verify-edgeone-authority.sh"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#CloudflareClient.purge_files",
+        "scripts/production-cdn.py#CloudflareClient.purge_hostname",
+        "scripts/production-cdn.py#_run_remote_config",
+        "scripts/production-cdn.py#coordinator",
+        "scripts/production-cdn.py#purge_edgeone",
+        "scripts/production-cdn.py#remote_main",
+        "scripts/production-cdn.py#shared_assets_coordinator",
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "CDN preflight/purge result or shared receipt update",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zone/domain uniqueness; EdgeOne task reconciliation; shared ATTEMPTED guard",
+      "NOTES": "G11: locale purge uncertainty not durably bound in maintenance receipt; shared purge has durable uncertain state"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py preflight",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-cdn.py#coordinator"
+      ],
+      "INPUT_AUTHORITY": "formal identity + live locale",
+      "OUTPUT": "provider result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "see coordinator",
+      "NOTES": "Action-specific contract; no render"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py purge",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-cdn.py#coordinator"
+      ],
+      "INPUT_AUTHORITY": "formal identity + live locale",
+      "OUTPUT": "provider result",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "see coordinator",
+      "NOTES": "Action-specific contract; no render"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py purge-shared-assets",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-cdn.py#shared_assets_coordinator"
+      ],
+      "INPUT_AUTHORITY": "formal identity + shared receipt",
+      "OUTPUT": "provider result",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "see coordinator",
+      "NOTES": "Action-specific contract; no render"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py shared-assets-preflight",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-cdn.py#shared_assets_coordinator"
+      ],
+      "INPUT_AUTHORITY": "formal identity + shared receipt",
+      "OUTPUT": "provider result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "see coordinator",
+      "NOTES": "Action-specific contract; no render"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#_run_remote_config",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#_run_remote_config",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#coordinator",
+        "scripts/production-cdn.py#shared_assets_coordinator"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#remote_main"
+      ],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "stage result for scripts/production-cdn.py",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zone/domain uniqueness; EdgeOne task reconciliation; shared ATTEMPTED guard",
+      "NOTES": "SSH stdin runner; formal reverse tunnel; unknown result classification"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#CloudflareClient.purge_files",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#CloudflareClient.purge_files",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#remote_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "stage result for scripts/production-cdn.py",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zone/domain uniqueness; EdgeOne task reconciliation; shared ATTEMPTED guard",
+      "NOTES": "receipt-derived exact files; no whole-zone/prefix/tag/cross-origin"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#CloudflareClient.purge_hostname",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#CloudflareClient.purge_hostname",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#remote_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "stage result for scripts/production-cdn.py",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zone/domain uniqueness; EdgeOne task reconciliation; shared ATTEMPTED guard",
+      "NOTES": "Custom Purge exact hostname; no durable maintenance attempt receipt"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#coordinator",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#coordinator",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py preflight",
+        "scripts/production-cdn.py purge"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#_run_remote_config"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "live profile EdgeOne/Cloudflare authority + hostname action"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#purge_edgeone",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#purge_edgeone",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#remote_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "formal identity/secrets; action preflight|purge|shared-assets-preflight|purge-shared-assets|internal --remote",
+      "OUTPUT": "stage result for scripts/production-cdn.py",
+      "MUTATION_KIND": "CDN",
+      "LOCALE_SCOPE": "single-live/shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zone/domain uniqueness; EdgeOne task reconciliation; shared ATTEMPTED guard",
+      "NOTES": "zone/domain preflight+task reconciliation"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#remote_main",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#remote_main",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py#_run_remote_config"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#CloudflareClient.purge_files",
+        "scripts/production-cdn.py#CloudflareClient.purge_hostname",
+        "scripts/production-cdn.py#purge_edgeone"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "embedded stdin remote helper; strict payload; API validation/task reconciliation"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-cdn.py#shared_assets_coordinator",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-cdn.py#shared_assets_coordinator",
+      "CALLERS": [
+        "scripts/production-cdn.py",
+        "scripts/production-cdn.py purge-shared-assets",
+        "scripts/production-cdn.py shared-assets-preflight"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py#_run_remote_config"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "CDN_OR_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "exact manifest receipt/changed paths; durable ATTEMPTED; no whole-zone purge"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-identity-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/production-identity-test.py",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-identity.py",
+      "TYPE": "PYTHON_CLI_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-identity.py",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:320",
+        "doc:docs/PRODUCTION_RUNBOOK.md:176",
+        "doc:docs/PRODUCTION_RUNBOOK.md:37",
+        "doc:docs/PRODUCTION_RUNBOOK.md:38",
+        "scripts/browser_acceptance.py",
+        "scripts/first-production.py",
+        "scripts/indexnow-closeout.py",
+        "scripts/maintenance-production.py",
+        "scripts/production-cdn.py",
+        "scripts/production-identity.py list",
+        "scripts/production-identity.py locale",
+        "scripts/production-identity.py shared",
+        "scripts/production-identity.py validate",
+        "scripts/production-identity.sh",
+        "scripts/production-release-batch.py",
+        "scripts/verify-preview-browser.py",
+        "scripts/verify-production-browser.py",
+        "tour-i18n first-production evidence-preflight",
+        "tour-i18n first-production finalize",
+        "tour-i18n indexnow bootstrap"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "production/identity.json",
+      "OUTPUT": "validate/list/locale/shared ordered fields",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "schema/boundaries/cross-locale conflicts",
+      "NOTES": "Machine target identity; no language completion authority; zh-CN profile policy same-origin"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-identity.py list",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-identity.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "production/identity.json",
+      "OUTPUT": "validated identity list",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "schema/conflicts/boundaries",
+      "NOTES": "Read only profile command"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-identity.py locale",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-identity.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "production/identity.json",
+      "OUTPUT": "validated identity locale",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "schema/conflicts/boundaries",
+      "NOTES": "Read only profile command"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-identity.py shared",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-identity.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "production/identity.json",
+      "OUTPUT": "validated identity shared",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "schema/conflicts/boundaries",
+      "NOTES": "Read only profile command"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-identity.py validate",
+      "TYPE": "PYTHON_CLI_ACTION",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-identity.py#main",
+      "CALLERS": [],
+      "CALLEES": [
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "production/identity.json",
+      "OUTPUT": "validated identity validate",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "schema/conflicts/boundaries",
+      "NOTES": "Read only profile command"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-identity.sh",
+      "TYPE": "SHELL_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-identity.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:176",
+        "scripts/deploy-production.sh",
+        "scripts/recover-first-production-health-failure.sh",
+        "scripts/verify-production.sh",
+        "scripts/verify-shared-assets-production.sh",
+        "scripts/verify-shared-assets-public.sh"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "Python validated ordered identity fields",
+      "OUTPUT": "shell profile variables",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "eval-free mapping/exact field count",
+      "NOTES": "Shared identity reader; not a release renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/production-release-batch-test.py",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py",
+      "CALLERS": [
+        "scripts/production-release-batch.sh"
+      ],
+      "CALLEES": [
+        "scripts/maintenance-production-batch.sh",
+        "scripts/production-identity.py",
+        "scripts/production-release-batch.py#_maintenance_preflight",
+        "scripts/production-release-batch.py#_validate_resume_state",
+        "scripts/production-release-batch.py#_write_state",
+        "scripts/production-release-batch.py#execute_maintenance_recovery",
+        "scripts/shared-assets-production.sh",
+        "tour-i18n assets export",
+        "tour-i18n assets validate",
+        "tour-i18n publish-batch"
+      ],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "shared export + locale bundles + state + maintenance receipts",
+      "MUTATION_KIND": "LOCAL_OUTPUT_ORIGIN_CDN",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "publish all -> local/CDN preflight -> shared workflow -> maintenance batch",
+      "NOTES": "G01/G04/G05/G06/G11: zh-only skips shared dependency; resumes validate manifest hashes, not Site closure"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py#_maintenance_preflight",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py#_maintenance_preflight",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "scripts/maintenance-production-batch.py"
+      ],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "stage result for scripts/production-release-batch.py",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "publish all -> local/CDN preflight -> shared workflow -> maintenance batch",
+      "NOTES": "delegates existing maintenance Batch preflight; no separate renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py#_validate_resume_state",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py#_validate_resume_state",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "stage result for scripts/production-release-batch.py",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "publish all -> local/CDN preflight -> shared workflow -> maintenance batch",
+      "NOTES": "state/manifests/export validation; regular HEAD or maintenance-only clean different HEAD"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py#_write_state",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py#_write_state",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "stage result for scripts/production-release-batch.py",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "publish all -> local/CDN preflight -> shared workflow -> maintenance batch",
+      "NOTES": "selfhash/HEAD/identity/ordered manifests; no Site input identity"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.py#execute_maintenance_recovery",
+      "TYPE": "PYTHON_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/production-release-batch.py#execute_maintenance_recovery",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "scripts/maintenance-production-batch.sh"
+      ],
+      "INPUT_AUTHORITY": "live production identity; all-live or ordered --locale; clean HEAD; state hashes",
+      "OUTPUT": "stage result for scripts/production-release-batch.py",
+      "MUTATION_KIND": "ORIGIN_CDN",
+      "LOCALE_SCOPE": "all-live/selected/resume",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "publish all -> local/CDN preflight -> shared workflow -> maintenance batch",
+      "NOTES": "no publish/assets deploy replay; requires saved shared PASS; then maintenance batch"
+    },
+    {
+      "ENTRYPOINT": "scripts/production-release-batch.sh",
+      "TYPE": "SHELL_WRAPPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "scripts/production-release-batch.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:322",
+        "doc:docs/PRODUCTION_RUNBOOK.md:325",
+        "doc:docs/PRODUCTION_RUNBOOK.md:349",
+        "doc:docs/PRODUCTION_RUNBOOK.md:357"
+      ],
+      "CALLEES": [
+        "scripts/production-release-batch.py"
+      ],
+      "INPUT_AUTHORITY": "forwarded exact argv",
+      "OUTPUT": "exec Python implementation",
+      "MUTATION_KIND": "FORWARD",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "inherited current implementation",
+      "NOTES": "Compatibility wrapper retained; no separate deployment renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/recover-first-production-health-failure.sh",
+      "TYPE": "SHELL_RECOVERY",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/recover-first-production-health-failure.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:235"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.sh"
+      ],
+      "INPUT_AUTHORITY": "failed first receipt/exact current/empty lock/manifest/PID exe",
+      "OUTPUT": "unlock or preserved failed release and new-release instruction",
+      "MUTATION_KIND": "ORIGIN_LINK_LOCK_RECEIPT",
+      "LOCALE_SCOPE": "single-first-recovery",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "narrow exit-22 recovery; late health exact executable",
+      "NOTES": "G12/G03: only manifest-bound Tour release; no Site route or shared-assets predecessor identity"
+    },
+    {
+      "ENTRYPOINT": "scripts/release-path-audit-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/release-path-audit-test.py",
+      "CALLERS": [
+        "doc:docs/SITE_V2_RELEASE_PATH_AUDIT.md:100"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inventory + scripts/docs + mock receipts",
+      "OUTPUT": "audit integrity and gap reproductions",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not release acceptance",
+      "NOTES": "Assertions document FAILED contract; no network/service execution"
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-production-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/shared-assets-production-test.py",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-production.py",
+      "TYPE": "PYTHON_ORCHESTRATOR",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-production.py",
+      "CALLERS": [
+        "scripts/shared-assets-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/deploy-shared-assets.sh",
+        "scripts/production-cdn.py",
+        "scripts/verify-shared-assets-production.sh"
+      ],
+      "INPUT_AUTHORITY": "export dir + manifest-bound v1/v2 receipt",
+      "OUTPUT": "deploy/purge/verify receipt + PASS",
+      "MUTATION_KIND": "SHARED_ORIGIN_CDN",
+      "LOCALE_SCOPE": "shared-global/same-for-batch",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "CDN preflight/existing deploy/exact-URL purge/verification",
+      "NOTES": "G04: existing verification PASS returns without current repository or live origin/public recheck"
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-production.sh",
+      "TYPE": "SHELL_WRAPPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "scripts/shared-assets-production.sh",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:291",
+        "doc:docs/PRODUCTION_RUNBOOK.md:517",
+        "doc:docs/PRODUCTION_RUNBOOK.md:525",
+        "doc:docs/PRODUCTION_RUNBOOK.md:551",
+        "doc:docs/PRODUCTION_RUNBOOK.md:579",
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "scripts/shared-assets-production.py"
+      ],
+      "INPUT_AUTHORITY": "forwarded exact argv",
+      "OUTPUT": "exec Python implementation",
+      "MUTATION_KIND": "FORWARD",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "inherited current implementation",
+      "NOTES": "Compatibility wrapper retained; no separate deployment renderer"
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh",
+      "TYPE": "SHELL_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh",
+      "CALLERS": [
+        "scripts/verify-shared-assets-production.sh",
+        "scripts/verify-shared-assets-public.sh"
+      ],
+      "CALLEES": [
+        "scripts/shared-assets-public-verification.sh#shared_assets_public_http_request",
+        "scripts/shared-assets-public-verification.sh#shared_assets_setup_network_ssh",
+        "scripts/shared-assets-public-verification.sh#shared_assets_verify_boundaries",
+        "scripts/shared-assets-public-verification.sh#shared_assets_verify_public_assets"
+      ],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "public SHA results and request evidence",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zgocloud SOCKS + bounded transient retry/exact digest/boundary",
+      "NOTES": "Imported shared public core; no locale filters"
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh#shared_assets_public_http_request",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh#shared_assets_public_http_request",
+      "CALLERS": [
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "stage result for scripts/shared-assets-public-verification.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zgocloud SOCKS + bounded transient retry/exact digest/boundary",
+      "NOTES": "bounded transient 522/525/28 retries; full failure evidence"
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh#shared_assets_setup_network_ssh",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh#shared_assets_setup_network_ssh",
+      "CALLERS": [
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "stage result for scripts/shared-assets-public-verification.sh",
+      "MUTATION_KIND": "NETWORK_TUNNEL",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zgocloud SOCKS + bounded transient retry/exact digest/boundary",
+      "NOTES": "formal zgocloud ControlMaster+SOCKS; no local network fallback"
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh#shared_assets_verify_boundaries",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh#shared_assets_verify_boundaries",
+      "CALLERS": [
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "stage result for scripts/shared-assets-public-verification.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zgocloud SOCKS + bounded transient retry/exact digest/boundary",
+      "NOTES": "existing three non-allowlist true404 boundaries"
+    },
+    {
+      "ENTRYPOINT": "scripts/shared-assets-public-verification.sh#shared_assets_verify_public_assets",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/shared-assets-public-verification.sh#shared_assets_verify_public_assets",
+      "CALLERS": [
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "manifest/base URL/runner/boundary constants",
+      "OUTPUT": "stage result for scripts/shared-assets-public-verification.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "zgocloud SOCKS + bounded transient retry/exact digest/boundary",
+      "NOTES": "full public manifest SHA through runner; no new Site CORS/fonts verification"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-edgeone-authority.sh",
+      "TYPE": "SHELL_WRAPPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "COMPATIBILITY",
+      "SOURCE": "scripts/verify-edgeone-authority.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:192"
+      ],
+      "CALLEES": [
+        "scripts/production-cdn.py"
+      ],
+      "INPUT_AUTHORITY": "one live locale",
+      "OUTPUT": "CDN authority preflight",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "production-cdn preflight",
+      "NOTES": "Historical name; forwards current generic CDN implementation"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-preview-browser-test.py",
+      "TYPE": "PYTHON_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/verify-preview-browser-test.py",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-preview-browser.py",
+      "TYPE": "PYTHON_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-preview-browser.py",
+      "CALLERS": [
+        "doc:docs/DEFERRED_ISSUES.md:121",
+        "doc:docs/LOCALE_SURFACE_REVIEW.md:166",
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:280",
+        "doc:docs/WORKFLOW_HANDOFF.md:188"
+      ],
+      "CALLEES": [
+        "scripts/browser_acceptance.py",
+        "scripts/browser_acceptance.py#preview_acceptance",
+        "scripts/production-identity.py",
+        "tour-i18n preview-browser-plan"
+      ],
+      "INPUT_AUTHORITY": "loopback preview + current scope + preview-browser-plan + Tour catalog/metadata",
+      "OUTPUT": "machine and Chrome preview acceptance",
+      "MUTATION_KIND": "NONE_LOCAL_AND_EXTERNAL_READ",
+      "LOCALE_SCOPE": "single-preview",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "activated sitemap exact-set; every Site page + family negative + sampled DOM",
+      "NOTES": "G09: detects Homepage runtime issue; not executed in this audit"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production-browser.py",
+      "TYPE": "PYTHON_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "LEGACY_REFERENCED",
+      "SOURCE": "scripts/verify-production-browser.py",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:385",
+        "doc:docs/PRODUCTION_RUNBOOK.md:431",
+        "doc:docs/PRODUCTION_RUNBOOK.md:466",
+        "scripts/first-production.py",
+        "scripts/first-production.py#browser",
+        "scripts/maintenance-production.py"
+      ],
+      "CALLEES": [
+        "scripts/browser_acceptance.py#acceptance",
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "public origin exact identity + locale + optional explicit SOCKS",
+      "OUTPUT": "Chrome acceptance PASS",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "formal URL + shared ads policy + Tour browser behavior",
+      "NOTES": "G08: no Site browser plan/full Site family samples/assets hostname exact-set"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production-test.sh",
+      "TYPE": "SHELL_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/verify-production-test.sh",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh",
+      "TYPE": "SHELL_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "LEGACY_REFERENCED",
+      "SOURCE": "scripts/verify-production.sh",
+      "CALLERS": [
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:295",
+        "doc:docs/NEW_LOCALE_RUNBOOK.md:301",
+        "doc:docs/PRODUCTION_RUNBOOK.md:222",
+        "doc:docs/PRODUCTION_RUNBOOK.md:261",
+        "doc:docs/PRODUCTION_RUNBOOK.md:385",
+        "doc:docs/PRODUCTION_RUNBOOK.md:430",
+        "doc:docs/PRODUCTION_RUNBOOK.md:453",
+        "doc:docs/PRODUCTION_RUNBOOK.md:456",
+        "scripts/first-production.py",
+        "scripts/first-production.py#public_machine",
+        "scripts/maintenance-production.py"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.sh",
+        "scripts/verify-production.sh#public_main",
+        "scripts/verify-production.sh#verify_html_identity",
+        "scripts/verify-production.sh#verify_remote_and_source",
+        "scripts/verify-production.sh#verify_sitemap",
+        "scripts/verify-production.sh#verify_socket_boundary"
+      ],
+      "INPUT_AUTHORITY": "release basename/locale + current production identity",
+      "OUTPUT": "machine PASS or failure",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "current link/service/loopback/public/cache/canonical/sitemap/socket",
+      "NOTES": "G07/G08/G03: fixed Tour sitemap/count/order/path regex; no coverage negatives/deployed full payload identity"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#public_main",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-production.sh#public_main",
+      "CALLERS": [
+        "scripts/verify-production.sh"
+      ],
+      "CALLEES": [
+        "scripts/verify-production.sh#verify_html_identity",
+        "scripts/verify-production.sh#verify_sitemap",
+        "scripts/verify-production.sh#verify_socket_boundary"
+      ],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "internal --public direct-runner interface: cache/HTML/sitemap/socket; no Site plan"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#verify_html_identity",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-production.sh#verify_html_identity",
+      "CALLERS": [
+        "scripts/verify-production.sh",
+        "scripts/verify-production.sh#public_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "release basename/locale + current production identity",
+      "OUTPUT": "stage result for scripts/verify-production.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "current link/service/loopback/public/cache/canonical/sitemap/socket",
+      "NOTES": "root/welcome lang/canonical only"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#verify_remote_and_source",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-production.sh#verify_remote_and_source",
+      "CALLERS": [
+        "scripts/verify-production.sh"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "inherited parent authority",
+      "OUTPUT": "inherited stage result",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "inherited",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "see parent gate",
+      "NOTES": "G03/G08: checks release path/service and fixed loopback paths; not running PID/payload SHA"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#verify_sitemap",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-production.sh#verify_sitemap",
+      "CALLERS": [
+        "scripts/verify-production.sh",
+        "scripts/verify-production.sh#public_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "release basename/locale + current production identity",
+      "OUTPUT": "stage result for scripts/verify-production.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "current link/service/loopback/public/cache/canonical/sitemap/socket",
+      "NOTES": "G07: fixed legacy count/order/Tour regex; per-URL verification"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-production.sh#verify_socket_boundary",
+      "TYPE": "SHELL_EMBEDDED_HELPER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-production.sh#verify_socket_boundary",
+      "CALLERS": [
+        "scripts/verify-production.sh",
+        "scripts/verify-production.sh#public_main"
+      ],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "release basename/locale + current production identity",
+      "OUTPUT": "stage result for scripts/verify-production.sh",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "single/batch/first/repeat",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "current link/service/loopback/public/cache/canonical/sitemap/socket",
+      "NOTES": "socket normal/Upgrade negative; not Site family negative"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-shared-assets-production-test.sh",
+      "TYPE": "SHELL_TEST",
+      "STATUS": "TEST_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "scripts/verify-shared-assets-production-test.sh",
+      "CALLERS": [],
+      "CALLEES": [],
+      "INPUT_AUTHORITY": "mock/fixture production contract",
+      "OUTPUT": "test output",
+      "MUTATION_KIND": "TEST_FIXTURE",
+      "LOCALE_SCOPE": "test-only",
+      "SITE_V2_AWARE": "not_applicable",
+      "SHARED_ASSETS_AWARE": "not_applicable",
+      "PRODUCTION_GATE": "not a Production acceptance",
+      "NOTES": "Existing tests of old contracts do not prove Site v2"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-shared-assets-production.sh",
+      "TYPE": "SHELL_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-shared-assets-production.sh",
+      "CALLERS": [
+        "doc:docs/PRODUCTION_RUNBOOK.md:619",
+        "scripts/shared-assets-production.py"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.sh",
+        "scripts/shared-assets-public-verification.sh",
+        "tour-i18n assets validate"
+      ],
+      "INPUT_AUTHORITY": "receipt export absolute path/manifest SHA/changed paths + current assets validate",
+      "OUTPUT": "changed cache + full public digest + boundary PASS",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "receipt/current export/exact manifest/changed MISS-HIT/all paths/boundary",
+      "NOTES": "No Site asset dependency set; shared CORS/CSP/font policies not checked"
+    },
+    {
+      "ENTRYPOINT": "scripts/verify-shared-assets-public.sh",
+      "TYPE": "SHELL_VERIFIER",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "scripts/verify-shared-assets-public.sh",
+      "CALLERS": [
+        "scripts/first-production.py#shared_assets_freshness"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.sh",
+        "scripts/shared-assets-public-verification.sh"
+      ],
+      "INPUT_AUTHORITY": "export SHA256SUMS + shared production identity",
+      "OUTPUT": "full public digest/boundary PASS",
+      "MUTATION_KIND": "NONE_REMOTE_READ",
+      "LOCALE_SCOPE": "shared-global/first-preflight",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "manifest path/public SHA/boundary/runner",
+      "NOTES": "Standalone entry does not itself call assets validate; first-production exports+validates before call"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n assets export",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/assets.go#exportAssets",
+      "CALLERS": [
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "internal/assets/assets.go#SharedPaths"
+      ],
+      "INPUT_AUTHORITY": "internal/assets.SharedPaths + current _content bytes",
+      "OUTPUT": "exact static tree + SHA256SUMS",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "staging/exact files/checksums/atomic rename",
+      "NOTES": "G06: current allowlist is Tour assets; Site shell CSS/JS/fonts/media not derived"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n assets validate",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/assets.go#validateAssets",
+      "CALLERS": [
+        "scripts/deploy-shared-assets.sh",
+        "scripts/deploy-shared-assets.sh#validate_local_export",
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/production-release-batch.py",
+        "scripts/production-release-batch.py#_validate_resume_state",
+        "scripts/verify-shared-assets-production.sh"
+      ],
+      "CALLEES": [
+        "internal/assets/assets.go#SharedPaths"
+      ],
+      "INPUT_AUTHORITY": "same allowlist and current repository bytes",
+      "OUTPUT": "validation output",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "shared-global",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "yes",
+      "PRODUCTION_GATE": "exact inventory/checksum/current source equality",
+      "NOTES": "Self-consistent stale export rejected; does not validate Site rendered asset dependency set"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n build",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "LEGACY_REFERENCED",
+      "SOURCE": "cmd/tour-i18n/main.go#buildLocale",
+      "CALLERS": [],
+      "CALLEES": [
+        "internal/i18n/projection.go#BuildLocaleProjection"
+      ],
+      "INPUT_AUTHORITY": "Tour catalog/status/candidates/UI/Course SEO; no activated coverage",
+      "OUTPUT": "--output projection directory, or temporary go-tour-i18n-build-<locale>-*",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "local-copy",
+      "PRODUCTION_GATE": "not a production gate",
+      "NOTES": "G01: BuildLocaleProjection copies _content; not a reviewed Site v2 build consumed by publish"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n first-production evidence-preflight",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/first_production_finalize.go#firstProductionEvidencePreflightCommand",
+      "CALLERS": [
+        "scripts/first-production.py",
+        "scripts/first-production.py#evidence_preflight"
+      ],
+      "CALLEES": [
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "release locale + current Tour Surface A + placeholder + production identity",
+      "OUTPUT": "review identity JSON",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "current Tour A evidence",
+      "NOTES": "G01/G03: no exact Site release coverage or checksum predecessor"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n first-production finalize",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/first_production_finalize.go#finalizeFirstProductionCommand",
+      "CALLERS": [],
+      "CALLEES": [
+        "cmd/tour-i18n/readme_live_locales.go",
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "passed first receipt/current review placeholder/production identity",
+      "OUTPUT": "identity live + production conclusion + README projection",
+      "MUTATION_KIND": "FORMAL_LIFECYCLE",
+      "LOCALE_SCOPE": "single-first",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "existing machine/browser receipt and Surface gate",
+      "NOTES": "Not run; no Site artifact identity binding"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n indexnow bootstrap",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/indexnow.go#indexNowBootstrapCommand",
+      "CALLERS": [
+        "scripts/indexnow-closeout.py"
+      ],
+      "CALLEES": [
+        "cmd/tour-i18n/indexnow.go#bootstrapIndexNow",
+        "scripts/production-identity.py"
+      ],
+      "INPUT_AUTHORITY": "production live identity + public sitemap + private key",
+      "OUTPUT": "key verification + IndexNow probe/bulk submissions",
+      "MUTATION_KIND": "SEARCH_SUBMISSION",
+      "LOCALE_SCOPE": "single-live",
+      "SITE_V2_AWARE": "partial",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "valid host/unique URLs/root key/probe",
+      "NOTES": "G10: dynamic count supports extra URLs but no activated exact-set/current release/canonical validation"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n policy publication",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/policy.go",
+      "CALLERS": [
+        "scripts/browser_acceptance.py",
+        "scripts/browser_acceptance.py#acceptance",
+        "scripts/first-production.py"
+      ],
+      "CALLEES": [
+        "internal/tourpolicy/policy.go"
+      ],
+      "INPUT_AUTHORITY": "internal/tourpolicy",
+      "OUTPUT": "JSON publication/ads policy",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "partial",
+      "SHARED_ASSETS_AWARE": "no",
+      "PRODUCTION_GATE": "shared ads authority",
+      "NOTES": "Advertising policy is distinct from asset hostname policy"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n preview",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/main.go#previewCandidate",
+      "CALLERS": [],
+      "CALLEES": [
+        "cmd/tour-i18n/preview_runtime.go#newFullLocalePreviewHandler",
+        "internal/i18n/projection.go#BuildLocaleProjection",
+        "tour/main.go"
+      ],
+      "INPUT_AUTHORITY": "full locale gate + Tour projection + activated Site packages; --id is development-only",
+      "OUTPUT": "local preview server",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "full-locale Surface/current completion gate",
+      "NOTES": "G09: Site asset URLs still external go.dev; Homepage /doc/play/hello.go unavailable"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n preview-browser-plan",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "CURRENT",
+      "SOURCE": "cmd/tour-i18n/preview_browser_plan.go#previewBrowserPlanCommand",
+      "CALLERS": [
+        "scripts/verify-preview-browser.py"
+      ],
+      "CALLEES": [
+        "internal/site/browser_plan.go#LoadPreviewBrowserPlan"
+      ],
+      "INPUT_AUTHORITY": "current scope + locale declared activated packages + source structure",
+      "OUTPUT": "JSON browser plan; no language approval",
+      "MUTATION_KIND": "NONE",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "yes",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "structural only; runtime retains completion gates",
+      "NOTES": "Production browser does not call this plan"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n publish",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "LEGACY_REFERENCED",
+      "SOURCE": "cmd/tour-i18n/publish.go#publishBundle",
+      "CALLERS": [
+        "tour-i18n publish-batch"
+      ],
+      "CALLEES": [
+        "cmd/tour-i18n/prerender.go#prerenderProductionPagesChrome",
+        "cmd/tour-i18n/publish.go#buildProductionBinaryGo",
+        "cmd/tour-i18n/publish.go#bundleChecksums",
+        "cmd/tour-i18n/publish.go#validateBundle",
+        "internal/i18n/projection.go#BuildLocaleProjection",
+        "internal/tour/production.go#NewProductionHandler"
+      ],
+      "INPUT_AUTHORITY": "Tour projection + current source at invocation; no build input or activated coverage",
+      "OUTPUT": "release.json + bin/tour + _content + SHA256SUMS",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "single",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "local-copy",
+      "PRODUCTION_GATE": "Tour readiness/prerender/startup/checksum",
+      "NOTES": "G01/G02/G03: rerenders from mutable source, no Site artifact or build predecessor"
+    },
+    {
+      "ENTRYPOINT": "tour-i18n publish-batch",
+      "TYPE": "GO_CLI",
+      "STATUS": "ACTIVE",
+      "CLASSIFICATION": "LEGACY_REFERENCED",
+      "SOURCE": "cmd/tour-i18n/publish_batch.go#executePublishBatch",
+      "CALLERS": [
+        "scripts/production-release-batch.py"
+      ],
+      "CALLEES": [
+        "tour-i18n publish"
+      ],
+      "INPUT_AUTHORITY": "ordered explicit locales; Tour readiness; clean repository HEAD",
+      "OUTPUT": "per-locale bundles + ordered summary",
+      "MUTATION_KIND": "LOCAL_OUTPUT",
+      "LOCALE_SCOPE": "selected",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "local-copy",
+      "PRODUCTION_GATE": "all local preflight; serial stop on publish failure",
+      "NOTES": "Same publishBundle; no second renderer, but same missing Site authority; output may partially exist after failure"
+    },
+    {
+      "ENTRYPOINT": "tour/main.go",
+      "TYPE": "GO_EXECUTABLE",
+      "STATUS": "DIAGNOSTIC_ONLY",
+      "CLASSIFICATION": "NOT_RELEASE",
+      "SOURCE": "tour/main.go",
+      "CALLERS": [
+        "tour-i18n preview"
+      ],
+      "CALLEES": [
+        "content.go#TourOnly",
+        "internal/tour/local.go#Main"
+      ],
+      "INPUT_AUTHORITY": "development flags/embedded TourOnly or projected content",
+      "OUTPUT": "development standalone server/Socket transport",
+      "MUTATION_KIND": "LOCAL_RUNTIME",
+      "LOCALE_SCOPE": "single-dev",
+      "SITE_V2_AWARE": "no",
+      "SHARED_ASSETS_AWARE": "partial",
+      "PRODUCTION_GATE": "DIAGNOSTIC; not deployable release",
+      "NOTES": "No Site production authorization; called only by candidate preview"
+    }
+  ]
+}

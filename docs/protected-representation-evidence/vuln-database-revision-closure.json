@@ -1,0 +1,282 @@
+{
+  "report_type": "engineering-readonly-revision-authority-proof",
+  "stage": "vuln-database-representation-binding-closure",
+  "result": "FAILED",
+  "resolution": "requires-representation-focused-language-revision",
+  "deterministic_equivalence_proof": "FAILED",
+  "failure_reason": "相同 restored bytes 不证明 source-site/target-site semantic role 与固定 site 的 protection permissions 相同。四种 A/B 绑定均 restore/validate PASS，但固定第一个 A 的编辑在不同绑定下分别拒绝/允许；需要重新选择或迁移 binding 才能消除这个差异，当前机器没有该 semantic authority。不据此声称重新绑定后的可达最终文本集合不同。",
+  "historical_observation": {
+    "path": "docs/protected-representation-evidence/vuln-database-binding-unknown.json",
+    "sha256": "27cc66928c3e7958993f070f6083904160ee19ef0586b80a1b4c804623abad02",
+    "preserved_byte_exact": true
+  },
+  "formal_impact_sha256": "8fb332e4ba2b8be55de91c057a3f174ac4bb922536c90e9d4e927e21e6b74e0e",
+  "json_authority": {
+    "path": "data/representation-reconciliation-reviews/zh-CN/20261016-zh-CN-learn-docs-json-reconciliation-001/receipt.json",
+    "sha256": "8b952e7d9c80f5283239f4910fa47f0f31f56f91f5f4ff47743a297da4e5d5c9",
+    "preserved": true
+  },
+  "ready": 42,
+  "excluded": 1,
+  "blocked": 1,
+  "applied": false,
+  "revision_authority_contract": "PASS",
+  "generation_export_ready": false,
+  "generation_export_not_ready_reason": "真实 immutable machine reopen 尚未 record；本轮只读，没有正式 export、Generation 或 candidate。",
+  "readonly_revision_preflight": {
+    "authority": {
+      "authority_source": "representation-machine",
+      "replacement_context": {
+        "machine": {
+          "options": {
+            "locale": "zh-CN",
+            "package": "learn-docs-v1",
+            "reconciliation_id": "learn-docs-qc014-machine-successors",
+            "previous_snapshot_id": "learn-docs-v1-qc-014",
+            "snapshot_sha256": "234a37330a348590ab3b46e30d720ad42718dc798cb3002e212b86ce47acb619",
+            "formal_impact": {
+              "path": "docs/PROTECTED_REPRESENTATION_FORMAL_IMPACT.json",
+              "sha256": "8fb332e4ba2b8be55de91c057a3f174ac4bb922536c90e9d4e927e21e6b74e0e"
+            },
+            "historical_documents": {
+              "path": "docs/protected-representation-evidence/qc014-historical-representations.json",
+              "sha256": "e119897a3822d9abc42360c46889ac08c850c870f00ad51f250e3b71e91162e4"
+            },
+            "apply": false
+          },
+          "unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+          "predecessor": {
+            "index": 47,
+            "unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+            "unit_kind": "page",
+            "selected_batch_id": "chatgpt-zh-CN-039",
+            "source_path": "_content/doc/security/vuln/database.md",
+            "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+            "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/candidates/2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b.article",
+            "candidate_sha256": "44645064a026f2b5e25e92f925ca91ee386e5140ce06ec4aa9cfd932c128469f",
+            "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/validation/2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b.json",
+            "validation_sha256": "c1095a734e5e29046d74b8e37d640e33028970467f0899b63dffb3b68133df4d",
+            "attempt": 1
+          },
+          "qc_inputs": [
+            {
+              "snapshot_id": "learn-docs-v1-qc-001",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-001/quality-check-results.json",
+              "sha256": "7e36685616e2f61bd574b4a94b08445035f751f7c68a5ab81059e2175879a6e0"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-002",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-002/quality-check-results.json",
+              "sha256": "3e3c3d040f312ecffed23614a7012103e1a8027e378b543094f5946e3cf0a648"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-003",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-003/quality-check-results.json",
+              "sha256": "db8d2e531cbe4b88f64e5c256eaa513917c76c2f514b7cd8d06f7de81a77c1ed"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-004",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-004/quality-check-results.json",
+              "sha256": "da8d3f7c0e77d5924369de937b4cc5e11597d0e2199d1d519563c92bdb39931d"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-005",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-005/quality-check-results.json",
+              "sha256": "5b95c2fb6e985e833743a77873edaf9ca65ded47369ac79cc55cbca9372dd04e"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-006",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-006/quality-check-results.json",
+              "sha256": "9e1dbecc4c22a1e4fcce7881c96e495088b66a72eff78f448ac6f0bcf2cd935e"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-007",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-007/quality-check-results.json",
+              "sha256": "b04a325389fa5e6fc57fb427ac9fbd69f028b6d383f34737b0526cf692c23ca8"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-008",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-008/quality-check-results.json",
+              "sha256": "24025e2d6c835b810c5bb56382515f6cb0c5632a363419339a148d91a62ea277"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-009",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-009/quality-check-results.json",
+              "sha256": "0f23150d5d10c371f2497c5772d1736754b90b43906f76f4d1d06d5fbaf2caad"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-010",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-010/quality-check-results.json",
+              "sha256": "60fcb48c93bd8cc4663e76048106b532de4f336f4a916bf4cb45c06f08071a61"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-011",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-011/quality-check-results.json",
+              "sha256": "a46a27710ce2834ece095f48703cc5002f9c4c9fe410614669cbcb0f678b73cd"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-012",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-012/quality-check-results.json",
+              "sha256": "87b5d9ea79610716a1a770f1089fced1d2040e256e327c67d65c0484ccf43027"
+            },
+            {
+              "snapshot_id": "learn-docs-v1-qc-014",
+              "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-014/quality-check-results.json",
+              "sha256": "08dfd54ff7c6090fd29c1e2859394dc7d12b650d5fd8a724537490c4bfb6706b"
+            }
+          ],
+          "original_raw": {
+            "path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/raw-responses/2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b.article",
+            "sha256": "05193d04e83729e6e9006154dbcd61a39b877152a1b7e12793e2d6c16536b57b"
+          },
+          "original_manifest": {
+            "path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/manifest.json",
+            "sha256": "44d41c0486ff57ecc136c2bf817abe8d3166c981be0ab88b7d2c0c04d1bcd8f9"
+          },
+          "original_result": {
+            "path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/result.json",
+            "sha256": "dc5a4e38e8b639fb8d4bbaddfe6d02b0551c51f0342c45c1adb5e7788bb2f38d"
+          },
+          "failure": {
+            "kind": "duplicate-prose-literal",
+            "intervals": [
+              {
+                "source_start": 11114,
+                "source_end": 11184,
+                "source_text": "vulnerability, package B depends on package A, and there are separate ",
+                "reviewed_target": "漏洞，包 B 依赖包 A，而且包 A 和 B 分别有不同的 ",
+                "left_anchor": "⟦P345⟧",
+                "right_anchor": "⟦P346⟧",
+                "atoms": [
+                  {
+                    "literal": "A",
+                    "source_start": 11158,
+                    "source_end": 11159,
+                    "target_raw_sites": [
+                      9486,
+                      9500
+                    ]
+                  },
+                  {
+                    "literal": "B",
+                    "source_start": 11137,
+                    "source_end": 11138,
+                    "target_raw_sites": [
+                      9474,
+                      9506
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "scaffold_sha256": "51dff66f9ed9027226251b6faa891dfcb40c686fb42528162ce9933adc87f5e4"
+        },
+        "predecessor_reopen": {
+          "path": "",
+          "sha256": ""
+        },
+        "historical_documents": {
+          "path": "docs/protected-representation-evidence/qc014-historical-representations.json",
+          "sha256": "e119897a3822d9abc42360c46889ac08c850c870f00ad51f250e3b71e91162e4"
+        }
+      },
+      "schema_version": 1,
+      "evidence_type": "quality_check_surface_reopen",
+      "locale": "zh-CN",
+      "reopen_id": "learn-docs-qc014-vuln-database-representation-revision",
+      "previous_snapshot_id": "learn-docs-v1-qc-014",
+      "previous_finalization_path": "",
+      "previous_finalization_sha256": "",
+      "surface_review_id": "",
+      "surface_review_path": "",
+      "surface_review_sha256": "",
+      "finding": "",
+      "unit_count": 1,
+      "units": [
+        {
+          "previous_rating": "A",
+          "replacement": {
+            "old_unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+            "current_unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+            "package": "learn-docs-v1",
+            "package_sha256": "bcd457bfd9c459548e391f0e90262c5ef3cd4e2a41d0f7430a6680cfd579696d",
+            "source_path": "_content/doc/security/vuln/database.md",
+            "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+            "stable_index": 47,
+            "route": "/doc/security/vuln/database",
+            "old_input_sha256": "e9e98d34c410f28e619471108ecccf8d74aee054ec7f414a7d9a50e085cb32a6",
+            "current_input_sha256": "ae6c673af48a9455e132101146d4a7fcfbaf9082fa5bc76a0ffa01a4c0fae885",
+            "reconciliation_sha256": "5d3a8d71c9cfa2b5385325c9291d3eb4a88e86194fb337febe80b9b48b52221b"
+          },
+          "index": 47,
+          "unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+          "finding": "representation-unbindable: {\"kind\":\"duplicate-prose-literal\",\"intervals\":[{\"source_start\":11114,\"source_end\":11184,\"source_text\":\"vulnerability, package B depends on package A, and there are separate \",\"reviewed_target\":\"漏洞，包 B 依赖包 A，而且包 A 和 B 分别有不同的 \",\"left_anchor\":\"⟦P345⟧\",\"right_anchor\":\"⟦P346⟧\",\"atoms\":[{\"literal\":\"A\",\"source_start\":11158,\"source_end\":11159,\"target_raw_sites\":[9486,9500]},{\"literal\":\"B\",\"source_start\":11137,\"source_end\":11138,\"target_raw_sites\":[9474,9506]}]}]}. Revise only the listed frozen prose intervals and necessary adjacent grammar to express the complete original meaning with the current protected token set. The source-only scaffold is incomplete English input, not an accepted translation. Do not select a historical occurrence mechanically, copy a guessed binding, change unrelated prose, URLs, code or machine identities. This machine finding does not assert a language defect or change the predecessor A. Validation and independent re-QC are required.",
+          "snapshot": {
+            "index": 47,
+            "unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+            "unit_kind": "page",
+            "selected_batch_id": "chatgpt-zh-CN-039",
+            "source_path": "_content/doc/security/vuln/database.md",
+            "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+            "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/candidates/2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b.article",
+            "candidate_sha256": "44645064a026f2b5e25e92f925ca91ee386e5140ce06ec4aa9cfd932c128469f",
+            "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-039/validation/2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b.json",
+            "validation_sha256": "c1095a734e5e29046d74b8e37d640e33028970467f0899b63dffb3b68133df4d",
+            "attempt": 1
+          }
+        }
+      ]
+    },
+    "mutation": "none",
+    "receipt_path": "data/quality-check-reopens/zh-CN/learn-docs-qc014-vuln-database-representation-revision.json",
+    "recorded": false
+  },
+  "reconciliation_readonly_plan": "docs/protected-representation-evidence/vuln-database-final-readonly-plan.json",
+  "targeted_tests": [
+    "internal/sitecontent:TestDuplicateBindingsRestoreEqualityIsNotRevisionEquivalence",
+    "internal/sitecontent:TestRepresentationMachineRevisionExportContract",
+    "internal/sitecontent:TestRepresentationMaterializationReadonlyPlan (explicit read-only, existing json receipt)",
+    "internal/sitecontent:TestQualityCheckRepresentationReconciliation",
+    "internal/i18n:TestOrdinaryRevisionStillRequiresCompleteInitialQC",
+    "internal/i18n:TestRevisionGenerationBundleOrdinaryRatings",
+    "internal/i18n:TestSurfaceReviewFindingCanExplicitlyReopenFinalizedAWithoutChangingHistory",
+    "internal/i18n:TestPreviewRevisionGenerationBundleInfersFrozenPackageScope",
+    "cmd/tour-i18n:TestRepresentationMachineRevisionCanonicalCommand",
+    "cmd/tour-i18n:TestRepresentationReconciliationCanonicalCommand"
+  ],
+  "formal_artifact_mutation": "none",
+  "fake_generation_provenance": "absent",
+  "next_canonical_command": "bash docs/protected-representation-evidence/vuln-database-next-canonical-command.sh",
+  "stop": "before-any-formal-revision-or-reconciliation-apply",
+  "code_mutation": "known",
+  "files_changed_this_round": [
+    "cmd/tour-i18n/main.go",
+    "cmd/tour-i18n/representation_revision.go",
+    "cmd/tour-i18n/representation_revision_test.go",
+    "internal/i18n/representation_revision.go",
+    "internal/i18n/representation_reconciliation.go",
+    "internal/i18n/translation_unit_replacement.go",
+    "internal/i18n/quality_check_replacement.go",
+    "internal/i18n/preview_failure.go",
+    "internal/i18n/generation_revision_inputs.go",
+    "internal/i18n/generation_bundle.go",
+    "internal/i18n/historical_finalization.go",
+    "internal/sitecontent/representation_revision.go",
+    "internal/sitecontent/representation_revision_test.go",
+    "internal/sitecontent/representation_materialization_probe_test.go",
+    "docs/TRANSLATION_UNIT_REPLACEMENT.md",
+    "docs/RETRANSLATION_RUNBOOK.md",
+    "docs/protected-representation-evidence/vuln-database-final-readonly-plan.json",
+    "docs/protected-representation-evidence/vuln-database-next-canonical-command.sh",
+    "docs/protected-representation-evidence/vuln-database-revision-closure.json"
+  ],
+  "focused_timing": {
+    "equivalence_counterexample_seconds": 0.01,
+    "synthetic_revision_contract_seconds": 12.11,
+    "real_reconciliation_preflight_seconds": 22.773768381,
+    "ordinary_revision_initial_qc_surface_preview_regressions_seconds": 0.977,
+    "qc_replacement_regression_seconds": 13.016,
+    "cli_parser_tests_seconds": 0.027
+  }
+}

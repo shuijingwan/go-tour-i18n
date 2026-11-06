@@ -1,0 +1,268 @@
+{
+  "package_membership_successor": {
+    "path": "data/content-package-memberships/receipts/d22c5795a42059abc46b7877f2098329fce644b3a678e88411c9dcc8e9785b11.json",
+    "sha256": "d001e57bfee9cf7a84e893cc353090a658842c866654b2b6e0b2b261e8a79035"
+  },
+  "schema": "go-learning/package-language-closure/v1",
+  "locale": "zh-CN",
+  "package": "learn-docs-v1",
+  "package_sha256": "95afb981074ab74695972bb425adf78c2cd86911b1b7cadd81753b15cf3b62aa",
+  "page_finalization_composition": [
+    {
+      "package": "learn-docs-v1",
+      "package_authority_sha256": "bcd457bfd9c459548e391f0e90262c5ef3cd4e2a41d0f7430a6680cfd579696d",
+      "finalization": {
+        "path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-021/finalization.json",
+        "sha256": "60ad7d7e1f6012f0dccdb52bbfd206d46918533272bca9473cad23de9ad29bcc"
+      }
+    },
+    {
+      "package": "docs-entry-v1",
+      "package_authority_sha256": "63058db3ad64e6ab1b61e75e6ad8ee371dbc5454812bb4f4b5b4cd4ce4dc0ca5",
+      "finalization": {
+        "path": "data/quality-check-snapshots/zh-CN/docs-entry-v1-qc-002/finalization.json",
+        "sha256": "c83719af7d5edab4a6bb228668c2924f7d15efac2fdd3518e39595943729fdb0"
+      }
+    }
+  ],
+  "structured_generation": [],
+  "structured_baseline_closure": {
+    "path": "data/site-workflow/zh-CN/learn-docs-v1/closure/67837cd680ff6109a5c77d2a948416ba950051b733f5a3e6c0349069211f4299.json",
+    "sha256": "26bc09578d66b0c5ce60f10e37fd0bb63dbab755989ff71e62aa0a5c7a085936"
+  },
+  "localized_files": [
+    {
+      "path": "_content/doc/database/cancel-operations.md",
+      "sha256": "60b29c79fc89793b5f586adccfa5505d0ab0ad6a63d78565b7b403a75f5d5e3c"
+    },
+    {
+      "path": "_content/doc/database/change-data.md",
+      "sha256": "f2e04210f057c2415f15dde15c8001a7b0b7d90ea4494911b27bc3443934a4c4"
+    },
+    {
+      "path": "_content/doc/database/execute-transactions.md",
+      "sha256": "20c08772d6ea028fb4d85e017c6ef0ee1ffc3f19b22ceb048275436e3f55adb4"
+    },
+    {
+      "path": "_content/doc/database/index.md",
+      "sha256": "2e5a05049fd78c6c091b41c70d0fba4d0a84890fe8e504c5028cb642b0ce344d"
+    },
+    {
+      "path": "_content/doc/database/manage-connections.md",
+      "sha256": "d72b03517cac8bbfe9c2b9436d9605eb14296fb20b853eb907e681632d2f5ecc"
+    },
+    {
+      "path": "_content/doc/database/open-handle.md",
+      "sha256": "4c1ef7a381ac12f304489a01549858a6160cede8d624ce81d3d4c498039baa01"
+    },
+    {
+      "path": "_content/doc/database/prepared-statements.md",
+      "sha256": "4a2b89cd59b32523f744ca33b792e452c6aa35d25275d33839883ef79ac7f45e"
+    },
+    {
+      "path": "_content/doc/database/querying.md",
+      "sha256": "79e72b204a662abbb5cfc8b925a788758c02329a480e491cc644b3605395db1f"
+    },
+    {
+      "path": "_content/doc/database/sql-injection.md",
+      "sha256": "dba161745da1cce08726020f5ee6d99c3d1bcb6ff4242da7f013997d2d6789d6"
+    },
+    {
+      "path": "_content/doc/index.html",
+      "sha256": "05edf840eb4b1bb1d468166fa20ba22fed422065c1ff93e2c4222c1671ac933c"
+    },
+    {
+      "path": "_content/doc/install.html",
+      "sha256": "e72a98e48d8129290f57cdee1f948b42378e9e2e449e714285479ed9e7d903fb"
+    },
+    {
+      "path": "_content/doc/modules/developing.md",
+      "sha256": "b65477a5e3affc20986971cb1b8eefce25c6e6ee170e40dbe962f9c1aeda79aa"
+    },
+    {
+      "path": "_content/doc/modules/gomod-ref.md",
+      "sha256": "48d7200cbe96c6a6d5fdc68bca2c68343ea4197e7eefa34f0fa026600c06b112"
+    },
+    {
+      "path": "_content/doc/modules/layout.md",
+      "sha256": "22c50c9700c84228b900a1a08e72ad0008bb4073373e81bd311520f2756775d3"
+    },
+    {
+      "path": "_content/doc/modules/major-version.md",
+      "sha256": "122003bd29d48c820050b4e3bc93eb2d8939f5f37306c4ea5047d20d8abe2eb9"
+    },
+    {
+      "path": "_content/doc/modules/managing-dependencies.md",
+      "sha256": "c325efcb972c18b7f0699d262f7ffcb7bdd205f646591cda11222d0b8f3351f3"
+    },
+    {
+      "path": "_content/doc/modules/managing-source.md",
+      "sha256": "1f5a827d724ada94c569076e867d4e2f107e11ebe249bb7b9a06693d45c75137"
+    },
+    {
+      "path": "_content/doc/modules/publishing.md",
+      "sha256": "774e1ab467290571a374f91275e7c65f9ff806203bb425b74e52bc8e60453938"
+    },
+    {
+      "path": "_content/doc/modules/release-workflow.md",
+      "sha256": "ece00e3429cd2139c00a967eb2d596bac6f4a6240fc405b2c76591fdac0c78f0"
+    },
+    {
+      "path": "_content/doc/modules/version-numbers.md",
+      "sha256": "4b0bd32c834b84d3f2cf5b7774833ade042c739790dbb6ca699912ddefdfbc5d"
+    },
+    {
+      "path": "_content/doc/security/best-practices.md",
+      "sha256": "d4bb681194c1bf655319cbf0c3e3e2c8b51d481ab773645797a41acd5b30c883"
+    },
+    {
+      "path": "_content/doc/security/decisions.md",
+      "sha256": "f301bb0a91a855aa35eea04684f77b7d417989a26b76d93cee449f2046b016e8"
+    },
+    {
+      "path": "_content/doc/security/fips140.md",
+      "sha256": "df4cb4588fdb61a985a92b1cf980f33e8190af9ed7c5bd0057b554ceaaf1e94f"
+    },
+    {
+      "path": "_content/doc/security/fuzz/index.md",
+      "sha256": "0a8b626249d6325e1dc289159942ba9e966cb2cf6c36845373c3dbdc22cf2747"
+    },
+    {
+      "path": "_content/doc/security/fuzz/technical.md",
+      "sha256": "afa9e265f129ec041d1469c9c42c18291b38926c789080d93608ea2071b555e5"
+    },
+    {
+      "path": "_content/doc/security/index.md",
+      "sha256": "d2d0d76292a2960b81a5ccbe1600678aaec207d5cecc8089e8f3bc051f68b019"
+    },
+    {
+      "path": "_content/doc/security/policy.md",
+      "sha256": "936a011db96381e5c39367d00284d8d5ae4b9c9d10da72302a20b4e1160de995"
+    },
+    {
+      "path": "_content/doc/security/threat-model.md",
+      "sha256": "216210f127959357746e578adcf29f9c6bf0337af6c1c3276391c5816c9c7c85"
+    },
+    {
+      "path": "_content/doc/security/vuln/cna.md",
+      "sha256": "a0ae9709c0bf139773658b3f6bed77e9e30c0083207be42bedc981d5b3cc6c53"
+    },
+    {
+      "path": "_content/doc/security/vuln/database.md",
+      "sha256": "0a5c8fad83c4f240a3fe0289df6de50ba0a9919a7e391ff7a1d1ab56be416ce2"
+    },
+    {
+      "path": "_content/doc/security/vuln/editor.md",
+      "sha256": "bc6accf37fefd0ccfb0342557141b8c4545d83d842f604c079668cec318fe616"
+    },
+    {
+      "path": "_content/doc/security/vuln/index.md",
+      "sha256": "3a7766f5e5ac320791f5a722d37a8915570c17ea281a2bdb2fd46490c7ad191f"
+    },
+    {
+      "path": "_content/doc/tutorial/add-a-test.html",
+      "sha256": "407fa310009cd5fdb567bd895be4c4d6233105f39aab08c3bedd31e4d4903ef7"
+    },
+    {
+      "path": "_content/doc/tutorial/call-module-code.html",
+      "sha256": "436b86561c9c08b372e652ec8e1b73a1097b21aaa1e8458b28d719ab233f38c8"
+    },
+    {
+      "path": "_content/doc/tutorial/compile-install.html",
+      "sha256": "c66aad8f706b6e572e3a0f1284fcc4ce8a32b9679f025193ce75c13c182f7402"
+    },
+    {
+      "path": "_content/doc/tutorial/create-module.html",
+      "sha256": "2a93eaf4cc7f19738620f7b54fb946cde9ff77e096de5af7c58a0632ce8b6a96"
+    },
+    {
+      "path": "_content/doc/tutorial/database-access.md",
+      "sha256": "b08dc49de67c44411082354ab40ecbc58669c557bcf958f605336531a185bb90"
+    },
+    {
+      "path": "_content/doc/tutorial/fuzz.md",
+      "sha256": "76a78c6da87ebc1716dbb20b858635ac6a8e7de466e50c66a9e3085f0369d036"
+    },
+    {
+      "path": "_content/doc/tutorial/generics.md",
+      "sha256": "333f63e82b8f6ee92a6a37a2ec78edabd5286e6180d8a4d2755f6e68cf1ac85e"
+    },
+    {
+      "path": "_content/doc/tutorial/getting-started.html",
+      "sha256": "bfc20622873a7cfc38e9083a28a7c7aed0b72f2ccc29bbc4d4986fbcf19b0638"
+    },
+    {
+      "path": "_content/doc/tutorial/govulncheck-ide.md",
+      "sha256": "2b5c802e646cddffa778363cee3a8feda31634e1a5ab3b971729acb142cb409d"
+    },
+    {
+      "path": "_content/doc/tutorial/govulncheck.md",
+      "sha256": "cc54813c1e7b47d941f8cb07e8da71c35db32e6ef71e4e650ee61bb68b80819a"
+    },
+    {
+      "path": "_content/doc/tutorial/greetings-multiple-people.html",
+      "sha256": "4481b2fbf2c6a5e6afc2899bb494d457ba460d961a11f85da322f6810c46e5a0"
+    },
+    {
+      "path": "_content/doc/tutorial/handle-errors.html",
+      "sha256": "61c3fcf930d77ef03f402b86f48437b6af6068f33e52fc3e57eba9aee3d9b6e3"
+    },
+    {
+      "path": "_content/doc/tutorial/index.html",
+      "sha256": "baea64eb4e57e9d6919e0fd1b9dacb414814689f1a6d14f2ed29edf1a13e2762"
+    },
+    {
+      "path": "_content/doc/tutorial/json.md",
+      "sha256": "9d978bca55c326a2c24d43684da62383523fe01901c4e22563c3512581dc904d"
+    },
+    {
+      "path": "_content/doc/tutorial/module-conclusion.html",
+      "sha256": "d897b4b8f1cf9969d99686579b92b7a524fabf5054caa48649bb2f1880fc31ad"
+    },
+    {
+      "path": "_content/doc/tutorial/random-greeting.html",
+      "sha256": "0a18e7f33ef8f3897705fe8130ce7bcbf6ecc43073ccfa99f6ba20bd5832b10f"
+    },
+    {
+      "path": "_content/doc/tutorial/web-service-gin.md",
+      "sha256": "c5f81b33f4ea4d1eca47c894fac493193e8fc3776d5c53988ac3f93f048053e8"
+    },
+    {
+      "path": "_content/doc/tutorial/workspaces.md",
+      "sha256": "e6c98020517659c151f66530170fd98c0019840bbe0bfba5111b4f22aaa306b1"
+    },
+    {
+      "path": "_content/learn/books.yaml",
+      "sha256": "dd74e596afdf406a44c85550c37442bf4d1479407e9c8335a38f3c4feb5e3a39"
+    },
+    {
+      "path": "_content/learn/cloud.yaml",
+      "sha256": "6ce2624609c45ba8134d412416595eeaeb8d83ad3f9d0fd6475a57f7376e6c6e"
+    },
+    {
+      "path": "_content/learn/courses.yaml",
+      "sha256": "80d1c71d5f4bafc386b9c6c802318e250b0e6488c55101ef45c23241be5accaa"
+    },
+    {
+      "path": "_content/learn/guided.yaml",
+      "sha256": "eaa914833c1d93a00c7925284ac72c495a3e63df061afb48e72916215b67bbc8"
+    },
+    {
+      "path": "_content/learn/index.md",
+      "sha256": "419f93afc36fff19eaa5dc3b30903124d9d77c9e5ca09381b6ed902f5305baaf"
+    },
+    {
+      "path": "_content/learn/quickstart.yaml",
+      "sha256": "184000370eee3e89f9f88b9aeb908e1999796be563ecd495c767b80de265ab71"
+    },
+    {
+      "path": "_content/learn/training.yaml",
+      "sha256": "ca3b46a29012b25e03378ef18a4c00768650c8be7b980a3572b637b6db8d7547"
+    },
+    {
+      "path": "_content/learn/tutorials.yaml",
+      "sha256": "38a501cf5a607dc93537269c5115c554c198cd3c42c693d761f3b22558b4cb44"
+    }
+  ],
+  "identity_sha256": "a7ac3c4a6f9673a02784b593ca13216f76b6e8f3cb1f83c9a9b277c9940dcf2a"
+}

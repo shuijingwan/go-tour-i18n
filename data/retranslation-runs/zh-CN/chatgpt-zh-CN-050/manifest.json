@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-050",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/fips140.md",
+      "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "input_path": "inputs/8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3.article",
+      "input_sha256": "70a9a2fee5443cdd51d094057b47ac39979e835d178508602af3fdf616bb2c46",
+      "protected_token_count": 255,
+      "previous_snapshot_id": "learn-docs-v1-qc-016",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "QC016-F001: `_content/doc/security/fips140.md` 的 `## FIPS 140-3` 下首段，source `NIST FIPS 140-3 is a U.S. Government compliance regime...` 对应 current candidate 写成 `NIST FIPS 140-3 是 美国政府针对密码学应用的一套合规制度...`。前序 `U.S 政府` 的中英混杂已经改善为“美国政府”，但中文系词“是”和“美国政府”之间残留一个不必要的空格。该空格属于普通用户可见中文 prose，不属于 protected、inline-code、link 或技术 identity，仍需极小语言/排版修订，因此当前 candidate 未达到无需修改的 A。"
+    }
+  ]
+}

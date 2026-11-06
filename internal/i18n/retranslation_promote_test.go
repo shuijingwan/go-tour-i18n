@@ -171,7 +171,7 @@ func TestRetranslationPromotionSupportsLocaleAwareWorkflow(t *testing.T) {
 		t.Fatal(err)
 	}
 	writePromotionStatusForLocale(t, root, locale, catalog, "")
-	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: locale, Apply: true})
+	plan, err := promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: locale, Apply: true})
 	if err != nil || !plan.CanApply || plan.Locale != locale {
 		t.Fatalf("promotion plan=%+v err=%v", plan, err)
 	}
@@ -185,6 +185,7 @@ func complete122PromotionFixture(t *testing.T) (string, *Catalog) {
 	t.Helper()
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
+	recordSyntheticUnifiedReview(t, root, "synthetic-generation-review")
 	catalog := retranslationTestCatalog(103)
 	for i := 0; i < 19; i++ {
 		id := fmt.Sprintf("example:demo/example-%02d.go", i+1)
@@ -222,7 +223,7 @@ func TestRetranslationPromoteComplete122UnitWorkflow(t *testing.T) {
 			t.Fatalf("Example %s was EOF-normalized", unit.UnitID)
 		}
 	}
-	plan, err = PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true})
+	plan, err = promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true})
 	if err != nil || !plan.CanApply {
 		t.Fatalf("122-unit apply plan=%+v err=%v", plan, err)
 	}
@@ -267,7 +268,7 @@ func TestRetranslationPromoteComplete122UnitApplyRollback(t *testing.T) {
 		}
 		return os.Rename(old, new)
 	}
-	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true, rename: rename}); err == nil || !strings.Contains(err.Error(), "injected full-workflow failure") {
+	if _, err := promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true, rename: rename}); err == nil || !strings.Contains(err.Error(), "injected full-workflow failure") {
 		t.Fatalf("error = %v", err)
 	}
 	statusAfter, _ := os.ReadFile(statusPath)
@@ -404,7 +405,7 @@ func TestRetranslationPromoteReviewGate(t *testing.T) {
 				t.Fatalf("read review: %v", err)
 			}
 			test.mutate(t, reviewPath, &review)
-			plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true})
+			plan, err := promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true})
 			if err == nil || plan == nil || plan.CanApply || !reflect.DeepEqual(test.field(plan), []string{"lesson/1"}) {
 				t.Fatalf("plan=%+v error=%v", plan, err)
 			}
@@ -696,7 +697,7 @@ func TestRetranslationPromoteApplyUpdatesCanonicalAndPreservesAttempts(t *testin
 	root, catalog, batch := processedPromotionFixture(t, 2)
 	writePromotionStatus(t, root, catalog, "old\n")
 	now := time.Date(2026, 8, 18, 3, 4, 5, 0, time.FixedZone("test", 8*60*60))
-	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true, Now: func() time.Time { return now }})
+	plan, err := promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true, Now: func() time.Time { return now }})
 	if err != nil || plan.PageCount != 2 {
 		t.Fatalf("plan=%+v err=%v", plan, err)
 	}
@@ -733,7 +734,7 @@ func TestRetranslationPromoteUsesCurrentSourceRevisionAndRepairsStaleStatus(t *t
 	if plan.Units[0].BatchID == oldBatch {
 		t.Fatal("promotion fell back to the old source revision")
 	}
-	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err != nil {
+	if _, err := promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err != nil {
 		t.Fatal(err)
 	}
 	statuses, err := ReadStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"))
@@ -757,7 +758,7 @@ func TestRetranslationPromoteDoesNotUseOldSourceRevisionEvidence(t *testing.T) {
 	if err != nil || plan.CanApply || !reflect.DeepEqual(plan.MissingEvidence, []string{"lesson/1"}) {
 		t.Fatalf("old revision fallback plan=%+v err=%v", plan, err)
 	}
-	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err == nil || !strings.Contains(err.Error(), "promotion cannot apply") {
+	if _, err := promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err == nil || !strings.Contains(err.Error(), "promotion cannot apply") {
 		t.Fatalf("old revision apply error=%v", err)
 	}
 }
@@ -797,7 +798,7 @@ func TestRetranslationPromoteCanonicalizesEOFWithoutChangingHistoricalCandidate(
 		t.Fatal("dry-run changed canonical or historical candidate")
 	}
 
-	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err != nil {
+	if _, err := promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err != nil {
 		t.Fatal(err)
 	}
 	canonicalAfterApply, _ := os.ReadFile(canonicalPath)
@@ -832,7 +833,7 @@ func TestRetranslationPromoteApplyRollbackOnCommitFailure(t *testing.T) {
 		}
 		return os.Rename(old, new)
 	}
-	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true, rename: rename}); err == nil || !strings.Contains(err.Error(), "injected failure") {
+	if _, err := promoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true, rename: rename}); err == nil || !strings.Contains(err.Error(), "injected failure") {
 		t.Fatalf("error = %v", err)
 	}
 	statusAfter, _ := os.ReadFile(statusPath)

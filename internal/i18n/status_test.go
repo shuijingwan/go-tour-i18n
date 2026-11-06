@@ -566,6 +566,13 @@ func TestUpdateTranslationStatusWritesCanonicalTSV(t *testing.T) {
 
 func writeStatusFixture(t *testing.T, status string) string {
 	t.Helper()
+	root := writeStatusFixtureWithoutLanguageAudit(t, status)
+	ensureTestCurrentLocaleAuthority(t, root, "zh-CN", testLanguageAuditAuthority("zh-CN", "Han", map[string]string{".": "。"}))
+	return root
+}
+
+func writeStatusFixtureWithoutLanguageAudit(t *testing.T, status string) string {
+	t.Helper()
 	// Older TranslationRunner tests focus on Page behavior rather than the
 	// status schema; normalize their inline fixture header to the current one.
 	status = strings.Replace(status, "page_id\tstatus\t", "unit_id\tstatus\t", 1)

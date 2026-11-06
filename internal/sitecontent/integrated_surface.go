@@ -12,12 +12,15 @@ import (
 const IntegratedSurfaceSchema = "go-learning/integrated-locale-surface/v1"
 
 type SurfaceAsset struct {
-	ID        string      `json:"id"`
-	Package   string      `json:"package"`
-	State     string      `json:"state"`
-	SourceSHA string      `json:"source_sha256"`
-	TargetSHA string      `json:"target_sha256"`
-	Evidence  []Reference `json:"evidence"`
+	SourcePath         string                          `json:"source_path,omitempty"`
+	UnitID             string                          `json:"unit_id,omitempty"`
+	CandidateArtifacts []i18n.SurfaceCandidateArtifact `json:"candidate_artifacts,omitempty"`
+	ID                 string                          `json:"id"`
+	Package            string                          `json:"package"`
+	State              string                          `json:"state"`
+	SourceSHA          string                          `json:"source_sha256"`
+	TargetSHA          string                          `json:"target_sha256"`
+	Evidence           []Reference                     `json:"evidence"`
 }
 type IntegratedSurfaceScope struct {
 	Schema           string         `json:"schema"`
@@ -34,26 +37,42 @@ type IntegratedSurfaceScope struct {
 }
 
 // This plan never presents mechanical carry as a fresh language rating.
-func BuildIntegratedSurfaceScope(root, locale string, closures []Reference) (*IntegratedSurfaceScope, error) {
-	if err := requireUnifiedReview(root, locale); err != nil {
+func (validation *closureValidation) buildIntegratedSurfaceScope(root, locale string, closures []Reference) (*IntegratedSurfaceScope, error) {
+	return validation.buildIntegratedSurfaceScopeWithClosures(root, locale, closures, validation.checkPackageClosure)
+}
+
+// The ordinary scope always uses the current closure gate. A revision-only
+// predecessor projection supplies its separately verified closure materializer;
+// it is never recorded or exposed as a current Surface scope/closure verdict.
+func (validation *closureValidation) buildIntegratedSurfaceScopeWithClosures(root, locale string, closures []Reference, check func(string, Reference) (*PackageClosure, map[string][]byte, error)) (*IntegratedSurfaceScope, error) {
+	if err := validation.requireUnifiedReview(root, locale); err != nil {
 		return nil, err
 	}
-	g, err := LoadCurrent(root)
+	g, err := validation.loadCurrent(root)
 	if err != nil {
 		return nil, err
 	}
+	endCoverage := validation.phase("current-locale-coverage")
 	state, err := readLocaleAuthority(root, g, locale)
+	endCoverage()
 	if err != nil {
 		return nil, err
 	}
 	pending := map[string]bool{}
+	checkedClosures := map[Reference]*PackageClosure{}
+	endClosures := validation.phase("prospective-closures")
 	for _, ref := range closures {
-		c, _, err := CheckPackageClosure(root, ref)
+		c, _, err := check(root, ref)
 		if err != nil {
 			return nil, err
 		}
+		if err := validateCurrentCompletedPackage(g, c); err != nil {
+			return nil, err
+		}
 		pending[c.Package] = true
+		checkedClosures[ref] = c
 	}
+	endClosures()
 	l := &Locale{Schema: state.Schema, Locale: state.Locale, Packages: []Completion{}}
 	for _, c := range state.Packages {
 		if !pending[c.Package] {
@@ -74,41 +93,61 @@ func BuildIntegratedSurfaceScope(root, locale string, closures []Reference) (*In
 	if err != nil {
 		return nil, err
 	}
-	review, err := i18n.RequireUnifiedGlossaryReview(root, locale)
+	review, err := validation.unifiedReview(locale)
 	if err != nil {
 		return nil, err
 	}
 	s := &IntegratedSurfaceScope{Schema: IntegratedSurfaceSchema, Locale: locale, GlossarySHA: digest(glossary), UnifiedReview: Reference{review.Path, review.SHA256}, ExistingCoverage: *l, Closures: closures, Carried: []SurfaceAsset{}, Reviewed: []SurfaceAsset{}, Runtime: []Reference{}, Routes: []string{}}
 	seen := map[string]bool{}
+	endExisting := validation.phase("existing-package-loop")
 	for _, c := range l.Packages {
 		seen[c.Package] = true
 		s.Routes = append(s.Routes, c.Routes...)
 		if c.Package == "tour-v1" {
-			plan, err := PlanLocaleLanguage(root, locale)
+			endPlan := validation.phase("tour-plan")
+			plan, err := planLocaleLanguage(root, locale, true, validation)
+			endPlan()
 			if err != nil {
 				return nil, err
 			}
+			catalog, err := validation.inventoryCatalog()
+			if err != nil {
+				return nil, err
+			}
+			AttachIntegratedSurfaceAuthority(catalog)
 			for _, w := range plan.Work {
 				if w.Package != "tour-v1" {
 					continue
 				}
 				a := SurfaceAsset{ID: w.ID, Package: w.Package, State: w.State, SourceSHA: w.SourceSHA, TargetSHA: w.TargetSHA, Evidence: w.Evidence}
+				// Legacy Tour context labels are decoded here, never in reopen.
+				if strings.HasPrefix(w.ID, "tu:") {
+					id := strings.TrimPrefix(w.ID, "tu:")
+					if unit, err := catalog.Unit(id); err == nil {
+						a.SourcePath, a.UnitID = unit.SourcePath, unit.ID
+					}
+				}
 				if w.State == "carry" {
 					s.Carried = append(s.Carried, a)
 				} else {
 					s.Reviewed = append(s.Reviewed, a)
 				}
 			}
+			endTourBinding := validation.phase("tour-finalization-candidate-binding")
+			if f, _, err := i18n.RequireCurrentCanonicalQualityCheck(root, locale, catalog); err == nil {
+				if err := BindIntegratedSurfaceCandidates(root, catalog, s, f); err != nil {
+					return nil, err
+				}
+			}
+			endTourBinding()
 			continue
 		}
 
 		s.Carried = append(s.Carried, SurfaceAsset{ID: c.Package, Package: c.Package, State: "carry", SourceSHA: c.SourceIdentity, TargetSHA: c.ContextIdentity, Evidence: c.Evidence})
 	}
+	endExisting()
 	for _, ref := range closures {
-		c, _, err := CheckPackageClosure(root, ref)
-		if err != nil {
-			return nil, err
-		}
+		c := checkedClosures[ref]
 		if c.Locale != locale || seen[c.Package] {
 			return nil, fmt.Errorf("duplicate/wrong prospective coverage")
 		}
@@ -118,10 +157,52 @@ func BuildIntegratedSurfaceScope(root, locale string, closures []Reference) (*In
 			return nil, err
 		}
 		s.Routes = append(s.Routes, p.Routes...)
+		endCarry := validation.phase("structuredSurfaceCarrySet:" + c.Package)
+		carriedFiles, carryProof, err := validation.structuredSurfaceCarrySet(root, c)
+		endCarry()
+		if err != nil {
+			return nil, err
+		}
 		for _, f := range c.Files {
-			s.Reviewed = append(s.Reviewed, SurfaceAsset{ID: f.Path, Package: c.Package, State: "review-required", SourceSHA: p.SourceIdentity, TargetSHA: f.SHA256, Evidence: []Reference{ref}})
+			a := SurfaceAsset{ID: f.Path, Package: c.Package, State: "review-required", SourceSHA: p.SourceIdentity, TargetSHA: f.SHA256, Evidence: []Reference{ref}}
+			if g.ShellAdoption != nil && f.Path == "_content/index.md" && c.PageFinalization != nil {
+				a.State = "context-review-required"
+			}
+			if carriedFiles[f.Path] {
+				a.State = "carry"
+				a.Evidence = append(a.Evidence, carryProof...)
+				s.Carried = append(s.Carried, a)
+			} else {
+				s.Reviewed = append(s.Reviewed, a)
+			}
+		}
+		finalizations := []*i18n.QualityCheckFinalization{}
+		for _, page := range closurePageFinalizations(c) {
+			if !strings.HasPrefix(page.Path, "data/quality-check-snapshots/") {
+				continue
+			}
+			var f i18n.QualityCheckFinalization
+			if err := readReference(root, page, &f); err != nil {
+				return nil, err
+			}
+			finalizations = append(finalizations, &f)
+		}
+		if len(finalizations) > 0 {
+			// The closure above proves current eligibility. Bind the exact union
+			// of its predecessor finalizations to today's complete package, while
+			// each artifact keeps its own frozen representation/QC world.
+			catalog, err := validation.packageCatalog(c.Package)
+			if err != nil {
+				return nil, err
+			}
+			endBinding := validation.phase("candidate-binding:" + c.Package)
+			if err := BindIntegratedSurfaceCandidates(root, catalog, s, finalizations...); err != nil {
+				return nil, err
+			}
+			endBinding()
 		}
 	}
+	endRuntime := validation.phase("runtime-references")
 	for _, path := range []string{"production/identity.json", "internal/tour/project.go", "internal/tour/languages.go", "internal/tourpolicy/policy.go", GlobalPath} {
 		r, err := ReferenceFile(root, path)
 		if err != nil {
@@ -129,9 +210,13 @@ func BuildIntegratedSurfaceScope(root, locale string, closures []Reference) (*In
 		}
 		s.Runtime = append(s.Runtime, r)
 	}
+	endRuntime()
+	endIdentity := validation.phase("final-scope-identity")
 	sort.Strings(s.Routes)
+	sort.Slice(s.Carried, func(i, j int) bool { return s.Carried[i].ID < s.Carried[j].ID })
 	sort.Slice(s.Reviewed, func(i, j int) bool { return s.Reviewed[i].ID < s.Reviewed[j].ID })
 	s.Identity = identity(*s)
+	endIdentity()
 	return s, nil
 }
 
@@ -148,6 +233,9 @@ type IntegratedSurfaceReceipt struct {
 }
 
 func RecordIntegratedSurface(root string, b []byte) (*IntegratedSurfaceReceipt, string, error) {
+	return recordIntegratedSurface(root, b, nil, BuildIntegratedSurfaceScope)
+}
+func recordIntegratedSurface(root string, b []byte, catalog *i18n.Catalog, build integratedScopeBuilder) (*IntegratedSurfaceReceipt, string, error) {
 	var r IntegratedSurfaceReceipt
 	if err := StrictJSON(b, &r); err != nil {
 		return nil, "", err
@@ -155,21 +243,10 @@ func RecordIntegratedSurface(root string, b []byte) (*IntegratedSurfaceReceipt, 
 	if r.Identity != "" || r.Schema != IntegratedSurfaceSchema || !component(r.ReviewID) || !component(r.Reviewer) {
 		return nil, "", fmt.Errorf("invalid integrated review identity")
 	}
-	seenFindings := map[string]bool{}
-	allowedFindings := map[string]bool{}
-	for _, a := range r.Scope.Reviewed {
-		allowedFindings[a.ID] = true
-	}
-	for _, f := range r.ExactFindings {
-		if f.Finding == "" || seenFindings[f.ID] || !allowedFindings[f.ID] {
-			return nil, "", fmt.Errorf("invalid exact Surface finding scope")
-		}
-		seenFindings[f.ID] = true
-	}
 	if r.Decision == "passed" && len(r.ExactFindings) != 0 {
 		return nil, "", fmt.Errorf("passed Surface has unresolved exact finding")
 	}
-	want, err := BuildIntegratedSurfaceScope(root, r.Scope.Locale, r.Scope.Closures)
+	want, err := build(root, r.Scope.Locale, r.Scope.Closures)
 	if err != nil {
 		return nil, "", err
 	}
@@ -180,9 +257,27 @@ func RecordIntegratedSurface(root string, b []byte) (*IntegratedSurfaceReceipt, 
 		return nil, "", fmt.Errorf("invalid Surface decision")
 	}
 	for _, a := range r.Scope.Reviewed {
-		if a.Package == "tour-v1" && strings.HasPrefix(a.ID, "tu:") && a.State != "carry" {
+		if r.Decision == "passed" && a.Package == "tour-v1" && strings.HasPrefix(a.ID, "tu:") && a.State != "carry" {
 			return nil, "", fmt.Errorf("affected Tour TU requires formal revision + independent re-QC before integrated Surface PASS: %s", a.ID)
 		}
+	}
+	for _, finding := range r.ExactFindings {
+		if finding.Class != i18n.SurfaceTranslationUnitLanguage {
+			continue
+		}
+		if catalog == nil {
+			catalog, err = checkedCatalog(root)
+			if err != nil {
+				return nil, "", err
+			}
+			if err := AttachRegisteredTranslationPackages(root, catalog); err != nil {
+				return nil, "", err
+			}
+		}
+		break
+	}
+	if err := validateIntegratedTUFindings(root, catalog, r); err != nil {
+		return nil, "", err
 	}
 	if err := requireIndependentSession(root, r.Scope.Locale, r.Reviewer, "reviewer"); err != nil {
 		return nil, "", err
@@ -199,6 +294,9 @@ func RecordIntegratedSurface(root string, b []byte) (*IntegratedSurfaceReceipt, 
 	return &r, p, saveImmutable(root, p, &r)
 }
 func RequireIntegratedSurface(root, locale string, closure Reference) (Reference, error) {
+	return requireIntegratedSurface(root, locale, closure, BuildIntegratedSurfaceScope)
+}
+func requireIntegratedSurface(root, locale string, closure Reference, build integratedScopeBuilder) (Reference, error) {
 	dir := "data/locale-language/" + locale + "/surface"
 	entries, err := os.ReadDir(pathJoin(root, dir))
 	if err != nil {
@@ -219,8 +317,19 @@ func RequireIntegratedSurface(root, locale string, closure Reference) (Reference
 		}
 		copy := r
 		copy.Identity = ""
-		if r.Schema != IntegratedSurfaceSchema || r.Identity != identity(copy) || entry.Name() != r.ReviewID+".json" {
+		scope := r.Scope
+		scope.Identity = ""
+		if r.Schema != IntegratedSurfaceSchema || r.Identity != identity(copy) || entry.Name() != r.ReviewID+".json" || r.Scope.Schema != IntegratedSurfaceSchema || r.Scope.Locale != locale || r.Scope.Identity != identity(scope) {
 			return Reference{}, fmt.Errorf("Surface receipt identity mismatch")
+		}
+		if (r.Decision != "passed" && r.Decision != "failed") || (r.Decision == "failed" && len(r.Findings) == 0) || (r.Decision == "passed" && (len(r.Findings) > 0 || len(r.ExactFindings) > 0)) {
+			return Reference{}, fmt.Errorf("Surface decision/finding mismatch")
+		}
+		// Failed judgments remain immutable reopen evidence, never current PASS
+		// candidates. Rebuilding their superseded closures cannot authorize this
+		// activation and would incorrectly revoke a later complete reviewed PASS.
+		if r.Decision != "passed" {
+			continue
 		}
 		included := false
 		for _, c := range r.Scope.Closures {
@@ -231,7 +340,7 @@ func RequireIntegratedSurface(root, locale string, closure Reference) (Reference
 		if !included {
 			continue
 		}
-		want, err := BuildIntegratedSurfaceScope(root, locale, r.Scope.Closures)
+		want, err := currentReviewedScope(root, r, ref, build)
 		if err != nil {
 			return Reference{}, err
 		}
@@ -272,6 +381,11 @@ func verifyCarriedLocale(root string, g *Global, l Locale) error {
 	cat, err := checkedCatalog(root)
 	if err != nil {
 		return err
+	}
+	if _, current, err := currentTourCheckpoint(root, g, cat, legacy); err != nil {
+		return err
+	} else if current {
+		return nil
 	}
 	for _, p := range profiles {
 		if p.Locale == l.Locale {

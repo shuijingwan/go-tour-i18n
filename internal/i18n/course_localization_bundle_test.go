@@ -10,16 +10,13 @@ import (
 )
 
 func TestExportCourseLocalizationGenerationBundleDeterministicAndComplete(t *testing.T) {
-	root := repoRoot(t)
-	catalog, err := BuildCatalog(root)
+	root, catalog, base := courseV2GenerationBundleFixture(t)
+	locale := base.Locale
+	first, manifest, err := ExportCourseLocalizationGenerationBundle(root, locale, catalog)
 	if err != nil {
 		t.Fatal(err)
 	}
-	first, manifest, err := ExportCourseLocalizationGenerationBundle(root, "ur-PK", catalog)
-	if err != nil {
-		t.Fatal(err)
-	}
-	second, secondManifest, err := ExportCourseLocalizationGenerationBundle(root, "ur-PK", catalog)
+	second, secondManifest, err := ExportCourseLocalizationGenerationBundle(root, locale, catalog)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -29,7 +26,7 @@ func TestExportCourseLocalizationGenerationBundleDeterministicAndComplete(t *tes
 	if !reflect.DeepEqual(manifest, secondManifest) {
 		t.Fatal("Course SEO localization bundle manifest is not deterministic")
 	}
-	if manifest.SchemaVersion != CourseLocalizationGenerationBundleSchemaVersion || manifest.Locale != "ur-PK" {
+	if manifest.SchemaVersion != CourseLocalizationGenerationBundleSchemaVersion || manifest.Locale != locale {
 		t.Fatalf("unexpected bundle identity: %+v", manifest)
 	}
 	if manifest.PageCount != len(catalog.Pages) {
@@ -89,13 +86,43 @@ func TestExportCourseLocalizationGenerationBundleDeterministicAndComplete(t *tes
 	if err := json.Unmarshal(files["course-seo-localization.json"], &context); err != nil {
 		t.Fatal(err)
 	}
-	if len(context.Pages) != len(catalog.Pages) || context.Locale != "ur-PK" || context.GeneratorContract != "course-seo-localization-v2" {
+	if len(context.Pages) != len(catalog.Pages) || context.Locale != locale || context.GeneratorContract != "course-seo-localization-v2" {
 		t.Fatalf("unexpected localization context identity: locale=%s pages=%d contract=%s", context.Locale, len(context.Pages), context.GeneratorContract)
 	}
 	if context.CanonicalSourceDescriptionsSHA256 != manifest.SourceDescriptions.SHA256 {
 		t.Fatal("context canonical source-descriptions identity mismatch")
 	}
-	if _, err := VerifyCurrentCourseLocalizationGenerationBundle(root, "ur-PK", catalog, first); err != nil {
+	reviewAuthority, err := RequireCurrentCourseSourceDescriptionReview(root, catalog)
+	if err != nil || context.CanonicalReviewAuthoritySHA256 != reviewAuthority {
+		t.Fatalf("context canonical review authority mismatch: %v", err)
+	}
+	if _, err := VerifyCurrentCourseLocalizationGenerationBundle(root, locale, catalog, first); err != nil {
 		t.Fatalf("current localization bundle rejected: %v", err)
 	}
+}
+
+// Reuse the ready-target/glossary fixture and real authority builders. All
+// language assets and review receipts belong to t.TempDir, not a live locale.
+func courseV2GenerationBundleFixture(t *testing.T) (string, *Catalog, *CourseMetadata) {
+	t.Helper()
+	root, catalog, predecessor := courseV1MaintenanceFixture(t)
+	writeCourseSourceDescriptionAsset(t, root, catalog, nil)
+	writeCourseSourceDescriptionReview(t, root, catalog, "synthetic-v2-bundle-source-review")
+	data, err := AssembleCourseMetadata(root, catalog, CourseMetadataAssemblyOptions{
+		SchemaVersion: CourseMetadataSchemaVersionV2,
+		Locale:        predecessor.Locale,
+		Provider:      "fixture",
+		Model:         "fixture-model",
+		GeneratedAt:   "2026-09-15T02:03:04Z",
+		Descriptions:  marshalCourseDescriptions(t, catalog),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var base CourseMetadata
+	if err := decodeStrictBundleJSON(data, &base); err != nil {
+		t.Fatal(err)
+	}
+	writeCourseMetadataFixture(t, root, base.Locale, &base)
+	return root, catalog, &base
 }

@@ -1,0 +1,823 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_surface_reopen",
+  "locale": "zh-CN",
+  "reopen_id": "learn-docs-is005-qc021-surface-reopen-001",
+  "previous_snapshot_id": "learn-docs-v1-qc-021",
+  "previous_finalization_path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-021/finalization.json",
+  "previous_finalization_sha256": "60ad7d7e1f6012f0dccdb52bbfd206d46918533272bca9473cad23de9ad29bcc",
+  "surface_review_id": "20261026-zh-CN-integrated-surface-005",
+  "surface_review_path": "data/locale-language/zh-CN/surface/20261026-zh-CN-integrated-surface-005.json",
+  "surface_review_sha256": "2d3260d80b54ef2651a7376668277f8ac130ff3f7ed702f2865ce880a9d7189a",
+  "finding": "",
+  "findings": [
+    "该 Page 存在 representation-protected-natural-language-residue：`FormatDSN method` 与 `sql.OpenDB function` 中的 method/function 为用户可见普通自然语言残留。仅修订这两个描述词，保留技术标识符、链接目标、Markdown 绑定及其它正文。",
+    "该 Page 存在 technical-identifier-chinese-prose-boundary：randomFormat→以、math/rand→包、name→值 三处 inline technical identifier 与中文词直接粘连。仅修订这三处边界，保留标识符、imports、代码、链接及其它正文。",
+    "该 Page 存在 technical-identifier-chinese-prose-boundary：可见解释性正文中的 Hello、go test、TestHelloName、Errorf、TestHelloEmpty、_test.go 等受保护技术标识符与后续中文词直接粘连。按 Reviewer 给出的 exact predicate 对完整 Page 做 bounded same-class 修订，不修改代码、标识符、测试行为、链接及无关正文。",
+    "该 Page 有两类 bounded defect：一是 string、Hello、Hellos、for、range 等 inline Go type/identifier/keyword 与相邻中文词直接粘连；二是结尾 `使用映射表示 name/value 对` 中普通自然语言 `name/value` 未本地化。仅处理 Reviewer 已界定的这两类范围。",
+    "该 Page 有两类 bounded defect：一是 string、errors.New、log、Fatal 等 inline Go/API identifier 与相邻中文词直接粘连；二是 `\u003ccode\u003elog package\u003c/code\u003e` 中 technical identity `log` 应保留，但普通描述词 `package` 因 representation 保护而残留英文。仅修订 Reviewer 已界定范围。"
+  ],
+  "unit_count": 5,
+  "units": [
+    {
+      "index": 2,
+      "unit_id": "393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c",
+      "finding": "该 Page 存在 technical-identifier-chinese-prose-boundary：可见解释性正文中的 Hello、go test、TestHelloName、Errorf、TestHelloEmpty、_test.go 等受保护技术标识符与后续中文词直接粘连。按 Reviewer 给出的 exact predicate 对完整 Page 做 bounded same-class 修订，不修改代码、标识符、测试行为、链接及无关正文。",
+      "snapshot": {
+        "index": 2,
+        "unit_id": "393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-051",
+        "source_path": "_content/doc/tutorial/add-a-test.html",
+        "source_sha256": "d5ea155f25736df5051fddc35df81af3600b57700972d8fde4c344345c9a0ca0",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/candidates/393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c.article",
+        "candidate_sha256": "407fa310009cd5fdb567bd895be4c4d6233105f39aab08c3bedd31e4d4903ef7",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/validation/393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c.json",
+        "validation_sha256": "d767495aa3ddeef8df0e58e932c6176c211a6b972c5785daf3a7ce487f47f2e4",
+        "attempt": 1
+      }
+    },
+    {
+      "index": 12,
+      "unit_id": "b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493",
+      "finding": "该 Page 有两类 bounded defect：一是 string、Hello、Hellos、for、range 等 inline Go type/identifier/keyword 与相邻中文词直接粘连；二是结尾 `使用映射表示 name/value 对` 中普通自然语言 `name/value` 未本地化。仅处理 Reviewer 已界定的这两类范围。",
+      "snapshot": {
+        "index": 12,
+        "unit_id": "b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-051",
+        "source_path": "_content/doc/tutorial/greetings-multiple-people.html",
+        "source_sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/candidates/b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493.article",
+        "candidate_sha256": "4481b2fbf2c6a5e6afc2899bb494d457ba460d961a11f85da322f6810c46e5a0",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/validation/b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493.json",
+        "validation_sha256": "82fb52bc9e1c9f72aa7542ffdb848825b7fa1c56d6eaf725e180201365fda3f3",
+        "attempt": 1
+      }
+    },
+    {
+      "index": 13,
+      "unit_id": "66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec",
+      "finding": "该 Page 有两类 bounded defect：一是 string、errors.New、log、Fatal 等 inline Go/API identifier 与相邻中文词直接粘连；二是 `\u003ccode\u003elog package\u003c/code\u003e` 中 technical identity `log` 应保留，但普通描述词 `package` 因 representation 保护而残留英文。仅修订 Reviewer 已界定范围。",
+      "snapshot": {
+        "index": 13,
+        "unit_id": "66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-051",
+        "source_path": "_content/doc/tutorial/handle-errors.html",
+        "source_sha256": "10e61d7f50095845bd2e313add841500b189bb7ddda6c3b7fee248f8cdc53a89",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/candidates/66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec.article",
+        "candidate_sha256": "61c3fcf930d77ef03f402b86f48437b6af6068f33e52fc3e57eba9aee3d9b6e3",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/validation/66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec.json",
+        "validation_sha256": "ccb0b63bd1fe811e778784cc0febf6dde9c653e9f71068847a7609e13729dbd7",
+        "attempt": 1
+      }
+    },
+    {
+      "index": 17,
+      "unit_id": "0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10",
+      "finding": "该 Page 存在 technical-identifier-chinese-prose-boundary：randomFormat→以、math/rand→包、name→值 三处 inline technical identifier 与中文词直接粘连。仅修订这三处边界，保留标识符、imports、代码、链接及其它正文。",
+      "snapshot": {
+        "index": 17,
+        "unit_id": "0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-051",
+        "source_path": "_content/doc/tutorial/random-greeting.html",
+        "source_sha256": "9951ede236291e2db0beaa868159e101bc2983f9754c587c3ab3954fa26cdfbe",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/candidates/0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10.article",
+        "candidate_sha256": "0a18e7f33ef8f3897705fe8130ce7bcbf6ecc43073ccfa99f6ba20bd5832b10f",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/validation/0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10.json",
+        "validation_sha256": "3247a90fd7bcb3f43ce33c2440d6746bb7e4cbacb8fee86affe4f56fc597e16d",
+        "attempt": 1
+      }
+    },
+    {
+      "index": 25,
+      "unit_id": "872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983",
+      "finding": "该 Page 存在 representation-protected-natural-language-residue：`FormatDSN method` 与 `sql.OpenDB function` 中的 method/function 为用户可见普通自然语言残留。仅修订这两个描述词，保留技术标识符、链接目标、Markdown 绑定及其它正文。",
+      "snapshot": {
+        "index": 25,
+        "unit_id": "872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-055",
+        "source_path": "_content/doc/database/open-handle.md",
+        "source_sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-055/candidates/872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983.article",
+        "candidate_sha256": "4c1ef7a381ac12f304489a01549858a6160cede8d624ce81d3d4c498039baa01",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-055/validation/872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983.json",
+        "validation_sha256": "7e9bbc5694c4d23c88c16b2fca4e10093078e5a099820ee676423a9f70f6d93c",
+        "attempt": 1
+      }
+    }
+  ],
+  "integrated_authority": {
+    "locale": "zh-CN",
+    "review_id": "20261026-zh-CN-integrated-surface-005",
+    "stage": "failed",
+    "receipt": {
+      "path": "data/locale-language/zh-CN/surface/20261026-zh-CN-integrated-surface-005.json",
+      "sha256": "2d3260d80b54ef2651a7376668277f8ac130ff3f7ed702f2865ce880a9d7189a"
+    },
+    "receipt_identity": "7c3bfb3d85b316cf13b36c76d58fbd284ea6b6ffc2c6239c6ea8ee1e7ce0e364",
+    "scope_identity": "9ecc0537191d99645599a27da929b675708f161f9bde7f761e98fa7ecc1656e2",
+    "evidence": {
+      "path": "data/locale-surface-reviews/zh-CN/20261026-zh-CN-integrated-surface-005.md",
+      "sha256": "d4187a135dd3732d42baf2ed6d6f4ab0b72e7a91617e3cb523cd970206c45d0f"
+    },
+    "context": [
+      {
+        "path": "data/unified-glossary-reviews/zh-CN/20261024-zh-CN-glossary-review-015.review.json",
+        "sha256": "7e898f2421b12a53bbca5a27a741f546537a7adaf79cc9b9b72717ec88c2204e"
+      },
+      {
+        "path": "data/site-workflow/zh-CN/learn-docs-v1/closure/a7ac3c4a6f9673a02784b593ca13216f76b6e8f3cb1f83c9a9b277c9940dcf2a.json",
+        "sha256": "c7ed75d186654e32725adcfda97aaff9835598a7e63f3f0e3eefd5ad9d751162"
+      },
+      {
+        "path": "data/site-workflow/zh-CN/site-v2-shell/closure/68cd5c0142c1a73e06375d45dce5e45a2f8441f6d682bdf7db58b7b4336d4e42.json",
+        "sha256": "5fe1e74d2f85f45693575184c790ed5a9ecbe8f0d9a7f680daa0cfaf62335194"
+      },
+      {
+        "path": "production/identity.json",
+        "sha256": "cb0897e4a37c4fe10999f2e905a7fb4e89e2ff26ee2fd84d51d5ad720eac392c"
+      },
+      {
+        "path": "internal/tour/project.go",
+        "sha256": "78ae201af9207dbb74b266fb64614b82688195e8fff3b71f44b618b2a6ac23e3"
+      },
+      {
+        "path": "internal/tour/languages.go",
+        "sha256": "4d25c9c1883b1475b14a4f2b90c9d4acde272da263881e1d6e9f1c8bfc0fd345"
+      },
+      {
+        "path": "internal/tourpolicy/policy.go",
+        "sha256": "d990db32fe59be47ba78b829e44e4a50e9a796bfcb01a0bc658ff7e4349cc932"
+      },
+      {
+        "path": "data/site-content-scope.json",
+        "sha256": "08344fc0332d8d5cc05df76f5a5a293e82a72afaeab51d128c24643d1262a085"
+      },
+      {
+        "path": "data/site-workflow/zh-CN/learn-docs-v1/closure/67837cd680ff6109a5c77d2a948416ba950051b733f5a3e6c0349069211f4299.json",
+        "sha256": "26bc09578d66b0c5ce60f10e37fd0bb63dbab755989ff71e62aa0a5c7a085936"
+      },
+      {
+        "path": "data/site-workflow/zh-CN/site-v2-shell/closure/1f5e9f0fb28b2098c1fff90778f652f9541cfc6ff4d8c75e72ec2093f70dc926.json",
+        "sha256": "38746745af4821aec945899c730b62b61be53de3b450f4ad8c6609f21e98336f"
+      },
+      {
+        "path": "data/locale-language/zh-CN/surface/20261018-zh-CN-integrated-surface-004.json",
+        "sha256": "63ca51e431e9144c0bbded40e4efa26ee1e21692b0aa86325775f1ef5b10544f"
+      },
+      {
+        "path": "data/locale-surface-reviews/zh-CN/20261024-zh-CN-tour-current-surface-006.a-gate.json",
+        "sha256": "7eae4e29002afbb1da6630fdfc7f73baf65da70c8fa13e54412822a7c3a66baf"
+      },
+      {
+        "path": "data/locale-surface-reviews/zh-CN/20261024-zh-CN-tour-current-surface-006.md",
+        "sha256": "f47c4aefb7a4e9e290f34dde3b14122b1a093982be0b39c92e73c95e27c9c824"
+      },
+      {
+        "path": "locales/zh-CN/content-scope.json",
+        "sha256": "30282d4ed57072dcf87ecba8fab2b9e59ce1bc36feb77ccaed1996756b7e8f6e"
+      },
+      {
+        "path": "data/translation-authorizations/zh-CN/88337426ad44d3e7193d668a062bed7022c230691d97412be70a49703652b1a6/qc-010/30e846f84bf779df3646393116907b8f1372fb16165d897fc92be54f39d97f13.json",
+        "sha256": "e3b6d3075a2420b373230bccf86e697df24845e9265f160f15385f1c89b94884"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-1.article",
+        "sha256": "672173f5500327fe8328c4d06ba8ba134021c4305d8ca0a2b8c7a9cc002bafec"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-10.article",
+        "sha256": "ef1ab03b8eb14d303e9a5fd49fdd00b5cedacb9f6f48d39929d5352ad08010e1"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-11.article",
+        "sha256": "f5d0ce6118f0e6fc93b28e01e22509c0c12db4691799957849943ee2e37fe214"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-12.article",
+        "sha256": "5441fff1dacedd15645b5fa362a4e5cc1685f4ee4395829a419486deb4442880"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-13.article",
+        "sha256": "28c61a7f4073f8f7df1189bb770abb7e5887a1c2c72ca991ed33635c72f86468"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-14.article",
+        "sha256": "a0a09dbf054e6757b7d9fbbb33aa8da493b7c4877b5a9e1dae5e426693ac7a7c"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-15.article",
+        "sha256": "8bc9e06295202446fd2b44f5c2eb54480da8c2ef140196ca013c8c433db36be2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-16.article",
+        "sha256": "06bfc11ec15f5cba49cb1df300a10e743bc94e5fe70876f697a4d8c7d362f11b"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-17.article",
+        "sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-2.article",
+        "sha256": "0c68200f68fb6ad38d026b3e86dc6fd14b2c6c971d93e835496fe2d62e099568"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-3.article",
+        "sha256": "40aec67490a1600156039539e5c138ecec20483f252ec5bbc1263737cb4f6041"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-4.article",
+        "sha256": "caf0c035f9b86f4ee6c9bc46587aae135e0983bb5b2b9efe3d7fb1b0d475ac6d"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-5.article",
+        "sha256": "31343e1227ae717d4474d567625309d95e8d1e8c1cb7e7e6890b5333b635a9ef"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-6.article",
+        "sha256": "524cc7d6399dfc778acf91f9db34acf1354f09533a6fa5ac37dfe1f327334760"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-7.article",
+        "sha256": "4573a99f5d9208cb7ba7d566e67bf5e52af4c39fbfad13a627b96189d61813e3"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-8.article",
+        "sha256": "0423a428a90f4ae14042bda9c70689b86c9dc5ee8897aa6c29c3e05ea19994e3"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-9.article",
+        "sha256": "cd585236910d39b9851db5cf4a4643eff3e339d05dde5c956749887fd96339b2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-numeric-constants.go",
+        "sha256": "27fedddb430619798e50fdd0cbafc78743b2166e167e5b37775d55c22d77aa1b"
+      },
+      {
+        "path": "locales/zh-CN/candidates/basics-type-inference.go",
+        "sha256": "2581ea52485a51eed438dc72585d702948ea68dd2d80e072956d41527840e32e"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-1.article",
+        "sha256": "b703bbb23f51488b63599a82c6d82cbba5f4c290421d9d23e387d481b05e175f"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-10.article",
+        "sha256": "19ad543d40054c902db1495e0525d57c9fcfdc15a0bf8912054c3734b1a5db9d"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-11.article",
+        "sha256": "b855c2bacecead2d703c5a0e004bc704c47d55a63d86aaf4ae83014cf15b8677"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-2.article",
+        "sha256": "a6bfc23635bdb7f109ef4a452caf52b4b3d1a0005fd311d37e0078f107719878"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-3.article",
+        "sha256": "f20a2e5e23cca56a8b44878fd43777217074cc50d96f96edecfc53366bf6b995"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-4.article",
+        "sha256": "3286a405a06ad1a844a09adbe98c7334744ef054b01dce0a4ec584993ed3ea05"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-5.article",
+        "sha256": "7bb830c3df7f181cae18f73068dc490707f8671d9fa4eaa77c170f9709429170"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-6.article",
+        "sha256": "5c507919a0a7f959d96c4e7e3145bd09a4714b2e9ffd85805279490855dad070"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-7.article",
+        "sha256": "cc4b732c2a766054ce9dc5ce51a627fe7dc84a93aec7beff66ee21e9deb2d329"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-8.article",
+        "sha256": "0be60a11505c2df26e83ad391d82848d4b799c0b7011e0048c1cdf7252def2e3"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-9.article",
+        "sha256": "95365b2e09fbc9adcabdc3f5a6f5ce2b74c0942d6d0562f8017c0045699e50ee"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-channels.go",
+        "sha256": "2db4d19d1c3a1ff490b202eb1c1463079e61c7db6c361fc3010d0392948b022e"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-exercise-equivalent-binary-trees.go",
+        "sha256": "7e9342acc36e7480b78c731fac5e52342624b3ec9c539abf3d3937ab25aab081"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-exercise-web-crawler.go",
+        "sha256": "3cf48de43fe78d8691853860517551629fff5b88cf46013755e701241a7a7174"
+      },
+      {
+        "path": "locales/zh-CN/candidates/concurrency-mutex-counter.go",
+        "sha256": "4a2696b4934fbeb497de2551949e7ea868d919aff206bf3a7894482a7e43bfb8"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-1.article",
+        "sha256": "c541d84b0b17dcf4dec3c71012692350efc229bf5b6a1328410c9b4e388c1914"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-10.article",
+        "sha256": "8ce9c36ba900ad72eebd0439ce2fe786a47ec736d903463ee606c542887abd2c"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-11.article",
+        "sha256": "ee398a6a8ef82a240e12365661ea6bff3db0d330ad6d2c4a42e33239ca519fb9"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-12.article",
+        "sha256": "932d9a02dde09e38a8009cc5d11434464085b1148264c93705e993711d3d8a9f"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-13.article",
+        "sha256": "8beb516979e53bfa9f4a5b754dd8a1c9b5d1933b5926a09b01b782c31717c63c"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-14.article",
+        "sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-2.article",
+        "sha256": "d9a954155d2cf7504e9cae8223ce7ff9236e340a7a66a36f642ffa6960d57b92"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-3.article",
+        "sha256": "6d27f5b422681f4bca60b6677b05ef077d4d44635269d8c8535d6d8dbfe5fd49"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-4.article",
+        "sha256": "ff65c60ec8c073356865bf9ebce23c6f5648bc8b92922e37c1febbdd425d5037"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-5.article",
+        "sha256": "8c66f3d65d07bd9ea8f1059da7430dee5c3803eece7c06a0413709a8f48bbadb"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-6.article",
+        "sha256": "99f3b25117254585eea3bcc9596fd172177a342053e4b47168e62b4105c9a375"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-7.article",
+        "sha256": "ec170cca8da1941a012a53a43f4a5ec4c90deaefa77d7d6ae402dd7e07572be6"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-8.article",
+        "sha256": "3622e848a8615281156cd6eae46c3b610b461853ba78b2524a88386129e85c19"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-9.article",
+        "sha256": "57cd8b0ba41a8e47a076fa761cecc8857d23e98854a07ea92d2ed7a5990cd73b"
+      },
+      {
+        "path": "locales/zh-CN/candidates/flowcontrol-if-and-else.go",
+        "sha256": "0cdc1c2a8c77f71638d3183d1d0fd5a4fba73f1852ad7c996e02784ff91e109a"
+      },
+      {
+        "path": "locales/zh-CN/candidates/generics-1.article",
+        "sha256": "0105eb18df3d6399bd36e8cb3409df3a3a6068696aec258ca56e19d203ef4d00"
+      },
+      {
+        "path": "locales/zh-CN/candidates/generics-2.article",
+        "sha256": "3e3e3dd915820d3f5e6807946a6a7ef37bfd21a499f35daf8b676126de9c3ade"
+      },
+      {
+        "path": "locales/zh-CN/candidates/generics-3.article",
+        "sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/generics-index.go",
+        "sha256": "221bed57ef9b29cbcfe36c690220eb2557c41e7785790846702f2576acc4280c"
+      },
+      {
+        "path": "locales/zh-CN/candidates/generics-list.go",
+        "sha256": "da99d4364204250f673995a42deb4423d2f53745805f8c5103f9ad7d8bcde65e"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-1.article",
+        "sha256": "446dcac952b79d76e041242d70e9be3515c64b06bc9e320aa8ec98ffa13c5eca"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-10.article",
+        "sha256": "e29cb4d71db66baff1f278b7a1eb36dadd32b721ca26f0f4b8c5b9933588ff1d"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-11.article",
+        "sha256": "377d5f7d889df13dfaa2a517f3c5daa9c819d717a3acd98c81b32cf40591ffc8"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-12.article",
+        "sha256": "3761f1bac2e9407f748c55696dc3aff39dc1a6d43365e4f00a6ca441f8473567"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-13.article",
+        "sha256": "125524e9df52e0146b2b1a2495b14b7dad62c117aad22a7aba1a4daf9f25b498"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-14.article",
+        "sha256": "e8b423ab945184b032614eef0c2d7fede932667e1896f55e0e6fa70e8d9fd1bc"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-15.article",
+        "sha256": "d7ee24a4f6aa7b5e09e06a840b8d9968bbe5c337e878bfdde184091b08c2de9e"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-16.article",
+        "sha256": "cf949fc4456d4ee8d1b08e86a3e2aa28d8fd557c2943c0e8dd220e78fa67453c"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-17.article",
+        "sha256": "1a96860ae59e5992156892f1ea62794cf0dc8dfd5eb1039b4c217159e43de60d"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-18.article",
+        "sha256": "e2bd8af33b230895d165706e82ccdcc24041be56a8c7340f4a95e17c9e95394b"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-19.article",
+        "sha256": "49c97f946f670eef7af25744cf46b04916ae1785c15001b389b897d254c58322"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-2.article",
+        "sha256": "8c1f6a58643b123572098b3ac3a2526a5336f1b1ea3a2a9f0227efcbd5d28ba1"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-20.article",
+        "sha256": "51222d7d4bd3b35c59a9f31de053a322d3f6769af3bd0becef72143cbd6e8aca"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-21.article",
+        "sha256": "59aba9b26cc40a1fd9980063d00d0f63e0ab4a77424f91e44b2d298f0ef03b26"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-22.article",
+        "sha256": "01f135b91d4822c814a609050a53590c10d273b27a0d3932f2780003d26ea942"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-23.article",
+        "sha256": "1def01537526baa45f800aa61461303749b98ef12126ccdd1b13ae9c014b40c1"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-24.article",
+        "sha256": "5f901f6d2413ab67deac1111cb03969112c564664d37ec1ffa784218b61323af"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-25.article",
+        "sha256": "22a44e9894ef48eacf7c9429b2d375b191382a0fbd54f60e87e6783ee1933688"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-26.article",
+        "sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-3.article",
+        "sha256": "16f7dd846e5fe10975ca5b5148a39ac8aeb9498f27bdbd6681b2dd27b43061e2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-4.article",
+        "sha256": "7879779cf5f9bee03b0c0bcba59aab196c16747460140499da3f0fc019333450"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-5.article",
+        "sha256": "897909cf8501ac72f905d180674a5d0f7ab1a483b3297ee1e4e54bdd1aca3cc5"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-6.article",
+        "sha256": "387ea5d1cd48fb06bede7c58cb5fd870eecb60e89c4c807c912fc892b97d90b3"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-7.article",
+        "sha256": "a53509e9feb31c3de1c4826cba5d69c688c58acb148e57a8bbcb346f81d5bb77"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-8.article",
+        "sha256": "e4052339ee4c480a434e948dff04539440ef7f6dee10425b19f4ae6f9bdc1fdd"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-9.article",
+        "sha256": "17be820c3cfe55f48a62d471adf0c90e1ce69401c7e0ecb70521e81dcbc4b3d2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-exercise-reader.go",
+        "sha256": "eaeb6666f8fcf804f3dfdd1ba20900a2750538a38097326549dc549031905820"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-exercise-stringer.go",
+        "sha256": "ffcaf5ccbd52b6e088416614ad10e7e46af8bacefac29211e89bd515716c03b5"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-interfaces-are-satisfied-implicitly.go",
+        "sha256": "0e719925f60f127be033ec587ff34d5607ad6eb73c9ca59970aa2ea4eb9ff917"
+      },
+      {
+        "path": "locales/zh-CN/candidates/methods-interfaces.go",
+        "sha256": "5879a71a6159014671192e1e85320489cdc73700c17ec903b9cf363da2e318ee"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-1.article",
+        "sha256": "2cb3af908e6d251266b0b692ec752011d9ef89e9a920470dc4c7039dec4bbbb6"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-10.article",
+        "sha256": "e3b598e1cb6af3de96998023e849da7754688411db7aae77bd278603e5bf7a97"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-11.article",
+        "sha256": "28547a9c0c75e0638843ba218b2916db95922a040c4be52897e1d8a509e7aa0e"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-12.article",
+        "sha256": "5748a52aee9dd561d6cc8d680c17ddf809a1f8536cc52bd2b80c52c86a9da9e0"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-13.article",
+        "sha256": "8e7c532038bf9301ebb28f14d4ef703e9d7af75ae1e7e345cd343812c0afea7e"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-14.article",
+        "sha256": "d1d0a3510bfef543351f029293dc658a72a63e92875d9a12b8aba715c025af18"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-15.article",
+        "sha256": "7f3fbc16e01c85fdb0ca5c2b62b5e1493f3887657242afc2413a3fcf690eebf3"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-16.article",
+        "sha256": "e1e1531aa21eab521f3766d36944eed1ff649b23690c0b0143af8fef44dbfb69"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-17.article",
+        "sha256": "ecfbd986f012e802e63258c2f60a10a5892d285497a87ba17f7e81effbaf545c"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-18.article",
+        "sha256": "d30384dc942c1499efc075556ad28efbfe45a86371351f03e0d87814cd8519d5"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-19.article",
+        "sha256": "6d312f9bcbc44f716ae93ba848b605e2f39caeec73f98d61583fe2adc0fb34a7"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-2.article",
+        "sha256": "272b523d57e93a8271e0e1242454c38bcaa885446dc05c5728b1717f555e6248"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-20.article",
+        "sha256": "690804fc7e97510c3513d1b51841d7c4b95b2381beb7dca021237a0ebee7ccdb"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-21.article",
+        "sha256": "216af2e7627088840b84844ae7b0b3bcc24bf98a579a8b7c2fc0c1253047b0fc"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-22.article",
+        "sha256": "49dec739105fb70d11a2a3b66d746e56502ec7d1aefd908219bd49a2023aaa36"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-23.article",
+        "sha256": "e34b048947dabdd51e3179e3914b794df5633d27b9c8da52338054f1929a6c2c"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-24.article",
+        "sha256": "8b2e45ebc1886e010425f86b1b37f4f3627e227b73252714989c6a9c102db8af"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-25.article",
+        "sha256": "b5f38ea4e503f5527164833307c6ea7716552d151db4a06de31e445d1688e0ee"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-26.article",
+        "sha256": "db33ad2b5dabcabdc058a65b1fc63bbe4b09641000c1ae4deb1b9e50a0812aa1"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-27.article",
+        "sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-3.article",
+        "sha256": "aba03bfc581a658b13c5fe23ea651762702b5dcb1bde4379c86cf0303af35272"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-4.article",
+        "sha256": "e9fc7a592c8ea06c7bd4ede69f1c12e110058f793e43380a118f31fb39420981"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-5.article",
+        "sha256": "9588fea22f7b360aec5ba4e7a1c0c0e16e674066a505987add2d057c3e8b9343"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-6.article",
+        "sha256": "de763da4c5434abbe8776cf6c80218e18a14d8ba126ca957b482ab33b4acf543"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-7.article",
+        "sha256": "7be482c6aa24c8206f82933b0434a32258ed27d9dc09da0d80d225e364fcb59c"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-8.article",
+        "sha256": "52a24bbf24e3734616b0ad9b918b684a83672fdede3db25b545180977006acbc"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-9.article",
+        "sha256": "d46657706f8ec2068a7b6fbcddafe519d417eab0d9140b7f940eead65bde4712"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-append.go",
+        "sha256": "94d5c2878fb7f6d21f50a9961b196942cd4ca73564e3f853ffa0ff361b305a03"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-exercise-fibonacci-closure.go",
+        "sha256": "1ec4b47beb1768dfd102b64d67b14dba067b36805fb1a699ae64fd76d8049f0d"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-pointers.go",
+        "sha256": "1e4746e0f45fbf670110c4f34f4b6fcf25452b163e2c91d79755e15a369588bf"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-slice-len-cap.go",
+        "sha256": "46819860d2bf3a99eb124948e4169f612c1987c05a7f0e3e8522a895c6ecc2d7"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-slices-of-slice.go",
+        "sha256": "51279a906ccd7a630bed63f289e057d236301ff4a21e9308fa29fe4acf9e1de2"
+      },
+      {
+        "path": "locales/zh-CN/candidates/moretypes-struct-literals.go",
+        "sha256": "7d209a9cdd6f69f0bb249ababce7cbe62df1855da959a92665e50275649e3d27"
+      },
+      {
+        "path": "locales/zh-CN/candidates/welcome-1.article",
+        "sha256": "12f33f6967612f21f59aa8ac818c9fecb886c8dc43d06afe389e8644f2e1db78"
+      },
+      {
+        "path": "locales/zh-CN/candidates/welcome-2.article",
+        "sha256": "f57934da8d9e0be279d47515f21d32a380d7a521981d3a3104e787880649cd1b"
+      },
+      {
+        "path": "locales/zh-CN/candidates/welcome-3.article",
+        "sha256": "eaafbe5d64e69b22a2aeebf43357eec68173f5f01dfa608d427ab74989eba5a5"
+      },
+      {
+        "path": "locales/zh-CN/candidates/welcome-4.article",
+        "sha256": "33f08511d176e78fbab565b066cce4af7f6af616ff5f809cabf97559db55ba24"
+      },
+      {
+        "path": "locales/zh-CN/candidates/welcome-5.article",
+        "sha256": "198c97c8b0dae67877e0069b6f14a462c82cdf469985e17da995c1ab0dbbd0a1"
+      }
+    ],
+    "findings": [
+      {
+        "id": "_content/doc/database/open-handle.md",
+        "finding": "该 Page 存在 representation-protected-natural-language-residue：`FormatDSN method` 与 `sql.OpenDB function` 中的 method/function 为用户可见普通自然语言残留。仅修订这两个描述词，保留技术标识符、链接目标、Markdown 绑定及其它正文。",
+        "class": "translation-unit-language",
+        "artifacts": [
+          {
+            "snapshot_id": "learn-docs-v1-qc-021",
+            "unit": {
+              "index": 25,
+              "unit_id": "872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983",
+              "unit_kind": "page",
+              "selected_batch_id": "chatgpt-zh-CN-055",
+              "source_path": "_content/doc/database/open-handle.md",
+              "source_sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c",
+              "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-055/candidates/872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983.article",
+              "candidate_sha256": "4c1ef7a381ac12f304489a01549858a6160cede8d624ce81d3d4c498039baa01",
+              "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-055/validation/872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983.json",
+              "validation_sha256": "7e9bbc5694c4d23c88c16b2fca4e10093078e5a099820ee676423a9f70f6d93c",
+              "attempt": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "_content/doc/index.html",
+        "finding": "该 Page 存在 technical-identifier-chinese-prose-boundary：`GOPATH\u003c/a\u003e的` 与 `\u003ccode\u003ebin\u003c/code\u003e目录` 中技术标识符直接接触中文词。仅修订这两个边界，保留 GOPATH、bin、href、导航及其它正文。",
+        "class": "translation-unit-language",
+        "artifacts": [
+          {
+            "snapshot_id": "docs-entry-v1-qc-002",
+            "unit": {
+              "index": 1,
+              "unit_id": "00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866",
+              "unit_kind": "page",
+              "selected_batch_id": "chatgpt-zh-CN-058",
+              "source_path": "_content/doc/index.html",
+              "source_sha256": "1e1ec2ae02d56739bc7491c64cc3d1d3e269423f22566d2a822b06c35c9470e3",
+              "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-058/candidates/00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866.article",
+              "candidate_sha256": "05edf840eb4b1bb1d468166fa20ba22fed422065c1ff93e2c4222c1671ac933c",
+              "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-058/validation/00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866.json",
+              "validation_sha256": "029b9e66e06438bf99ccba580aff1c43feddf1b83bf00a4b92ea74f554175e4e",
+              "attempt": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "_content/doc/tutorial/add-a-test.html",
+        "finding": "该 Page 存在 technical-identifier-chinese-prose-boundary：可见解释性正文中的 Hello、go test、TestHelloName、Errorf、TestHelloEmpty、_test.go 等受保护技术标识符与后续中文词直接粘连。按 Reviewer 给出的 exact predicate 对完整 Page 做 bounded same-class 修订，不修改代码、标识符、测试行为、链接及无关正文。",
+        "class": "translation-unit-language",
+        "artifacts": [
+          {
+            "snapshot_id": "learn-docs-v1-qc-021",
+            "unit": {
+              "index": 2,
+              "unit_id": "393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c",
+              "unit_kind": "page",
+              "selected_batch_id": "chatgpt-zh-CN-051",
+              "source_path": "_content/doc/tutorial/add-a-test.html",
+              "source_sha256": "d5ea155f25736df5051fddc35df81af3600b57700972d8fde4c344345c9a0ca0",
+              "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/candidates/393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c.article",
+              "candidate_sha256": "407fa310009cd5fdb567bd895be4c4d6233105f39aab08c3bedd31e4d4903ef7",
+              "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/validation/393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c.json",
+              "validation_sha256": "d767495aa3ddeef8df0e58e932c6176c211a6b972c5785daf3a7ce487f47f2e4",
+              "attempt": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "_content/doc/tutorial/greetings-multiple-people.html",
+        "finding": "该 Page 有两类 bounded defect：一是 string、Hello、Hellos、for、range 等 inline Go type/identifier/keyword 与相邻中文词直接粘连；二是结尾 `使用映射表示 name/value 对` 中普通自然语言 `name/value` 未本地化。仅处理 Reviewer 已界定的这两类范围。",
+        "class": "translation-unit-language",
+        "artifacts": [
+          {
+            "snapshot_id": "learn-docs-v1-qc-021",
+            "unit": {
+              "index": 12,
+              "unit_id": "b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493",
+              "unit_kind": "page",
+              "selected_batch_id": "chatgpt-zh-CN-051",
+              "source_path": "_content/doc/tutorial/greetings-multiple-people.html",
+              "source_sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b",
+              "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/candidates/b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493.article",
+              "candidate_sha256": "4481b2fbf2c6a5e6afc2899bb494d457ba460d961a11f85da322f6810c46e5a0",
+              "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/validation/b49a0f38f79787a87a714c55b10e2987434ebdcd78c2c1cc0480e46523893493.json",
+              "validation_sha256": "82fb52bc9e1c9f72aa7542ffdb848825b7fa1c56d6eaf725e180201365fda3f3",
+              "attempt": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "_content/doc/tutorial/handle-errors.html",
+        "finding": "该 Page 有两类 bounded defect：一是 string、errors.New、log、Fatal 等 inline Go/API identifier 与相邻中文词直接粘连；二是 `\u003ccode\u003elog package\u003c/code\u003e` 中 technical identity `log` 应保留，但普通描述词 `package` 因 representation 保护而残留英文。仅修订 Reviewer 已界定范围。",
+        "class": "translation-unit-language",
+        "artifacts": [
+          {
+            "snapshot_id": "learn-docs-v1-qc-021",
+            "unit": {
+              "index": 13,
+              "unit_id": "66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec",
+              "unit_kind": "page",
+              "selected_batch_id": "chatgpt-zh-CN-051",
+              "source_path": "_content/doc/tutorial/handle-errors.html",
+              "source_sha256": "10e61d7f50095845bd2e313add841500b189bb7ddda6c3b7fee248f8cdc53a89",
+              "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/candidates/66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec.article",
+              "candidate_sha256": "61c3fcf930d77ef03f402b86f48437b6af6068f33e52fc3e57eba9aee3d9b6e3",
+              "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/validation/66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec.json",
+              "validation_sha256": "ccb0b63bd1fe811e778784cc0febf6dde9c653e9f71068847a7609e13729dbd7",
+              "attempt": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "_content/doc/tutorial/random-greeting.html",
+        "finding": "该 Page 存在 technical-identifier-chinese-prose-boundary：randomFormat→以、math/rand→包、name→值 三处 inline technical identifier 与中文词直接粘连。仅修订这三处边界，保留标识符、imports、代码、链接及其它正文。",
+        "class": "translation-unit-language",
+        "artifacts": [
+          {
+            "snapshot_id": "learn-docs-v1-qc-021",
+            "unit": {
+              "index": 17,
+              "unit_id": "0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10",
+              "unit_kind": "page",
+              "selected_batch_id": "chatgpt-zh-CN-051",
+              "source_path": "_content/doc/tutorial/random-greeting.html",
+              "source_sha256": "9951ede236291e2db0beaa868159e101bc2983f9754c587c3ab3954fa26cdfbe",
+              "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/candidates/0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10.article",
+              "candidate_sha256": "0a18e7f33ef8f3897705fe8130ce7bcbf6ecc43073ccfa99f6ba20bd5832b10f",
+              "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-051/validation/0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10.json",
+              "validation_sha256": "3247a90fd7bcb3f43ce33c2440d6746bb7e4cbacb8fee86affe4f56fc597e16d",
+              "attempt": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "data/site-shell/translation.html",
+        "finding": "该 structured asset 有两类 bounded defect：一是 `Go 语言之旅` 链接、go.dev、golang/go#81958 与相邻中文正文存在可见边界粘连；二是 `该 issue 仍处于开放状态` 中普通自然语言 `issue` 未本地化。仅修订 Reviewer 枚举的三处 boundary 与这一普通语言 fragment，保留 href、项目/域名/issue identity、route 及其它正文。",
+        "class": "structured-surface-language"
+      }
+    ]
+  }
+}

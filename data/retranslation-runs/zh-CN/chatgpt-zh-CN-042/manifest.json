@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-042",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "concurrency/11",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "input_path": "inputs/concurrency-11.article",
+      "input_sha256": "2f1ab189d9f6fce66d5cd585f2b2e97637a47f7258d4730432abd81ec85ecaf0",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-009",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "source 中三处链接可见文本 `slides` 均被 current candidate 译为“页面”，分别对应 `Go Concurrency Patterns`、`Advanced Go Concurrency Patterns` 和 `A simple programming environment` 的演示幻灯片资源。`slides` 在正式 protected input 中属于可编辑自然语言，不是 link target 或 protected identity；“页面”没有准确表达这些链接指向演示幻灯片/slide deck 的资源类型，构成局部 source-fidelity 问题。三处属于同一明确、重复的局部缺陷，后续 exact revision 应全部关闭，同时保持三个原始 link target 及邻近标题/技术 identity 不变。除此外，未发现 current glossary 引入的不一致：`concurrency`、`Go blog` 等相关 current glossary 决定均被正确应用，也未发现其他 blocking 技术语义、结构或完整性问题。"
+    }
+  ]
+}

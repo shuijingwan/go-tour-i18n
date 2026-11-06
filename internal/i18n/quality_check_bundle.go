@@ -14,7 +14,9 @@ import (
 const QualityCheckReviewerBundleSchemaVersion = 1
 
 var qualityCheckReviewerAuthorityPaths = []string{
+	"docs/LANGUAGE_DEFECT_EXHAUSTION.md",
 	"AGENTS.md",
+	"docs/SHARED_TRANSLATION_UNIT_LIFECYCLE.md",
 	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
 	"docs/GLOSSARY_REVIEW.md",
@@ -114,7 +116,16 @@ func ExportQualityCheckReviewerBundle(root string, catalog *Catalog, options Qua
 	if options.Limit < 1 || options.Limit > DefaultQualityCheckBatchLimit {
 		return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("quality-check reviewer bundle limit must be 1..%d", DefaultQualityCheckBatchLimit)
 	}
-	scope, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{
+	// Export and canonical current-check resolve the same complete package from
+	// the exact successor Snapshot. This is selection only, never a saved PASS;
+	// the current scope, frozen predecessor and canonical bytes are rebuilt below.
+	scoped, _, err := selectSnapshotTranslationPackage(root, catalog, options.Locale, options.SnapshotID)
+	if err != nil {
+		return nil, QualityCheckReviewerBundleManifest{}, err
+	}
+	catalog = scoped
+	evaluation := newQualityCheckEvaluation(root, options.Locale, catalog)
+	scope, err := buildQualityCheckScopeWithEvaluation(evaluation, QualityCheckScopeOptions{
 		Locale: options.Locale, SnapshotID: options.SnapshotID, PreviousSnapshotID: options.PreviousSnapshotID,
 	})
 	if err != nil {
@@ -124,9 +135,21 @@ func ExportQualityCheckReviewerBundle(root string, catalog *Catalog, options Qua
 	if err != nil {
 		return nil, QualityCheckReviewerBundleManifest{}, err
 	}
+	// The resolved (including persisted) lineage distinguishes initial QC from
+	// successor re-QC; currentness still rebuilds this exact selection.
+	if scope.PreviousSnapshotID == "" && len(catalog.Adapted) > 0 {
+		ids := []string{}
+		for i, u := range selectedScope {
+			ids = append(ids, u.UnitID)
+			if catalog.RequireInitialTranslationWorkingSet(ids) != nil {
+				selectedScope = selectedScope[:i]
+				break
+			}
+		}
+	}
 	kind := selectedScope[0].UnitKind
 
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
+	snapshot, err := readQualityCheckSnapshotWithCompatibility(root, options.Locale, options.SnapshotID, true, catalog, evaluation.compatibility)
 	if err != nil {
 		return nil, QualityCheckReviewerBundleManifest{}, err
 	}
@@ -157,31 +180,81 @@ func ExportQualityCheckReviewerBundle(root string, catalog *Catalog, options Qua
 			entries = append(entries, entry{bundlePath, repositoryPath, data})
 		}
 	}
+	// Membership is context for carry, never part of the fresh judgment set.
+	// Canonical current-check rebuilds the same predecessor proofs independently.
+	if baseline := evaluation.membership[options.SnapshotID]; baseline != nil {
+		for _, ref := range baseline.contextReferences {
+			data, err := readSnapshotReferencedFile(root, ref.Path)
+			if err != nil || sum(data) != ref.SHA256 {
+				return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("membership QC context drift: %s", ref.Path)
+			}
+			addFormal("formal/membership-context/"+ref.SHA256+filepath.Ext(ref.Path), ref.Path, data)
+		}
+	}
+	compatibilityRefs := map[string]GlossaryArchiveReference{}
 	for _, carried := range scope.CarryForward {
 		for _, ref := range carried.CompatibilityChain {
-			data, err := readCompatibilityFile(root, ref.Path)
-			if err != nil || sum(data) != ref.SHA256 {
-				return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("carry-forward compatibility evidence changed")
+			if prior, exists := compatibilityRefs[ref.Path]; exists && prior != ref {
+				return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("conflicting carry-forward compatibility reference")
 			}
-			addFormal("formal/compatibility/"+ref.SHA256+".json", ref.Path, data)
-			var evidence GlossaryCompatibilityEvidence
-			if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &evidence); err != nil {
-				return nil, QualityCheckReviewerBundleManifest{}, err
-			}
-			for _, input := range []GlossaryArchiveReference{evidence.OldGlossary, evidence.NewGlossary, evidence.NewFullReview} {
-				bytes, err := readCompatibilityFile(root, input.Path)
-				if err != nil || sum(bytes) != input.SHA256 {
-					return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("compatibility input changed")
-				}
-				addFormal("formal/compatibility/"+input.SHA256+filepath.Ext(input.Path), input.Path, bytes)
-			}
+			compatibilityRefs[ref.Path] = ref
 		}
+	}
+	compatibilityPaths := make([]string, 0, len(compatibilityRefs))
+	for path := range compatibilityRefs {
+		compatibilityPaths = append(compatibilityPaths, path)
+	}
+	sort.Strings(compatibilityPaths)
+	compatibilityInputs := map[string]GlossaryArchiveReference{}
+	for _, path := range compatibilityPaths {
+		ref := compatibilityRefs[path]
+		evidence, data, ok := evaluation.compatibility.evidence(ref)
+		if !ok {
+			return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("carry-forward compatibility evidence changed")
+		}
+		addFormal("formal/compatibility/"+ref.SHA256+".json", ref.Path, data)
+		for _, input := range []GlossaryArchiveReference{evidence.OldGlossary, evidence.NewGlossary, evidence.NewFullReview} {
+			if prior, exists := compatibilityInputs[input.Path]; exists && prior != input {
+				return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("conflicting compatibility input reference")
+			}
+			compatibilityInputs[input.Path] = input
+		}
+	}
+	inputPaths := make([]string, 0, len(compatibilityInputs))
+	for path := range compatibilityInputs {
+		inputPaths = append(inputPaths, path)
+	}
+	sort.Strings(inputPaths)
+	for _, path := range inputPaths {
+		input := compatibilityInputs[path]
+		data, err := readCompatibilityFile(root, input.Path)
+		if err != nil || sum(data) != input.SHA256 {
+			return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("compatibility input changed")
+		}
+		addFormal("formal/compatibility/"+input.SHA256+filepath.Ext(input.Path), input.Path, data)
+	}
+	attention, err := NewLanguageAttention(root, options.Locale)
+	if err != nil {
+		return nil, QualityCheckReviewerBundleManifest{}, err
+	}
+	auditGlossary, err := LoadGlossary(root, options.Locale)
+	if err != nil {
+		return nil, QualityCheckReviewerBundleManifest{}, err
 	}
 	for _, scopeUnit := range selectedScope {
 		snapshotUnit := snapshotByID[scopeUnit.UnitID]
-		evidence, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, snapshotUnit)
+		evidence, err := evaluation.readSnapshotUnitRepositoryEvidence(options.SnapshotID, snapshotUnit)
 		if err != nil {
 			return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("snapshot index %d (%s): %w", scopeUnit.Index, scopeUnit.UnitID, err)
+		}
+		if evidence.machine != nil {
+			for _, ref := range machineAuthorityReferences(evidence.machine) {
+				data, err := readSnapshotReferencedFile(root, ref.Path)
+				if err != nil || sum(data) != ref.SHA256 {
+					return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("machine reconciliation reviewer authority drift: %s", ref.Path)
+				}
+				addFormal("formal/representation-authority/"+ref.SHA256+filepath.Ext(ref.Path), ref.Path, data)
+			}
 		}
 		manifestRepo := filepath.ToSlash(filepath.Join("data", "retranslation-runs", options.Locale, snapshotUnit.SelectedBatchID, "manifest.json"))
 		manifestData, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(manifestRepo)))
@@ -205,6 +278,13 @@ func ExportQualityCheckReviewerBundle(root string, catalog *Catalog, options Qua
 			return nil, QualityCheckReviewerBundleManifest{}, err
 		}
 		addFormal(filepath.ToSlash(filepath.Join("formal", "validation", fmt.Sprintf("%03d-%s.json", snapshotUnit.Index, strings.ReplaceAll(snapshotUnit.UnitID, "/", "-")))), snapshotUnit.ValidationPath, validationData)
+		result, err := TranslationUnitLanguageAudit(root, catalog, evidence.unit, options.Locale, evidence.candidate, auditGlossary)
+		if err != nil {
+			return nil, QualityCheckReviewerBundleManifest{}, err
+		}
+		if err := attention.Add("translation-unit", snapshotUnit.CandidatePath, evidence.unit.ID, evidence.unit.Kind, result); err != nil {
+			return nil, QualityCheckReviewerBundleManifest{}, err
+		}
 		context.Units = append(context.Units, QualityCheckReviewerUnit{
 			Index: snapshotUnit.Index, UnitID: snapshotUnit.UnitID, UnitKind: snapshotUnit.UnitKind,
 			SelectedBatchID: snapshotUnit.SelectedBatchID, Attempt: snapshotUnit.Attempt,
@@ -214,6 +294,19 @@ func ExportQualityCheckReviewerBundle(root string, catalog *Catalog, options Qua
 			RelevantManifestPath: manifestBundle, RelevantInputPath: inputBundle, RelevantInputSHA256: evidence.record.InputSHA256,
 		})
 	}
+	if err := attention.Verify(root); err != nil {
+		return nil, QualityCheckReviewerBundleManifest{}, err
+	}
+	attentionData, err := json.MarshalIndent(attention, "", "  ")
+	if err != nil {
+		return nil, QualityCheckReviewerBundleManifest{}, err
+	}
+	entries = append(entries, entry{LanguageAttentionPath, "", append(attentionData, '\n')})
+	policyBytes, err := readCompatibilityFile(root, attention.Policy.Path)
+	if err != nil || sum(policyBytes) != attention.Policy.SHA256 {
+		return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("language policy changed")
+	}
+	entries = append(entries, entry{"formal/language-policy.json", attention.Policy.Path, policyBytes})
 	contextData, err := json.MarshalIndent(context, "", "  ")
 	if err != nil {
 		return nil, QualityCheckReviewerBundleManifest{}, err
@@ -262,6 +355,9 @@ func ExportQualityCheckReviewerBundle(root string, catalog *Catalog, options Qua
 	manifestData = append(manifestData, '\n')
 	bundle, err := WriteDeterministicTransportBundle(manifestData, zipEntries)
 	if err != nil {
+		return nil, QualityCheckReviewerBundleManifest{}, err
+	}
+	if err := evaluation.membershipChecks(); err != nil {
 		return nil, QualityCheckReviewerBundleManifest{}, err
 	}
 	return bundle, manifest, nil

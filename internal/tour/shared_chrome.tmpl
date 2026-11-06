@@ -1,0 +1,9 @@
+{{define "navigation"}}<nav class="ProjectNavigation" data-project-nav="{{.Locale}}" aria-label="{{.LanguageLabel}}">
+<a data-project-about href="{{.AboutPath}}" title="{{.About}}"><span aria-hidden="true" class="ProjectAboutIcon"></span><span class="ProjectAboutLabel">{{.About}}</span></a>
+<details data-project-languages><summary aria-label="{{.CurrentLabel}}: {{.CurrentAutonym}}"><span aria-hidden="true">🌐</span> <span data-project-current-language>{{.CurrentAutonym}}</span> <span data-project-language-arrow aria-hidden="true">▾</span></summary>
+<ul aria-label="{{.LanguageLabel}}">{{range .Languages}}<li data-locale="{{.Locale}}">{{if .Current}}<span aria-current="page">{{.Label}}</span>{{else}}<a href="{{.URL}}">{{.Label}}</a>{{end}}</li>{{end}}</ul></details>
+</nav>{{end}}
+{{define "footer"}}<section class="ProjectFooter" data-project-footer="{{.Locale}}" aria-label="{{.Unofficial}}">
+<div data-project-footer-row="identity"><span data-project-identity>{{.Unofficial}}</span> · <a data-project-home href="{{.Home}}">{{.HomeLabel}}</a> · <a data-project-github href="{{.GitHub}}">{{.GitHubLabel}}</a></div>
+<div data-project-footer-row="legal"><span data-project-copyright>{{.Copyright}}</span>{{if .ICP}} | <a data-project-legal href="{{.ICPURL}}">{{.ICP}}</a>{{end}}</div>
+</section>{{end}}

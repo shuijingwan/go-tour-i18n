@@ -14,7 +14,7 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
-const firstProductionReceiptSchema = "go-tour-i18n/first-production-receipt/v1"
+const firstProductionReceiptSchema = "go-learning/first-production-execution/v2"
 
 var projectFinalizationREADMEs = projectRootREADMEs
 
@@ -38,15 +38,20 @@ const legacyFinalizationPlaceholder = "<!-- first-production-finalization:start 
 	"<!-- first-production-finalization:end -->"
 
 type firstProductionReceipt struct {
-	Schema   string                          `json:"schema"`
-	Locale   string                          `json:"locale"`
-	Hostname string                          `json:"hostname"`
-	Release  string                          `json:"release"`
-	Result   string                          `json:"result"`
-	Stages   map[string]firstProductionStage `json:"stages"`
+	Schema               string                          `json:"schema"`
+	Locale               string                          `json:"locale"`
+	Hostname             string                          `json:"hostname"`
+	Release              string                          `json:"release"`
+	Result               string                          `json:"result"`
+	Stages               map[string]firstProductionStage `json:"stages"`
+	InputIdentity        string                          `json:"INPUT_IDENTITY"`
+	ContentIdentity      string                          `json:"CONTENT_IDENTITY"`
+	SharedAssetsIdentity string                          `json:"SHARED_ASSETS_IDENTITY"`
+	MutationStatus       string                          `json:"MUTATION_STATUS"`
 }
 type firstProductionStage struct {
-	Result string `json:"result"`
+	Result        string `json:"result"`
+	InputIdentity string `json:"input_identity"`
 }
 type finalizeIdentity struct {
 	Locales []finalizeProfile `json:"locales"`
@@ -202,7 +207,14 @@ func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, rev
 	if profile.State != "first-production" {
 		return fmt.Errorf("first-production finalize requires production_state=first-production, got %s", profile.State)
 	}
-	receiptPath := filepath.Join(filepath.Dir(releasePath), releaseName+".first-production-receipt.json")
+	proof, err := inspectRelease(releasePath)
+	if err != nil {
+		return err
+	}
+	if err = checkReleaseCurrent(root, proof.Content); err != nil {
+		return err
+	}
+	receiptPath := filepath.Join(filepath.Dir(releasePath), releaseName+".first-production-result-"+proof.InputIdentity+".json")
 	receipt, err := readFinalReceipt(receiptPath)
 	if err != nil {
 		return err
@@ -211,8 +223,16 @@ func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, rev
 	if receipt.Locale != release || receipt.Hostname != profile.Hostname || receipt.Release != formalRelease {
 		return fmt.Errorf("first-production receipt identity does not match release and production identity")
 	}
+	if receipt.InputIdentity != proof.InputIdentity || receipt.ContentIdentity != proof.Content.Identity || receipt.SharedAssetsIdentity != proof.Content.SharedAssetsIdentity || receipt.MutationStatus != "KNOWN" {
+		return fmt.Errorf("production result is not bound to current sealed input")
+	}
 	if receipt.Result != "passed" || receipt.Stages["public-machine"].Result != "PASS" || receipt.Stages["browser"].Result != "PASS" {
 		return fmt.Errorf("first-production receipt requires passed public-machine and browser stages")
+	}
+	for _, stage := range []string{"preflight", "infrastructure", "playground-origin", "deploy", "direct-origin", "cloudflare-dns", "public-machine", "browser"} {
+		if receipt.Stages[stage].Result != "PASS" || receipt.Stages[stage].InputIdentity != proof.InputIdentity {
+			return fmt.Errorf("first-production stage missing exact input: %s", stage)
+		}
 	}
 	if _, err := i18n.RequireCurrentLocaleSurfaceReviewAByReviewID(root, release, reviewID, catalog); err != nil {
 		return err

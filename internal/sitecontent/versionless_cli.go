@@ -11,6 +11,11 @@ import (
 // RefreshSharedCorpusAuthority is an explicit compare-and-swap of static source
 // projection only. It never performs source sync or touches locale evidence.
 func RefreshSharedCorpusAuthority(root, priorSHA string, apply bool) (any, error) {
+	if installed, err := CheckAppliedCorpusSuccessor(root); err != nil {
+		return nil, err
+	} else if installed {
+		return nil, fmt.Errorf("active corpus uses explicit successor authority; legacy language-authority cannot replace it")
+	}
 	if !validSHA(priorSHA) {
 		return nil, fmt.Errorf("exact prior corpus file SHA required")
 	}

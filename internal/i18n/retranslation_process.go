@@ -81,10 +81,11 @@ type RetranslationValidation struct {
 }
 
 type preparedRetranslationPage struct {
-	manifest  RetranslationBatchUnit
-	unit      *TranslationUnit
-	protected protectedTranslation
-	raw       []byte
+	manifest           RetranslationBatchUnit
+	unit               *TranslationUnit
+	protected          protectedTranslation
+	raw                []byte
+	checkOutputContext func() error
 }
 
 // ProcessRetranslationBatch restores protected raw responses into isolated
@@ -98,6 +99,11 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 	}
 	if err := ValidateLocaleName(options.Locale); err != nil {
 		return nil, err
+	}
+	if len(catalog.TranslationScope) > 0 {
+		if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
+			return nil, err
+		}
 	}
 	base := filepath.Join(root, "data", "retranslation-runs", options.Locale)
 	batchID, noPending, err := selectRetranslationProcessBatch(base, options.Locale, options.BatchID)
@@ -197,6 +203,9 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 		}
 		result.Units = append(result.Units, unitResult)
 	}
+	if err := checkPreparedRetranslationContext(prepared); err != nil {
+		return nil, err
+	}
 	if err := writeTranslationJSON(filepath.Join(staging, "result.json"), result); err != nil {
 		return nil, fmt.Errorf("write retranslation result: %w", err)
 	}
@@ -280,6 +289,11 @@ func validateRetranslationManifestReexportProvenance(manifest *RetranslationBatc
 	mode := ""
 	seenOrdinary := false
 	for _, unit := range manifest.Units {
+		if unit.RepresentationBridge != nil {
+			if unit.UnitKind != UnitKindPage || unit.RevisionFeedbackSource != "quality_check" || unit.PreviousSnapshotID == "" || unit.RevisionAuthorizationID != "" || unit.ReexportReason != "" || !validSHA256(unit.RepresentationBridge.SHA256) {
+				return fmt.Errorf("%s: bridge requires exclusive ordinary QC Page authority", unit.UnitID)
+			}
+		}
 		switch unit.ReexportReason {
 		case "":
 			seenOrdinary = true
@@ -429,10 +443,13 @@ func decodeRetranslationValidation(data []byte, unit *TranslationUnit) (*Retrans
 		return nil, err
 	}
 	if current.SchemaVersion == retranslationProcessSchemaVersion {
+		if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &current); err != nil {
+			return nil, err
+		}
 		return &current, nil
 	}
 	var legacy legacyRetranslationValidation
-	if err := json.Unmarshal(data, &legacy); err != nil {
+	if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &legacy); err != nil {
 		return nil, err
 	}
 	if legacy.SchemaVersion != 1 || unit == nil || legacy.PageID != unit.ID || unit.Kind != UnitKindPage {
@@ -460,6 +477,10 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 		return nil, fmt.Errorf("read raw responses: %w", err)
 	}
 	expectedRaw := make(map[string]bool, len(manifest.Units))
+	projections, checkContext, err := prepareProcessOutputContext(batchDir, catalog, glossary, manifest)
+	if err != nil {
+		return nil, err
+	}
 	seenUnits := map[string]bool{}
 	prepared := make([]preparedRetranslationPage, 0, len(manifest.Units))
 	for _, record := range manifest.Units {
@@ -524,7 +545,32 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 				return nil, fmt.Errorf("%s: raw response %s %w", unitID, rawName, err)
 			}
 		}
-		prepared = append(prepared, preparedRetranslationPage{manifest: record, unit: unit, protected: protected, raw: raw})
+		if err := verifyGenerationOrigin(filepath.Clean(filepath.Join(batchDir, "../../../..")), manifest.Locale, unit, record, raw); err != nil {
+			return nil, err
+		}
+		if record.RepresentationBridge != nil {
+			protected, err = bridgeOutputForInvocation(filepath.Clean(filepath.Join(batchDir, "../../../..")), catalog, glossary, manifest.Locale, record)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if record.RepresentationBridge == nil && hasInheritedBridgePredecessor(record) {
+			root := filepath.Clean(filepath.Join(batchDir, "../../../.."))
+			decoder, lineage, err := surfaceTransportOutput(root, catalog, manifest.Locale, record)
+			if err == nil && lineage == nil {
+				decoder, lineage, err = inheritedBridgeOutput(root, catalog, glossary, manifest.Locale, record)
+			}
+			if err != nil {
+				return nil, err
+			}
+			if lineage != nil {
+				protected = decoder
+			}
+		}
+		if p := projections[record.UnitID]; p.Adapter != nil {
+			protected = p
+		}
+		prepared = append(prepared, preparedRetranslationPage{manifest: record, unit: unit, protected: protected, raw: raw, checkOutputContext: checkContext})
 	}
 	actual := map[string]bool{}
 	for _, entry := range entries {

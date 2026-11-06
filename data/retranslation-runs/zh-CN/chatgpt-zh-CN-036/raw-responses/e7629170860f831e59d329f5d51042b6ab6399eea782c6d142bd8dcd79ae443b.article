@@ -1,0 +1,69 @@
+<!--{
+  "Title": "管理连接"
+}-->
+
+对于绝大多数程序，无需调整 `sql.DB` 连接池的默认设置。但某些高级程序可能需要调优连接池参数，或者显式使用连接。本主题将介绍这些方法。
+
+[`sql.DB`](https://pkg.go.dev/database/sql#DB) 数据库句柄可以由多个 goroutine 并发安全地使用（也就是说，它相当于其他语言中所说的“线程安全”句柄）。一些其他数据库访问库基于一次只能执行一个操作的连接。为了弥合这种差异，每个 `sql.DB` 都会管理一个指向底层数据库的活动连接池，并根据
+Go 程序的并行需要创建新连接。
+连接池适用于大多数数据访问需求。
+
+调用 `sql.DB` 的 `Query` 或 `Exec` 方法时，`sql.DB` 的实现会从连接池中取得一个
+可用连接，必要时则创建新连接。当连接不再需要时，该包
+会将其归还连接池。这为数据库访问提供了较高程度的
+并行能力。
+
+### 设置连接池属性 {#connection_pool_properties}
+
+可以设置一些属性，用来控制 `sql` 包如何管理连接
+池。要获取这些属性所产生效果的统计信息，请使用
+[`DB.Stats`](https://pkg.go.dev/database/sql#DB.Stats)。
+
+#### 设置最大打开连接数 {#max_open_connections}
+
+[`DB.SetMaxOpenConns`](https://pkg.go.dev/database/sql#DB.SetMaxOpenConns)
+会限制打开连接的数量。达到此上限后，新的
+数据库操作会等待已有操作完成；届时 
+`sql.DB` 才能创建另一个连接。默认情况下，只要在需要连接时所有已有连接都正在使用，`sql.DB` 就会
+新建连接。
+请注意，设置上限会让数据库连接的使用方式类似于获取锁或信号量，因此应用程序可能因为等待
+新的数据库连接而发生死锁。
+
+#### 设置最大空闲连接数 {#max_idle_connections}
+
+[`DB.SetMaxIdleConns`](https://pkg.go.dev/database/sql#DB.SetMaxIdleConns) 会更改 `sql.DB` 所维护的最大空闲连接数上限。
+当某个数据库连接上的 SQL 操作结束时，该连接通常不会
+立即关闭：应用程序可能很快又需要连接，保留已打开的连接可以避免下一次操作时
+重新连接数据库。默认情况下，一个 `sql.DB` 会始终保留两个空闲连接。对于并行度较高的程序，提高该上限可以避免频繁重连。
+
+
+#### 设置连接可保持空闲的最长时间 {#max_idle_time}
+
+[`DB.SetConnMaxIdleTime`](https://pkg.go.dev/database/sql#DB.SetConnMaxIdleTime) 用于设置连接在关闭前可以保持空闲的最长时间。
+这会使 `sql.DB` 关闭空闲时间超过指定时长的连接。
+默认情况下，空闲连接被加入连接池后会一直保留，直到再次被需要。当使用 `DB.SetMaxIdleConns` 提高并发活动高峰期间允许的空闲连接数时，也可以使用 `DB.SetConnMaxIdleTime`，让系统在恢复空闲后释放这些连接。
+
+#### 设置连接的最长生命周期 {#max_connection_lifetime}
+
+使用 [`DB.SetConnMaxLifetime`](https://pkg.go.dev/database/sql#DB.SetConnMaxLifetime)
+可以设置连接在关闭之前允许保持打开状态的最长时间。
+默认情况下，在上述限制范围内，一个连接可以被使用和复用任意长的时间。对于某些系统，例如使用
+负载均衡数据库服务器的系统，确保应用程序不会长时间持续使用某个特定连接而不重新建立连接，可能会有帮助。
+
+### 使用专用连接 {#dedicated_connections}
+
+`database/sql` 包提供了一些函数，适用于数据库可能会
+赋予在特定连接上执行的一连串操作隐含语义的场景。
+
+最常见的例子是事务：事务通常以 `BEGIN`
+命令开始，以 `COMMIT` 或 `ROLLBACK` 命令结束，并把这两条命令之间
+在该连接上发出的所有命令都纳入整个
+事务。对于这种用法，请使用 `sql` 包提供的事务支持。
+请参阅 [执行事务](/doc/database/execute-transactions)。
+
+对于其他需要一系列独立操作全部在同一个连接上执行的场景，
+`sql` 包提供了专用连接。
+[`DB.Conn`](https://pkg.go.dev/database/sql#DB.Conn)会取得一个专用
+连接，即一个 [`sql.Conn`](https://pkg.go.dev/database/sql#Conn)。
+`sql.Conn` 提供 `BeginTx`、`ExecContext`、`PingContext`、
+`PrepareContext`、`QueryContext` 和 `QueryRowContext` 等方法，它们的行为与 `sql.DB` 上对应的方法相同，但只使用该专用连接。使用完毕后，代码必须调用 `Conn.Close` 释放连接。

@@ -10,13 +10,7 @@ import (
 )
 
 func TestExportLocaleSurfaceReviewPackageDeterministicCurrentTree(t *testing.T) {
-	root, err := os.Getwd()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, err := os.Stat(filepath.Join(root, "data", "tour-pages.tsv")); os.IsNotExist(err) {
-		root = filepath.Clean(filepath.Join(root, "..", ".."))
-	}
+	root := copySurfaceReviewExportTree(t)
 	catalog, err := ReadCatalog(root)
 	if err != nil {
 		t.Fatal(err)
@@ -58,7 +52,7 @@ func TestExportLocaleSurfaceReviewPackageDeterministicCurrentTree(t *testing.T) 
 	if err := json.Unmarshal(first, &pkg); err != nil {
 		t.Fatal(err)
 	}
-	if pkg.SchemaVersion != 1 || pkg.Kind != "go-tour-i18n/locale-surface-review-package" || pkg.Locale != "tr-TR" {
+	if pkg.SchemaVersion != 2 || pkg.Kind != "go-tour-i18n/locale-surface-review-package" || pkg.Locale != "tr-TR" {
 		t.Fatalf("package identity=%+v", pkg)
 	}
 	if coverage.Pages != len(catalog.Pages) || len(pkg.CoursePages) != len(catalog.Pages) || len(pkg.UI) != coverage.UI || len(pkg.Articles) != coverage.Articles {
@@ -181,7 +175,7 @@ func TestExportLocaleSurfaceReviewPackageV2IncludesCanonicalDescriptionAndFullCo
 }
 
 func TestExportLocaleSurfaceReviewPackageIncludesConcreteOtherSurfaces(t *testing.T) {
-	root := surfaceReviewExportRoot(t)
+	root := copySurfaceReviewExportTree(t)
 	catalog := hydratedSurfaceReviewExportCatalog(t, root)
 	data, _, err := ExportLocaleSurfaceReviewPackage(root, "tr-TR", catalog)
 	if err != nil {
@@ -325,12 +319,8 @@ func hydratedSurfaceReviewExportCatalog(t *testing.T, root string) *Catalog {
 
 func copySurfaceReviewExportTree(t *testing.T) string {
 	t.Helper()
-	source := surfaceReviewExportRoot(t)
-	destination := t.TempDir()
-	for _, name := range []string{"_content", "data", "internal", "locales", "production"} {
-		if err := os.CopyFS(filepath.Join(destination, name), os.DirFS(filepath.Join(source, name))); err != nil {
-			t.Fatal(err)
-		}
-	}
-	return destination
+	root := isolatedLanguageSurfaceFixture(t)
+	ensureTestCurrentLocaleAuthority(t, root, "tr-TR", testLanguageAuditAuthority("tr-TR", "Latin", map[string]string{"。": "."}))
+	copyTestLanguageAuditMachineAuthority(t, root)
+	return root
 }

@@ -1,0 +1,206 @@
+---
+title: Go 安全政策
+layout: article
+breadcrumb: true
+---
+
+## 概述
+
+本文说明 Go 安全团队处理已报告问题的流程，
+以及报告者可以预期获得怎样的响应。
+
+## 报告安全 bug
+
+Go 发行版中的所有安全 bug 都应通过电子邮件报告至
+[security@golang.org](mailto:security@golang.org)。该邮件会发送给
+Go 安全团队。
+
+请将邮件主题写成“Vulnerability: {package name}:
+{one-line summary}”，并尽量不要在邮件中添加附件，除非确有必要，
+以免邮件被标记为垃圾邮件。
+
+如有需要，请在报告中注明你希望使用的署名方式。
+如果发布了 CVE，该署名会添加到其中。
+
+请尽量简洁地撰写报告，包括你发现的问题说明、
+你认为该问题可被利用的方式，以及能够演示问题的小型复现测试
+用例或程序。
+
+我们还维护了一份关于常见报告问题类别的[决策列表](/doc/security/decisions)。
+
+
+我们会在 7 天内确认收到你的邮件。如果届时仍未收到回复，
+请再次通过
+[security@golang.org](mailto:security@golang.org)联系 Go 安全团队跟进。请确保你的邮件中
+包含**vulnerability**一词。
+
+如果再过 3 天仍未收到报告确认，
+则你的邮件可能被标记成了垃圾邮件。在这种
+情况下，请[在此提交 issue](https://g.co/vulnz)。选择 _“I want to
+report a technical security or an abuse risk related bug in a Google product
+(SQLi, XSS, etc.)”_，并将受影响产品填写为 _“Go”_。
+
+在我们首次确认收到报告后的 90 天内，你报告的问题会被修复或公开。
+
+
+报告安全问题的电子邮件将被无限期保留，
+以便跟踪修复状态并正确注明发现者。
+
+### 由 LLM 生成的报告
+
+请不要发送未经适当筛选和整理的 LLM 生成报告。
+
+现代 LLM 非常擅长发现真实且重要的安全 bug。
+遗憾的是，它们也很擅长发现虚构问题，或真实存在
+但[并非安全 bug](/doc/security/decisions#non-vuln)的问题。LLM
+输出往往冗长，会让重要信息淹没在无关文本中，
+还可能包含夸张且无法佐证的断言。
+
+对于 LLM 生成的报告，真正的价值在于人工筛选和整理。如果向我们发送数十个
+可能的安全问题，却依赖我们从中找出唯一有意义的结果，
+就等于要求我们代为完成筛选工作，最终反而会妨碍我们
+保障 Go 安全的目标。因此，我们只会为
+真实发现占比较高的报告者注明发现者身份。
+
+这里没有僵硬的规则，但作为一般指引，如果你提交的大多数
+报告最终并未被认定为安全问题，并且我们认为你
+没有提供有价值的筛选和整理，那么后续发现将不会再为你署名。
+我们有意不为“大多数”设定具体阈值，也不具体定义
+“筛选和整理”必须包含哪些工作。不过，我们的原则是：真诚报告且
+提供了实质价值的报告者始终会获得署名，而不加甄别地转发大量
+LLM输出的报告者则不会。
+
+## 处理轨道
+
+Go 安全团队会根据问题性质，将其归入 
+PUBLIC、PRIVATE 或 URGENT 轨道。所有安全
+问题都会获得 CVE 编号。
+
+Go 安全团队不会为安全问题分配传统的细粒度严重性标签
+（e.g CRITICAL、HIGH、MEDIUM、LOW），因为严重性在很大程度上取决于
+用户如何使用受影响的 API 或功能。此外，
+在为 Go 安全问题签发 CVE 时，我们也不会分配 CVSS 分数，
+因为基于同样的原因，我们从根本上不认同该评分体系适用于 Go。
+第三方（例如 MITRE 或 NIST，通过 NVD）可能会为
+我们的漏洞分配 CVSS 分数，但我们不认可这些分数能够准确反映
+漏洞影响。
+
+例如，`encoding/json`
+解析器中的资源耗尽问题会造成多大影响，取决于它解析的内容。如果用户解析的是本地文件系统中的受信任 JSON
+文件，影响可能较低；如果用户
+解析的是不受信任的任意 JSON，且它来自 HTTP 请求正文，影响则可能
+高得多。
+
+尽管如此，下面这些问题轨道仍能体现安全团队认为问题的严重程度、影响范围，或两者兼有（and/or）。比如，对许多用户产生中等或显著影响的问题，
+
+在本政策中会归入 PRIVATE 轨道；而
+影响可忽略到较小、或者只影响少量用户的问题，
+则归入 PUBLIC 轨道。
+
+### PUBLIC
+
+PUBLIC 轨道中的问题只影响小众配置、影响非常有限，
+或者已经广为人知。
+
+PUBLIC 轨道问题会加上
+[`Proposal-Security`](https://github.com/golang/go/labels/Proposal-Security)标签，
+通过
+[Go 提案审查流程](https://go.googlesource.com/proposal/+/master/README.md#proposal-review)
+进行讨论，**在公开环境中修复**，并回移植到下一次计划中的[次版本
+发布](/wiki/MinorReleases)（约每月一次）。发布公告
+会包含这些问题的详细信息，但不会提前公告。
+
+过去的 PUBLIC 问题示例包括：
+
+- [#44916](/issue/44916)：archive/zip：调用 Reader.Open 时可能发生 panic
+- [#44913](/issue/44913)：encoding/xml：将 xml.NewTokenDecoder 与自定义 TokenReader 一起使用时出现无限循环
+- [#43786](/issue/43786)：crypto/elliptic：对 P-224 曲线执行了错误操作
+- [#40928](/issue/40928)：net/http/cgi,net/http/fcgi：未指定 Content-Type 时发生跨站脚本攻击（XSS）
+- [#40618](/issue/40618)：encoding/binary：ReadUvarint 和 ReadVarint 可从无效输入读取无限数量的字节
+- [#36834](/issue/36834)：crypto/x509：Windows 10 上存在证书验证绕过问题
+
+### PRIVATE
+
+PRIVATE 轨道中的问题违反了已承诺的安全属性。
+
+PRIVATE 轨道问题会**在下一次计划中的[次版本
+发布](/wiki/MinorReleases)中修复**，并在此之前保持私密。
+
+发布前三到七天，会向
+golang-announce 发送预告，说明即将发布的版本中包含一项或多项安全修复，
+并说明问题影响标准库、
+工具链还是二者，同时提供各项修复预留的 CVE ID。
+
+对于存在于[主要版本候选版](/s/release)中的问题，
+我们采用相同流程，在下一次计划中的候选版本中
+包含修复。
+
+过去的 PRIVATE 问题示例包括：
+
+- [#53416](/issue/53416)：path/filepath：Glob 中的栈耗尽
+- [#53616](/issue/53616)：go/parser：所有 Parse* 函数中的栈耗尽
+- [#54658](/issue/54658)：net/http：发送 GOAWAY 后处理服务器错误
+- [#56284](/issue/56284)：syscall、os/exec：环境变量中的 NUL 未经清理
+
+### URGENT
+
+URGENT 轨道问题会威胁 Go 生态系统的完整性，或者正在
+现实环境中被主动利用并造成严重损害。近期没有
+这样的示例，但这类问题会包括 net/http 中的远程代码执行，或
+crypto/tls 中可实际实施的密钥恢复。
+
+URGENT 轨道问题会在私下修复，并会**立即触发一次专门的
+安全发布**，可能不会提前公告。
+
+## 将现有 issue 标记为安全相关
+
+如果你认为某个[现有 issue](/issue)与安全有关，请
+发送电子邮件至 [security@golang.org](mailto:security@golang.org)。
+邮件中应包含 issue 的 ID，并简要说明为什么该问题应当
+按照本安全政策处理。
+
+## 披露流程
+
+Go 项目采用以下披露流程：
+
+1. 收到安全报告后，会为其指定一名主要处理人。该
+处理人负责协调修复和发布流程。
+
+2. 确认问题，并确定受影响软件的列表。
+
+3. 审查代码，以查找任何潜在的类似问题。
+
+4. 如果与报告提交者协商后确定需要 CVE 编号，
+主要处理人会申请一个。
+
+5. 先为最新的两个主要版本以及
+head/master 当前修订版准备修复；随后再次为最新的两个主要版本准备修复
+，并将修复合并到 head/master。
+
+6. 应用修复的当天，会向
+[golang-announce](https://groups.google.com/group/golang-announce)、
+[golang-dev](https://groups.google.com/group/golang-dev) 和
+[golang-nuts](https://groups.google.com/group/golang-nuts)发送公告。
+
+这一流程可能需要一些时间，特别是在需要与
+其他项目的维护者协调时。我们会尽最大努力尽快处理 bug，
+但严格遵循上述流程也很重要，这样才能确保
+所有披露都得到一致处理。
+
+对于已分配 CVE 编号的安全问题，该问题会
+公开列在 CVEDetails 网站的
+[“Golang”产品](https://www.cvedetails.com/vulnerability-list/vendor_id-14185/Golang.html)
+下，同时也会列在
+[National Vulnerability Disclosure 网站](https://web.nvd.nist.gov/view/vuln/search)上。
+
+## 接收安全更新
+
+接收安全公告的最佳方式，是订阅
+[golang-announce](https://groups.google.com/forum/#!forum/golang-announce)
+邮件列表。所有与安全问题有关的消息都会带有
+`[security]`前缀。
+
+## 对本政策的意见
+
+如果你有改进本政策的建议，请
+[提交 issue](/issue/new)进行讨论。

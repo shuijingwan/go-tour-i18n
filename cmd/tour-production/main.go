@@ -5,6 +5,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -14,6 +15,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/shuijingwan/go-tour-i18n/internal/releasecontract"
+	"github.com/shuijingwan/go-tour-i18n/internal/site"
 	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
 
@@ -30,6 +33,7 @@ func main() {
 func run(args []string) error {
 	fs := flag.NewFlagSet("tour-production", flag.ContinueOnError)
 	httpAddr := fs.String("http", "127.0.0.1:3999", "host:port to listen on")
+	verify := fs.Bool("verify-bundle", false, "verify complete exact bundle and emit content contract without starting a server")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -43,7 +47,29 @@ func run(args []string) error {
 	if err != nil {
 		return err
 	}
+	if *verify {
+		bundle := filepath.Dir(contentDir)
+		id, a, e := releasecontract.VerifyBundle(bundle)
+		if e != nil {
+			return e
+		}
+		if a.Locale != productionLocale {
+			return fmt.Errorf("compiled locale/bundle mismatch")
+		}
+		return json.NewEncoder(os.Stdout).Encode(struct {
+			InputIdentity string                    `json:"input_identity"`
+			Content       *releasecontract.Artifact `json:"content"`
+		}{id, a})
+	}
+	bundleID, _, err := releasecontract.VerifyBundle(filepath.Dir(contentDir))
+	if err != nil {
+		return err
+	}
 	handler, err := tour.NewProductionHandler(os.DirFS(contentDir), productionLocale)
+	if err != nil {
+		return err
+	}
+	handler, err = site.NewReleaseHandler(os.DirFS(contentDir), productionLocale, handler, true, bundleID)
 	if err != nil {
 		return err
 	}

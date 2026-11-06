@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-055",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983",
+      "unit_kind": "page",
+      "source_path": "_content/doc/database/open-handle.md",
+      "source_sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c",
+      "input_path": "inputs/872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983.article",
+      "input_sha256": "df95ddcb0777c5e4b5ac65d6101aa89262b7f372dc431c1d82cd48fc65ca467b",
+      "protected_token_count": 210,
+      "previous_snapshot_id": "learn-docs-v1-qc-020",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Finding category: Technical identifier / Chinese prose boundary consistency\n\nObserved instances:\n1. `存储数据库凭据` 段落：`DBMS进行身份验证`\n2. 同段落：`os.Getenv` Markdown inline link 后直接接“读取它们”\n3. `释放资源` 段落：`sql.Rows` Markdown inline link 后直接接“持有的资源”\n\nRevision scope:\n仅限本 Page 中技术标识与紧邻中文正文直接粘连这一 defect category。对完整 Page 做同类检查，修复满足以下 predicate 的实例：当前自然语言正文中的 Go API/identifier、技术缩写或 Markdown inline code/link，与紧邻中文直接拼接，导致技术标识与中文词语边界不清晰。\n\nOut of scope:\n不修改 database/sql、sql.DB、sql.Rows、sql.Stmt、DBMS、os.Getenv 等 identifier；不修改代码、链接、段落结构或正确的技术语义；不进行一般措辞润色。"
+    },
+    {
+      "unit_id": "21946bff61d8f7c52c444edcd122ea398ba80574a8095c37befa936541a9cd4c",
+      "unit_kind": "page",
+      "source_path": "_content/doc/database/querying.md",
+      "source_sha256": "02e399c4e8b9895689676f976ce052da6d6efa6f6bed3c7368314a47e3314864",
+      "input_path": "inputs/21946bff61d8f7c52c444edcd122ea398ba80574a8095c37befa936541a9cd4c.article",
+      "input_sha256": "3c8a3c50988a6cb6cf5b4944df597cef9a21bae02a62a555dab1a0e307f7ef64",
+      "protected_token_count": 280,
+      "previous_snapshot_id": "learn-docs-v1-qc-020",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Finding category: Technical identifier / Chinese prose boundary consistency\n\nObserved instances:\n1. `查询单行` 示例说明：`Row.Scan` 后直接接“通过指针把”\n2. `查询单行 → 处理错误`：`QueryRow` 后直接接“本身不会返回错误”\n3. `查询单行 → 处理错误`：`Scan` 后直接接“会报告查询和扫描”\n4. `查询多行`：`Rows.Next` 后直接接“遍历返回的行”\n5. `查询多行`：`Rows.Scan` 后直接接“把列值复制到”\n6. `处理多个结果集`：`Rows.NextResultSet` 后直接接“依次获取它们”\n7. `处理多个结果集`：`Rows.Next` 后直接接“时能够获取”\n\nRevision scope:\n仅修复完整 current Page 中上述同类 technical identifier / Chinese prose boundary defect。扫描范围为本 Page 全部自然语言正文，包括紧邻 Markdown inline API 链接的中文说明，不限于上述七处。\n\nExact predicate:\n仅当 Go API、identifier 或其 Markdown inline link 的右侧紧邻中文文字、缺少可读性所需的分隔时，才属于本次授权修订范围。\n\nOut of scope:\n不调整已经正确的 reserved connections 描述，不修改 QueryRow、Scan、Rows.Next、Rows.NextResultSet 等 API identity，不修改 Go 示例代码、HTML 表格、链接或一般语言风格。"
+    }
+  ]
+}

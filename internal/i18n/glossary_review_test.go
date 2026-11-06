@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,18 +11,48 @@ import (
 
 func TestGlossaryReviewRequiredByRetranslationExport(t *testing.T) {
 	root := t.TempDir()
-	locale := "zz-ZZ"
-	writeGlossaryReviewTestGlossary(t, root, locale)
-
-	if _, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{Locale: locale}); err == nil || !strings.Contains(err.Error(), "Glossary Review gate missing or stale") {
-		t.Fatalf("export without Glossary Review error = %v", err)
+	locale := "zh-CN"
+	glossaryPath := writeGlossaryReviewTestGlossary(t, root, locale)
+	options := RetranslationExportOptions{Locale: locale}
+	assertBlockedByUnifiedReview := func() {
+		t.Helper()
+		// Compare the wrapped gate error, rather than a legacy error sentence.
+		gateErr := RequireNewLanguageGlossaryReview(root, locale)
+		if gateErr == nil {
+			t.Fatal("strict Unified Review gate unexpectedly passed")
+		}
+		_, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), options)
+		cause := errors.Unwrap(err)
+		if cause == nil || cause.Error() != gateErr.Error() {
+			t.Fatalf("export error = %v, want wrapped strict gate error %v", err, gateErr)
+		}
 	}
+
+	assertBlockedByUnifiedReview()
 	if _, _, err := RecordGlossaryReview(root, locale, "review-1", "independent-reviewer", "passed", nil); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{Locale: locale}); err != nil {
-		t.Fatalf("export with current passed Glossary Review: %v", err)
+	// Historical Tour coverage does not authorize new language generation.
+	if err := RequireCurrentGlossaryReview(root, locale); err != nil {
+		t.Fatal(err)
 	}
+	assertBlockedByUnifiedReview()
+	if _, err := os.Stat(filepath.Join(root, "data", "retranslation-runs", locale)); !os.IsNotExist(err) {
+		t.Fatalf("blocked export created batch artifacts: %v", err)
+	}
+	recordSyntheticUnifiedReview(t, root, "export-review", locale)
+	if _, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), options); err != nil {
+		t.Fatalf("export with current passed Unified Review: %v", err)
+	}
+	glossary, err := os.ReadFile(glossaryPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(glossaryPath, append(glossary, '\n'), 0644); err != nil {
+		t.Fatal(err)
+	}
+	// An existing export must not bypass a freshly stale Review gate.
+	assertBlockedByUnifiedReview()
 }
 
 func TestGlossaryReviewBecomesStaleAfterAnyGlossaryByteChange(t *testing.T) {

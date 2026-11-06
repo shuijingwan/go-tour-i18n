@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_finalization",
+  "locale": "zh-CN",
+  "snapshot_id": "site-v2-shell-qc-004",
+  "previous_snapshot_id": "site-v2-shell-qc-002",
+  "predecessor_finalization": {
+    "path": "data/quality-check-snapshots/zh-CN/site-v2-shell-qc-002/finalization.json",
+    "sha256": "fc5c325871ba9e29dc0b6e8693fbdb270038bc7d27a24f7a6a5cba641bd56ffb"
+  },
+  "snapshot_manifest_path": "data/quality-check-snapshots/zh-CN/site-v2-shell-qc-004/manifest.json",
+  "snapshot_manifest_sha256": "07eecfc0ba7d9f3948e1d4354f402a771e4ded10334d544cc36d7ac6550475fa",
+  "glossary_path": "locales/zh-CN/glossary.yaml",
+  "glossary_sha256": "8274adcbf02829356d814a6bed6b77bf9e4508d850c0eed7efabd1fcbecbe54c",
+  "rubric": "translation-quality/v1",
+  "quality_check_results": [
+    {
+      "snapshot_id": "site-v2-shell-qc-001",
+      "path": "data/quality-check-snapshots/zh-CN/site-v2-shell-qc-001/quality-check-results.json",
+      "sha256": "f3013d69f52dac2c75104a3cd497025a11c7d4660215b49ca2fe8e1f64b1aae6"
+    },
+    {
+      "snapshot_id": "site-v2-shell-qc-004",
+      "path": "data/quality-check-snapshots/zh-CN/site-v2-shell-qc-004/quality-check-results.json",
+      "sha256": "1e08e6c0f469794449efcb2a589c6eae438c3c6344a5f2154672edbe5cdf2e4a"
+    }
+  ],
+  "units": [
+    {
+      "index": 1,
+      "unit_id": "f4365d05fcff295676c0964f81058e6485bb0361f8440cbf243220a6acc1e97d",
+      "source_snapshot_id": "site-v2-shell-qc-004",
+      "rating": "A",
+      "snapshot": {
+        "index": 1,
+        "unit_id": "f4365d05fcff295676c0964f81058e6485bb0361f8440cbf243220a6acc1e97d",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-059",
+        "source_path": "_content/index.md",
+        "source_sha256": "7765e289fc5abccf8b786fa408c9d60078e2c27168e66778d060590e3c6ba986",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-059/candidates/f4365d05fcff295676c0964f81058e6485bb0361f8440cbf243220a6acc1e97d.article",
+        "candidate_sha256": "354119aa0bead4addc65cebe64c656b3305f915d4f38ca799a1bb88f5b7b8ded",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-059/validation/f4365d05fcff295676c0964f81058e6485bb0361f8440cbf243220a6acc1e97d.json",
+        "validation_sha256": "ecd94c2fea44eab09cfe55bc0b1a4154238e0ed36fdcc282ddf9df51089b256e",
+        "attempt": 1
+      }
+    }
+  ],
+  "finalized_at": "2026-10-25T12:07:24.175562937Z"
+}

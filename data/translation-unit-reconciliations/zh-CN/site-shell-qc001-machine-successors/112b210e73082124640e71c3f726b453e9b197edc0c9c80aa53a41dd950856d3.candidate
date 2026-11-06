@@ -1,0 +1,336 @@
+---
+title: Go 编程语言
+summary: Go 是一种开源编程语言，可轻松构建安全、可扩展的系统。
+template: true
+---
+
+{{$canShare := not googleCN}}
+
+<section class="Hero bluebg">
+  <div class="Hero-gridContainer">
+    <div class="Hero-blurb">
+      <h1>使用 Go 构建简单、安全、可扩展的系统</h1>
+      <ul class="Hero-blurbList">
+        <li>
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.8519 0.52594L3.89189 7.10404L1.14811 4.51081L0 5.59592L3.89189 9.27426L12 1.61105L10.8519 0.52594Z" fill="white" fill-opacity="0.87">
+          </svg>
+          由 Google 支持的开源编程语言
+        </li>
+        <li>
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.8519 0.52594L3.89189 7.10404L1.14811 4.51081L0 5.59592L3.89189 9.27426L12 1.61105L10.8519 0.52594Z" fill="white" fill-opacity="0.87">
+          </svg>
+          易于学习，非常适合团队协作
+        </li>
+        <li>
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.8519 0.52594L3.89189 7.10404L1.14811 4.51081L0 5.59592L3.89189 9.27426L12 1.61105L10.8519 0.52594Z" fill="white" fill-opacity="0.87">
+          </svg>
+          内置并发机制和强大的标准库
+        </li>
+        <li>
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.8519 0.52594L3.89189 7.10404L1.14811 4.51081L0 5.59592L3.89189 9.27426L12 1.61105L10.8519 0.52594Z" fill="white" fill-opacity="0.87">
+          </svg>
+          由合作伙伴、社区和工具构成的庞大生态系统
+        </li>
+      </ul>
+    </div>
+    <div class="Hero-actions">
+      <div
+        data-version=""
+        class="js-latestGoVersion">
+        <a class="Primary" href="/learn/" aria-label="入门" aria-describedby="getStarted-description" role="button">入门</a>
+        <a class="Secondary js-downloadBtn" href="/dl" aria-label="下载" aria-describedby="download-description" role="button">下载</a>
+        <div class="screen-reader-only" id="getStarted-description" hidden>
+          在新窗口中打开入门指南。
+        </div>
+        <div class="screen-reader-only" id="download-description" hidden>
+          在新窗口中打开 Go 下载页面。
+        </div>
+      </div>
+      <div class="Hero-footnote">
+        <p>
+          下载适用于以下平台的软件包：
+          <a class="js-downloadWin">Windows 64 位</a>,
+          <a class="js-downloadMac">macOS</a>,
+          <a class="js-downloadLinux">Linux</a>，以及
+          <a href="/dl/" aria-describedby="newwindow-description">更多</a>
+        </p>
+        <p>
+          默认情况下， <code>go</code> 命令会下载并验证
+          模块，并使用由
+          Google 运营的 Go 模块镜像和 Go 校验和数据库。 <a href="/dl" aria-describedby="newwindow-description">了解更多。</a>
+        </p>
+      </div>
+    </div>
+    <div class="screen-reader-only" id="newwindow-description" hidden>
+          在新窗口中打开。
+    </div>
+    <div class="Hero-gopher">
+      <img class="Hero-gopherLadder" src="/images/gophers/ladder.svg" alt="Go Gopher 正在爬梯子。">
+    </div>
+  </div>
+</section>
+<section class="WhoUses">
+  <div class="WhoUses-gridContainer">
+    <div class="WhoUses-header">
+      <h2 class="WhoUses-headerH2">使用 Go 的公司</h2>
+      <p class="WhoUses-subheader">各行各业的组织都使用 Go 为其软件和服务提供支持
+        <a href="/solutions/" class="WhoUsesCaseStudyList-seeAll" aria-describedby="newwindow-description">
+        查看所有案例
+       </a>
+     </p>
+    </div>
+  <div class="WhoUsesCaseStudyList">
+    <ul class="WhoUsesCaseStudyList-gridContainer">
+    {{- range newest (pages "/solutions/*")}}{{if eq .series "Case Studies"}}
+      {{- if .link }}
+        {{- if .inLandingPageGrid }}
+          <li class="WhoUsesCaseStudyList-caseStudy">
+            <a href="{{.link}}" aria-label="查看 CaseStudy：{{.company}}（在新窗口中打开）" target="_blank" rel="noopener"
+              class="WhoUsesCaseStudyList-caseStudyLink">
+              <img
+                loading="lazy"
+                height="48"
+                width="30%"
+                src="/images/logos/{{.logoSrc}}"
+                class="WhoUsesCaseStudyList-logo"
+                alt="">
+            </a>
+          </li>
+        {{- end}}
+      {{- else}}
+        <li class="WhoUsesCaseStudyList-caseStudy">
+          <a href="{{.URL}}" aria-label="查看 CaseStudy：{{.company}}（在新窗口中打开）" class="WhoUsesCaseStudyList-caseStudyLink">
+            <img
+              loading="lazy"
+              height="48"
+              width="30%"
+              src="/images/logos/{{.logoSrc}}"
+              class="WhoUsesCaseStudyList-logo"
+              alt="">
+            <p>查看案例研究</p>
+          </a>
+        </li>
+      {{- end}}
+    {{- end}}
+    {{- end}}
+    </ul>
+  </div>
+</section>
+<section class="TestimonialsGo">
+  <div class="GoCarousel">
+    <div class="GoCarousel-controlsContainer">
+      <div class="GoCarousel-wrapper">
+        <ul class="js-testimonialsGoQuotes TestimonialsGo-quotes">
+          {{- range $index, $element := data "/testimonials.yaml"}}
+            <li class="TestimonialsGo-quoteGroup GoCarousel-slide" id="quote_slide{{$index}}">
+              <div class="TestimonialsGo-quoteSingleItem">
+                <div class="TestimonialsGo-quoteSection">
+                  <p class="TestimonialsGo-quote">{{raw .quote}}</p>
+                  <div class="TestimonialsGo-author">— {{.name}},
+                    <span class="NoWrapSpan">{{.title}}</span>
+                    <span class="NoWrapSpan"> 任职于 {{.company}}</span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          {{- end}}
+        </ul>
+      </div>
+    <button class="js-testimonialsPrev GoCarousel-controlPrev" hidden>
+      <i class="GoCarousel-icon material-icons">navigate_before</i>
+    </button>
+    <button class="js-testimonialsNext GoCarousel-controlNext">
+      <i class="GoCarousel-icon material-icons">navigate_next</i>
+    </button>
+  </div>
+  </div>
+</section>
+<section class="Playground">
+  <div class="Playground-gridContainer">
+    <div class="Playground-headerContainer">
+      <h2 class="HomeSection-header">试用 Go</h2>
+    </div>
+    <div class="Playground-inputContainer">
+      <div class="Playground-preContainer">
+        按 Esc 键将焦点移出编辑器。
+      </div>
+      <textarea class="Playground-input js-playgroundCodeEl" spellcheck="false" aria-label="试用 Go" aria-describedby="editor-description" id="code">
+// You can edit this code!
+// 点击此处并开始输入。
+package main
+import "fmt"
+func main() {
+  fmt.Println("Hello, 世界")
+}</textarea>
+    </div>
+    <div class="screen-reader-only" id="editor-description" hidden>
+      按 Esc 键将焦点移出编辑器。
+    </div>
+    <div class="Playground-outputContainer js-playgroundOutputEl">
+      <pre class="Playground-output"><noscript>Hello, 世界</noscript></pre>
+    </div>
+    <div class="Playground-controls">
+      <select class="Playground-selectExample js-playgroundToysEl" aria-label="代码示例">
+      <option value="hello.go">Hello, World!</option>
+      <option value="life.go">康威生命游戏</option>
+      <option value="fib.go">斐波那契闭包</option>
+      <option value="peano.go">皮亚诺整数</option>
+      <option value="pi.go">并发计算 π</option>
+      <option value="sieve.go">并发素数筛</option>
+      <option value="solitaire.go">孔明棋求解器</option>
+      <option value="tree.go">树比较</option>
+      </select>
+      <div class="Playground-buttons">
+      <button class="Button Button--primary js-playgroundRunEl Playground-runButton" title="运行此代码 [shift-enter]">运行</button>
+      <div class="Playground-secondaryButtons">
+        {{- if $canShare}}
+        <button class="Button js-playgroundShareEl Playground-button" title="分享到 Go 语言演练场">分享</button>
+        {{- end}}
+        <a class="Button tour Playground-button" href="/tour/" title="在浏览器中体验 Go 语言之旅">Go 语言之旅</a>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="WhyGo">
+  <div class="WhyGo-gridContainer">
+    <div class="WhyGo-header">
+      <h2 class="WhyGo-headerH2">Go 能做什么</h2>
+      <p class="WhyGo-subheader">
+        使用 Go 满足各种软件开发需求
+      </p>
+    </div>
+    <ul class="WhyGo-reasons">
+      {{- range first 4 (data "/resources.yaml")}}
+        <li class="WhyGo-reason">
+          <div class="WhyGo-reasonDetails">
+            <div class="WhyGo-reasonIcon" role="presentation">
+              <img class="DarkMode-img" src="{{.iconDark}}" alt="{{.iconName}}">
+              <img class="LightMode-img" src="{{.icon}}" alt="{{.iconName}}">
+            </div>
+            <div class="WhyGo-reasonText">
+              <h3 class="WhyGo-reasonTitle">{{.title}}</h3>
+              <p>
+                {{.description}}
+              </p>
+            </div>
+          </div>
+          <div class="WhyGo-reasonFooter">
+            <div class="WhyGo-reasonPackages">
+              <div class="WhyGo-reasonPackagesHeader">
+                <img src="/images/icons/package.svg" alt="包。">
+                热门包：
+              </div>
+              <ul class="WhyGo-reasonPackagesList">
+                {{- range .packages }}
+                  <li class="WhyGo-reasonPackage">
+                    <a class="WhyGo-reasonLink" href="{{.url}}" target="_blank" rel="noopener">
+                      {{.title}}
+                    </a>
+                  </li>
+                  {{- end}}
+              </ul>
+            </div>
+            <div class="WhyGo-reasonLearnMoreLink">
+              <a href="{{.link}}" aria-describedby="newwindow-description">了解更多 
+              <i class="material-icons WhyGo-forwardArrowIcon" aria-hidden="true">arrow_forward</i></a>
+            </div>
+          </div>
+        </li>
+      {{- end}}
+      {{- if gt (len (data "resources.yaml")) 3}}
+        <li class="WhyGo-reason">
+          <div class="WhyGo-reasonShowMore">
+            <div class="WhyGo-reasonShowMoreImgWrapper">
+              <img
+                class="WhyGo-reasonShowMoreImg"
+                loading="lazy"
+                height="148"
+                width="229"
+                src="/images/gophers/biplane.svg"
+                alt="Go Gopher 正在玩滑板。">
+            </div>
+            <div class="WhyGo-reasonShowMoreLink">
+              <a href="/solutions/use-cases" aria-describedby="newwindow-description">更多使用场景 
+              <i class="material-icons
+              WhyGo-forwardArrowIcon" aria-hidden="true">arrow_forward</i></a>
+            </div>
+          </div>
+        </li>
+      {{- end}}
+    </ul>
+  </div>
+</section>
+<section class="GettingStartedGo">
+  <div class="GettingStartedGo-gridContainer">
+    <div class="GettingStartedGo-header">
+      <h2 class="GettingStartedGo-headerH2">Go 入门</h2>
+      <p class="GettingStartedGo-headerDesc">
+        探索丰富的学习资源，包括引导式学习路径、课程、书籍等。
+      </p>
+      <div class="GettingStartedGo-ctas">
+        <a class="GettingStartedGo-primaryCta" href="/learn/"aria-describedby="newwindow-description">入门</a>
+        <a href="/doc/install/" aria-describedby="newwindow-description">下载 Go</a>
+      </div>
+    </div>
+    <div class="GettingStartedGo-resourcesSection">
+      <ul class="GettingStartedGo-resourcesList">
+        <li class="GettingStartedGo-resourcesHeader">
+          自主学习资源
+        </li>
+        <li class="GettingStartedGo-resourceItem">
+          <a href="/learn#guided-learning-journeys" class="GettingStartedGo-resourceItemTitle" aria-describedby="newwindow-description">
+            引导式学习路径
+          </a>
+          <div class="GettingStartedGo-resourceItemDescription">
+            通过循序渐进的教程开始学习
+          </div>
+        </li>
+        <li class="GettingStartedGo-resourceItem">
+          <a href="/learn#online-learning" class="GettingStartedGo-resourceItemTitle" aria-describedby="newwindow-description">
+            在线学习
+          </a>
+          <div class="GettingStartedGo-resourceItemDescription">
+            浏览学习资源，按自己的节奏学习
+          </div>
+        </li>
+        <li class="GettingStartedGo-resourceItem">
+          <a href="/learn#featured-books" class="GettingStartedGo-resourceItemTitle" aria-describedby="newwindow-description">
+            精选书籍
+          </a>
+          <div class="GettingStartedGo-resourceItemDescription">
+            阅读结构化章节和理论知识
+          </div>
+        </li>
+        <li class="GettingStartedGo-resourceItem">
+          <a href="/learn#self-paced-labs" class="GettingStartedGo-resourceItemTitle" aria-describedby="newwindow-description">
+            云端自主学习实验
+          </a>
+          <div class="GettingStartedGo-resourceItemDescription">
+            立即开始将 Go 应用部署到 GCP
+          </div>
+        </li>
+      </ul>
+      <ul class="GettingStartedGo-resourcesList">
+        <li class="GettingStartedGo-resourcesHeader">
+          线下培训
+        </li>
+        {{- range first 4 (data "/learn/training.yaml")}}
+          <li class="GettingStartedGo-resourceItem">
+            <a href="{{.url}}" class="GettingStartedGo-resourceItemTitle" aria-describedby="newwindow-description">
+              {{.title}}
+            </a>
+            <div class="GettingStartedGo-resourceItemDescription">
+              {{.blurb}}
+            </div>
+          </li>
+        {{- end}}
+      </ul>
+    </div>
+  </div>
+</section>
+<script src="/js/index.js" defer></script>

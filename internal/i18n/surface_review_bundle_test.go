@@ -11,8 +11,9 @@ import (
 )
 
 func TestExportLocaleSurfaceReviewReviewerBundleDeterministicAndComplete(t *testing.T) {
-	root := surfaceReviewExportRoot(t)
+	root := isolatedLanguageSurfaceFixture(t)
 	catalog := hydratedSurfaceReviewExportCatalog(t, root)
+	seedLanguageAuditTransportFixture(t, root, "tr-TR", "Latin")
 	first, manifest, err := ExportLocaleSurfaceReviewReviewerBundle(root, "tr-TR", catalog)
 	if err != nil {
 		t.Fatal(err)
@@ -24,7 +25,7 @@ func TestExportLocaleSurfaceReviewReviewerBundleDeterministicAndComplete(t *test
 	if !bytes.Equal(first, second) {
 		t.Fatal("identical working-tree inputs produced different reviewer bundles")
 	}
-	if manifest.SchemaVersion != 1 || manifest.Locale != "tr-TR" || manifest.ReviewPackage.SHA256 == "" {
+	if manifest.SchemaVersion != 2 || manifest.Locale != "tr-TR" || manifest.ReviewPackage.SHA256 == "" {
 		t.Fatalf("unexpected manifest identity: %+v", manifest)
 	}
 	if len(manifest.Authority) != len(localeSurfaceReviewReviewerAuthorityPaths) {
@@ -48,7 +49,7 @@ func TestExportLocaleSurfaceReviewReviewerBundleDeterministicAndComplete(t *test
 		}
 		files[file.Name] = data
 	}
-	if len(files) != 2+len(localeSurfaceReviewReviewerAuthorityPaths) {
+	if len(files) != 3+len(localeSurfaceReviewReviewerAuthorityPaths) {
 		t.Fatalf("bundle file count=%d", len(files))
 	}
 	if sum(files["surface-review.json"]) != manifest.ReviewPackage.SHA256 {

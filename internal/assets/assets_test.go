@@ -39,7 +39,7 @@ func TestURL(t *testing.T) {
 		want         string
 	}{
 		{"zh development", "zh-CN", true, "/" + asset},
-		{"zh production", "zh-CN", false, "/" + asset},
+		{"zh production", "zh-CN", false, sharedBaseURL + "/" + asset},
 		{"ja preview", "ja-JP", true, "/" + asset},
 		{"ja production", "ja-JP", false, sharedBaseURL + "/" + asset},
 		{"future production", "ko", false, sharedBaseURL + "/" + asset},

@@ -74,7 +74,7 @@ class ProductionCDNTest(unittest.TestCase):
         export.mkdir()
         (export / "SHA256SUMS").write_text("formal manifest\n", encoding="utf-8")
         digest = hashlib.sha256((export / "SHA256SUMS").read_bytes()).hexdigest()
-        receipt = pathlib.Path(str(export) + ".verification-receipt.json")
+        receipt = pathlib.Path(str(export) + (".shared-assets-execution.json" if schema==CDN.SHARED_ASSETS_RECEIPT_V2 else ".verification-receipt.json"))
         value = {
             "schema": schema or CDN.SHARED_ASSETS_RECEIPT_V1,
             "export_dir": str(export),
@@ -291,7 +291,7 @@ class ProductionCDNTest(unittest.TestCase):
     def test_cloudflare_exact_hostname_payload_and_uncertain_no_retry(self):
         transport = QueueTransport([
             {"success": True, "result": [{"id": "zone-1", "name": "example.com"}]},
-            {"success": True, "result": {}},
+            {"success": True, "result": {"id": "fixture-purge-id"}},
         ])
         client = CDN.CloudflareClient("TOKEN", transport, sleep=lambda _: None)
         zone = client.resolve_zone("example.com")
@@ -360,7 +360,8 @@ class ProductionCDNTest(unittest.TestCase):
                 with self.assertRaises(CDN.CDNError):
                     CDN.load_shared_assets_receipt(receipt, shared)
 
-    def test_shared_assets_definite_failure_resumes_but_uncertain_never_repeats(self):
+    @mock.patch.object(CDN.subprocess, "run", return_value=subprocess.CompletedProcess([],0))
+    def test_shared_assets_definite_failure_resumes_but_uncertain_never_repeats(self, validated):
         with tempfile.TemporaryDirectory() as directory:
             receipt = self.shared_receipt(directory, ["SHA256SUMS"], schema=CDN.SHARED_ASSETS_RECEIPT_V2)
             with mock.patch.object(CDN, "_run_remote_config", side_effect=CDN.CDNError("denied")) as remote:

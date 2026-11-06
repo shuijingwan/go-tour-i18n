@@ -15,6 +15,7 @@ func generationRecoveryFixture(t *testing.T, count int) (string, *Catalog, strin
 	root := t.TempDir()
 	copyBundleAuthority(t, root, translationUnitGenerationAuthorityPaths)
 	writeRetranslationTestGlossaryForLocale(t, root, "zh-CN")
+	recordSyntheticUnifiedReview(t, root, "synthetic-generation-review")
 	catalog := retranslationTestCatalog(count)
 	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
 		Locale: "zh-CN", Generator: RetranslationGeneratorChatGPT, Limit: count,

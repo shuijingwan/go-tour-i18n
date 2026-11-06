@@ -69,6 +69,7 @@ func makeRetranslationReviewBatchFixture(t *testing.T, count int, snapshotID str
 	if count > DefaultRetranslationReviewBatchLimit {
 		root := t.TempDir()
 		writeRetranslationTestGlossary(t, root)
+		recordSyntheticUnifiedReview(t, root, "synthetic-generation-review")
 		catalog := retranslationTestCatalog(count)
 		var firstBatch string
 		for start, number := 0, 1; start < count; start, number = start+DefaultRetranslationReviewBatchLimit, number+1 {

@@ -1,0 +1,234 @@
+<!--{
+  "Title": "模块版本编号"
+}-->
+
+模块开发者通过版本号的各个部分来表明
+版本的稳定性和向后兼容性。对于每个新发布版本，
+模块的发布版本号都会明确反映自上一版本以来模块
+更改的性质。
+
+开发使用外部模块的代码时，可以借助版本
+号来了解外部模块的稳定性，以便在考虑
+升级时作出判断。开发自己的模块时，版本号则会
+向其他开发者传达模块的稳定性和向后兼容性。
+
+本主题介绍模块版本号的含义。
+
+**另请参阅**
+
+* 在代码中使用外部包时，可以用 Go 工具管理这些
+  依赖项。有关更多信息，请参阅[管理依赖项](managing-dependencies)。
+* 如果你开发模块供其他人使用，则会在发布模块时为它指定版本号，
+  并在代码仓库中为模块打标签。有关更多信息，
+  请参阅[发布模块](publishing)。
+
+已发布模块使用语义化版本
+模型中的版本号，如下图所示：
+
+<img src="images/version-number.png"
+     alt="Diagram illustrating a semantic version number showing major version 1, minor version 4, patch version 0, and pre-release version beta 2"
+     style="width: 300px;" />
+
+下表介绍版本号各部分如何表示
+模块的稳定性和向后兼容性。
+
+<table class="DocTable">
+  <thead>
+    <tr class="DocTable-head">
+      <th class="DocTable-cell" width="20%">版本阶段</th>
+      <th class="DocTable-cell">示例</th>
+      <th class="DocTable-cell">给开发者的信息</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell"><a href="#in-development">开发中</a></td>
+      <td class="DocTable-cell">自动伪版本号
+      <p>v<strong>0</strong>.x.x</td>
+      <td class="DocTable-cell">表示模块仍处于<strong>开发中且
+        不稳定</strong>。此版本不提供任何向后
+        兼容性或稳定性保证。</td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell"><a href="#major">主版本</a></td>
+      <td class="DocTable-cell">v<strong>1</strong>.x.x</td>
+      <td class="DocTable-cell">表示存在<strong>不向后兼容的公共 API
+        更改</strong>。此版本不保证它与
+        之前的主版本向后兼容。</td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell"><a href="#minor">次版本</a></td>
+      <td class="DocTable-cell">vx.<strong>4</strong>.x</td>
+      <td class="DocTable-cell">表示存在<strong>向后兼容的公共 API
+        更改</strong>。此版本保证向后兼容性和
+        稳定性。</td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell"><a href="#patch">补丁版本</a></td>
+      <td class="DocTable-cell">vx.x.<strong>1</strong></td>
+      <td class="DocTable-cell">表示<strong>更改不会影响
+        模块的公共 API</strong>或其依赖项。此版本
+        保证向后兼容性和稳定性。</td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell"><a href="#pre-release">预发布版本</a></td>
+      <td class="DocTable-cell">vx.x.x-<strong>beta.2</strong></td>
+      <td class="DocTable-cell">表示这是一个<strong>预发布
+        里程碑，例如 alpha 或 beta</strong>。此版本不提供任何
+        稳定性保证。</td>
+    </tr>
+  </tbody>
+</table>
+
+<a id="in-development" ></a>
+## 开发中
+
+表示模块仍处于开发阶段且**不稳定**。此版本
+不提供任何向后兼容性或稳定性保证。
+
+版本号可以采用以下形式之一：
+
+**伪版本号**
+
+> v0.0.0-20170915032832-14c0d48ead0c
+
+**v0 版本号**
+
+> v0.x.x
+
+<a id="pseudo" ></a>
+### 伪版本号
+
+如果模块在代码仓库中还没有打过标签，Go 工具会生成一个
+伪版本号，供调用该模块中函数的代码在 go.mod 文件中使用。
+
+
+**注意：** 作为最佳实践，应始终让 Go 工具生成
+伪版本号，而不要自行创建。
+
+当使用模块函数的代码开发者需要基于某个尚未带有
+语义化版本标签的提交进行开发时，伪版本就很有用。
+
+
+伪版本号由三个用连字符分隔的部分组成，形式如下：
+
+
+#### 语法
+
+_baseVersionPrefix_-_timestamp_-_revisionIdentifier_
+
+#### 各部分
+
+* **baseVersionPrefix**（vX.0.0 或 vX.Y.Z-0）：如果该修订之前存在语义化版本标签，则由该标签派生；
+  否则使用 vX.0.0。
+  
+
+* **timestamp**（yymmddhhmmss）是修订创建时的 UTC 时间。在 Git 中，
+  这是提交时间，而不是作者时间。
+
+* **revisionIdentifier**（abcdefabcdef）是提交
+  哈希的 12 字符前缀；在 Subversion 中，则是补零后的修订号。
+
+<a id="v0" ></a>
+### v0 版本号
+
+以 v0 版本号发布的模块会拥有正式的语义化版本号，
+其中包含主版本、次版本和补丁版本部分，以及可选的预发布
+标识符。
+
+虽然 v0 版本可以用于生产环境，但它不提供稳定性或向后
+兼容性保证。此外，v1 及更高版本可以
+破坏使用 v0 版本代码的向后兼容性。因此，
+在 v0 模块中使用函数的代码开发者需要负责
+适应不兼容的更改，直到 v1 发布。
+
+<a id="pre-release" ></a>
+## 预发布版本
+
+表示这是一个预发布里程碑，例如 alpha 或 beta。
+此版本不提供稳定性保证。
+
+#### 示例
+
+```
+vx.x.x-beta.2
+```
+
+模块开发者可以为任意版本号组合追加连字符和预发布标识符，以表示预发布版本；这种版本号由主版本号、次版本号和补丁版本号组成，形式如下：major.minor.patch
+
+
+<a id="minor" ></a>
+## 次版本
+
+表示对模块公共 API 进行了向后兼容的更改。此版本
+保证向后兼容性和稳定性。
+
+#### 示例
+
+```
+vx.4.x
+```
+
+此版本会修改模块的公共 API，但不会以破坏
+调用方代码的方式修改。这可能包括更改模块自身的依赖项，或
+新增函数、方法、结构体字段或类型。
+
+换言之，这个版本可能通过新增函数提供增强功能，
+而其他开发者可能希望使用这些功能。不过，使用以前
+次版本的开发者不需要因此修改其他代码。
+
+<a id="patch" ></a>
+## 补丁版本
+
+表示更改不会影响模块的公共 API 或其依赖项。
+此版本保证向后兼容性和稳定性。
+
+#### 示例
+
+```
+vx.x.1
+```
+
+递增此编号的更新只包含 bug
+修复等小型更改。使用该模块的开发者可以安全升级到此版本，
+无需修改自己的代码。
+
+<a id="major" ></a>
+## 主版本
+
+表示模块的公共 API 中存在不向后兼容的更改。此版本
+不保证与之前的主
+版本向后兼容。
+
+#### 示例
+
+v1.x.x
+
+v1 或更高的版本号表示模块已经稳定，可以使用。
+预发布版本除外。
+
+请注意，由于版本 0 不提供稳定性或向后兼容性
+保证，开发者把模块从 v0 升级到 v1 时，需要负责
+适应会破坏向后兼容性的更改。
+
+模块开发者只有在确实必要时才应把这个编号递增到 v1 以上，
+因为版本升级会给那些
+代码使用升级后模块中函数的开发者带来显著扰动。这种扰动包括
+公共 API 中不向后兼容的更改，以及要求
+使用该模块的开发者在所有导入
+模块包的位置更新包路径。
+
+升级到高于 v1 的主版本还会使用新的模块
+路径，因为模块路径末尾会追加主版本号，
+如下例所示：
+
+```
+module example.com/mymodule/v2 v2.0.0
+```
+
+主版本更新会使其成为一个新模块，与
+模块旧版本拥有独立的历史记录。如果你开发模块供其他人发布使用，
+请参阅“发布破坏性的 API 更改”，它位于 [模块发布与版本控制
+工作流](release-workflow)中。
+
+有关 module 指令的更多信息，请参阅 [go.mod 参考](gomod-ref)。

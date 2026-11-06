@@ -11,6 +11,31 @@ import (
 )
 
 func StrictJSON(b []byte, v any) error {
+	cacheable := false
+	if rv := reflect.ValueOf(v); rv.IsValid() && rv.Kind() == reflect.Pointer && !rv.IsNil() {
+		cacheable = rv.Elem().IsZero()
+	}
+	if cacheable && memoJSON(b, v, false) {
+		return nil
+	}
+	if cacheable {
+		if used, err := persistentJSON(b, v); used {
+			if err == nil {
+				memoJSON(b, v, true)
+			}
+			return err
+		}
+	}
+	if err := strictJSONDecode(b, v); err != nil {
+		return err
+	}
+	if cacheable {
+		memoJSON(b, v, true)
+	}
+	return nil
+}
+
+func strictJSONDecode(b []byte, v any) error {
 	if !utf8.Valid(b) {
 		return fmt.Errorf("invalid JSON UTF-8")
 	}
@@ -99,5 +124,8 @@ func StrictJSON(b []byte, v any) error {
 	}
 	d = json.NewDecoder(bytes.NewReader(b))
 	d.DisallowUnknownFields()
-	return d.Decode(v)
+	if err := d.Decode(v); err != nil {
+		return err
+	}
+	return nil
 }

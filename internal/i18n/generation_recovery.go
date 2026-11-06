@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"archive/tar"
+	"archive/zip"
 	"bytes"
 	"compress/gzip"
 	"errors"
@@ -178,7 +179,49 @@ func collectGenerationRecoverySource(source string, expected map[string]Generati
 		candidates[name] = append(candidates[name], generationRecoveryCandidate{source: source, data: data})
 		return nil, nil
 	}
+	if strings.HasSuffix(strings.ToLower(source), ".zip") {
+		return collectGenerationRecoveryZIP(source, expected, candidates)
+	}
 	return collectGenerationRecoveryArchive(source, expected, candidates)
+}
+
+func collectGenerationRecoveryZIP(source string, expected map[string]GenerationBundleExpectedOutput, candidates map[string][]generationRecoveryCandidate) ([]GenerationRecoveryIssue, error) {
+	archive, err := zip.OpenReader(source)
+	if err != nil {
+		return []GenerationRecoveryIssue{{Source: source, Reason: "open recovery ZIP: " + err.Error()}}, nil
+	}
+	defer archive.Close()
+	issues := []GenerationRecoveryIssue{}
+	for _, f := range archive.File {
+		clean, ok := safeGenerationRecoveryArchivePath(f.Name)
+		if !ok {
+			issues = append(issues, GenerationRecoveryIssue{Source: source, Reason: "unsafe ZIP member"})
+			continue
+		}
+		name := path.Base(clean)
+		out, wanted := expected[name]
+		if !wanted {
+			continue
+		}
+		member := source + "!" + clean
+		if !f.Mode().IsRegular() || f.UncompressedSize64 > uint64(generationRecoveryMaxCandidateSize) {
+			issues = append(issues, GenerationRecoveryIssue{Source: member, Output: out.BundlePath, Reason: "invalid ZIP recovery member"})
+			continue
+		}
+		r, err := f.Open()
+		if err != nil {
+			issues = append(issues, GenerationRecoveryIssue{Source: member, Reason: err.Error()})
+			continue
+		}
+		b, readErr := io.ReadAll(io.LimitReader(r, generationRecoveryMaxCandidateSize+1))
+		closeErr := r.Close()
+		if readErr != nil || closeErr != nil || uint64(len(b)) != f.UncompressedSize64 {
+			issues = append(issues, GenerationRecoveryIssue{Source: member, Reason: fmt.Sprintf("incomplete ZIP recovery member: %v %v", readErr, closeErr)})
+			continue
+		}
+		candidates[name] = append(candidates[name], generationRecoveryCandidate{source: member, data: b})
+	}
+	return issues, nil
 }
 func collectGenerationRecoveryDirectory(source string, expected map[string]GenerationBundleExpectedOutput, candidates map[string][]generationRecoveryCandidate) ([]GenerationRecoveryIssue, error) {
 	entries, err := os.ReadDir(source)

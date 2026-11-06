@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -15,13 +16,16 @@ import (
 
 const compatibilityFixtureGlossary = "locale: zh-CN\nmandatory:\n  Go: Go\nkeep:\n  - Go\n  - gofmt\n"
 
-func compatibilityFixture(t *testing.T) (string, *Catalog, string) {
+func compatibilityFixture(t *testing.T, configure ...func(*Catalog)) (string, *Catalog, string) {
 	t.Helper()
 	root := t.TempDir()
 	copyBundleAuthority(t, root, []string{"locales/zh-CN/locale.json"})
 	catalog := retranslationTestCatalog(3)
 	catalog.Pages[0].Source = []byte("* Page\n\nUse `Go` on this page. Transaction data. Run gofmt afterward.\n")
 	catalog.Pages[0].SourceSHA256 = sum(catalog.Pages[0].Source)
+	for _, configure := range configure {
+		configure(catalog)
+	}
 	writeSnapshotSource(t, root, "locales/zh-CN/glossary.yaml", []byte(compatibilityFixtureGlossary))
 	if _, _, err := RecordGlossaryReview(root, "zh-CN", "original", "independent-reviewer", "passed", nil); err != nil {
 		t.Fatal(err)
@@ -130,6 +134,97 @@ func TestGlossaryCompatibilityImpactVisibility(t *testing.T) {
 			}
 		})
 	}
+
+	t.Run("new preferred already present", func(t *testing.T) {
+		want := "事务"
+		d := GlossarySemanticDelta{Category: "preferred", Term: "transaction", New: &want}
+		ok, reasons := classifyGlossaryContext(GlossaryCompatibilityContext{Parser: "plain-visible/v1", Source: "Transactions are useful.", Target: "事务很有用。"}, []GlossarySemanticDelta{d})
+		if !ok || !reflect.DeepEqual(reasons, []string{"preferred_target_already_present"}) {
+			t.Fatalf("compatible=%v reasons=%v", ok, reasons)
+		}
+	})
+
+	t.Run("new preferred canonical singular target is compliance", func(t *testing.T) {
+		want := "goroutine"
+		d := GlossarySemanticDelta{Category: "preferred", Term: "goroutines", New: &want}
+		ok, reasons := classifyGlossaryContext(GlossaryCompatibilityContext{Parser: "plain-visible/v1", Source: "Two goroutines run.", Target: "goroutine"}, []GlossarySemanticDelta{d})
+		if !ok || !reflect.DeepEqual(reasons, []string{"preferred_target_already_present"}) {
+			t.Fatalf("compatible=%v reasons=%v", ok, reasons)
+		}
+	})
+
+	t.Run("new preferred does not carry residual source term", func(t *testing.T) {
+		want := "goroutine"
+		d := GlossarySemanticDelta{Category: "preferred", Term: "goroutines", New: &want}
+		ok, reasons := classifyGlossaryContext(GlossaryCompatibilityContext{Parser: "plain-visible/v1", Source: "Two goroutines run.", Target: "goroutine 与 goroutines 都出现。"}, []GlossarySemanticDelta{d})
+		if ok || !reflect.DeepEqual(reasons, []string{"preferred_source_term_present"}) {
+			t.Fatalf("compatible=%v reasons=%v", ok, reasons)
+		}
+	})
+
+	t.Run("changed preferred still affected", func(t *testing.T) {
+		before, want := "交易", "事务"
+		d := GlossarySemanticDelta{Category: "preferred", Term: "transaction", Old: &before, New: &want}
+		ok, reasons := classifyGlossaryContext(GlossaryCompatibilityContext{Parser: "plain-visible/v1", Source: "Transactions are useful.", Target: "事务很有用。"}, []GlossarySemanticDelta{d})
+		if ok || !reflect.DeepEqual(reasons, []string{"preferred_source_term_present"}) {
+			t.Fatalf("compatible=%v reasons=%v", ok, reasons)
+		}
+	})
+
+	t.Run("new mandatory exact label already present", func(t *testing.T) {
+		want := "运行"
+		d := GlossarySemanticDelta{Category: "mandatory", Term: "Run", New: &want}
+		ok, reasons := classifyGlossaryContext(GlossaryCompatibilityContext{Parser: "plain-visible/v1", Source: "Run", Target: "运行"}, []GlossarySemanticDelta{d})
+		if !ok || !reflect.DeepEqual(reasons, []string{"mandatory_exact_target_already_present"}) {
+			t.Fatalf("compatible=%v reasons=%v", ok, reasons)
+		}
+	})
+
+	t.Run("new mandatory embedded text remains affected", func(t *testing.T) {
+		want := "运行"
+		d := GlossarySemanticDelta{Category: "mandatory", Term: "Run", New: &want}
+		ok, reasons := classifyGlossaryContext(GlossaryCompatibilityContext{Parser: "plain-visible/v1", Source: "Click Run now.", Target: "现在单击运行。"}, []GlossarySemanticDelta{d})
+		if ok || !reflect.DeepEqual(reasons, []string{"mandatory_source_term_present"}) {
+			t.Fatalf("compatible=%v reasons=%v", ok, reasons)
+		}
+	})
+
+	t.Run("new keep remains affected even when literal exists", func(t *testing.T) {
+		want := "FIPS 140"
+		d := GlossarySemanticDelta{Category: "keep", Term: "FIPS 140", New: &want}
+		ok, reasons := classifyGlossaryContext(GlossaryCompatibilityContext{Parser: "plain-visible/v1", Source: "FIPS 140 standard", Target: "FIPS 140 标准"}, []GlossarySemanticDelta{d})
+		if ok || !reflect.DeepEqual(reasons, []string{"keep_source_term_present"}) {
+			t.Fatalf("compatible=%v reasons=%v", ok, reasons)
+		}
+	})
+}
+
+func TestGlossaryCompatibilitySourceTermInflectionBoundaries(t *testing.T) {
+	tests := []struct {
+		name string
+		text string
+		term string
+		want bool
+	}{
+		{name: "Go is not goroutines", text: "Go has packages.", term: "goroutines", want: false},
+		{name: "for is not Format", text: "Use for loops.", term: "Format", want: false},
+		{name: "to is not toolchain", text: "Learn to write Go.", term: "toolchain", want: false},
+		{name: "data is not database", text: "Pass data between functions.", term: "database", want: false},
+		{name: "plural s", text: "Transactions are useful.", term: "transaction", want: true},
+		{name: "doubled consonant ing", text: "Programs start running.", term: "Run", want: true},
+		{name: "plural ies", text: "libraries are useful", term: "library", want: true},
+		{name: "doubled consonant ed", text: "The source was formatted.", term: "Format", want: true},
+		{name: "formatting", text: "Formatting is available.", term: "Format", want: true},
+		{name: "resetting", text: "Resetting the tour.", term: "Reset", want: true},
+		{name: "punctuation-separated phrase", text: "SQL-transaction example", term: "SQL transaction", want: true},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := compatibilitySourceTermPresent(test.text, test.term); got != test.want {
+				t.Fatalf("compatibilitySourceTermPresent(%q, %q)=%v, want %v", test.text, test.term, got, test.want)
+			}
+		})
+	}
 }
 
 func TestGlossaryCompatibilityByteOnlyLineagePreservesHistory(t *testing.T) {
@@ -207,6 +302,236 @@ func TestGlossaryCompatibilityByteOnlyLineagePreservesHistory(t *testing.T) {
 	if r := ResolveGlossaryCompatibility(root, "zh-CN", g1, g3, "tu:lesson/2", catalog); r.Status != "compatible" || len(r.Chain) != 2 {
 		t.Fatalf("re-assessed exact context chain=%+v", r)
 	}
+}
+
+func TestPreparedGlossaryCompatibilityInvocationLocal122UnitScope(t *testing.T) {
+	root, catalog, oldSHA := compatibilityFixture(t)
+	newSHA := compatibilityChange(t, root, "# byte change\n"+compatibilityFixtureGlossary, "prepared-review")
+	if _, _, err := AssessGlossaryCompatibility(root, "zh-CN", oldSHA, catalog); err != nil {
+		t.Fatal(err)
+	}
+
+	stats := &glossaryCompatibilityPrepareStats{}
+	prepared := newPreparedGlossaryCompatibility(root, "zh-CN", catalog, stats)
+	for i := 1; i <= 122; i++ {
+		scope := "tu:synthetic/" + strconv.Itoa(i)
+		if i%3 == 0 {
+			scope = "tu:lesson/" + strconv.Itoa(i%3+1)
+		}
+		resolution := prepared.Resolve(oldSHA, newSHA, scope)
+		if strings.HasPrefix(scope, "tu:lesson/") && resolution.Status != "compatible" {
+			t.Fatalf("scope %s: %+v", scope, resolution)
+		}
+	}
+	if stats.PrepareCalls != 1 || stats.FullReviewChecks != 1 || stats.ContextInventoryBuilds != 1 || stats.EvidenceSetReads != 1 || stats.EvidenceVerifications != 1 || stats.EdgePreparations != 1 {
+		t.Fatalf("prepared counts after 122 scopes: %+v", *stats)
+	}
+	if resolution := prepared.Resolve(oldSHA, newSHA, "tu:lesson/2"); resolution.Status != "compatible" {
+		t.Fatalf("cached compatible scope: %+v", resolution)
+	}
+	if stats.PrepareCalls != 1 || stats.EvidenceVerifications != 1 {
+		t.Fatalf("cached resolution repeated preparation: %+v", *stats)
+	}
+}
+
+func TestPreparedGlossaryCompatibilityExactIsLocaleAgnostic(t *testing.T) {
+	sha := strings.Repeat("a", 64)
+	for _, locale := range []string{"zh-CN", "fr-FR", "ja-JP"} {
+		stats := &glossaryCompatibilityPrepareStats{}
+		prepared := newPreparedGlossaryCompatibility("unused", locale, &Catalog{}, stats)
+		if resolution := prepared.Resolve(sha, sha, "tu:fixture/1"); resolution.Status != "exact" {
+			t.Fatalf("locale %s: %+v", locale, resolution)
+		}
+		if *stats != (glossaryCompatibilityPrepareStats{}) {
+			t.Fatalf("locale %s exact transition prepared compatibility world: %+v", locale, *stats)
+		}
+	}
+}
+
+func TestPreparedGlossaryCompatibilityNonExactIsLocaleAgnostic(t *testing.T) {
+	oldSHA := strings.Repeat("a", 64)
+	newSHA := strings.Repeat("b", 64)
+	scope := "tu:fixture/1"
+	for _, locale := range []string{"zh-CN", "fr-FR", "ja-JP"} {
+		evidence := &GlossaryCompatibilityEvidence{
+			Locale:      locale,
+			OldGlossary: GlossaryArchiveReference{SHA256: oldSHA},
+			NewGlossary: GlossaryArchiveReference{SHA256: newSHA},
+			Compatible:  []GlossaryCompatibilityScope{{ID: scope}},
+			Lineage:     []GlossaryArchiveReference{},
+		}
+		ref := GlossaryArchiveReference{Path: "data/glossary-compatibility/" + locale + "/" + strings.Repeat("c", 64) + ".json", SHA256: strings.Repeat("d", 64)}
+		preparedEvidence := preparedGlossaryCompatibilityEvidence{evidence: evidence, reference: ref, compatible: map[string]bool{scope: true}}
+		prepared := &PreparedGlossaryCompatibility{
+			locale: locale, prepared: true, terminalSHA: newSHA,
+			edges: map[string]preparedGlossaryCompatibilityEdge{
+				oldSHA: {branches: map[string]bool{newSHA: true}, valid: []preparedGlossaryCompatibilityEvidence{preparedEvidence}},
+			},
+			resolutions: map[glossaryCompatibilityResolutionKey]GlossaryCompatibilityResolution{},
+		}
+		resolution := prepared.Resolve(oldSHA, newSHA, scope)
+		if resolution.Status != "compatible" || resolution.Reason != "verified_lineage" || !reflect.DeepEqual(resolution.Chain, []GlossaryArchiveReference{ref}) {
+			t.Fatalf("locale %s: %+v", locale, resolution)
+		}
+	}
+}
+
+func TestQualityCheckEvaluationMemoizesEffectiveGlossaryLineage(t *testing.T) {
+	root, catalog, oldSHA := compatibilityFixture(t)
+	newSHA := compatibilityChange(t, root, "# byte change\n"+compatibilityFixtureGlossary, "memoized-lineage")
+	if _, _, err := AssessGlossaryCompatibility(root, "zh-CN", oldSHA, catalog); err != nil {
+		t.Fatal(err)
+	}
+	snapshot, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifestData, err := os.ReadFile(qualityCheckSnapshotManifestPath(root, "zh-CN", "qc-002"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	results := &QualityCheckResults{
+		SchemaVersion: QualityCheckResultsSchemaVersion, EvidenceType: QualityCheckResultsEvidenceType,
+		Locale: "zh-CN", SnapshotID: "qc-002", SnapshotManifestSHA256: sum(manifestData),
+		PreviousSnapshotID: "qc-001", Rubric: TranslationQualityRubric, Results: []QualityCheckResult{},
+	}
+	if err := writeQualityCheckResults(qualityCheckResultsPath(root, "zh-CN", "qc-002"), results); err != nil {
+		t.Fatal(err)
+	}
+
+	evaluationStats := &qualityCheckEvaluationStats{}
+	compatibilityStats := &glossaryCompatibilityPrepareStats{}
+	evaluation := newQualityCheckEvaluationWithStats(root, "zh-CN", catalog, evaluationStats, compatibilityStats)
+	for i := 0; i < 2; i++ {
+		gotSnapshot, effective, err := evaluation.loadEffectiveQualityCheckResults("qc-002", map[string]bool{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if gotSnapshot.SnapshotID != snapshot.SnapshotID || gotSnapshot.GlossarySHA256 != newSHA || len(effective) != snapshot.UnitCount {
+			t.Fatalf("effective lineage snapshot=%+v results=%d", gotSnapshot, len(effective))
+		}
+	}
+	for i := 0; i < 2; i++ {
+		if _, err := evaluation.readSnapshotUnitRepositoryEvidence(snapshot.SnapshotID, snapshot.Units[0]); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if evaluationStats.EffectiveMaterializations["qc-001"] != 1 || evaluationStats.EffectiveMaterializations["qc-002"] != 1 || evaluationStats.EffectiveCacheHits != 1 {
+		t.Fatalf("effective materialization counts: %+v", *evaluationStats)
+	}
+	if evaluationStats.RepositoryEvidenceLoads != 1 || evaluationStats.RepositoryEvidenceCacheHits != 1 {
+		t.Fatalf("repository evidence counts: %+v", *evaluationStats)
+	}
+	if compatibilityStats.PrepareCalls != 1 || compatibilityStats.FullReviewChecks != 1 || compatibilityStats.ContextInventoryBuilds != 1 || compatibilityStats.EvidenceSetReads != 1 || compatibilityStats.EdgePreparations != 1 {
+		t.Fatalf("compatibility lineage preparation counts: %+v", *compatibilityStats)
+	}
+}
+
+func TestPreparedQualityCheckEvaluationPreservesRatingsFinalizationAndRevision(t *testing.T) {
+	for _, rating := range []string{"B", "C", "D"} {
+		t.Run(rating, func(t *testing.T) {
+			root, catalog, _ := compatibilityFixture(t)
+			addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
+			snapshot, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"})
+			if err != nil {
+				t.Fatal(err)
+			}
+			scope, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-001"})
+			if err != nil || scope.CarryForwardCount != 2 || scope.PendingCount != 1 || scope.Pending[0].Reason != QualityCheckScopeReasonIdentityChanged || scope.Pending[0].RequiredAction != QualityCheckActionRequired {
+				t.Fatalf("initial revision scope=%+v err=%v", scope, err)
+			}
+			if _, err := buildQualityCheckFinalization(root, catalog, "zh-CN", "qc-002", nil); err == nil || !strings.Contains(err.Error(), "A-only") {
+				t.Fatalf("pending finalization error=%v", err)
+			}
+			finding := "specific " + rating + " revision finding"
+			if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
+				Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-001",
+				UnitIDs: []string{"lesson/1"}, Rating: rating, Finding: finding,
+			}); err != nil {
+				t.Fatal(err)
+			}
+			scope, err = BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-002"})
+			if err != nil || scope.PendingCount != 1 || scope.Pending[0].Rating != rating || scope.Pending[0].Reason != QualityCheckScopeReasonNonA || scope.Pending[0].RequiredAction != QualityCheckActionRevisionRequired {
+				t.Fatalf("non-A scope=%+v err=%v", scope, err)
+			}
+			if _, err := buildQualityCheckFinalization(root, catalog, "zh-CN", "qc-002", nil); err == nil || !strings.Contains(err.Error(), "A-only") {
+				t.Fatalf("non-A finalization error=%v", err)
+			}
+			exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+				Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-002",
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			manifest := readRetranslationManifest(t, root, exported.BatchID)
+			if manifest.UnitCount != 1 || manifest.Units[0].PreviousSnapshotID != "qc-002" || manifest.Units[0].RevisionFeedbackSource != "quality_check" || manifest.Units[0].PreviousRating != rating || manifest.Units[0].PreviousFinding != finding {
+				t.Fatalf("revision provenance=%+v", manifest.Units)
+			}
+			if rating == "B" {
+				if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+					Locale: "zh-CN", UnitIDs: []string{"lesson/2"}, AllowReexport: true, PreviousSnapshotID: snapshot.SnapshotID,
+				}); err == nil || !strings.Contains(err.Error(), "Quality Check is already A") {
+					t.Fatalf("carried A revision error=%v", err)
+				}
+			}
+		})
+	}
+}
+
+func TestPreparedQualityCheckEvaluationPreservesRubricAndCycleFailures(t *testing.T) {
+	t.Run("rubric changed", func(t *testing.T) {
+		root, catalog, _ := compatibilityFixture(t)
+		previous, err := readQualityCheckSnapshot(root, "zh-CN", "qc-001", false)
+		if err != nil {
+			t.Fatal(err)
+		}
+		results, err := readQualityCheckResults(root, "zh-CN", previous)
+		if err != nil {
+			t.Fatal(err)
+		}
+		results.Rubric = "translation-quality/legacy"
+		if err := writeQualityCheckResults(qualityCheckResultsPath(root, "zh-CN", "qc-001"), results); err != nil {
+			t.Fatal(err)
+		}
+		if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
+			t.Fatal(err)
+		}
+		scope, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-001"})
+		if err != nil || scope.PendingCount != scope.UnitCount {
+			t.Fatalf("rubric scope=%+v err=%v", scope, err)
+		}
+		for _, unit := range scope.Pending {
+			if unit.Reason != QualityCheckScopeReasonRubricChanged || unit.RequiredAction != QualityCheckActionRequired {
+				t.Fatalf("rubric pending=%+v", unit)
+			}
+		}
+	})
+
+	t.Run("cycle", func(t *testing.T) {
+		root, catalog, _ := compatibilityFixture(t)
+		for _, snapshotID := range []string{"qc-002", "qc-003"} {
+			if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: snapshotID}); err != nil {
+				t.Fatal(err)
+			}
+		}
+		for snapshotID, previousID := range map[string]string{"qc-002": "qc-003", "qc-003": "qc-002"} {
+			manifestData, err := os.ReadFile(qualityCheckSnapshotManifestPath(root, "zh-CN", snapshotID))
+			if err != nil {
+				t.Fatal(err)
+			}
+			results := &QualityCheckResults{
+				SchemaVersion: QualityCheckResultsSchemaVersion, EvidenceType: QualityCheckResultsEvidenceType,
+				Locale: "zh-CN", SnapshotID: snapshotID, SnapshotManifestSHA256: sum(manifestData),
+				PreviousSnapshotID: previousID, Rubric: TranslationQualityRubric, Results: []QualityCheckResult{},
+			}
+			if err := writeQualityCheckResults(qualityCheckResultsPath(root, "zh-CN", snapshotID), results); err != nil {
+				t.Fatal(err)
+			}
+		}
+		if _, err := buildQualityCheckFinalization(root, catalog, "zh-CN", "qc-002", nil); err == nil || !strings.Contains(err.Error(), "cycle") {
+			t.Fatalf("cycle finalization error=%v", err)
+		}
+	})
 }
 
 func TestGlossaryCompatibilityPreciseUnitAndSEO(t *testing.T) {
@@ -375,6 +700,30 @@ func TestGlossaryCompatibilityStrictEvidenceAndArchive(t *testing.T) {
 	}
 	if err := writeCompatibilityImmutable(root, path, []byte("different")); err == nil {
 		t.Fatal("immutable overwrite allowed")
+	}
+	// A self-consistent artifact produced by an obsolete classifier remains
+	// immutable but must not prevent a new assessment from writing current
+	// evidence for the same glossary edge.
+	legacy := *e
+	legacy.Compatible = append([]GlossaryCompatibilityScope(nil), e.Compatible...)
+	legacy.Compatible[0].Reasons = []string{"obsolete_classifier_result"}
+	legacy.Identity = ""
+	legacy.Identity = sum(mustJSON(&legacy))
+	legacyPath, _ := glossaryCompatibilityEvidencePath("zh-CN", legacy.Identity)
+	legacyData, _ := marshalGlossaryReviewJSON(&legacy)
+	writeSnapshotSource(t, root, legacyPath, legacyData)
+	if CheckGlossaryCompatibilityEvidence(root, "zh-CN", legacyPath, catalog) == nil {
+		t.Fatal("obsolete classifier evidence accepted")
+	}
+	if err := os.Remove(filepath.Join(root, path)); err != nil {
+		t.Fatal(err)
+	}
+	reassessed, reassessedPath, err := AssessGlossaryCompatibility(root, "zh-CN", g1, catalog)
+	if err != nil || reassessed.Identity != e.Identity || reassessedPath != path {
+		t.Fatalf("reassessment=%+v path=%q err=%v", reassessed, reassessedPath, err)
+	}
+	if err := CheckGlossaryCompatibilityEvidence(root, "zh-CN", reassessedPath, catalog); err != nil {
+		t.Fatal(err)
 	}
 	if _, err := readCompatibilityFile(root, "../outside"); err == nil {
 		t.Fatal("traversal allowed")

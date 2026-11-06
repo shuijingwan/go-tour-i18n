@@ -104,7 +104,7 @@
 - 65 个 community locale 已处于 `production_state=live`。
 - 成熟的 Tour package 继续作为现有 Production coverage；Site v2 在其上增量扩展，不重做机器证据证明 unchanged 的可信 Tour 成果。
 - Site v2 当前 frozen English source authority 为 `golang/website@db076098077c07d3cef1b85a2cf56ff52777f587`。
-- `learn-docs-v1` 当前包含 49 个完整 Page TranslationUnit；structured assets 另覆盖 site shell 与 Learn data。
+- `learn-docs-v1` 当前包含 51 个完整 Page TranslationUnit（initial Generation 与 QC 均为30+21两次独立 invocation）；structured assets 另覆盖 site shell 与 Learn data。
 - V2-C1 upstream sync 当前 deferred；只有维护者明确重开后才执行一次正式 reconciliation。
 - Site v2 locale campaign 的执行顺序与当前规划 authority 见 [`docs/LOCALE_ROADMAP.md`](docs/LOCALE_ROADMAP.md)。
 

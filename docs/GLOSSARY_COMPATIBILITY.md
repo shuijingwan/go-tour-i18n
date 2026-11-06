@@ -55,17 +55,25 @@ Schema identity 为 `go-learning/glossary-compatibility/v1`，JSON Schema 为 `d
 
 Normalization `tour-glossary-normalization/v1` 使用当前 glossary loader 的窄行格式，保留其实际消费的 literal key/value；支持 `mandatory`、`preferred`、`forbidden`、`keep`。排序后比较 category/term/old/new，新增/删除分别保留 null。full-line comments、section/entry order、表示空白不算语义变化，但不降低完整 Review 的 byte gate。重复 section/entry、locale mismatch、encoding ambiguity、unsupported legacy `terms` 或不支持的语法均拒绝 normalization。
 
-Impact algorithm `tour-visible-glossary-impact/v1` 复用 validator 的 `visibleCandidateTextBytes`、present program-font/link/directive/preformatted 保护语义、Go Example comment parser，以及 forbidden 的 Unicode/apostrophe boundary。rich UI 使用现有 markup whitelist 提取 label 文本并去掉 link target；plain UI 保留 literal 可见文字。
+Impact algorithm `tour-visible-glossary-impact/v2` 复用 validator 的 `visibleCandidateTextBytes`、present program-font/link/directive/preformatted 保护语义、Go Example comment parser，以及 forbidden 的 Unicode/apostrophe boundary。rich UI 使用现有 markup whitelist 提取 label 文本并去掉 link target；plain UI 保留 literal 可见文字。v2 只增加一条窄的 existing-target compliance 证明：避免“把历史 target 早已稳定使用的首选术语正式登记进 glossary”机械等价为语言内容变化；它不执行新的语言审核。
 
 - Delta 为空：`semantic_delta_empty`，所有 exact context compatible。
 - 只有约束删除：`constraint_removed`，不机械要求重译。
-- 新增/改变 mandatory/preferred/keep：在真实可翻译 source 中出现或存在保守的大小写、空白、标点、词形碰撞时 affected；不存在时 `changed_source_term_absent`。keep 当前版本不尝试语言判断 compliant，出现就 affected。
+- 新增 `preferred`：source 不出现时仍为 `changed_source_term_absent`；source 出现、同一 formal target 已逐字包含新增 target literal，且 target 中没有继续残留该 source term（source 与 target literal 相同的规则除外）时，以 `preferred_target_already_present` 证明 compatible。该证明只复用已有 accepted target，不表示 preferred 是无条件字符串替换，也不授权新 Generation 跳过当前 glossary。source 出现但 target 无该 literal 时仍 `preferred_source_term_present` affected。
+- 新增 `mandatory`：只有 formal context 本身就是 exact source label，且现有 target 与新增 mandatory target exact 相等时，以 `mandatory_exact_target_already_present` 证明 compatible；普通 Page/段落中出现该 source term 仍 `mandatory_source_term_present` affected。
+- 已存在的 `mandatory` / `preferred` 映射发生 target 变化时，只要 source 命中仍 affected；不得因为新 target 碰巧出现就把真正的规则变更当成 carry。新增/改变 `keep` 仍不尝试语言 compliant 判断，source 命中即 affected，因为它会改变 protector / protected input 语义。
 - 新增 forbidden：visible target 的现有 boundary 规则命中时 affected；URL、link target、program font、directive、protected preformatted/Go code 不作为译文命中。可翻译 Go comments 和 link labels 仍检查。
 - 无可靠 source→target mapping 的 mixed Go/JS/template surface：任何新增/改变约束均为 `unknown_parser` affected；不扫描 raw source 后宣称 absent。空 delta/纯放宽仍 compatible。
+
+`preferred_target_already_present` 是保守的历史复用证据，不是目标语言 NLP 判断：只做 whitespace-normalized exact literal containment；target literal 以 ASCII 字母/数字/下划线起止时还要求对应完整词边界，因此 `goroutines` 不能冒充已符合 `goroutine`。若 target 使用其他同义表达、语序变化后不再包含 literal、仍残留该 source term、或 parser 无法给出可靠 source→target pair，则 fail closed 为 affected。`mandatory_exact_target_already_present` 更严格，只接受 exact label pair。
 
 Inventory 精确包含 `tu:<UnitID>`、`seo-page:<page-id>`（完整 source/canonical target）、`seo:<page-id>`（v2 canonical English description + localized description）、`ui:<key>`、`article:<article-file>`、`surface:<surface-id>`，保存 source/target 与实际文件 refs/hash。每类 formal exact-set 由现有 Catalog/UI/article/Course/surface parser 确定。UI、article、Course asset 的 whole-file refs 是保守的当前性绑定：其中任一改变需重新 assess；不在扫描遗漏时默认 compatible。
 
 ## Lineage、QC 与恢复
+
+本节逐 edge lineage 是旧 reader 与未建立 checkpoint 的 compatibility/recovery 合同。新 shared current authorization 按[历史/当前解耦 contract](CURRENT_TRANSLATION_AUTHORIZATION.md)从 original Reviewer glossary 直接评估 actual current endpoint；它仍复用本文件的 semantic algorithm、完整 current Unified Review、exact source/candidate 与 current validator，不接受 unknown，不制造 A。checkpoint 的正常 downstream 不再要求恢复中间 compatibility/mutable states；既有 chain 和其他 derived consumer 的独立 gates 保留原 bytes 与严格边界。
+
+100% predecessor A carry-forward、0 新 Reviewer Unit 是合法 incremental finalization：`quality-check finalize --locale <locale> --snapshot-id <current> --previous-snapshot-id <finalized-predecessor>` 使用与 scope 完全相同的 effective scope，要求全部 A、零 pending/B/C/D，并验证 predecessor finalized authority。无需也不得创建空/假的 current `quality-check-results.json`。finalization 的 additive optional `previous_snapshot_id` 固定该选择，`predecessor_finalization` 绑定其 exact path/file SHA；`quality_check_results` 只列真实参与 lineage 的历史文件。Unit 保留真实 `source_snapshot_id` 与 exact `compatibility_chain`，当前 manifest/glossary 和完整 CURRENT Review gate 不变。已有 results 的 persisted predecessor 与显式参数冲突时拒绝；旧 finalization bytes 不修改。
 
 Resolver 从原 SHA 沿唯一连续 old→new chain 到实际当前 glossary；每一跳对请求 scope compatible、receipt/archives/context/self identity 可验证才放行。历史中间 glossary 的完整 passed Review 仍绑定其 immutable bytes，链末端必须有当前完整 Review PASS。检查历史中间 Snapshot 时也验证它后面的路径能安全到达当前 glossary。不同 new SHA 分支一律 ambiguous，不猜路径；同一边的 stale context 版本不能替代唯一 current 版本。
 
@@ -96,9 +104,25 @@ go run -mod=readonly ./cmd/tour-i18n glossary-compatibility config-baseline \
 
 独立文件 `data/locale-surface-reviews/<locale>/<review-id>.config-baseline.json` 使用 `go-learning/tour-surface-config-baseline/v1`，绑定原 gate path/file SHA、原 whole-file SHA、原 config bytes（`data/surface-config-history/<sha>.go`）、结构化 projections/self identity。current-check 重建原/当前 projection 并比较；无法取得真实原 bytes 时保持 stale。既有 v1/v2/v3 registry/English UI/Production compatibility 继续按原 gate schema组合，不产生新的 registry兼容权限。
 
-Surface Reviewer transport 继续导出真实完整当前文件；包的原 inputs projection 形状保持，避免为新增 evidence 机械改变当前 65 locale closure。`sitecontent` 的历史 completion 在确有 glossary/config变化时，验证 locale-owned全部原 refs，并只用已验证 archive/baseline 重建原 glossary/config package 部分，要求重建后的**完整原 context digest** 与历史 completion 一致。不能改写历史 completion或忽略其他 source/key-set/deployment/context变化。`internal/sitecontent` 的 FrozenUpstreamCommit 引用 debt 保留，V2-B 不做 namespace refactor。
+Surface Reviewer transport 继续导出真实完整当前文件。无 exact-current schema-v4 full Surface A checkpoint 时，历史 completion 仍走原 archive/baseline 与完整 context digest fail-closed 路径。合法 historical completion root 加上 exact-current v4 Surface A、current Unified Review、glossary-bound finalized A-only TU、canonical authorization 和 strict Course SEO，可组成一次 modern current Tour checkpoint，不改旧 closure、不新增 checkpoint schema、不恢复所有旧 mutable bytes。后续 Site v2 仍 delta-aware；unchanged Tour carry，new/changed/affected 精确审核，不把这次 baseline reset 规定为长期全量重审。
 
 ## 执行与验证边界
+
+### TranslationUnit successor 与 derived consumer 边界
+
+Course SEO history/recovery WIP 保留但停止扩展且不得 apply，不再是 current checkpoint 主路径。TU receipt 不授权 SEO；当前 inventory/assessment/strict loader 始终使用 current bytes 与 `seo:`/`seo-page:` 双 scope。旧 compatibility、closure、Surface gate 不修改；later derived consumer 不因 TU successor 自动 carry。
+
+Native promotion receipt 与 historical promotion recovery 的区别及 identity contract 见 [Site v2 Architecture](SITE_V2_ARCHITECTURE.md#accepted-translationunit-target-successor-authority)。schema/identity/proof_inputs exact-set 与原 compatibility evidence 永不修改。historical TU event 重新验证原 finalized QC/carry-forward，以及 immutable inventory 的 schema/self identity/delta/classification/lineage；只把 TU context exact-set 重新绑定到 source/selected candidate bytes，不要求 non-TU mutable historical refs 今日仍 exact。完整 source/glossary/candidate/validation/finalization/current-target 链不可省略。历史 A judgment 不等于 current target 授权。
+
+多段 historical TU compatibility chain 逐 edge 使用自身 recorded inventory，不把 latest selected candidate 或后继 edge 的 inventory 套到 predecessor。每条 edge 的 TU scope 仍必须匹配完整 formal membership、parser、source 与 exact source ref；记录的 selected candidate path 必须可读，bytes 与 target/ref SHA 必须 exact。后续合法 revision/promotion/reassessment 不改写旧 A；missing/tampered evidence、断链或 affected classification 仍不授权 carry。此重绑定仅用于 TU historical verification，ordinary SEO/Surface inventory 继续使用完整 current world。
+
+current successor selection 验证 receipt 绑定的完整 finalized Snapshot membership 对应的 canonical bytes，不只比较 changed transitions。旧 recovery 的 changed targets 即使仍匹配，其 unchanged Unit 如已由后续正式 promotion 替换，该 receipt 也只是 historical event，不能冒充 current authorization。
+
+历史 successor event 按原 Snapshot 的 archived glossary、原 finalized QC/compatibility 和 validation context 验证，不要求原 glossary SHA 永远等于未来 current glossary。后续 glossary refresh 的 current authorization 则另须逐 TU 的 current verified compatibility、完整 CURRENT Review、exact source/candidate identity，以及绑定当前 glossary 的 A-only finalized Snapshot。缺少此新 finalization 时报告 current authorization blocked，历史 A 数量不变。历史 context override 不用于新的 compatibility assessment 或任何 derived consumer。
+
+recorded status bytes 仅绑定 promotion/recovery 完成时的 projection，合法 mutable status 更新不使 TU proof stale；canonical 的 exact-SHA 校验不变。存在 pending/unrecovered promotion staging 时共享 verifier 拒绝 authority，不能利用旧 receipt 或 compatibility 绕过中间态。
+
+TU event 的历史验证不授权 `seo-page:*`、`seo:*`、UI、Surface、runtime/config。它们的普通 consumer 继续验证完整 current inventory、affected-scope 与 semantic delta；Page target 更新后的 Course SEO 仍可 stale，必须独立正式 refresh/review。non-TU recorded history 不是其 current authorization；TU-critical immutable evidence 与 current canonical exact-SHA 规则不放宽。
 
 评估和 current-check 是本地 deterministic Go workflow，无语言生成、无网络、无 Production。新 Generation Bundle、initial/revision/retry、locale assets、Course localization/maintenance仍要求完整 CURRENT Glossary Review + 当前完整 bytes，旧 artifact compatible 不使旧 transport current。批量 bootstrap 只保存 immutable machine baseline，不代表重新审核。
 

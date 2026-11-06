@@ -1,0 +1,1808 @@
+{
+  "schema_version": 4,
+  "locale": "zh-CN",
+  "review_id": "20261012-zh-CN-tour-current-surface-005",
+  "stage": "locale-level-language-quality-review",
+  "decision": "passed",
+  "reviewer": "chatgpt-zh-CN-reviewer",
+  "inputs": {
+    "tour_language_context_sha256": "b78cc9826a91f6d00318cd2add6d32db948f7dc7f628dfda9604e37a83bc9a54",
+    "tour_config_projection": {
+      "project": {
+        "version": "tour-surface-config-projection/v1",
+        "package": "tour",
+        "declarations": [
+          {
+            "id": "const:FrozenUpstreamCommit,FrozenUpstreamCommitTime",
+            "text": "const (\n\tFrozenUpstreamCommit     = \"db076098077c07d3cef1b85a2cf56ff52777f587\"\n\tFrozenUpstreamCommitTime = \"2026-09-10T14:36:53Z\"\n)",
+            "references": [
+              "FrozenUpstreamCommit",
+              "FrozenUpstreamCommitTime"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "const:supportAudienceMainland,supportAudienceInternational",
+            "text": "const (\n\tsupportAudienceMainland      supportAudience = \"mainland\"\n\tsupportAudienceInternational supportAudience = \"international\"\n)",
+            "references": [
+              "supportAudience",
+              "supportAudienceInternational",
+              "supportAudienceMainland"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:WriteSiteMetadata",
+            "text": "func WriteSiteMetadata(contentDir string, metadata SiteMetadata) error {\n\tif metadata.Development {\n\t\treturn fmt.Errorf(\"production site metadata cannot be development metadata\")\n\t}\n\tif _, err := time.Parse(time.RFC3339, metadata.PublishedAt); err != nil {\n\t\treturn fmt.Errorf(\"parse published_at: %w\", err)\n\t}\n\tif metadata.Locale == \"\" || metadata.Pages \u003c 1 || metadata.Articles \u003c 1 || metadata.UpstreamCommit != FrozenUpstreamCommit || metadata.UpstreamCommitTime != FrozenUpstreamCommitTime {\n\t\treturn fmt.Errorf(\"invalid site metadata\")\n\t}\n\tdata, err := json.MarshalIndent(metadata, \"\", \"  \")\n\tif err != nil {\n\t\treturn fmt.Errorf(\"encode site metadata: %w\", err)\n\t}\n\tdata = append(data, '\\n')\n\tif err := os.WriteFile(filepath.Join(contentDir, \"tour\", \"site-metadata.json\"), data, 0644); err != nil {\n\t\treturn fmt.Errorf(\"write site metadata: %w\", err)\n\t}\n\treturn nil\n}",
+            "references": [
+              "Articles",
+              "Development",
+              "Errorf",
+              "FrozenUpstreamCommit",
+              "FrozenUpstreamCommitTime",
+              "Join",
+              "Locale",
+              "MarshalIndent",
+              "Pages",
+              "Parse",
+              "PublishedAt",
+              "RFC3339",
+              "SiteMetadata",
+              "UpstreamCommit",
+              "UpstreamCommitTime",
+              "WriteFile",
+              "WriteSiteMetadata",
+              "_",
+              "append",
+              "contentDir",
+              "data",
+              "err",
+              "error",
+              "filepath",
+              "fmt",
+              "json",
+              "metadata",
+              "nil",
+              "os",
+              "string",
+              "time"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:formatSiteTime",
+            "text": "func formatSiteTime(t time.Time, profile localeProfile) string {\n\treturn t.In(profile.TimeZone).Format(\"2006-01-02 15:04:05\") + fmt.Sprintf(profile.TimeLabelFormat, profile.TimeLabel)\n}",
+            "references": [
+              "Format",
+              "In",
+              "Sprintf",
+              "Time",
+              "TimeLabel",
+              "TimeLabelFormat",
+              "TimeZone",
+              "fmt",
+              "formatSiteTime",
+              "localeProfile",
+              "profile",
+              "string",
+              "t",
+              "time"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:loadSiteMetadata",
+            "text": "func loadSiteMetadata(content fs.FS) (SiteMetadata, error) {\n\tdata, err := fs.ReadFile(content, \"tour/site-metadata.json\")\n\tif err != nil {\n\t\treturn SiteMetadata{}, fmt.Errorf(\"read site metadata: %w\", err)\n\t}\n\tvar metadata SiteMetadata\n\tdecoder := json.NewDecoder(bytes.NewReader(data))\n\tif err := decoder.Decode(\u0026metadata); err != nil {\n\t\treturn SiteMetadata{}, fmt.Errorf(\"parse site metadata: %w\", err)\n\t}\n\tif err := decoder.Decode(\u0026struct{}{}); err != io.EOF {\n\t\treturn SiteMetadata{}, fmt.Errorf(\"parse site metadata: multiple JSON values\")\n\t}\n\tif metadata.Locale == \"\" || metadata.Pages \u003c 1 || metadata.Articles \u003c 1 || metadata.UpstreamCommit != FrozenUpstreamCommit || metadata.UpstreamCommitTime != FrozenUpstreamCommitTime {\n\t\treturn SiteMetadata{}, fmt.Errorf(\"invalid site metadata\")\n\t}\n\tif metadata.Development {\n\t\tif metadata.PublishedAt != \"\" {\n\t\t\treturn SiteMetadata{}, fmt.Errorf(\"development site metadata must not contain published_at\")\n\t\t}\n\t} else if _, err := time.Parse(time.RFC3339, metadata.PublishedAt); err != nil {\n\t\treturn SiteMetadata{}, fmt.Errorf(\"invalid site metadata published_at: %w\", err)\n\t}\n\treturn metadata, nil\n}",
+            "references": [
+              "Articles",
+              "Decode",
+              "Development",
+              "EOF",
+              "Errorf",
+              "FS",
+              "FrozenUpstreamCommit",
+              "FrozenUpstreamCommitTime",
+              "Locale",
+              "NewDecoder",
+              "NewReader",
+              "Pages",
+              "Parse",
+              "PublishedAt",
+              "RFC3339",
+              "ReadFile",
+              "SiteMetadata",
+              "UpstreamCommit",
+              "UpstreamCommitTime",
+              "_",
+              "bytes",
+              "content",
+              "data",
+              "decoder",
+              "err",
+              "error",
+              "fmt",
+              "fs",
+              "io",
+              "json",
+              "loadSiteMetadata",
+              "metadata",
+              "nil",
+              "time"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:supportAudienceForLocale",
+            "text": "func supportAudienceForLocale(locale string) supportAudience {\n\tif locale == \"zh-CN\" {\n\t\treturn supportAudienceMainland\n\t}\n\treturn supportAudienceInternational\n}",
+            "references": [
+              "locale",
+              "string",
+              "supportAudience",
+              "supportAudienceForLocale",
+              "supportAudienceInternational",
+              "supportAudienceMainland"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:supportForLocale",
+            "text": "func supportForLocale(locale string) (supportView, error) {\n\tif err := validateProjectSupport(); err != nil {\n\t\treturn supportView{}, err\n\t}\n\taudience := supportAudienceForLocale(locale)\n\tview := supportView{\n\t\tAudience:  audience,\n\t\tReference: ProjectSupport.LocaleReferencePrefix + locale,\n\t}\n\tfor _, method := range ProjectSupport.Methods {\n\t\tif method.Enabled \u0026\u0026 method.Audience == audience {\n\t\t\tview.Methods = append(view.Methods, method)\n\t\t}\n\t}\n\tif len(view.Methods) == 0 {\n\t\treturn supportView{}, fmt.Errorf(\"support audience %q has no enabled payment methods\", audience)\n\t}\n\treturn view, nil\n}",
+            "references": [
+              "Audience",
+              "Enabled",
+              "Errorf",
+              "LocaleReferencePrefix",
+              "Methods",
+              "ProjectSupport",
+              "Reference",
+              "_",
+              "append",
+              "audience",
+              "err",
+              "error",
+              "fmt",
+              "len",
+              "locale",
+              "method",
+              "nil",
+              "string",
+              "supportAudienceForLocale",
+              "supportForLocale",
+              "supportView",
+              "validateProjectSupport",
+              "view"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:validateProjectSupport",
+            "text": "func validateProjectSupport() error {\n\tif ProjectSupport.LocaleReferencePrefix != \"go-dev-\" {\n\t\treturn fmt.Errorf(\"invalid locale support reference prefix %q\", ProjectSupport.LocaleReferencePrefix)\n\t}\n\tseen := make(map[string]bool, len(ProjectSupport.Methods))\n\tfor _, method := range ProjectSupport.Methods {\n\t\tif method.Identity == \"\" || method.Name == \"\" || method.Kind == \"\" {\n\t\t\treturn fmt.Errorf(\"support payment method identity, name, and kind are required\")\n\t\t}\n\t\tif seen[method.Identity] {\n\t\t\treturn fmt.Errorf(\"duplicate support payment method %q\", method.Identity)\n\t\t}\n\t\tseen[method.Identity] = true\n\t\tif method.Audience != supportAudienceMainland \u0026\u0026 method.Audience != supportAudienceInternational {\n\t\t\treturn fmt.Errorf(\"support payment method %q has invalid audience %q\", method.Identity, method.Audience)\n\t\t}\n\t\tif !method.Enabled {\n\t\t\tcontinue\n\t\t}\n\t\tswitch method.Kind {\n\t\tcase \"qr\":\n\t\t\tclean := path.Clean(method.QRAsset)\n\t\t\tif method.Audience != supportAudienceMainland || clean != method.QRAsset || !strings.HasPrefix(clean, \"images/support/\") || path.Ext(clean) != \".png\" {\n\t\t\t\treturn fmt.Errorf(\"enabled QR payment method %q has invalid QR asset\", method.Identity)\n\t\t\t}\n\t\t\tif method.Asset != \"\" || method.Network != \"\" || method.Address != \"\" || method.MinimumDeposit != \"\" || method.UID != \"\" || method.NetworkWarningKey != \"\" {\n\t\t\t\treturn fmt.Errorf(\"enabled QR payment method %q mixes non-QR fields\", method.Identity)\n\t\t\t}\n\t\tcase \"crypto\":\n\t\t\tif method.Audience != supportAudienceInternational || method.Asset == \"\" || method.Network == \"\" || method.Address == \"\" || method.MinimumDeposit == \"\" || method.UID != \"\" || method.NetworkWarningKey == \"\" || method.QRAsset != \"\" {\n\t\t\t\treturn fmt.Errorf(\"enabled crypto payment method %q is incomplete\", method.Identity)\n\t\t\t}\n\t\tcase \"platform\":\n\t\t\tif method.Audience != supportAudienceInternational || method.UID == \"\" || method.Asset != \"\" || method.Network != \"\" || method.Address != \"\" || method.MinimumDeposit != \"\" || method.QRAsset != \"\" || method.NetworkWarningKey != \"\" {\n\t\t\t\treturn fmt.Errorf(\"enabled platform payment method %q is incomplete\", method.Identity)\n\t\t\t}\n\t\tdefault:\n\t\t\treturn fmt.Errorf(\"enabled support payment method %q has unsupported kind %q\", method.Identity, method.Kind)\n\t\t}\n\t}\n\treturn nil\n}",
+            "references": [
+              "Address",
+              "Asset",
+              "Audience",
+              "Clean",
+              "Enabled",
+              "Errorf",
+              "Ext",
+              "HasPrefix",
+              "Identity",
+              "Kind",
+              "LocaleReferencePrefix",
+              "Methods",
+              "MinimumDeposit",
+              "Name",
+              "Network",
+              "NetworkWarningKey",
+              "ProjectSupport",
+              "QRAsset",
+              "UID",
+              "_",
+              "bool",
+              "clean",
+              "error",
+              "fmt",
+              "len",
+              "make",
+              "method",
+              "nil",
+              "path",
+              "seen",
+              "string",
+              "strings",
+              "supportAudienceInternational",
+              "supportAudienceMainland",
+              "true",
+              "validateProjectSupport"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "import:\"bytes\",\"encoding/json\",\"fmt\",\"io\",\"io/fs\",\"os\",\"path\",\"path/filepath\",\"strings\",\"time\"",
+            "text": "import (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"io\"\n\t\"io/fs\"\n\t\"os\"\n\t\"path\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"time\"\n)",
+            "references": [],
+            "additive_safe": false
+          },
+          {
+            "id": "method:SiteMetadata:PublishedAtFor",
+            "text": "func (m SiteMetadata) PublishedAtFor(profile localeProfile) (string, error) {\n\tif m.Development {\n\t\treturn \"\", fmt.Errorf(\"development metadata has no published_at\")\n\t}\n\tt, err := time.Parse(time.RFC3339, m.PublishedAt)\n\tif err != nil {\n\t\treturn \"\", fmt.Errorf(\"parse published_at: %w\", err)\n\t}\n\treturn formatSiteTime(t, profile), nil\n}",
+            "references": [
+              "Development",
+              "Errorf",
+              "Parse",
+              "PublishedAt",
+              "PublishedAtFor",
+              "RFC3339",
+              "SiteMetadata",
+              "err",
+              "error",
+              "fmt",
+              "formatSiteTime",
+              "localeProfile",
+              "m",
+              "nil",
+              "profile",
+              "string",
+              "t",
+              "time"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "method:SiteMetadata:UpstreamCommitTimeFor",
+            "text": "func (m SiteMetadata) UpstreamCommitTimeFor(profile localeProfile) (string, error) {\n\tt, err := time.Parse(time.RFC3339, m.UpstreamCommitTime)\n\tif err != nil {\n\t\treturn \"\", fmt.Errorf(\"parse upstream_commit_time: %w\", err)\n\t}\n\treturn formatSiteTime(t, profile), nil\n}",
+            "references": [
+              "Errorf",
+              "Parse",
+              "RFC3339",
+              "SiteMetadata",
+              "UpstreamCommitTime",
+              "UpstreamCommitTimeFor",
+              "err",
+              "error",
+              "fmt",
+              "formatSiteTime",
+              "localeProfile",
+              "m",
+              "nil",
+              "profile",
+              "string",
+              "t",
+              "time"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:SiteMetadata",
+            "text": "type SiteMetadata struct {\n\tDevelopment        bool   `json:\"development,omitempty\"`\n\tLocale             string `json:\"locale\"`\n\tPublishedAt        string `json:\"published_at\"`\n\tUpstreamCommit     string `json:\"upstream_commit\"`\n\tUpstreamCommitTime string `json:\"upstream_commit_time\"`\n\tPages              int    `json:\"pages\"`\n\tArticles           int    `json:\"articles\"`\n}",
+            "references": [
+              "Articles",
+              "Development",
+              "Locale",
+              "Pages",
+              "PublishedAt",
+              "SiteMetadata",
+              "UpstreamCommit",
+              "UpstreamCommitTime",
+              "bool",
+              "int",
+              "string"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:supportAudience",
+            "text": "type supportAudience string",
+            "references": [
+              "string",
+              "supportAudience"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:supportPaymentMethod",
+            "text": "type supportPaymentMethod struct {\n\tIdentity          string\n\tName              string\n\tKind              string\n\tEnabled           bool\n\tAudience          supportAudience\n\tAsset             string\n\tNetwork           string\n\tAddress           string\n\tMinimumDeposit    string\n\tUID               string\n\tQRAsset           string\n\tNetworkWarningKey string\n}",
+            "references": [
+              "Address",
+              "Asset",
+              "Audience",
+              "Enabled",
+              "Identity",
+              "Kind",
+              "MinimumDeposit",
+              "Name",
+              "Network",
+              "NetworkWarningKey",
+              "QRAsset",
+              "UID",
+              "bool",
+              "string",
+              "supportAudience",
+              "supportPaymentMethod"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:supportView",
+            "text": "type supportView struct {\n\tAudience  supportAudience\n\tReference string\n\tMethods   []supportPaymentMethod\n}",
+            "references": [
+              "Audience",
+              "Methods",
+              "Reference",
+              "string",
+              "supportAudience",
+              "supportPaymentMethod",
+              "supportView"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "var:Project",
+            "text": "var Project = struct {\n\tGitHubURL, GitHubIssuesURL                      string\n\tUpstreamURL, ICPURL, ICPNumber, CopyrightHolder string\n}{\n\tGitHubURL:       \"https://github.com/shuijingwan/go-tour-i18n\",\n\tGitHubIssuesURL: \"https://github.com/shuijingwan/go-tour-i18n/issues\",\n\tUpstreamURL:     \"https://github.com/golang/website\",\n\tICPURL:          \"https://beian.miit.gov.cn/\",\n\tICPNumber:       \"蜀ICP备13001590号-1\",\n\tCopyrightHolder: \"永夜\",\n}",
+            "references": [
+              "CopyrightHolder",
+              "GitHubIssuesURL",
+              "GitHubURL",
+              "ICPNumber",
+              "ICPURL",
+              "Project",
+              "UpstreamURL",
+              "string"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "var:ProjectSupport",
+            "text": "var ProjectSupport = struct {\n\tLocaleReferencePrefix string\n\tMethods               []supportPaymentMethod\n}{\n\tLocaleReferencePrefix: \"go-dev-\",\n\tMethods: []supportPaymentMethod{\n\t\t{Identity: \"wechat-pay\", Name: \"微信支付\", Kind: \"qr\", Enabled: true, Audience: supportAudienceMainland, QRAsset: \"images/support/wechat.png\"},\n\t\t{Identity: \"alipay\", Name: \"支付宝\", Kind: \"qr\", Enabled: true, Audience: supportAudienceMainland, QRAsset: \"images/support/alipay.png\"},\n\t\t{Identity: \"unionpay\", Name: \"云闪付\", Kind: \"qr\", Enabled: false, Audience: supportAudienceMainland},\n\t\t{Identity: \"usdc-base\", Name: \"USDC\", Kind: \"crypto\", Enabled: true, Audience: supportAudienceInternational, Asset: \"USDC\", Network: \"Base\", Address: \"0x225f14d54683b1f5bc153bc8a678cad0277096d3\", MinimumDeposit: \"0.01 USDC\", NetworkWarningKey: \"support.usdc_network_only\"},\n\t\t{Identity: \"usdt-trc20\", Name: \"USDT\", Kind: \"crypto\", Enabled: true, Audience: supportAudienceInternational, Asset: \"USDT\", Network: \"Tron (TRC20)\", Address: \"TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK\", MinimumDeposit: \"0.1 USDT\", NetworkWarningKey: \"support.usdt_network_only\"},\n\t\t{Identity: \"binance-uid\", Name: \"Binance\", Kind: \"platform\", Enabled: true, Audience: supportAudienceInternational, UID: \"1055351242\"},\n\t\t{Identity: \"okx-uid\", Name: \"OKX\", Kind: \"platform\", Enabled: true, Audience: supportAudienceInternational, UID: \"231321605530361856\"},\n\t\t{Identity: \"wise\", Name: \"Wise\", Kind: \"link\", Enabled: false, Audience: supportAudienceInternational},\n\t\t{Identity: \"patreon\", Name: \"Patreon\", Kind: \"link\", Enabled: false, Audience: supportAudienceInternational},\n\t},\n}",
+            "references": [
+              "Address",
+              "Asset",
+              "Audience",
+              "Enabled",
+              "Identity",
+              "Kind",
+              "LocaleReferencePrefix",
+              "Methods",
+              "MinimumDeposit",
+              "Name",
+              "Network",
+              "NetworkWarningKey",
+              "ProjectSupport",
+              "QRAsset",
+              "UID",
+              "false",
+              "string",
+              "supportAudienceInternational",
+              "supportAudienceMainland",
+              "supportPaymentMethod",
+              "true"
+            ],
+            "additive_safe": false
+          }
+        ],
+        "sha256": "c4392cb84cb03c584c5dd990ca0f74386a6749ed1b3e49fb25ca4c41bca5ecce"
+      },
+      "seo": {
+        "version": "tour-surface-config-projection/v1",
+        "package": "tour",
+        "declarations": [
+          {
+            "id": "func:initSEO",
+            "text": "func initSEO(locale string) (seoDocuments, error) {\n\torigin, err := productionOriginForLocale(locale)\n\tif err != nil {\n\t\treturn seoDocuments{}, err\n\t}\n\turls := []string{origin + \"/\", origin + \"/tour/list\"}\n\tdescriptions, metadataPresent, err := loadProjectedCourseSEO(contentTour)\n\tif err != nil {\n\t\treturn seoDocuments{}, err\n\t}\n\tvar courseRoutes []CourseRoute\n\tseenRoutes := make(map[string]bool)\n\tarticles := make([]string, 0, len(lessons))\n\tfor article := range lessons {\n\t\tarticles = append(articles, article)\n\t}\n\tsort.Strings(articles)\n\tfor _, name := range articles {\n\t\tvar l lesson\n\t\tif err := json.Unmarshal(lessons[name], \u0026l); err != nil {\n\t\t\treturn seoDocuments{}, fmt.Errorf(\"parse lesson %s for sitemap: %w\", name, err)\n\t\t}\n\t\tfor pageIndex, page := range l.Pages {\n\t\t\troutePath := fmt.Sprintf(\"/tour/%s/%d\", name, pageIndex+1)\n\t\t\tcanonical := origin + routePath\n\t\t\turls = append(urls, canonical)\n\t\t\tfiles := make([]string, len(page.Files))\n\t\t\tfor i := range page.Files {\n\t\t\t\tfiles[i] = page.Files[i].Content\n\t\t\t}\n\t\t\tcourseRoutes = append(courseRoutes, CourseRoute{\n\t\t\t\tPath:              routePath,\n\t\t\t\tCanonical:         canonical,\n\t\t\t\tPageTitle:         page.Title,\n\t\t\t\tLessonTitle:       l.Title,\n\t\t\t\tLessonDescription: l.Description,\n\t\t\t\tFiles:             files,\n\t\t\t\tDescription:       descriptions[routePath],\n\t\t\t})\n\t\t\tseenRoutes[routePath] = true\n\t\t}\n\t}\n\tvar b strings.Builder\n\tb.WriteString(\"\u003c?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?\u003e\\n\u003curlset xmlns=\\\"http://www.sitemaps.org/schemas/sitemap/0.9\\\"\u003e\\n\")\n\tfor _, loc := range urls {\n\t\tfmt.Fprintf(\u0026b, \"  \u003curl\u003e\u003cloc\u003e%s\u003c/loc\u003e\u003c/url\u003e\\n\", loc)\n\t}\n\tb.WriteString(\"\u003c/urlset\u003e\\n\")\n\tif metadataPresent {\n\t\tfor _, route := range courseRoutes {\n\t\t\tif route.Description == \"\" {\n\t\t\t\treturn seoDocuments{}, fmt.Errorf(\"projected course SEO is missing route %q\", route.Path)\n\t\t\t}\n\t\t}\n\t\tfor route := range descriptions {\n\t\t\tif !seenRoutes[route] {\n\t\t\t\treturn seoDocuments{}, fmt.Errorf(\"projected course SEO has unknown route %q\", route)\n\t\t\t}\n\t\t}\n\t}\n\treturn seoDocuments{origin: origin, sitemap: []byte(b.String()), courseRoutes: courseRoutes, descriptions: descriptions, courseMetadataComplete: metadataPresent}, nil\n}",
+            "references": [
+              "Builder",
+              "Canonical",
+              "Content",
+              "CourseRoute",
+              "Description",
+              "Errorf",
+              "Files",
+              "Fprintf",
+              "LessonDescription",
+              "LessonTitle",
+              "PageTitle",
+              "Pages",
+              "Path",
+              "Sprintf",
+              "String",
+              "Strings",
+              "Title",
+              "Unmarshal",
+              "WriteString",
+              "_",
+              "append",
+              "article",
+              "articles",
+              "b",
+              "bool",
+              "byte",
+              "canonical",
+              "contentTour",
+              "courseMetadataComplete",
+              "courseRoutes",
+              "descriptions",
+              "err",
+              "error",
+              "files",
+              "fmt",
+              "i",
+              "initSEO",
+              "json",
+              "l",
+              "len",
+              "lesson",
+              "lessons",
+              "loadProjectedCourseSEO",
+              "loc",
+              "locale",
+              "make",
+              "metadataPresent",
+              "name",
+              "nil",
+              "origin",
+              "page",
+              "pageIndex",
+              "productionOriginForLocale",
+              "route",
+              "routePath",
+              "seenRoutes",
+              "seoDocuments",
+              "sitemap",
+              "sort",
+              "string",
+              "strings",
+              "true",
+              "urls"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:loadProjectedCourseSEO",
+            "text": "func loadProjectedCourseSEO(content fs.FS) (map[string]string, bool, error) {\n\tdata, err := fs.ReadFile(content, \"tour/course-seo.json\")\n\tif err != nil {\n\t\tif errors.Is(err, fs.ErrNotExist) {\n\t\t\treturn map[string]string{}, false, nil\n\t\t}\n\t\treturn nil, false, fmt.Errorf(\"read projected course SEO: %w\", err)\n\t}\n\tdecoder := json.NewDecoder(bytes.NewReader(data))\n\tdecoder.DisallowUnknownFields()\n\tvar file projectedCourseSEOFile\n\tif err := decoder.Decode(\u0026file); err != nil {\n\t\treturn nil, false, fmt.Errorf(\"parse projected course SEO: %w\", err)\n\t}\n\tif err := decoder.Decode(\u0026struct{}{}); err != io.EOF {\n\t\treturn nil, false, fmt.Errorf(\"parse projected course SEO: trailing JSON\")\n\t}\n\tresult := make(map[string]string, len(file.Pages))\n\tfor _, page := range file.Pages {\n\t\tif page.Route == \"\" || page.Description == \"\" {\n\t\t\treturn nil, false, fmt.Errorf(\"projected course SEO contains an empty route or description\")\n\t\t}\n\t\tif _, exists := result[page.Route]; exists {\n\t\t\treturn nil, false, fmt.Errorf(\"projected course SEO has duplicate route %q\", page.Route)\n\t\t}\n\t\tresult[page.Route] = page.Description\n\t}\n\treturn result, true, nil\n}",
+            "references": [
+              "Decode",
+              "Description",
+              "DisallowUnknownFields",
+              "EOF",
+              "ErrNotExist",
+              "Errorf",
+              "FS",
+              "Is",
+              "NewDecoder",
+              "NewReader",
+              "Pages",
+              "ReadFile",
+              "Route",
+              "_",
+              "bool",
+              "bytes",
+              "content",
+              "data",
+              "decoder",
+              "err",
+              "error",
+              "errors",
+              "exists",
+              "false",
+              "file",
+              "fmt",
+              "fs",
+              "io",
+              "json",
+              "len",
+              "loadProjectedCourseSEO",
+              "make",
+              "nil",
+              "page",
+              "projectedCourseSEOFile",
+              "result",
+              "string",
+              "true"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:productionOriginForLocale",
+            "text": "func productionOriginForLocale(locale string) (string, error) {\n\tfor _, language := range languageRegistry {\n\t\tif language.Locale != locale {\n\t\t\tcontinue\n\t\t}\n\t\tu, err := url.Parse(language.URL)\n\t\tif err != nil || (u.Scheme != \"http\" \u0026\u0026 u.Scheme != \"https\") || u.Host == \"\" || u.User != nil {\n\t\t\treturn \"\", fmt.Errorf(\"invalid production URL for locale %q: %q\", locale, language.URL)\n\t\t}\n\t\treturn u.Scheme + \"://\" + u.Host, nil\n\t}\n\treturn \"\", fmt.Errorf(\"missing production URL for locale %q\", locale)\n}",
+            "references": [
+              "Errorf",
+              "Host",
+              "Locale",
+              "Parse",
+              "Scheme",
+              "URL",
+              "User",
+              "_",
+              "err",
+              "error",
+              "fmt",
+              "language",
+              "languageRegistry",
+              "locale",
+              "nil",
+              "productionOriginForLocale",
+              "string",
+              "u",
+              "url"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:robotsHandler",
+            "text": "func robotsHandler(documents seoDocuments) http.HandlerFunc {\n\treturn func(w http.ResponseWriter, r *http.Request) {\n\t\tw.Header().Set(\"Content-Type\", \"text/plain; charset=utf-8\")\n\t\tfmt.Fprintf(w, \"User-agent: *\\nAllow: /\\n\\nSitemap: %s/sitemap.xml\\n\", documents.origin)\n\t}\n}",
+            "references": [
+              "Fprintf",
+              "HandlerFunc",
+              "Header",
+              "Request",
+              "ResponseWriter",
+              "Set",
+              "documents",
+              "fmt",
+              "http",
+              "origin",
+              "r",
+              "robotsHandler",
+              "seoDocuments",
+              "w"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "func:sitemapHandler",
+            "text": "func sitemapHandler(documents seoDocuments) http.HandlerFunc {\n\treturn func(w http.ResponseWriter, r *http.Request) {\n\t\tw.Header().Set(\"Content-Type\", \"application/xml; charset=utf-8\")\n\t\t_, _ = w.Write(documents.sitemap)\n\t}\n}",
+            "references": [
+              "HandlerFunc",
+              "Header",
+              "Request",
+              "ResponseWriter",
+              "Set",
+              "Write",
+              "_",
+              "documents",
+              "http",
+              "r",
+              "seoDocuments",
+              "sitemap",
+              "sitemapHandler",
+              "w"
+            ],
+            "additive_safe": true
+          },
+          {
+            "id": "import:\"bytes\",\"encoding/json\",\"errors\",\"fmt\",\"io\",\"io/fs\",\"net/http\",\"net/url\",\"sort\",\"strings\"",
+            "text": "import (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"errors\"\n\t\"fmt\"\n\t\"io\"\n\t\"io/fs\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"sort\"\n\t\"strings\"\n)",
+            "references": [],
+            "additive_safe": false
+          },
+          {
+            "id": "type:CourseRoute",
+            "text": "type CourseRoute struct {\n\tPath              string\n\tCanonical         string\n\tPageTitle         string\n\tLessonTitle       string\n\tLessonDescription string\n\tFiles             []string\n\tDescription       string\n}",
+            "references": [
+              "Canonical",
+              "CourseRoute",
+              "Description",
+              "Files",
+              "LessonDescription",
+              "LessonTitle",
+              "PageTitle",
+              "Path",
+              "string"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:ListModule",
+            "text": "type ListModule struct {\n\tTitle       string\n\tDescription string\n}",
+            "references": [
+              "Description",
+              "ListModule",
+              "Title",
+              "string"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:ListRoute",
+            "text": "type ListRoute struct {\n\tPath        string\n\tCanonical   string\n\tPageTitle   string\n\tDescription string\n\tHeading     string\n\tModules     []ListModule\n\tLessons     []CourseRoute\n}",
+            "references": [
+              "Canonical",
+              "CourseRoute",
+              "Description",
+              "Heading",
+              "Lessons",
+              "ListModule",
+              "ListRoute",
+              "Modules",
+              "PageTitle",
+              "Path",
+              "string"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:projectedCourseSEOFile",
+            "text": "type projectedCourseSEOFile struct {\n\tPages []projectedCourseSEOPage `json:\"pages\"`\n}",
+            "references": [
+              "Pages",
+              "projectedCourseSEOFile",
+              "projectedCourseSEOPage"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:projectedCourseSEOPage",
+            "text": "type projectedCourseSEOPage struct {\n\tRoute       string `json:\"route\"`\n\tDescription string `json:\"description\"`\n}",
+            "references": [
+              "Description",
+              "Route",
+              "projectedCourseSEOPage",
+              "string"
+            ],
+            "additive_safe": false
+          },
+          {
+            "id": "type:seoDocuments",
+            "text": "type seoDocuments struct {\n\torigin                 string\n\tsitemap                []byte\n\tcourseRoutes           []CourseRoute\n\tlistRoute              ListRoute\n\tdescriptions           map[string]string\n\tcourseMetadataComplete bool\n}",
+            "references": [
+              "CourseRoute",
+              "ListRoute",
+              "bool",
+              "byte",
+              "courseMetadataComplete",
+              "courseRoutes",
+              "descriptions",
+              "listRoute",
+              "origin",
+              "seoDocuments",
+              "sitemap",
+              "string"
+            ],
+            "additive_safe": false
+          }
+        ],
+        "sha256": "5e0aad67ac80159fb3cb72024802b774ae080815af4e1ddb4d335f0385e19a17"
+      }
+    },
+    "ui_english_sha256": "a5af198a9eeae959486a4cb4d270cf0223fafb9835b9688091e36d6cf45e2fff",
+    "ui_locale_sha256": "e1cd547a295ed39752c1a45406118c05c2b1bee5f6d93923f7a84974b64f69d3",
+    "glossary_sha256": "70be302647a76f00de9f9802001e9f106b24cae666906c3a6dbef7f5c57bdb39",
+    "article_metadata_sha256": "b35eec52636238836fb9d904dbf03a627a2ccd95dc4279567e13001f32b836a6",
+    "course_metadata_sha256": "149fa2a6024f167c872f5b1f48eb26c24bb62c546e5f790d03fa3d7d240f6066",
+    "catalog_source_sha256": "88c11fabacffee1a3ed600f6f8fcb200e3c91a67d4c6eb8a68fd7a87e7989734",
+    "languages_config_sha256": "4d25c9c1883b1475b14a4f2b90c9d4acde272da263881e1d6e9f1c8bfc0fd345",
+    "languages_review_projection_sha256": "c011b96c62642154fe166758c7a0dd10437905c88f4757e4515770f631875086",
+    "language_registry_baseline": {
+      "package_name": "tour",
+      "registry_type": "[]LanguageLink",
+      "profiles_type": "map[string]localeProfile",
+      "directives": null,
+      "entries": [
+        {
+          "locale": "am-ET",
+          "english_name": "Amharic",
+          "autonym": "አማርኛ",
+          "url": "https://am-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ar",
+          "english_name": "Arabic",
+          "autonym": "العربية",
+          "url": "https://ar-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "bg-BG",
+          "english_name": "Bulgarian",
+          "autonym": "Български",
+          "url": "https://bg-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "bn-BD",
+          "english_name": "Bengali",
+          "autonym": "বাংলা",
+          "url": "https://bn-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ca-ES",
+          "english_name": "Catalan",
+          "autonym": "Català",
+          "url": "https://ca-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "cs-CZ",
+          "english_name": "Czech",
+          "autonym": "Čeština",
+          "url": "https://cs-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "da-DK",
+          "english_name": "Danish",
+          "autonym": "Dansk",
+          "url": "https://da-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "de-AT",
+          "english_name": "German (Austria)",
+          "autonym": "Deutsch (Österreich)",
+          "url": "https://de-at-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "de-CH",
+          "english_name": "German (Switzerland)",
+          "autonym": "Deutsch (Schweiz)",
+          "url": "https://de-ch-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "de-DE",
+          "english_name": "German",
+          "autonym": "Deutsch",
+          "url": "https://de-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "el-GR",
+          "english_name": "Greek",
+          "autonym": "Ελληνικά",
+          "url": "https://el-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "en",
+          "english_name": "English",
+          "autonym": "English",
+          "url": "https://go.dev/tour/",
+          "official": true
+        },
+        {
+          "locale": "en-AU",
+          "english_name": "English (Australia)",
+          "autonym": "English (Australia)",
+          "url": "https://en-au-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "en-CA",
+          "english_name": "English (Canada)",
+          "autonym": "English (Canada)",
+          "url": "https://en-ca-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "en-GB",
+          "english_name": "English (United Kingdom)",
+          "autonym": "English (United Kingdom)",
+          "url": "https://en-gb-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "en-IN",
+          "english_name": "English (India)",
+          "autonym": "English (India)",
+          "url": "https://en-in-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "en-SG",
+          "english_name": "English (Singapore)",
+          "autonym": "English (Singapore)",
+          "url": "https://en-sg-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "en-ZA",
+          "english_name": "English (South Africa)",
+          "autonym": "English (South Africa)",
+          "url": "https://en-za-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "es-419",
+          "english_name": "Latin American Spanish",
+          "autonym": "Español (Latinoamérica)",
+          "url": "https://es-419-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "es-ES",
+          "english_name": "Spanish",
+          "autonym": "Español",
+          "url": "https://es-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "et-EE",
+          "english_name": "Estonian",
+          "autonym": "Eesti",
+          "url": "https://et-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "fa-IR",
+          "english_name": "Persian",
+          "autonym": "فارسی",
+          "url": "https://fa-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "fi-FI",
+          "english_name": "Finnish",
+          "autonym": "Suomi",
+          "url": "https://fi-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "fil-PH",
+          "english_name": "Filipino",
+          "autonym": "Filipino",
+          "url": "https://fil-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "fr-CA",
+          "english_name": "French (Canada)",
+          "autonym": "Français (Canada)",
+          "url": "https://fr-ca-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "fr-FR",
+          "english_name": "French",
+          "autonym": "Français",
+          "url": "https://fr-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "gu-IN",
+          "english_name": "Gujarati",
+          "autonym": "ગુજરાતી",
+          "url": "https://gu-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "he",
+          "english_name": "Hebrew",
+          "autonym": "עברית",
+          "url": "https://he-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "hi-IN",
+          "english_name": "Hindi",
+          "autonym": "हिन्दी",
+          "url": "https://hi-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "hr-HR",
+          "english_name": "Croatian",
+          "autonym": "Hrvatski",
+          "url": "https://hr-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "hu-HU",
+          "english_name": "Hungarian",
+          "autonym": "Magyar",
+          "url": "https://hu-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "id-ID",
+          "english_name": "Indonesian",
+          "autonym": "Bahasa Indonesia",
+          "url": "https://id-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "it-IT",
+          "english_name": "Italian",
+          "autonym": "Italiano",
+          "url": "https://it-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ja-JP",
+          "english_name": "Japanese",
+          "autonym": "日本語",
+          "url": "https://ja-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "kk-KZ",
+          "english_name": "Kazakh",
+          "autonym": "Қазақша",
+          "url": "https://kk-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "kn-IN",
+          "english_name": "Kannada",
+          "autonym": "ಕನ್ನಡ",
+          "url": "https://kn-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ko-KR",
+          "english_name": "Korean",
+          "autonym": "한국어",
+          "url": "https://ko-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "lt-LT",
+          "english_name": "Lithuanian",
+          "autonym": "Lietuvių",
+          "url": "https://lt-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "lv-LV",
+          "english_name": "Latvian",
+          "autonym": "Latviešu",
+          "url": "https://lv-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ml-IN",
+          "english_name": "Malayalam",
+          "autonym": "മലയാളം",
+          "url": "https://ml-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "mr-IN",
+          "english_name": "Marathi",
+          "autonym": "मराठी",
+          "url": "https://mr-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ms-MY",
+          "english_name": "Malay",
+          "autonym": "Bahasa Melayu",
+          "url": "https://ms-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "nb-NO",
+          "english_name": "Norwegian Bokmål",
+          "autonym": "Norsk bokmål",
+          "url": "https://nb-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "nl-NL",
+          "english_name": "Dutch",
+          "autonym": "Nederlands",
+          "url": "https://nl-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "pa-IN",
+          "english_name": "Punjabi",
+          "autonym": "ਪੰਜਾਬੀ",
+          "url": "https://pa-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "pl-PL",
+          "english_name": "Polish",
+          "autonym": "Polski",
+          "url": "https://pl-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "pt-BR",
+          "english_name": "Brazilian Portuguese",
+          "autonym": "Português (Brasil)",
+          "url": "https://pt-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "pt-PT",
+          "english_name": "Portuguese (Portugal)",
+          "autonym": "Português",
+          "url": "https://pt-pt-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ro-RO",
+          "english_name": "Romanian",
+          "autonym": "Română",
+          "url": "https://ro-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ru-RU",
+          "english_name": "Russian",
+          "autonym": "Русский",
+          "url": "https://ru-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "sk-SK",
+          "english_name": "Slovak",
+          "autonym": "Slovenčina",
+          "url": "https://sk-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "sl-SI",
+          "english_name": "Slovenian",
+          "autonym": "Slovenščina",
+          "url": "https://sl-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "sr-RS",
+          "english_name": "Serbian",
+          "autonym": "Српски (ћирилица)",
+          "url": "https://sr-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "sv-SE",
+          "english_name": "Swedish",
+          "autonym": "Svenska",
+          "url": "https://sv-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "sw-TZ",
+          "english_name": "Swahili",
+          "autonym": "Kiswahili",
+          "url": "https://sw-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ta-IN",
+          "english_name": "Tamil",
+          "autonym": "தமிழ்",
+          "url": "https://ta-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "te-IN",
+          "english_name": "Telugu",
+          "autonym": "తెలుగు",
+          "url": "https://te-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "th-TH",
+          "english_name": "Thai",
+          "autonym": "ไทย",
+          "url": "https://th-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "tr-TR",
+          "english_name": "Turkish",
+          "autonym": "Türkçe",
+          "url": "https://tr-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "uk-UA",
+          "english_name": "Ukrainian",
+          "autonym": "Українська",
+          "url": "https://uk-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "ur-PK",
+          "english_name": "Urdu",
+          "autonym": "اردو",
+          "url": "https://ur-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "vi-VN",
+          "english_name": "Vietnamese",
+          "autonym": "Tiếng Việt",
+          "url": "https://vi-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "zh-CN",
+          "english_name": "Simplified Chinese",
+          "autonym": "简体中文",
+          "url": "https://go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "zh-HK",
+          "english_name": "Traditional Chinese (Hong Kong)",
+          "autonym": "繁體中文（香港）",
+          "url": "https://zh-hk-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "zh-SG",
+          "english_name": "Simplified Chinese (Singapore)",
+          "autonym": "简体中文（新加坡）",
+          "url": "https://zh-sg-go-dev.shuijingwanwq.com/",
+          "official": false
+        },
+        {
+          "locale": "zh-TW",
+          "english_name": "Traditional Chinese",
+          "autonym": "繁體中文（台灣）",
+          "url": "https://zh-tw-go-dev.shuijingwanwq.com/",
+          "official": false
+        }
+      ],
+      "profiles": [
+        {
+          "locale": "am-ET",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          addisAbabaTime,\n\tTimeLabel:         \"የአካባቢ ሰዓት\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "addisAbabaTime=addisAbabaTime = mustLoadLocation(\"Africa/Addis_Ababa\")"
+          ]
+        },
+        {
+          "locale": "ar",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.UTC,\n\tTimeLabel:         \"UTC\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"rtl\",\n}",
+          "referenced_declarations": []
+        },
+        {
+          "locale": "bg-BG",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          sofiaTime,\n\tTimeLabel:         \"местно време\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "sofiaTime=sofiaTime = mustLoadLocation(\"Europe/Sofia\")"
+          ]
+        },
+        {
+          "locale": "bn-BD",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          dhakaTime,\n\tTimeLabel:         \"স্থানীয় সময়\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "dhakaTime=dhakaTime = mustLoadLocation(\"Asia/Dhaka\")"
+          ]
+        },
+        {
+          "locale": "ca-ES",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          madridTime,\n\tTimeLabel:         \"hora local\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "madridTime=madridTime = mustLoadLocation(\"Europe/Madrid\")"
+          ]
+        },
+        {
+          "locale": "cs-CZ",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          pragueTime,\n\tTimeLabel:         \"místní čas\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "pragueTime=pragueTime = mustLoadLocation(\"Europe/Prague\")"
+          ]
+        },
+        {
+          "locale": "da-DK",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          copenhagenTime,\n\tTimeLabel:         \"lokal tid\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "copenhagenTime=copenhagenTime = mustLoadLocation(\"Europe/Copenhagen\")"
+          ]
+        },
+        {
+          "locale": "de-AT",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          viennaTime,\n\tTimeLabel:         \"Ortszeit\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "viennaTime=viennaTime = mustLoadLocation(\"Europe/Vienna\")"
+          ]
+        },
+        {
+          "locale": "de-CH",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          zurichTime,\n\tTimeLabel:         \"Ortszeit\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "zurichTime=zurichTime = mustLoadLocation(\"Europe/Zurich\")"
+          ]
+        },
+        {
+          "locale": "de-DE",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          berlinTime,\n\tTimeLabel:         \"Ortszeit\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "berlinTime=berlinTime = mustLoadLocation(\"Europe/Berlin\")"
+          ]
+        },
+        {
+          "locale": "el-GR",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          athensTime,\n\tTimeLabel:         \"τοπική ώρα\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "athensTime=athensTime = mustLoadLocation(\"Europe/Athens\")"
+          ]
+        },
+        {
+          "locale": "en",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.UTC,\n\tTimeLabel:         \"UTC\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": []
+        },
+        {
+          "locale": "en-AU",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          sydneyTime,\n\tTimeLabel:         \"local time\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "sydneyTime=sydneyTime = mustLoadLocation(\"Australia/Sydney\")"
+          ]
+        },
+        {
+          "locale": "en-CA",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          torontoTime,\n\tTimeLabel:         \"local time\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "torontoTime=torontoTime = mustLoadLocation(\"America/Toronto\")"
+          ]
+        },
+        {
+          "locale": "en-GB",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          londonTime,\n\tTimeLabel:         \"local time\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "londonTime=londonTime = mustLoadLocation(\"Europe/London\")"
+          ]
+        },
+        {
+          "locale": "en-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"local time\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "en-SG",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          singaporeTime,\n\tTimeLabel:         \"local time\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "singaporeTime=singaporeTime = mustLoadLocation(\"Asia/Singapore\")"
+          ]
+        },
+        {
+          "locale": "en-ZA",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          johannesburgTime,\n\tTimeLabel:         \"local time\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "johannesburgTime=johannesburgTime = mustLoadLocation(\"Africa/Johannesburg\")"
+          ]
+        },
+        {
+          "locale": "es-419",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.UTC,\n\tTimeLabel:         \"UTC\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": []
+        },
+        {
+          "locale": "es-ES",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          madridTime,\n\tTimeLabel:         \"hora local\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "madridTime=madridTime = mustLoadLocation(\"Europe/Madrid\")"
+          ]
+        },
+        {
+          "locale": "et-EE",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          tallinnTime,\n\tTimeLabel:         \"kohalik aeg\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "tallinnTime=tallinnTime = mustLoadLocation(\"Europe/Tallinn\")"
+          ]
+        },
+        {
+          "locale": "fa-IR",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          tehranTime,\n\tTimeLabel:         \"زمان محلی\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"rtl\",\n}",
+          "referenced_declarations": [
+            "tehranTime=tehranTime = mustLoadLocation(\"Asia/Tehran\")"
+          ]
+        },
+        {
+          "locale": "fi-FI",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          helsinkiTime,\n\tTimeLabel:         \"paikallinen aika\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "helsinkiTime=helsinkiTime = mustLoadLocation(\"Europe/Helsinki\")"
+          ]
+        },
+        {
+          "locale": "fil-PH",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          manilaTime,\n\tTimeLabel:         \"lokal na oras\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "manilaTime=manilaTime = mustLoadLocation(\"Asia/Manila\")"
+          ]
+        },
+        {
+          "locale": "fr-CA",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          torontoTime,\n\tTimeLabel:         \"heure locale\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "torontoTime=torontoTime = mustLoadLocation(\"America/Toronto\")"
+          ]
+        },
+        {
+          "locale": "fr-FR",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          parisTime,\n\tTimeLabel:         \"heure locale\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "parisTime=parisTime = mustLoadLocation(\"Europe/Paris\")"
+          ]
+        },
+        {
+          "locale": "gu-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"સ્થાનિક સમય\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "he",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          jerusalemTime,\n\tTimeLabel:         \"זמן מקומי\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"rtl\",\n}",
+          "referenced_declarations": [
+            "jerusalemTime=jerusalemTime = mustLoadLocation(\"Asia/Jerusalem\")"
+          ]
+        },
+        {
+          "locale": "hi-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"स्थानीय समय\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "hr-HR",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          zagrebTime,\n\tTimeLabel:         \"lokalno vrijeme\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "zagrebTime=zagrebTime = mustLoadLocation(\"Europe/Zagreb\")"
+          ]
+        },
+        {
+          "locale": "hu-HU",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          budapestTime,\n\tTimeLabel:         \"helyi idő\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "budapestTime=budapestTime = mustLoadLocation(\"Europe/Budapest\")"
+          ]
+        },
+        {
+          "locale": "id-ID",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          jakartaTime,\n\tTimeLabel:         \"waktu setempat\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "jakartaTime=jakartaTime = mustLoadLocation(\"Asia/Jakarta\")"
+          ]
+        },
+        {
+          "locale": "it-IT",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          romeTime,\n\tTimeLabel:         \"ora locale\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "romeTime=romeTime = mustLoadLocation(\"Europe/Rome\")"
+          ]
+        },
+        {
+          "locale": "ja-JP",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.FixedZone(\"UTC+9\", 9*60*60),\n\tTimeLabel:         \"日本時間\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": []
+        },
+        {
+          "locale": "kk-KZ",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          almatyTime,\n\tTimeLabel:         \"жергілікті уақыт\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "almatyTime=almatyTime = mustLoadLocation(\"Asia/Almaty\")"
+          ]
+        },
+        {
+          "locale": "kn-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"ಸ್ಥಳೀಯ ಸಮಯ\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "ko-KR",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.FixedZone(\"UTC+9\", 9*60*60),\n\tTimeLabel:         \"한국 표준시\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": []
+        },
+        {
+          "locale": "lt-LT",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          vilniusTime,\n\tTimeLabel:         \"vietos laikas\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "vilniusTime=vilniusTime = mustLoadLocation(\"Europe/Vilnius\")"
+          ]
+        },
+        {
+          "locale": "lv-LV",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          rigaTime,\n\tTimeLabel:         \"vietējais laiks\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "rigaTime=rigaTime = mustLoadLocation(\"Europe/Riga\")"
+          ]
+        },
+        {
+          "locale": "ml-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"പ്രാദേശിക സമയം\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "mr-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"स्थानिक वेळ\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "ms-MY",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kualaLumpurTime,\n\tTimeLabel:         \"waktu tempatan\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kualaLumpurTime=kualaLumpurTime = mustLoadLocation(\"Asia/Kuala_Lumpur\")"
+          ]
+        },
+        {
+          "locale": "nb-NO",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          osloTime,\n\tTimeLabel:         \"lokal tid\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "osloTime=osloTime = mustLoadLocation(\"Europe/Oslo\")"
+          ]
+        },
+        {
+          "locale": "nl-NL",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          amsterdamTime,\n\tTimeLabel:         \"lokale tijd\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "amsterdamTime=amsterdamTime = mustLoadLocation(\"Europe/Amsterdam\")"
+          ]
+        },
+        {
+          "locale": "pa-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"ਸਥਾਨਕ ਸਮਾਂ\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "pl-PL",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          warsawTime,\n\tTimeLabel:         \"czas lokalny\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "warsawTime=warsawTime = mustLoadLocation(\"Europe/Warsaw\")"
+          ]
+        },
+        {
+          "locale": "pt-BR",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          saoPauloTime,\n\tTimeLabel:         \"horário local\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "saoPauloTime=saoPauloTime = mustLoadLocation(\"America/Sao_Paulo\")"
+          ]
+        },
+        {
+          "locale": "pt-PT",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          lisbonTime,\n\tTimeLabel:         \"hora local\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "lisbonTime=lisbonTime = mustLoadLocation(\"Europe/Lisbon\")"
+          ]
+        },
+        {
+          "locale": "ro-RO",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          bucharestTime,\n\tTimeLabel:         \"ora locală\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "bucharestTime=bucharestTime = mustLoadLocation(\"Europe/Bucharest\")"
+          ]
+        },
+        {
+          "locale": "ru-RU",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          moscowTime,\n\tTimeLabel:         \"местное время\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "moscowTime=moscowTime = mustLoadLocation(\"Europe/Moscow\")"
+          ]
+        },
+        {
+          "locale": "sk-SK",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          bratislavaTime,\n\tTimeLabel:         \"miestny čas\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "bratislavaTime=bratislavaTime = mustLoadLocation(\"Europe/Bratislava\")"
+          ]
+        },
+        {
+          "locale": "sl-SI",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          ljubljanaTime,\n\tTimeLabel:         \"lokalni čas\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "ljubljanaTime=ljubljanaTime = mustLoadLocation(\"Europe/Ljubljana\")"
+          ]
+        },
+        {
+          "locale": "sr-RS",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          belgradeTime,\n\tTimeLabel:         \"локално време\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "belgradeTime=belgradeTime = mustLoadLocation(\"Europe/Belgrade\")"
+          ]
+        },
+        {
+          "locale": "sv-SE",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          stockholmTime,\n\tTimeLabel:         \"lokal tid\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "stockholmTime=stockholmTime = mustLoadLocation(\"Europe/Stockholm\")"
+          ]
+        },
+        {
+          "locale": "sw-TZ",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          darEsSalaamTime,\n\tTimeLabel:         \"saa za eneo\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "darEsSalaamTime=darEsSalaamTime = mustLoadLocation(\"Africa/Dar_es_Salaam\")"
+          ]
+        },
+        {
+          "locale": "ta-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"உள்ளூர் நேரம்\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "te-IN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"స్థానిక సమయం\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+          ]
+        },
+        {
+          "locale": "th-TH",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          bangkokTime,\n\tTimeLabel:         \"เวลาท้องถิ่น\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "bangkokTime=bangkokTime = mustLoadLocation(\"Asia/Bangkok\")"
+          ]
+        },
+        {
+          "locale": "tr-TR",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          istanbulTime,\n\tTimeLabel:         \"yerel saat\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "istanbulTime=istanbulTime = mustLoadLocation(\"Europe/Istanbul\")"
+          ]
+        },
+        {
+          "locale": "uk-UA",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kyivTime,\n\tTimeLabel:         \"місцевий час\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "kyivTime=kyivTime = mustLoadLocation(\"Europe/Kyiv\")"
+          ]
+        },
+        {
+          "locale": "ur-PK",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          karachiTime,\n\tTimeLabel:         \"مقامی وقت\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"rtl\",\n}",
+          "referenced_declarations": [
+            "karachiTime=karachiTime = mustLoadLocation(\"Asia/Karachi\")"
+          ]
+        },
+        {
+          "locale": "vi-VN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          hoChiMinhTime,\n\tTimeLabel:         \"giờ địa phương\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "hoChiMinhTime=hoChiMinhTime = mustLoadLocation(\"Asia/Ho_Chi_Minh\")"
+          ]
+        },
+        {
+          "locale": "zh-CN",
+          "expression": "{\n\tDevelopmentLogURL: \"https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/\",\n\tTimeZone:          time.FixedZone(\"UTC+8\", 8*60*60),\n\tTimeLabel:         \"北京时间\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": []
+        },
+        {
+          "locale": "zh-HK",
+          "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          hongKongTime,\n\tTimeLabel:         \"香港時間\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "hongKongTime=hongKongTime = mustLoadLocation(\"Asia/Hong_Kong\")"
+          ]
+        },
+        {
+          "locale": "zh-SG",
+          "expression": "{\n\tDevelopmentLogURL: \"https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/\",\n\tTimeZone:          singaporeTime,\n\tTimeLabel:         \"新加坡时间\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "singaporeTime=singaporeTime = mustLoadLocation(\"Asia/Singapore\")"
+          ]
+        },
+        {
+          "locale": "zh-TW",
+          "expression": "{\n\tDevelopmentLogURL: \"https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/\",\n\tTimeZone:          taipeiTime,\n\tTimeLabel:         \"台灣時間\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+          "referenced_declarations": [
+            "taipeiTime=taipeiTime = mustLoadLocation(\"Asia/Taipei\")"
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "name": "addisAbabaTime",
+          "declaration": "addisAbabaTime = mustLoadLocation(\"Africa/Addis_Ababa\")"
+        },
+        {
+          "name": "almatyTime",
+          "declaration": "almatyTime = mustLoadLocation(\"Asia/Almaty\")"
+        },
+        {
+          "name": "amsterdamTime",
+          "declaration": "amsterdamTime = mustLoadLocation(\"Europe/Amsterdam\")"
+        },
+        {
+          "name": "athensTime",
+          "declaration": "athensTime = mustLoadLocation(\"Europe/Athens\")"
+        },
+        {
+          "name": "bangkokTime",
+          "declaration": "bangkokTime = mustLoadLocation(\"Asia/Bangkok\")"
+        },
+        {
+          "name": "belgradeTime",
+          "declaration": "belgradeTime = mustLoadLocation(\"Europe/Belgrade\")"
+        },
+        {
+          "name": "berlinTime",
+          "declaration": "berlinTime = mustLoadLocation(\"Europe/Berlin\")"
+        },
+        {
+          "name": "bratislavaTime",
+          "declaration": "bratislavaTime = mustLoadLocation(\"Europe/Bratislava\")"
+        },
+        {
+          "name": "bucharestTime",
+          "declaration": "bucharestTime = mustLoadLocation(\"Europe/Bucharest\")"
+        },
+        {
+          "name": "budapestTime",
+          "declaration": "budapestTime = mustLoadLocation(\"Europe/Budapest\")"
+        },
+        {
+          "name": "copenhagenTime",
+          "declaration": "copenhagenTime = mustLoadLocation(\"Europe/Copenhagen\")"
+        },
+        {
+          "name": "darEsSalaamTime",
+          "declaration": "darEsSalaamTime = mustLoadLocation(\"Africa/Dar_es_Salaam\")"
+        },
+        {
+          "name": "dhakaTime",
+          "declaration": "dhakaTime = mustLoadLocation(\"Asia/Dhaka\")"
+        },
+        {
+          "name": "helsinkiTime",
+          "declaration": "helsinkiTime = mustLoadLocation(\"Europe/Helsinki\")"
+        },
+        {
+          "name": "hoChiMinhTime",
+          "declaration": "hoChiMinhTime = mustLoadLocation(\"Asia/Ho_Chi_Minh\")"
+        },
+        {
+          "name": "hongKongTime",
+          "declaration": "hongKongTime = mustLoadLocation(\"Asia/Hong_Kong\")"
+        },
+        {
+          "name": "istanbulTime",
+          "declaration": "istanbulTime = mustLoadLocation(\"Europe/Istanbul\")"
+        },
+        {
+          "name": "jakartaTime",
+          "declaration": "jakartaTime = mustLoadLocation(\"Asia/Jakarta\")"
+        },
+        {
+          "name": "jerusalemTime",
+          "declaration": "jerusalemTime = mustLoadLocation(\"Asia/Jerusalem\")"
+        },
+        {
+          "name": "johannesburgTime",
+          "declaration": "johannesburgTime = mustLoadLocation(\"Africa/Johannesburg\")"
+        },
+        {
+          "name": "karachiTime",
+          "declaration": "karachiTime = mustLoadLocation(\"Asia/Karachi\")"
+        },
+        {
+          "name": "kolkataTime",
+          "declaration": "kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+        },
+        {
+          "name": "kualaLumpurTime",
+          "declaration": "kualaLumpurTime = mustLoadLocation(\"Asia/Kuala_Lumpur\")"
+        },
+        {
+          "name": "kyivTime",
+          "declaration": "kyivTime = mustLoadLocation(\"Europe/Kyiv\")"
+        },
+        {
+          "name": "lisbonTime",
+          "declaration": "lisbonTime = mustLoadLocation(\"Europe/Lisbon\")"
+        },
+        {
+          "name": "ljubljanaTime",
+          "declaration": "ljubljanaTime = mustLoadLocation(\"Europe/Ljubljana\")"
+        },
+        {
+          "name": "londonTime",
+          "declaration": "londonTime = mustLoadLocation(\"Europe/London\")"
+        },
+        {
+          "name": "madridTime",
+          "declaration": "madridTime = mustLoadLocation(\"Europe/Madrid\")"
+        },
+        {
+          "name": "manilaTime",
+          "declaration": "manilaTime = mustLoadLocation(\"Asia/Manila\")"
+        },
+        {
+          "name": "moscowTime",
+          "declaration": "moscowTime = mustLoadLocation(\"Europe/Moscow\")"
+        },
+        {
+          "name": "osloTime",
+          "declaration": "osloTime = mustLoadLocation(\"Europe/Oslo\")"
+        },
+        {
+          "name": "parisTime",
+          "declaration": "parisTime = mustLoadLocation(\"Europe/Paris\")"
+        },
+        {
+          "name": "pragueTime",
+          "declaration": "pragueTime = mustLoadLocation(\"Europe/Prague\")"
+        },
+        {
+          "name": "rigaTime",
+          "declaration": "rigaTime = mustLoadLocation(\"Europe/Riga\")"
+        },
+        {
+          "name": "romeTime",
+          "declaration": "romeTime = mustLoadLocation(\"Europe/Rome\")"
+        },
+        {
+          "name": "saoPauloTime",
+          "declaration": "saoPauloTime = mustLoadLocation(\"America/Sao_Paulo\")"
+        },
+        {
+          "name": "singaporeTime",
+          "declaration": "singaporeTime = mustLoadLocation(\"Asia/Singapore\")"
+        },
+        {
+          "name": "sofiaTime",
+          "declaration": "sofiaTime = mustLoadLocation(\"Europe/Sofia\")"
+        },
+        {
+          "name": "stockholmTime",
+          "declaration": "stockholmTime = mustLoadLocation(\"Europe/Stockholm\")"
+        },
+        {
+          "name": "sydneyTime",
+          "declaration": "sydneyTime = mustLoadLocation(\"Australia/Sydney\")"
+        },
+        {
+          "name": "taipeiTime",
+          "declaration": "taipeiTime = mustLoadLocation(\"Asia/Taipei\")"
+        },
+        {
+          "name": "tallinnTime",
+          "declaration": "tallinnTime = mustLoadLocation(\"Europe/Tallinn\")"
+        },
+        {
+          "name": "tehranTime",
+          "declaration": "tehranTime = mustLoadLocation(\"Asia/Tehran\")"
+        },
+        {
+          "name": "torontoTime",
+          "declaration": "torontoTime = mustLoadLocation(\"America/Toronto\")"
+        },
+        {
+          "name": "viennaTime",
+          "declaration": "viennaTime = mustLoadLocation(\"Europe/Vienna\")"
+        },
+        {
+          "name": "vilniusTime",
+          "declaration": "vilniusTime = mustLoadLocation(\"Europe/Vilnius\")"
+        },
+        {
+          "name": "warsawTime",
+          "declaration": "warsawTime = mustLoadLocation(\"Europe/Warsaw\")"
+        },
+        {
+          "name": "zagrebTime",
+          "declaration": "zagrebTime = mustLoadLocation(\"Europe/Zagreb\")"
+        },
+        {
+          "name": "zurichTime",
+          "declaration": "zurichTime = mustLoadLocation(\"Europe/Zurich\")"
+        }
+      ],
+      "runtime_declarations": [
+        "import (\n\t\"fmt\"\n\t\"time\"\n)",
+        "// LanguageLink describes one build-time language site exposed on the\n// homepage. Registry order is presentation order and is shared by every\n// locale build.\ntype LanguageLink struct {\n\tLocale      string\n\tEnglishName string\n\tAutonym     string\n\tLabel       string\n\tURL         string\n\tOfficial    bool\n\tCurrent     bool\n}",
+        "// LanguageRegistry returns the homepage language registry in presentation\n// order. The returned copy cannot alter the build-time authority.\nfunc LanguageRegistry() []LanguageLink {\n\tregistry := make([]LanguageLink, len(languageRegistry))\n\tcopy(registry, languageRegistry)\n\treturn registry\n}",
+        "type localeProfile struct {\n\tDevelopmentLogURL string\n\tTimeZone          *time.Location\n\tTimeLabel         string\n\tTimeLabelFormat   string\n\tDirection         string\n}",
+        "func mustLoadLocation(name string) *time.Location {\n\tlocation, err := time.LoadLocation(name)\n\tif err != nil {\n\t\tpanic(fmt.Sprintf(\"load time zone %q: %v\", name, err))\n\t}\n\treturn location\n}",
+        "func languagesFor(locale string) ([]LanguageLink, error) {\n\tif _, ok := localeProfiles[locale]; !ok {\n\t\treturn nil, fmt.Errorf(\"unsupported site locale %q\", locale)\n\t}\n\tlanguages := make([]LanguageLink, len(languageRegistry))\n\tcopy(languages, languageRegistry)\n\tfor i := range languages {\n\t\tlanguages[i].Label = languages[i].EnglishName\n\t\tif languages[i].EnglishName != languages[i].Autonym {\n\t\t\tlanguages[i].Label += \" — \" + languages[i].Autonym\n\t\t}\n\t\tlanguages[i].Current = languages[i].Locale == locale\n\t}\n\treturn languages, nil\n}",
+        "func currentLanguage(languages []LanguageLink) (LanguageLink, error) {\n\tfor _, language := range languages {\n\t\tif language.Current {\n\t\t\treturn language, nil\n\t\t}\n\t}\n\treturn LanguageLink{}, fmt.Errorf(\"language registry has no current locale\")\n}"
+      ]
+    },
+    "project_config_sha256": "78ae201af9207dbb74b266fb64614b82688195e8fff3b71f44b618b2a6ac23e3",
+    "seo_config_sha256": "dc09d40a9c4a0d3aa9f9699b85a684feb104cb3642b71bca1f08750220397a64",
+    "production_public_identity_sha256": "5848326f01e7c7a7d0dc0c0143873318be8b3aec69de9bc1525557b2e0ac2518"
+  }
+}

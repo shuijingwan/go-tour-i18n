@@ -83,6 +83,11 @@ func (r *Resolver) Destination(destination string) (string, error) {
 		return "", fmt.Errorf("canonical absolute route required")
 	}
 	route := u.Path
+	for _, suffix := range []string{"index.html", "index.md"} {
+		if strings.HasSuffix(route, "/"+suffix) && r.canonical[strings.TrimSuffix(route, suffix)] {
+			route = strings.TrimSuffix(route, suffix)
+		}
+	}
 	for _, suffix := range []string{".html", ".md"} {
 		if strings.HasSuffix(route, suffix) && r.canonical[strings.TrimSuffix(route, suffix)] {
 			route = strings.TrimSuffix(route, suffix)
@@ -93,6 +98,17 @@ func (r *Resolver) Destination(destination string) (string, error) {
 			return target, nil
 		}
 		route = target
+	} else if !r.routes[route] && route != "/" {
+		// Navigation may use the other trailing-slash spelling of an exact
+		// locally covered canonical route. Explicit aliases keep their frozen
+		// targets; HTTP coverage and the canonical inventory remain unchanged.
+		alternate := strings.TrimSuffix(route, "/")
+		if alternate == route {
+			alternate += "/"
+		}
+		if r.routes[alternate] {
+			route = alternate
+		}
 	}
 	u.Path = route
 	u.RawPath = ""
@@ -116,6 +132,12 @@ func (r *Resolver) ResolveLink(from, destination string) (string, error) {
 	base, err := url.Parse(from)
 	if err != nil || !strings.HasPrefix(base.Path, "/") {
 		return "", fmt.Errorf("invalid route context")
+	}
+	// A nonempty fragment-only reference already names this document. Keep
+	// its literal form for source/runtime attribute selectors; URL.String
+	// retains the existing parser's escaping. Empty # keeps normal resolution.
+	if strings.HasPrefix(destination, "#") && u.Fragment != "" {
+		return u.String(), nil
 	}
 	return r.Destination(base.ResolveReference(u).String())
 }

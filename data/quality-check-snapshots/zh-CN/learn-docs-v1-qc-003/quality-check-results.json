@@ -1,0 +1,119 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "learn-docs-v1-qc-003",
+  "snapshot_manifest_sha256": "a7a65c0b5ca07adce4e2e512adf0f6f51d4d8050715fdd4c133b25b41ac5f61d",
+  "previous_snapshot_id": "learn-docs-v1-qc-002",
+  "rubric": "translation-quality/v1",
+  "result_count": 19,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "e993fec2454ba4fe82ff89cc33b82fba5c836acfeb9bbe23ce160fdc07e12ece",
+      "rating": "A"
+    },
+    {
+      "index": 3,
+      "unit_id": "d6a0464cbe1d4843c82810dfac96d42c621065f81c56c1f63fb8af589abcc748",
+      "rating": "C",
+      "finding": "当前 Page 仍存在明显 token 周边语序和 teaching-comment 缺陷。go.mod 说明中文件名与目录身份错位，影响本地 replace 设置理解；complete-code comment 又出现“获取一条问候消息 message 并将其打印出来”这类 identifier 不自然孤立。需要针对本 Page 修订受影响句子，同时保持代码 identity 不变。"
+    },
+    {
+      "index": 5,
+      "unit_id": "2cf2207a4cf54f3b5ef344d2c02198f70a6b513a4ccf323424dea35e2e338d8d",
+      "rating": "C",
+      "finding": "complete-code comments 已正确翻译，但正文对函数参数的技术关系表达不准确：当前把 name 与 string 组合进“类型为……”的描述，使读者容易理解为参数类型是某种 name string 整体，而 source 实际分别表达参数名称和其 string 类型。需要恢复参数 identity 与类型之间的准确关系。"
+    },
+    {
+      "index": 6,
+      "unit_id": "51f3462b599aba4267be310f3954e51e7d0c4fd4230460ac0eb4eb64c9ee5628",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "483944fc286965a89e6977332a877957cb15e3ba1171361a517d862bdc50f858",
+      "rating": "C",
+      "finding": "新开放的 f.Add teaching comment 已正确翻译，但 Page 正文仍存在影响操作说明可读性的语序缺陷。运行模糊测试的核心说明在 go test、-fuzz 与参数 Fuzz 周围形成残缺句法；指向 cmd/go 文档的“其他测试标志”说明也出现链接文字与外围中文错位。需按完整句义修订正文，而不是修改受保护命令/API identity。"
+    },
+    {
+      "index": 8,
+      "unit_id": "e00dd8869bf8155daea7791025b56a0b1c3ad8e691ac7e9ff3347d0b8db023cd",
+      "rating": "B",
+      "finding": "泛型正文及大部分 teaching comments 技术准确，但完整代码注释中多次出现“floats 和整数”“整数以及 floats”这类组合；保留的 floats identity 与表示数值类别的中文自然语言混用后显得不自然且有轻微歧义。需要在保持 protected identifier 不变的前提下调整周边 teaching prose。"
+    },
+    {
+      "index": 10,
+      "unit_id": "d8f9a1931eb5cbf1f5eae5df9648f25b122d758a04472a107fbcf4579a0c60fb",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "bceb0b950e9bf9ac6fd4187156327d95019229af6ec9d7bf00a8178edca3272e",
+      "rating": "C",
+      "finding": "Page 仍有页面级语义重组错误：原本用于引出后续列表的正文被错误替换/挪入成“随机返回其中一条消息”一类内容，而真正的“在这段代码中，你将……”又与首个列表项粘连，导致正文、代码说明和列表层次关系失真。此外完整代码 comments 中 names、messages、formats 等 identifier 周边仍存在多处生硬或关系不清的中文。需要针对完整 Page 恢复段落/列表语义并整理 teaching comments。"
+    },
+    {
+      "index": 13,
+      "unit_id": "66264496c6d846fefd6419e37c58df366152af07523cdd1f81088c8839f0e5ec",
+      "rating": "B",
+      "finding": "正文错误处理流程已经完整恢复，complete-code teaching comments 也基本准确。不过注释中仍有“把 name 嵌入问候 message 中”“log 日志项前缀”等明显代码 identity 与普通中文名词直接拼接的表达，语义可以理解但自然度不足。需在不改动 identifier 的前提下优化周边中文关系。"
+    },
+    {
+      "index": 15,
+      "unit_id": "99824b13c26ffe219230ad0171e93d850003d16aa9f780c2f06c41bc46845cb3",
+      "rating": "C",
+      "finding": "JSON 教程存在技术表达与自然语言完整性问题。关于不可编码类型的说明把 complex 对应内容表达为“复数”，在“通道、复数和函数类型”这一并列结构中无法准确清楚地表示 Go 的复数类型概念；另外接收器结构说明中仍出现 and/or 与中文“或”混用的用户可见英文残留。需要修订这两个范围，使类型语义和中文表达明确一致。"
+    },
+    {
+      "index": 17,
+      "unit_id": "0895c1f2bf020716e82386c738f1b63ff49194250cf4cf254f9cf346a453fc10",
+      "rating": "C",
+      "finding": "Page 的段落/列表语义仍发生错位：完整代码后的正文把一条关于“通过切片随机索引返回消息格式”的说明放到了本应引出后续列表的位置，随后“在这段代码中，你将……”又与首个列表项粘连。虽然 randomFormat、formats 等 teaching comments 已经翻译，但当前用户阅读时页面结构和解释顺序不连贯，需要按 source 的完整页面语义修订。"
+    },
+    {
+      "index": 18,
+      "unit_id": "da414f5ecd312a539f1ee2f38c60986db5fafccaf41699b454802234b2b5499f",
+      "rating": "C",
+      "finding": "RESTful API 页面正文大体准确，但 complete-code teaching comments 仍系统性存在 identity 与自然语言关系破损，例如“唱片 album 的数据”“albums 列表”“添加一个 album”等表达多处生硬重复，更严重的是若干注释出现孤立英文冠词 a，形成“作为 a 响应返回”等不可接受的用户可见 teaching prose。缺陷分布于多个完整代码区域，需要统一修订本 Page 的开放 teaching comments。"
+    },
+    {
+      "index": 19,
+      "unit_id": "a508d39fb57b2d122ca8536e038c6b090df53042c04d433b74d869bfbba2b9f1",
+      "rating": "C",
+      "finding": "工作区主体和新开放 teaching comment 基本准确，但页面末尾命令列表存在实际技术关系错位：描述 go work edit “类似于 go mod edit”的结尾被移到下一项 go work sync 前面，使上一项语义不完整，同时让下一命令看起来与 go mod edit 形成错误关联。需要恢复各 bullet 与命令语义的正确绑定。"
+    },
+    {
+      "index": 20,
+      "unit_id": "00bcbeef62b7348b1d93580ddcc4cccdff4c14d5cfdde94a6523f92c4926ac5e",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "6aea6756a6e2e8960a6b3eb8cd1c35ce6dec89cf1b78558feac894d25bb0a767",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "e9374ce4c3a09a205ebe3c943ef6405286703f2d0ba2f92063f2b0abf3fbceb7",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "3111096562c8eefbefc8af2f1b2fd5d56583aa990de823606b5d228d5ce4d428",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "6fd0d36e7073cb6ef85352612edcb9ecb1bb3b2e7e7482a2b91a54259f9d9e2f",
+      "rating": "A"
+    },
+    {
+      "index": 31,
+      "unit_id": "b490dbaa9904c807b80d7df512293e4cfc00599d940f6a3dba415295ee15e820",
+      "rating": "B",
+      "finding": "页面整体技术内容、结构、链接语义以及本轮新开放的 complete-code teaching comment 均准确完整；// ... package code here 已自然翻译，未发现应翻译的 teaching prose 英文残留。唯一需要修订的是“服务器项目通常不会包含供外部导出的包”这一表述。source 的 packages for export 在这里是指服务器项目通常不会提供供其他项目导入/复用的公共包，并非 Go 语言中 identifier 的“导出（exported）”概念；“供外部导出的包”在简体中文 Go 技术语境中不自然，也可能产生概念歧义。属于局部、轻微的技术措辞问题，不影响其余页面内容。"
+    }
+  ]
+}

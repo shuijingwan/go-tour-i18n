@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,7 +16,7 @@ func TestInitializeLocaleStatusCommand(t *testing.T) {
 	if err := os.MkdirAll(localeDir, 0755); err != nil {
 		t.Fatal(err)
 	}
-	metadata := []byte(`{"locale":"de-DE","phase":"scaffold","translation_unit":"present.Section"}`)
+	metadata, _ := json.Marshal(i18n.Locale{Locale: "de-DE", HTMLLang: "de-DE", Phase: "scaffold", TranslationUnit: "present.Section", LanguageAudit: testLocaleInitLanguagePolicy("de-DE")})
 	if err := os.WriteFile(filepath.Join(localeDir, "locale.json"), metadata, 0644); err != nil {
 		t.Fatal(err)
 	}

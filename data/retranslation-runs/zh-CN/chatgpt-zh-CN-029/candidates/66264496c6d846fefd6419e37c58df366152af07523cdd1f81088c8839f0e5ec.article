@@ -1,0 +1,189 @@
+<!--{
+    "Title": "返回并处理错误",
+    "Breadcrumb": true
+}-->
+
+<p>
+  错误处理是编写可靠代码必不可少的能力。本节中，你将
+  添加少量代码，让 greetings 模块返回错误，然后在
+  调用方中处理这个错误。
+</p>
+
+<aside class="Note">
+  <strong>注意：</strong> 本节属于一个多部分教程，该教程从
+  <a href="/doc/tutorial/create-module.html">创建 Go 模块</a>开始。
+</aside>
+
+<ol>
+  <li>
+    在 greetings/greetings.go 中添加下面高亮的代码。
+
+    <p>
+      如果连要问候的人是谁都不知道，就没有必要返回问候语。
+      当名称为空时，向调用方返回错误。把下面的
+      代码复制到 greetings.go 中并保存文件。
+    </p>
+
+    <pre>
+package greetings
+
+import (
+    <ins>"errors"</ins>
+    "fmt"
+)
+
+// Hello returns a greeting for the named person.
+func Hello(name string) <ins>(</ins>string<ins>, error)</ins> {
+    <ins>// 如果未提供 name，则返回一条带消息的错误。
+    if name == "" {
+        return "", errors.New("empty name")
+    }</ins>
+
+    // 如果收到 name，则返回一个将 name 嵌入
+    // 问候 message 中的值。
+    message := fmt.Sprintf("Hi, %v. Welcome!", name)
+    return message<ins>, nil</ins>
+}
+</pre>
+
+    <p>
+      在这段代码中，你将：
+    </p>
+
+    <ul>
+      <li>
+        修改函数，使其返回两个值：一个
+        <code>string</code>和一个 <code>error</code>。调用方将检查
+        第二个值来判断是否发生错误。（任何 Go 函数都可以
+        返回多个值。更多信息请参阅 
+        <a href="/doc/effective_go.html#multiple-returns">Effective Go</a>。）
+      </li>
+      <li>
+        导入 Go 标准库的 <code>errors</code> 包，以便使用其中的
+        
+        <a href="https://pkg.go.dev/errors/#example-New"
+          ><code>errors.New</code>函数</a
+        >。
+      </li>
+      <li>
+        添加一个 <code>if</code> 语句检查无效请求（本应提供名称的地方是
+        空字符串），并在请求无效时返回错误。
+        <code>errors.New</code>函数会返回一个
+        <code>error</code>，其中包含你的消息。
+      </li>
+      <li>
+        在成功返回时添加 <code>nil</code>（表示没有错误）作为第二个值。
+        这样调用方就能知道函数
+        执行成功。
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    在 hello/hello.go 文件中，同时处理 
+    <code>Hello</code> 函数现在返回的错误和正常返回值。
+
+    <p>
+      将以下代码粘贴到 hello.go 中。
+    </p>
+
+    <pre>
+package main
+
+import (
+    "fmt"
+    <ins>"log"</ins>
+
+    "example.com/greetings"
+)
+
+func main() {
+    <ins>// 设置预定义 Logger 的属性，包括
+    // log 日志项前缀，以及用于禁止打印的标志
+    // 时间、源文件名和行号。
+    log.SetPrefix("greetings: ")
+    log.SetFlags(0)</ins>
+
+    // 请求一条问候消息。
+    <ins>message, err := greetings.Hello("")</ins>
+    <ins>// 如果返回错误，则将其打印到控制台并
+    // 退出程序。
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // 如果没有返回错误，则将返回的消息
+    // 打印到控制台。</ins>
+    fmt.Println(message)
+}
+</pre>
+
+    <p>
+      在这段代码中，你将：
+    </p>
+
+    <ul>
+      <li>
+        配置
+        <a href="https://pkg.go.dev/log/"><code>log</code>包</a>，让它在
+        日志消息开头打印命令名称（“greetings: ”），但不显示时间戳或源文件信息。
+        
+      </li>
+      <li>
+        把 <code>Hello</code> 返回的两个值（包括
+        <code>error</code>）都赋给变量。
+      </li>
+      <li>
+        把传给 <code>Hello</code> 的参数从 Gladys 的名字改为空
+        字符串，以便试用错误处理代码。
+      </li>
+      <li>
+        检查 <code>error</code> 是否为非 nil 值。出现这种情况时，没有必要继续
+        执行。
+      </li>
+      <li>
+        使用标准库 <code>log package</code> 中的函数
+        输出错误信息。如果发生错误，使用
+        <code>log</code>包的
+        <a href="https://pkg.go.dev/log?tab=doc#Fatal"
+          ><code>Fatal</code>函数</a
+        >
+        打印错误并停止程序。
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    在命令行中切换到 <code>hello</code> 目录，运行 hello.go 以
+    确认代码可以正常工作。
+
+    <p>
+      现在传入的是空名称，因此会得到一个错误。
+    </p>
+
+    <pre>
+$ go run .
+greetings: empty name
+exit status 1
+</pre
+    >
+  </li>
+</ol>
+
+<p>
+  这是 Go 中常见的错误处理方式：把错误作为值返回，让调用方
+  检查它。
+</p>
+
+<p>
+  接下来，你将使用 Go 切片返回一条随机选择的问候语。
+</p>
+
+<p class="Navigation">
+  <a class="Navigation-prev" href="/doc/tutorial/call-module-code.html"
+    >&lt; 从另一个模块调用你的代码</a
+  >
+  <a class="Navigation-next" href="/doc/tutorial/random-greeting.html"
+    >返回随机问候语 &gt;</a
+  >
+</p>

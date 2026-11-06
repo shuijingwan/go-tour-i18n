@@ -1,0 +1,168 @@
+<!--{
+  "Title": "执行事务"
+}-->
+
+可以使用代表事务的
+[`sql.Tx,`](https://pkg.go.dev/database/sql#Tx)来执行数据库事务。
+除了表示事务特定语义的 `Commit` 和 `Rollback` 方法之外，
+`sql.Tx`还提供执行常见数据库
+操作所需的全部方法。要获取 `sql.Tx`，可以调用 `DB.Begin` 或 `DB.BeginTx`。
+
+[数据库事务](https://en.wikipedia.org/wiki/Database_transaction)
+会把多个操作组合起来以完成一个更大的目标。所有操作要么
+全部成功，要么全部不生效；无论哪种情况，都要保持数据完整性。
+典型的事务工作流包括：
+
+1. 开始事务。
+2. 执行一组数据库操作。
+3. 如果没有发生错误，提交事务以应用数据库更改。
+4. 如果发生错误，回滚事务，使数据库
+    保持不变。
+
+`sql`包提供开始和结束事务的方法，
+以及在两者之间执行数据库操作的方法。这些
+方法与上面工作流中的四个步骤相对应。
+
+*   开始事务。
+
+    [`DB.Begin`](https://pkg.go.dev/database/sql#DB.Begin)或
+    [`DB.BeginTx`](https://pkg.go.dev/database/sql#DB.BeginTx)会开始一个新的
+    数据库事务，并返回表示该事务的 `sql.Tx`。
+*   执行数据库操作。
+
+    使用 `sql.Tx`，可以通过一系列共享同一连接的
+    操作来查询或更新数据库。为此，`Tx`会导出
+    以下方法：
+
+    *   [`Exec`](https://pkg.go.dev/database/sql#Tx.Exec)以及
+        [`ExecContext`](https://pkg.go.dev/database/sql#Tx.ExecContext)，用于通过 SQL 语句（例如 `INSERT`、`UPDATE` 和
+        `DELETE`）修改数据库。
+        
+
+        更多信息请参阅[执行不返回数据的 SQL 语句](/doc/database/change-data)。
+
+    *   [`Query`](https://pkg.go.dev/database/sql#Tx.Query)、
+        [`QueryContext`](https://pkg.go.dev/database/sql#Tx.QueryContext)、
+        [`QueryRow`](https://pkg.go.dev/database/sql#Tx.QueryRow)以及
+        [`QueryRowContext`](https://pkg.go.dev/database/sql#Tx.QueryRowContext)
+        ，用于返回行的操作。
+
+        更多信息请参阅 [查询数据](/doc/database/querying)。
+
+    *   [`Prepare`](https://pkg.go.dev/database/sql#Tx.Prepare)、
+        [`PrepareContext`](https://pkg.go.dev/database/sql#Tx.PrepareContext)、
+        [`Stmt`](https://pkg.go.dev/database/sql#Tx.Stmt)以及
+        [`StmtContext`](https://pkg.go.dev/database/sql#Tx.StmtContext)，用于
+        预先定义预处理语句。
+
+        更多信息请参阅 [使用预处理语句](/doc/database/prepared-statements)。
+
+*   使用以下_一种_方式结束事务：
+    *   使用
+        [`Tx.Commit`](https://pkg.go.dev/database/sql#Tx.Commit)提交事务。
+
+        如果 `Commit` 成功（返回 `nil` 错误），那么所有查询结果
+        都会被确认为有效，所有已执行的更新也会作为一次原子更改应用到
+        数据库。如果 `Commit` 失败，那么该 `Tx` 上的
+        `Query`和 `Exec` 产生的所有结果都应视为
+        无效并丢弃。
+    *   使用
+        [`Tx.Rollback`](https://pkg.go.dev/database/sql#Tx.Rollback)回滚事务。
+
+        即使 `Tx.Rollback` 失败，事务也不会再有效，
+        也不会被提交到数据库。
+
+### 最佳实践 {#best_practices}
+
+遵循下面的最佳实践，可以更稳妥地处理事务有时涉及的复杂语义
+和连接管理。
+
+*   使用本节介绍的 API 管理事务。请_不要_
+    直接使用与事务相关的 SQL 语句，例如 `BEGIN` 和 `COMMIT`；
+    否则可能使数据库处于不可预测的状态，
+    尤其是在并发程序中。
+*   使用事务时，也要注意不要直接调用非事务的
+    `sql.DB`方法，因为这些方法会在事务之外执行，
+    导致代码看到不一致的数据库状态，
+    甚至可能造成死锁。
+
+### 示例 {#example}
+
+下面的示例代码使用事务为一张专辑创建新的客户订单。
+在此过程中，代码将：
+
+1. 开始事务。
+2. defer 事务回滚。如果事务成功，会在函数退出前
+    提交，因此 defer 的回滚调用不会产生作用。
+    如果事务失败，就不会提交，这意味着
+    函数退出时会执行回滚。
+3. 确认客户正在订购的专辑有足够库存。
+    
+4. 如果库存充足，则更新库存数量，减去
+    订购的专辑数量。
+5. 创建新订单，并取得为新订单生成的 ID 返回给客户端。
+6. 提交事务并返回 ID。
+
+这个示例使用接收 `context.Context` 参数的 `Tx` 方法。
+这样，如果函数执行时间过长或客户端连接关闭，就可以取消函数的执行 -- 包括数据库操作。
+更多信息请参阅
+ [取消进行中的操作](/doc/database/cancel-operations)。
+
+```
+// CreateOrder 为一张唱片创建订单，并返回新订单的 ID。
+func CreateOrder(ctx context.Context, albumID, quantity, custID int) (orderID int64, err error) {
+
+	// 创建一个辅助函数，用于准备失败结果。
+	fail := func(err error) (int64, error) {
+		return 0, fmt.Errorf("CreateOrder: %v", err)
+	}
+
+	// 获取用于发起事务请求的 Tx。
+	tx, err := db.BeginTx(ctx, nil)
+	if err != nil {
+		return fail(err)
+	}
+	// 使用 defer 延迟回滚，以防任一步骤失败。
+	defer tx.Rollback()
+
+	// 确认唱片库存变量 enough 表明库存足以满足订单。
+	var enough bool
+	if err = tx.QueryRowContext(ctx, "SELECT (quantity >= ?) from album where id = ?",
+		quantity, albumID).Scan(&enough); err != nil {
+		if err == sql.ErrNoRows {
+			return fail(fmt.Errorf("no such album"))
+		}
+		return fail(err)
+	}
+	if !enough {
+		return fail(fmt.Errorf("not enough inventory"))
+	}
+
+	// 更新唱片库存，扣除订单中的 quantity。
+	_, err = tx.ExecContext(ctx, "UPDATE album SET quantity = quantity - ? WHERE id = ?",
+		quantity, albumID)
+	if err != nil {
+		return fail(err)
+	}
+
+	// 在 album_order 表中创建一行新记录。
+	result, err := tx.ExecContext(ctx, "INSERT INTO album_order (album_id, cust_id, quantity, date) VALUES (?, ?, ?, ?)",
+		albumID, custID, quantity, time.Now())
+	if err != nil {
+		return fail(err)
+	}
+	// 获取刚创建的订单项的 ID。
+	orderID, err = result.LastInsertId()
+	if err != nil {
+		return fail(err)
+	}
+
+	// 调用 Commit 提交事务。
+	if err = tx.Commit(); err != nil {
+		return fail(err)
+	}
+
+	// 返回订单 ID。
+	return orderID, nil
+}
+```

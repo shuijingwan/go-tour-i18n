@@ -3,7 +3,6 @@ package sitecontent
 
 import (
 	"bytes"
-	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -52,6 +51,7 @@ type Dependency struct {
 	SHA256 string `json:"sha256"`
 }
 type Source struct {
+	Body             *Reference   `json:"source_body,omitempty"`
 	Path             string       `json:"source_path"`
 	Kind             string       `json:"source_kind"`
 	Origin           string       `json:"origin"`
@@ -65,22 +65,28 @@ type Source struct {
 	Dependencies     []Dependency `json:"dependencies"`
 }
 type Global struct {
-	Schema             string    `json:"schema"`
-	PublicName         string    `json:"public_name"`
-	UpstreamRepository string    `json:"upstream_repository"`
-	UpstreamCommit     string    `json:"upstream_commit"`
-	SnapshotSHA256     string    `json:"snapshot_sha256"`
-	Versions           []Version `json:"site_versions"`
-	Surfaces           []Surface `json:"surfaces"`
-	Packages           []Package `json:"packages"`
-	Sources            []Source  `json:"source_inventory"`
-	Identity           string    `json:"identity_sha256"`
+	ShellRepresentation  *Reference  `json:"shell_canonical_representation,omitempty"`
+	Membership           *Reference  `json:"package_membership_successor,omitempty"`
+	StructuredSuccessors []Reference `json:"structured_source_successors,omitempty"`
+	PackageAdoptions     []Reference `json:"page_package_adoptions,omitempty"`
+	ShellAdoption        *Reference  `json:"shell_current_adoption,omitempty"`
+	HistoricalPackages   []Package   `json:"historical_packages,omitempty"`
+	Schema               string      `json:"schema"`
+	PublicName           string      `json:"public_name"`
+	UpstreamRepository   string      `json:"upstream_repository"`
+	UpstreamCommit       string      `json:"upstream_commit"`
+	SnapshotSHA256       string      `json:"snapshot_sha256"`
+	Versions             []Version   `json:"site_versions"`
+	Surfaces             []Surface   `json:"surfaces"`
+	Packages             []Package   `json:"packages"`
+	Sources              []Source    `json:"source_inventory"`
+	Identity             string      `json:"identity_sha256"`
 }
 type Reference = contentidentity.Reference
 type Completion = contentidentity.Completion
 type Locale = contentidentity.Locale
 
-func digest(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
+func digest(b []byte) string { return contentidentity.SHA256Hex(b) }
 func identity(v any) string  { b, _ := json.Marshal(v); return digest(b) }
 func validPath(p string) bool {
 	return fs.ValidPath(p) && p != "." && !bytes.ContainsAny([]byte(p), "\\\x00")
@@ -149,7 +155,7 @@ func ValidateGlobal(g Global) error {
 			return fmt.Errorf("duplicate/empty package")
 		}
 		packages[p.ID] = p
-		if packageWorkflow(p.ID) && p.ParserContract != UnitContract {
+		if p.ID != "tour-v1" && p.ParserContract != UnitContract && !(g.ShellAdoption != nil && p.ID == "site-v2-shell" && p.ParserContract == ShellExtractionContract) {
 			return fmt.Errorf("unknown package parser contract: %s", p.ID)
 		}
 		for _, r := range p.Routes {
@@ -206,9 +212,12 @@ func ValidateGlobal(g Global) error {
 			return fmt.Errorf("invalid source membership/path %s", s.Path)
 		}
 		seen[s.Path] = true
+		if s.Body != nil && (s.Origin != "repository" || !validPath(s.Body.Path) || s.Body.Path == s.Path || s.Body.SHA256 != s.SHA256) {
+			return fmt.Errorf("invalid source body authority: %s", s.Path)
+		}
 		switch s.Kind {
 		case "page":
-			if s.Package == "learn-docs-v1" && !routes[s.Route] {
+			if s.Package != "tour-v1" && !routes[s.Route] {
 				return fmt.Errorf("page without canonical route %s", s.Path)
 			}
 		case "data", "asset":
@@ -236,7 +245,62 @@ func ValidateGlobal(g Global) error {
 	return nil
 }
 
-func LoadCurrent(root string) (*Global, error) {
+func LoadCurrent(root string, contexts ...*structuredSuccessorValidation) (*Global, error) {
+	g, err := loadSourceCurrent(root, contexts...)
+	if err != nil {
+		return nil, err
+	}
+	g, err = applyPackageMembership(root, g)
+	if err != nil {
+		return nil, err
+	}
+	return applyShellRepresentationAuthority(root, g, contexts...)
+}
+
+// Source/corpus identity is independent of grouping already adopted content
+// into one lifecycle package. Historical source authorities are not rewritten.
+func loadSourceCurrent(root string, contexts ...*structuredSuccessorValidation) (*Global, error) {
+	if err := sharedRepresentationPublicationGuard(root); err != nil {
+		return nil, err
+	}
+	g, err := loadHistoricalGlobal(root, contexts...)
+	if err != nil {
+		return nil, err
+	}
+	if len(contexts) > 0 && contexts[0] != nil && contexts[0].currentSourcePhase {
+		return contexts[0].projectCurrentSource(root, g)
+	}
+	return rebuildCurrentSource(root, g, contexts...)
+}
+
+func rebuildCurrentSource(root string, g *Global, contexts ...*structuredSuccessorValidation) (*Global, error) {
+	if len(contexts) > 0 && contexts[0] != nil {
+		contexts[0].countHistorical("current-source-projection-build")
+	}
+	var err error
+	g, err = applyCurrentShellAuthority(root, g, contexts...)
+	if err != nil {
+		return nil, err
+	}
+	g, err = applyStructuredSourceSuccessors(root, g, contexts...)
+	if err != nil {
+		return nil, err
+	}
+	return applyPagePackageAdoptions(root, g, contexts...)
+}
+
+// The recorded predecessor remains byte-identical and independently readable.
+func loadHistoricalGlobal(root string, contexts ...*structuredSuccessorValidation) (*Global, error) {
+	if len(contexts) > 0 && contexts[0] != nil {
+		contexts[0].countHistorical("loadHistoricalGlobal")
+		if !contexts[0].disableHistoricalReuse {
+			return contexts[0].historicalGlobal(root)
+		}
+	}
+	return rebuildHistoricalGlobal(root, contexts...)
+}
+
+func rebuildHistoricalGlobal(root string, contexts ...*structuredSuccessorValidation) (*Global, error) {
 	b, err := readRegular(root, GlobalPath)
 	if err != nil {
 		return nil, err
@@ -248,11 +312,14 @@ func LoadCurrent(root string) (*Global, error) {
 	if err := ValidateGlobal(g); err != nil {
 		return nil, err
 	}
-	snapshot, err := readRegular(root, SnapshotPath)
+	snapshot, err := ReadSourceSnapshot(root)
 	if err != nil {
 		return nil, err
 	}
-	want, err := BuildGlobal(root, snapshot)
+	if len(contexts) > 0 && contexts[0] != nil && contexts[0].historicalIdentities != nil {
+		contexts[0].historicalIdentities[digest(b)+":"+digest(snapshot)]++
+	}
+	want, err := BuildGlobal(root, snapshot, contexts...)
 	if err != nil {
 		return nil, err
 	}
@@ -320,12 +387,21 @@ func ValidateLocale(g *Global, l Locale) error {
 		}
 		seen[c.Package] = true
 		if c.PackageIdentity != p.Identity || c.SourceIdentity != p.SourceIdentity {
-			return fmt.Errorf("locale package scope STALE: %s", c.Package)
+			matched := false
+			for _, old := range g.HistoricalPackages {
+				if old.ID == c.Package && old.Identity == c.PackageIdentity && old.SourceIdentity == c.SourceIdentity {
+					p = old
+					matched = true
+				}
+			}
+			if !matched {
+				return fmt.Errorf("locale package scope STALE: %s", c.Package)
+			}
 		}
 		switch c.State {
 		case "complete":
-			if packageWorkflow(c.Package) {
-				if c.EvidenceKind != PackageCompletionKind || c.LegacySurfaceState != "" || len(c.Evidence) != 2 || !validSHA(c.ContextIdentity) || c.EvidenceIdentity != identity(c.Evidence) || !reflect.DeepEqual(c.Routes, p.Routes) || !reflect.DeepEqual(c.Surfaces, p.Surfaces) || !reflect.DeepEqual(c.RouteFamilies, routeFamilies(c.Package)) {
+			if packageWorkflow(c.Package) || (p.ID != "tour-v1" && p.ParserContract == UnitContract) {
+				if c.EvidenceKind != PackageCompletionKind || c.LegacySurfaceState != "" || len(c.Evidence) != 2 || !validSHA(c.ContextIdentity) || c.EvidenceIdentity != identity(c.Evidence) || !reflect.DeepEqual(c.Routes, p.Routes) || !reflect.DeepEqual(c.Surfaces, p.Surfaces) || !reflect.DeepEqual(c.RouteFamilies, packageRouteFamilies(p)) {
 					return fmt.Errorf("unsupported/unproven atomic package completion")
 				}
 				for _, r := range c.Evidence {
@@ -363,7 +439,7 @@ func PackageStates(g *Global, l *Locale) []Completion {
 	states := []Completion{}
 	for _, p := range g.Packages {
 		c, ok := completed[p.ID]
-		if !ok {
+		if !ok || c.PackageIdentity != p.Identity {
 			c = Completion{Package: p.ID, State: "incomplete"}
 		}
 		states = append(states, c)

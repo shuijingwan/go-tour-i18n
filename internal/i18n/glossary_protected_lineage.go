@@ -7,8 +7,11 @@ import (
 	"path/filepath"
 )
 
-func compatibleHistoricalProtectedInput(root string, catalog *Catalog, locale string, unit *TranslationUnit, record RetranslationBatchUnit, input, candidate []byte) (protectedTranslation, error) {
+func compatibleHistoricalProtectedInput(root string, catalog *Catalog, locale string, unit *TranslationUnit, record RetranslationBatchUnit, input, candidate []byte, prepared *PreparedGlossaryCompatibility) (protectedTranslation, error) {
 	current, err := readCompatibilityFile(root, glossaryReviewGlossaryPath(locale))
+	if prepared != nil && prepared.historicalSHA != "" {
+		current, err = readArchivedGlossary(root, locale, prepared.historicalSHA)
+	}
 	if err != nil {
 		return protectedTranslation{}, err
 	}
@@ -34,7 +37,8 @@ func compatibleHistoricalProtectedInput(root string, catalog *Catalog, locale st
 			if err != nil || evidence.record.InputSHA256 != record.InputSHA256 || evidence.record.InputPath != record.InputPath {
 				continue
 			}
-			if !glossaryScopeCompatible(root, locale, snapshot.GlossarySHA256, sum(current), "tu:"+unit.ID, catalog) {
+			resolution := prepared.Resolve(snapshot.GlossarySHA256, sum(current), "tu:"+unit.ID)
+			if resolution.Status != "exact" && resolution.Status != "compatible" {
 				continue
 			}
 			data, err := readArchivedGlossary(root, locale, snapshot.GlossarySHA256)

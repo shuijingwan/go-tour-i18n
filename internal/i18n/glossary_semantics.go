@@ -10,7 +10,7 @@ import (
 )
 
 const glossaryNormalizationVersion = "tour-glossary-normalization/v1"
-const glossaryImpactAlgorithmVersion = "tour-visible-glossary-impact/v1"
+const glossaryImpactAlgorithmVersion = "tour-visible-glossary-impact/v2"
 
 type GlossarySemanticEntry struct {
 	Category string `json:"category"`

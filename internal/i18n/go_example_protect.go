@@ -38,6 +38,10 @@ func prepareTranslationUnitInput(unit *TranslationUnit, glossary *Glossary) (pro
 	if unit == nil {
 		return protectedTranslation{}, fmt.Errorf("translation unit is required")
 	}
+	if unit.Adapter != nil {
+		text, tokens, err := unit.Adapter.ProtectedInput(glossary)
+		return protectedTranslation{Text: text, Tokens: tokens, Adapter: unit.Adapter}, err
+	}
 	switch unit.Kind {
 	case UnitKindPage:
 		return prepareDefaultTranslationInput(unit.Source, unit.SourceSHA256, glossary), nil

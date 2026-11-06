@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
+	"github.com/shuijingwan/go-tour-i18n/internal/languageaudit"
 	"io"
 	"os"
 	"path/filepath"
@@ -14,13 +15,14 @@ import (
 )
 
 type Locale struct {
-	Locale          string `json:"locale"`
-	LanguageName    string `json:"language_name"`
-	EnglishName     string `json:"english_name"`
-	HTMLLang        string `json:"html_lang"`
-	Phase           string `json:"phase"`
-	TranslationUnit string `json:"translation_unit"`
-	DefaultLanguage bool   `json:"default_language"`
+	LanguageAudit   *languageaudit.Authority `json:"language_audit,omitempty"`
+	Locale          string                   `json:"locale"`
+	LanguageName    string                   `json:"language_name"`
+	EnglishName     string                   `json:"english_name"`
+	HTMLLang        string                   `json:"html_lang"`
+	Phase           string                   `json:"phase"`
+	TranslationUnit string                   `json:"translation_unit"`
+	DefaultLanguage bool                     `json:"default_language"`
 }
 
 type Status struct {
@@ -148,6 +150,9 @@ func checkStatuses(localeName string, catalog *Catalog, statuses []Status) error
 // current formal TranslationUnit catalog. It never overwrites an existing
 // status file and does not repair or migrate established workflow state.
 func InitializeLocaleStatus(root, localeName string, catalog *Catalog) (*StatusInitializationResult, error) {
+	if _, _, err := LoadLanguageAuditPolicy(root, localeName, nil); err != nil {
+		return nil, err
+	}
 	localeDir, err := localeWorkflowDirectory(root, localeName)
 	if err != nil {
 		return nil, err
@@ -239,6 +244,9 @@ func localeWorkflowUnitList(catalog *Catalog) ([]*TranslationUnit, int, int, err
 	units := make([]*TranslationUnit, 0, len(catalog.Pages)+len(catalog.Examples))
 	seen := make(map[string]bool, cap(units))
 	for i := range catalog.Pages {
+		if !catalog.inTranslationScope(catalog.Pages[i].ID) {
+			continue
+		}
 		unit, err := catalog.Unit(catalog.Pages[i].ID)
 		if err != nil {
 			return nil, 0, 0, err
@@ -249,9 +257,28 @@ func localeWorkflowUnitList(catalog *Catalog) ([]*TranslationUnit, int, int, err
 		seen[unit.ID] = true
 		units = append(units, unit)
 	}
+	pageCount := len(units)
+	for _, adapted := range catalog.Adapted {
+		if len(catalog.TranslationScope) == 0 || !catalog.inTranslationScope(adapted.Unit.ID) {
+			continue
+		}
+		unit, err := catalog.Unit(adapted.Unit.ID)
+		if err != nil {
+			return nil, 0, 0, err
+		}
+		if seen[unit.ID] || unit.Kind != UnitKindPage || unit.Adapter == nil {
+			return nil, 0, 0, fmt.Errorf("invalid adapted Page %s", unit.ID)
+		}
+		seen[unit.ID] = true
+		units = append(units, unit)
+		pageCount++
+	}
 	exampleCount := 0
 	for i := range catalog.Examples {
 		example := &catalog.Examples[i]
+		if !catalog.inTranslationScope(example.ID) {
+			continue
+		}
 		eligible, err := hasTranslatableGoExampleComment(example.Source)
 		if err != nil {
 			return nil, 0, 0, fmt.Errorf("%s: determine locale workflow eligibility: %w", example.ID, err)
@@ -270,7 +297,7 @@ func localeWorkflowUnitList(catalog *Catalog) ([]*TranslationUnit, int, int, err
 		units = append(units, unit)
 		exampleCount++
 	}
-	return units, len(catalog.Pages), exampleCount, nil
+	return units, pageCount, exampleCount, nil
 }
 
 // LocaleWorkflowUnitCounts reports the Page and eligible Example units that
@@ -289,7 +316,11 @@ func ReadStatuses(path string) ([]Status, error) {
 		return nil, err
 	}
 	defer f.Close()
-	r := csv.NewReader(f)
+	return readStatuses(f)
+}
+
+func readStatuses(input io.Reader) ([]Status, error) {
+	r := csv.NewReader(input)
 	r.Comma = '\t'
 	r.FieldsPerRecord = 7
 	header, err := r.Read()

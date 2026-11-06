@@ -13,7 +13,7 @@
     "new_glossary": {"$ref": "#/$defs/reference"},
     "new_full_review": {"$ref": "#/$defs/reference"},
     "normalization_version": {"const": "tour-glossary-normalization/v1"},
-    "impact_algorithm_version": {"const": "tour-visible-glossary-impact/v1"},
+    "impact_algorithm_version": {"const": "tour-visible-glossary-impact/v2"},
     "normalized_semantic_delta": {"type": "array", "items": {"$ref": "#/$defs/delta"}},
     "context_inventory": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/context"}},
     "affected_scopes": {"type": "array", "items": {"$ref": "#/$defs/scope"}},
@@ -51,7 +51,7 @@
       "properties": {
         "id": {"type": "string", "minLength": 1},
         "context_identity_sha256": {"$ref": "#/$defs/sha256"},
-        "reasons": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["semantic_delta_empty", "constraint_removed", "changed_source_term_absent", "new_forbidden_target_absent", "mandatory_source_term_present", "preferred_source_term_present", "keep_source_term_present", "new_forbidden_target_present", "unknown_parser"]}}
+        "reasons": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["semantic_delta_empty", "constraint_removed", "changed_source_term_absent", "new_forbidden_target_absent", "mandatory_exact_target_already_present", "preferred_target_already_present", "mandatory_source_term_present", "preferred_source_term_present", "keep_source_term_present", "new_forbidden_target_present", "unknown_parser"]}}
       }
     }
   }

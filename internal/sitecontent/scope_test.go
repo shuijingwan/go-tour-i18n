@@ -100,7 +100,7 @@ func TestFrozenInventoryCurrent(t *testing.T) {
 			t.Fatal("redirect alias published as page")
 		}
 	}
-	b, err := os.ReadFile(filepath.Join(repositoryRoot(t), SnapshotPath))
+	b, err := ReadSourceSnapshot(repositoryRoot(t))
 	if err != nil {
 		t.Fatal(err)
 	}

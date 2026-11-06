@@ -10,6 +10,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/shuijingwan/go-tour-i18n/internal/contentidentity"
 )
 
 type RetranslationRevalidateOptions struct {
@@ -19,26 +21,30 @@ type RetranslationRevalidateOptions struct {
 }
 
 type RetranslationRevalidationResult struct {
-	SchemaVersion    int      `json:"schema_version"`
-	BatchID          string   `json:"batch_id"`
-	Locale           string   `json:"locale"`
-	UnitID           string   `json:"unit_id"`
-	UnitKind         UnitKind `json:"unit_kind"`
-	Attempt          int      `json:"attempt"`
-	Revalidation     int      `json:"revalidation"`
-	PreviousStatus   string   `json:"previous_status"`
-	Status           string   `json:"status"`
-	Error            string   `json:"error,omitempty"`
-	HistoryPath      string   `json:"history_path"`
-	ValidationPath   string   `json:"validation_path"`
-	ResultPath       string   `json:"result_path"`
-	ValidationPassed int      `json:"validation_passed"`
-	ValidationFailed int      `json:"validation_failed"`
+	SchemaVersion     int      `json:"schema_version"`
+	BatchID           string   `json:"batch_id"`
+	Locale            string   `json:"locale"`
+	UnitID            string   `json:"unit_id"`
+	UnitKind          UnitKind `json:"unit_kind"`
+	Attempt           int      `json:"attempt"`
+	Revalidation      int      `json:"revalidation"`
+	PreviousStatus    string   `json:"previous_status"`
+	Status            string   `json:"status"`
+	Error             string   `json:"error,omitempty"`
+	HistoryPath       string   `json:"history_path"`
+	ValidationPath    string   `json:"validation_path"`
+	ResultPath        string   `json:"result_path"`
+	ResultHistoryPath string   `json:"result_history_path,omitempty"`
+	RestorePassed     int      `json:"restore_passed"`
+	RestoreFailed     int      `json:"restore_failed"`
+	ValidationPassed  int      `json:"validation_passed"`
+	ValidationFailed  int      `json:"validation_failed"`
 }
 
 // RevalidateRetranslationCandidate runs the current canonical validator over an
-// already restored candidate. It archives validation evidence but never changes
-// the raw response, candidate, or translation attempt.
+// already restored candidate, or restores a failed Unit using the exact original
+// imported invocation after an adapter fix. It never generates language or
+// changes the raw response/attempt. Previous evidence remains immutable history.
 func RevalidateRetranslationCandidate(root string, catalog *Catalog, options RetranslationRevalidateOptions) (*RetranslationRevalidationResult, error) {
 	if catalog == nil {
 		return nil, errors.New("retranslation catalog is required")
@@ -56,6 +62,9 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 		return nil, err
 	}
 	batchDir := filepath.Join(root, "data", "retranslation-runs", options.Locale, options.BatchID)
+	if err := ensureNoGenerationImportPending(batchDir); err != nil {
+		return nil, err
+	}
 	manifest, err := readRetranslationProcessManifest(batchDir, options.Locale, options.BatchID)
 	if err != nil {
 		return nil, err
@@ -104,10 +113,8 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 		return nil, fmt.Errorf("translation unit %q is not in retranslation result", options.UnitID)
 	}
 	unitResult := &result.Units[resultIndex]
-	if unitResult.Status == "restore_failed" || unitResult.CandidatePath == "" {
-		return nil, fmt.Errorf("translation unit %q does not have a restored candidate", options.UnitID)
-	}
-	if unitResult.Status != "validation_failed" && unitResult.Status != "passed" {
+	recoverRestore := unitResult.Status == "restore_failed"
+	if !recoverRestore && unitResult.Status != "validation_failed" && unitResult.Status != "passed" {
 		return nil, fmt.Errorf("translation unit %q status %q is not revalidatable", options.UnitID, unitResult.Status)
 	}
 	name := filepath.Base(filepath.FromSlash(item.manifest.InputPath))
@@ -115,7 +122,11 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	flatID := strings.TrimSuffix(name, extension)
 	wantCandidate := filepath.ToSlash(filepath.Join("candidates", retranslationUnitCandidateName(item.unit)))
 	wantValidation := filepath.ToSlash(filepath.Join("validation", flatID+".json"))
-	if unitResult.CandidatePath != wantCandidate || unitResult.ValidationPath != wantValidation {
+	existingCandidate := wantCandidate
+	if recoverRestore {
+		existingCandidate = ""
+	}
+	if unitResult.CandidatePath != existingCandidate || unitResult.ValidationPath != wantValidation || unitResult.UnitKind != item.unit.Kind {
 		return nil, fmt.Errorf("translation unit %q result candidate/validation path mismatch", options.UnitID)
 	}
 	validationPath := filepath.Join(batchDir, filepath.FromSlash(wantValidation))
@@ -128,7 +139,7 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 		return nil, fmt.Errorf("parse current validation for %s: %w", options.UnitID, err)
 	}
 	current := *currentPtr
-	if current.SchemaVersion != retranslationProcessSchemaVersion || current.BatchID != options.BatchID || current.Locale != options.Locale || current.UnitID != options.UnitID || current.UnitKind != item.unit.Kind || current.SourceSHA256 != item.unit.SourceSHA256 || current.InputPath != item.manifest.InputPath || current.CandidatePath != wantCandidate || current.Status != unitResult.Status {
+	if current.SchemaVersion != retranslationProcessSchemaVersion || current.BatchID != options.BatchID || current.Locale != options.Locale || current.UnitID != options.UnitID || current.UnitKind != item.unit.Kind || current.SourceSHA256 != item.unit.SourceSHA256 || current.InputPath != item.manifest.InputPath || current.CandidatePath != existingCandidate || current.Status != unitResult.Status || current.Error != unitResult.Error {
 		return nil, fmt.Errorf("current validation for %s does not match manifest and result.json", options.UnitID)
 	}
 	attempt, err := retryValidationAttemptForExtension(current.RawResponsePath, flatID, extension)
@@ -136,17 +147,45 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 		return nil, fmt.Errorf("%s: validation attempt provenance mismatch", options.UnitID)
 	}
 	candidatePath := filepath.Join(batchDir, filepath.FromSlash(wantCandidate))
-	candidate, err := os.ReadFile(candidatePath)
-	if err != nil {
-		return nil, fmt.Errorf("read restored candidate for %s: %w", options.UnitID, err)
+	var candidate []byte
+	if recoverRestore {
+		if _, err := os.Lstat(candidatePath); !os.IsNotExist(err) {
+			return nil, fmt.Errorf("restore recovery candidate already exists or cannot be inspected")
+		}
+		if current.Error == "" {
+			return nil, fmt.Errorf("restore failure evidence is required")
+		}
+	} else {
+		candidate, err = os.ReadFile(candidatePath)
+		if err != nil {
+			return nil, fmt.Errorf("read restored candidate for %s: %w", options.UnitID, err)
+		}
 	}
 	raw, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(current.RawResponsePath)))
 	if err != nil {
 		return nil, fmt.Errorf("read validation raw response for %s: %w", options.UnitID, err)
 	}
+	if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+		if err := validateRetranslationArtifactEOF(raw); err != nil {
+			return nil, err
+		}
+	}
+	if recoverRestore {
+		if err := verifyRestoreRecoveryInvocation(root, batchDir, manifest, *item, current, raw); err != nil {
+			return nil, err
+		}
+	}
 	restored, failures := item.protected.restore(string(raw))
 	restoredBytes := []byte(restored)
-	if len(failures) != 0 || (!bytes.Equal(restoredBytes, candidate) && !bytes.Equal(canonicalizeRetranslationArtifactEOF(restoredBytes), candidate)) {
+	if len(failures) != 0 {
+		return nil, fmt.Errorf("%s: current restore failed: %s", options.UnitID, strings.Join(failures, "; "))
+	}
+	if recoverRestore {
+		candidate = restoredBytes
+		if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+			candidate = canonicalizeRetranslationArtifactEOF(candidate)
+		}
+	} else if !bytes.Equal(restoredBytes, candidate) && !bytes.Equal(canonicalizeRetranslationArtifactEOF(restoredBytes), candidate) {
 		return nil, fmt.Errorf("%s: restored candidate does not match saved candidate", options.UnitID)
 	}
 	number, historyRelative, err := nextRevalidationHistory(batchDir, flatID)
@@ -154,6 +193,7 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 		return nil, err
 	}
 	previousStatus := current.Status
+	current.CandidatePath, unitResult.CandidatePath = wantCandidate, wantCandidate
 	current.Error = ""
 	if err := ValidateTranslationUnitCandidate(root, catalog, options.UnitID, options.Locale, candidate); err != nil {
 		current.Status, current.Error = "validation_failed", err.Error()
@@ -173,10 +213,91 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	}
 	newResult = append(newResult, '\n')
 	historyPath := filepath.Join(batchDir, filepath.FromSlash(historyRelative))
-	if err := commitRetranslationFileUpdates(batchDir, []retranslationFileUpdate{{target: historyPath, data: validationData, requireMissing: true}, {target: validationPath, data: newValidation}, {target: resultPath, data: newResult}}); err != nil {
+	updates := []retranslationFileUpdate{{target: historyPath, data: validationData, requireMissing: true}}
+	resultHistory := ""
+	if recoverRestore {
+		resultHistory = strings.TrimSuffix(historyRelative, "validation.json") + "result.json"
+		updates = append(updates, retranslationFileUpdate{target: filepath.Join(batchDir, filepath.FromSlash(resultHistory)), data: resultData, requireMissing: true}, retranslationFileUpdate{target: candidatePath, data: candidate, requireMissing: true})
+	}
+	updates = append(updates, retranslationFileUpdate{target: validationPath, data: newValidation}, retranslationFileUpdate{target: resultPath, data: newResult})
+	if err := checkPreparedRetranslationContext(prepared); err != nil {
 		return nil, err
 	}
-	return &RetranslationRevalidationResult{SchemaVersion: 1, BatchID: options.BatchID, Locale: options.Locale, UnitID: options.UnitID, UnitKind: item.unit.Kind, Attempt: attempt, Revalidation: number, PreviousStatus: previousStatus, Status: current.Status, Error: current.Error, HistoryPath: historyRelative, ValidationPath: wantValidation, ResultPath: "result.json", ValidationPassed: result.ValidationPassed, ValidationFailed: result.ValidationFailed}, nil
+	if err := commitRetranslationFileUpdates(batchDir, updates); err != nil {
+		return nil, err
+	}
+	return &RetranslationRevalidationResult{SchemaVersion: 1, BatchID: options.BatchID, Locale: options.Locale, UnitID: options.UnitID, UnitKind: item.unit.Kind, Attempt: attempt, Revalidation: number, PreviousStatus: previousStatus, Status: current.Status, Error: current.Error, HistoryPath: historyRelative, ResultHistoryPath: resultHistory, ValidationPath: wantValidation, ResultPath: "result.json", RestorePassed: result.RestorePassed, RestoreFailed: result.RestoreFailed, ValidationPassed: result.ValidationPassed, ValidationFailed: result.ValidationFailed}, nil
+}
+
+// Use the archived imported bundle's semantic inputs and output hashes, not
+// today's validator code as Generation authority. An adapter fix may change
+// authority/*; source, input, glossary, invocation and raw bytes must not drift.
+func verifyRestoreRecoveryInvocation(root, batchDir string, manifest *RetranslationBatchManifest, item preparedRetranslationPage, current RetranslationValidation, raw []byte) error {
+	if item.manifest.GenerationOrigin != nil {
+		return verifyGenerationOrigin(root, manifest.Locale, item.unit, item.manifest, raw)
+	}
+	gm := GenerationBundleManifest{Attempt: current.Attempt}
+	if current.Attempt > 1 {
+		gm.TaskKind = "translation-unit-retry"
+		gm.ExpectedOutputs = []GenerationBundleExpectedOutput{{BundlePath: "outputs/" + filepath.Base(item.manifest.InputPath)}}
+	}
+	b, err := os.ReadFile(generationImportReceiptPath(batchDir, gm))
+	if err != nil {
+		return fmt.Errorf("restore recovery requires original import provenance: %w", err)
+	}
+	var receipt GenerationResultBundleManifest
+	if err := contentidentity.StrictJSON(b, &receipt); err != nil {
+		return err
+	}
+	if !validSHA256(receipt.GenerationBundleSHA256) {
+		return fmt.Errorf("restore recovery invalid Generation archive identity")
+	}
+	bundle, err := readCompatibilityFile(root, importedGenerationArchive(manifest.Locale, receipt.GenerationBundleSHA256))
+	if err != nil {
+		return err
+	}
+	original, files, err := readGenerationBundle(bundle)
+	if err != nil {
+		return err
+	}
+	if err := checkImportedGenerationIdentity(receipt, original, bundle, files); err != nil {
+		return err
+	}
+	if original.Locale != manifest.Locale || original.BatchID != manifest.BatchID || original.Attempt != current.Attempt || original.UnitKind != item.unit.Kind {
+		return fmt.Errorf("restore recovery invocation/attempt identity mismatch")
+	}
+	for _, f := range original.Files {
+		if f.RepositoryPath == "" || strings.HasPrefix(f.BundlePath, "authority/") || strings.HasPrefix(f.BundlePath, "formal/retry/") {
+			continue
+		}
+		currentBytes, err := readCompatibilityFile(root, f.RepositoryPath)
+		if err != nil || !bytes.Equal(currentBytes, files[f.BundlePath]) {
+			return fmt.Errorf("restore recovery stale formal input: %s", f.BundlePath)
+		}
+	}
+	outputs := map[string]TransportBundleFile{}
+	for _, p := range receipt.Outputs {
+		if _, exists := outputs[p.BundlePath]; exists || !validSHA256(p.SHA256) || p.Size < 1 {
+			return fmt.Errorf("restore recovery invalid output provenance")
+		}
+		outputs[p.BundlePath] = p
+	}
+	matched := false
+	for _, output := range original.ExpectedOutputs {
+		p, exists := outputs[output.BundlePath]
+		if !exists {
+			return fmt.Errorf("restore recovery output provenance exact-set mismatch")
+		}
+		if output.UnitID == item.unit.ID && output.InstallPath == current.RawResponsePath {
+			if p.SHA256 == sum(raw) && p.Size == int64(len(raw)) {
+				matched = true
+			}
+		}
+	}
+	if matched {
+		return nil
+	}
+	return fmt.Errorf("restore recovery raw response/import provenance mismatch")
 }
 
 func nextRevalidationHistory(batchDir, flatID string) (int, string, error) {
@@ -194,6 +315,16 @@ func nextRevalidationHistory(batchDir, flatID string) (int, string, error) {
 	for _, entry := range entries {
 		if entry.IsDir() {
 			return 0, "", fmt.Errorf("unexpected revalidation history directory %q", entry.Name())
+		}
+		if strings.HasSuffix(entry.Name(), "-result.json") {
+			validationName := strings.TrimSuffix(entry.Name(), "result.json") + "validation.json"
+			if !re.MatchString(validationName) {
+				return 0, "", fmt.Errorf("unexpected revalidation history file %q", entry.Name())
+			}
+			if _, err := os.Stat(filepath.Join(dir, validationName)); err != nil {
+				return 0, "", fmt.Errorf("result history lacks validation history: %w", err)
+			}
+			continue
 		}
 		m := re.FindStringSubmatch(entry.Name())
 		if m == nil {

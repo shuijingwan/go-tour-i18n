@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "site-v2-shell-qc-004",
+  "locale": "zh-CN",
+  "glossary_path": "locales/zh-CN/glossary.yaml",
+  "glossary_sha256": "8274adcbf02829356d814a6bed6b77bf9e4508d850c0eed7efabd1fcbecbe54c",
+  "unit_count": 1,
+  "page_count": 1,
+  "example_count": 0,
+  "units": [
+    {
+      "index": 1,
+      "unit_id": "f4365d05fcff295676c0964f81058e6485bb0361f8440cbf243220a6acc1e97d",
+      "unit_kind": "page",
+      "selected_batch_id": "chatgpt-zh-CN-059",
+      "source_path": "_content/index.md",
+      "source_sha256": "7765e289fc5abccf8b786fa408c9d60078e2c27168e66778d060590e3c6ba986",
+      "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-059/candidates/f4365d05fcff295676c0964f81058e6485bb0361f8440cbf243220a6acc1e97d.article",
+      "candidate_sha256": "354119aa0bead4addc65cebe64c656b3305f915d4f38ca799a1bb88f5b7b8ded",
+      "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-059/validation/f4365d05fcff295676c0964f81058e6485bb0361f8440cbf243220a6acc1e97d.json",
+      "validation_sha256": "ecd94c2fea44eab09cfe55bc0b1a4154238e0ed36fdcc282ddf9df51089b256e",
+      "attempt": 1
+    }
+  ],
+  "content_package": {
+    "id": "site-v2-shell",
+    "authority_sha256": "5079d7833213a40c0dfdb7506f97b894aaee3e6f29390dd8913ec5afc1378989",
+    "scope_identity_sha256": "a03a8d8174fbafd8a01589a162af42f4c3adbb816f4131f2f2e0abbbe16d8ca2",
+    "unit_ids": [
+      "f4365d05fcff295676c0964f81058e6485bb0361f8440cbf243220a6acc1e97d"
+    ],
+    "authority_references": [
+      {
+        "path": "_content/index.md",
+        "sha256": "7765e289fc5abccf8b786fa408c9d60078e2c27168e66778d060590e3c6ba986"
+      },
+      {
+        "path": "data/glossary-source-corpus.json",
+        "sha256": "de9301ca47d640ec917e61afe8d88c48bc0d2e883ba55c959d76502ac68d3b14"
+      },
+      {
+        "path": "data/site-content-scope.json",
+        "sha256": "08344fc0332d8d5cc05df76f5a5a293e82a72afaeab51d128c24643d1262a085"
+      },
+      {
+        "path": "data/site-shell/representation-reattestations/current/1c80e2c83c4225b1bea8834a92e77e5340f01cab1166fa67b4046cb07f2c096d.json",
+        "sha256": "387cb88adfafaa5585ec04e670eab64eb078fe157947c029f0741b7cd4a548bd"
+      },
+      {
+        "path": "data/site-shell/representation-reattestations/receipts/bb73796ed83d4ed540a21dbfa21a7aaba4c9e8e9215a53b767452c120f73c2a0.json",
+        "sha256": "484f67ca5d680c23ad7baf2362519afe0e4c83b3807bc7516f4ebb6e765397dc"
+      },
+      {
+        "path": "data/site-shell/representation-successors/current.json",
+        "sha256": "70029416def659d21bfbfcbace29f7d07fb7d86c80b4a9fc5537743d44dcafad"
+      },
+      {
+        "path": "data/site-shell/representation-successors/receipts/1c80e2c83c4225b1bea8834a92e77e5340f01cab1166fa67b4046cb07f2c096d.json",
+        "sha256": "3ef821ed2824c69c51c37deabe4a43160a6b5fc862eed06c2ef41ca7b68b44f4"
+      },
+      {
+        "path": "data/site-shell/successor/adoptions/2ec50f613ab4b48abf1dd58078b47c89626bae8d6050d24944aa389bbac258c6.json",
+        "sha256": "229dd61298b389fe9f8fed9814c3762571b1956bbd55e92131a487532d73fb04"
+      },
+      {
+        "path": "data/site-shell/successor/current.json",
+        "sha256": "b07f49b2ed607f7ebc6adf64958e50bd86d170f407acbf3f844c0827d34e1788"
+      },
+      {
+        "path": "data/site-shell/successor/sources/30d7c2ef242aa2aa13e64aa5a8917baca377710cb0ef77a68dba3cfb27694272.json",
+        "sha256": "3eba68d190fa9381b95ba5c439514bd70d1f38289849fe18954e242a4580f44c"
+      },
+      {
+        "path": "data/site-source-manifest.json",
+        "sha256": "2d8b646ea4c80a73d4d70e0eacfde5f5c9d286fc0c25eea02d633081d16481fa"
+      },
+      {
+        "path": "data/unified-glossary-reviews/zh-CN/20261024-zh-CN-glossary-review-015.review.json",
+        "sha256": "7e898f2421b12a53bbca5a27a741f546537a7adaf79cc9b9b72717ec88c2204e"
+      },
+      {
+        "path": "docs/SHELL_REPRESENTATION_SUCCESSOR.md",
+        "sha256": "b51c6765286fbc79f842ed87a73a5d00224491d621425e69958b5a4e06f45cb3"
+      },
+      {
+        "path": "docs/SITE_SHELL_SUCCESSOR_AUTHORITY.md",
+        "sha256": "34a4527652fd33f147999ee11e6972ebb8335212d44067a7ff649ec5d8993d0b"
+      },
+      {
+        "path": "docs/SITE_V2_ARCHITECTURE.md",
+        "sha256": "1ce924f359d03a2e8d16800d0d78c3758406abface7e79e761d77e94720e356d"
+      },
+      {
+        "path": "docs/SITE_V2_WORKFLOW.md",
+        "sha256": "218efbe9df566d57bf3416e1655d20d0d73c85c68416675fe272afe1e68c28a0"
+      }
+    ]
+  }
+}

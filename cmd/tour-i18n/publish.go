@@ -2,52 +2,38 @@ package main
 
 import (
 	"bytes"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
-	"sort"
 	"strings"
 	"time"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/releasecontract"
+	"github.com/shuijingwan/go-tour-i18n/internal/site"
 	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
 
 const (
-	releaseManifestSchemaVersion = 2
-	expectedPublishArticles      = 7
+	releaseManifestSchemaVersion = 3
 )
 
 type publishOptions struct {
-	Locale      string
-	Output      string
-	PublishedAt string
+	Locale        string
+	Output        string
+	PublishedAt   string
+	InputBuild    string
+	BuildIdentity string
 }
 
-type releaseManifest struct {
-	SchemaVersion      int    `json:"schema_version"`
-	Locale             string `json:"locale"`
-	PublishedAt        string `json:"published_at"`
-	UpstreamCommit     string `json:"upstream_commit"`
-	UpstreamCommitTime string `json:"upstream_commit_time"`
-	TranslationUnits   int    `json:"translation_units"`
-	Pages              int    `json:"pages"`
-	EligibleExamples   int    `json:"eligible_examples"`
-	Articles           int    `json:"articles"`
-	ExecutionTransport string `json:"execution_transport"`
-	ExecutionProvider  string `json:"execution_provider"`
-	LocalSocketEnabled bool   `json:"local_socket_enabled"`
-	GOOS               string `json:"goos"`
-	GOARCH             string `json:"goarch"`
-}
+type releaseManifest = releasecontract.Manifest
 
 // buildProductionBinary is replaceable only by package tests to exercise
 // staging cleanup. Production publishes always use buildProductionBinaryGo.
@@ -74,6 +60,8 @@ func parsePublishOptions(args []string) (publishOptions, error) {
 	locale := fs.String("locale", "", "locale")
 	output := fs.String("output", "", "production bundle output directory")
 	publishedAt := fs.String("published-at", "", "production bundle publication time (RFC 3339 UTC)")
+	inputBuild := fs.String("input-build", "", "consume an existing sealed build without rendering it again")
+	buildID := fs.String("build-identity", "", "expected sealed build identity (required with --input-build)")
 	if err := fs.Parse(args); err != nil {
 		return publishOptions{}, err
 	}
@@ -93,7 +81,13 @@ func parsePublishOptions(args []string) (publishOptions, error) {
 	if fs.NArg() != 0 {
 		return publishOptions{}, fmt.Errorf("unexpected publish arguments: %s", strings.Join(fs.Args(), " "))
 	}
-	return publishOptions{Locale: *locale, Output: *output, PublishedAt: published.Format(time.RFC3339)}, nil
+	if (*inputBuild == "") != (*buildID == "") {
+		return publishOptions{}, fmt.Errorf("--input-build and --build-identity must be supplied together")
+	}
+	if *buildID != "" && !releasecontract.ValidSHA(*buildID) {
+		return publishOptions{}, fmt.Errorf("--build-identity must be exact build SHA256SUMS identity")
+	}
+	return publishOptions{Locale: *locale, Output: *output, PublishedAt: published.Format(time.RFC3339), InputBuild: *inputBuild, BuildIdentity: *buildID}, nil
 }
 
 func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (err error) {
@@ -136,9 +130,54 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	}()
 
 	projectionDone := phase("projection/build")
-	projection, err := i18n.BuildLocaleProjection(root, catalog, options.Locale, staging)
+	var projection *i18n.LocaleProjection
+	var artifact *releasecontract.Artifact
+	var inputBuildSHA string
+	if options.InputBuild != "" {
+		info, checkErr := inspectRelease(options.InputBuild)
+		if checkErr != nil {
+			return checkErr
+		}
+		if info.Kind != "build" || info.Locale != options.Locale || info.InputIdentity != options.BuildIdentity {
+			return fmt.Errorf("supplied build identity/locale mismatch")
+		}
+		if err = checkReleaseCurrent(root, info.Content); err != nil {
+			return err
+		}
+		if _, err = os.Stat(filepath.Join(options.InputBuild, "release.json")); err == nil {
+			return fmt.Errorf("--input-build must be a build, not an older production bundle")
+		}
+		b, readErr := os.ReadFile(filepath.Join(options.InputBuild, "build.json"))
+		if readErr != nil {
+			return readErr
+		}
+		var desc releaseBuild
+		if err = json.Unmarshal(b, &desc); err != nil {
+			return err
+		}
+		if err = os.CopyFS(filepath.Join(staging, "_content"), os.DirFS(filepath.Join(options.InputBuild, "_content"))); err != nil {
+			return err
+		}
+		projection = &i18n.LocaleProjection{Root: staging, ContentDir: filepath.Join(staging, "_content"), Locale: desc.Locale, UnitCount: desc.Units, Ready: desc.Units, PageCount: desc.Pages, ExampleCount: desc.Examples, ArticleCount: desc.Articles}
+		artifact = info.Content
+		inputBuildSHA = info.InputIdentity
+	} else {
+		projection, artifact, err = buildReleaseContent(root, catalog, options.Locale, staging)
+		if err == nil {
+			inputBuildSHA, err = releasecontract.VerifyChecksums(staging)
+		}
+		if err == nil {
+			err = os.Remove(filepath.Join(staging, "build.json"))
+		}
+		if err == nil {
+			err = os.Remove(filepath.Join(staging, "SHA256SUMS"))
+		}
+	}
 	projectionDone()
 	if err != nil {
+		return err
+	}
+	if err = checkReleaseCurrent(root, artifact); err != nil {
 		return err
 	}
 	if err := validatePublishProjection(catalog, projection); err != nil {
@@ -148,6 +187,13 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	if err != nil {
 		return err
 	}
+	manifest.SiteIdentity = artifact.Identity
+	manifest.BuildIdentity = artifact.Identity
+	manifest.InputBuildSHA256 = inputBuildSHA
+	if err = tour.CheckReleaseCanonicalOrigin(options.Locale, artifact.Origin); err != nil {
+		return err
+	}
+	manifest.SharedAssetsIdentity = artifact.SharedAssetsIdentity
 	metadata := tour.SiteMetadata{
 		Locale:             options.Locale,
 		PublishedAt:        options.PublishedAt,
@@ -176,7 +222,11 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	// binary.  Chrome's rendered-page checks are necessary but must not be a
 	// weaker, divergent substitute for startup validation.
 	runtimeValidationDone := phase("production runtime validation")
-	_, err = tour.NewProductionHandler(os.DirFS(projection.ContentDir), options.Locale)
+	var tourHandler http.Handler
+	tourHandler, err = tour.NewProductionHandler(os.DirFS(projection.ContentDir), options.Locale)
+	if err == nil {
+		_, err = site.NewReleaseHandler(os.DirFS(projection.ContentDir), options.Locale, tourHandler, false)
+	}
 	runtimeValidationDone()
 	if err != nil {
 		return fmt.Errorf("validate production prerender bundle: %w", err)
@@ -196,6 +246,11 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	}
 	manifestDone()
 	if err != nil {
+		return err
+	}
+	// Revalidate the immutable build and current inputs at the publication
+	// boundary. A concurrent source/payload change cannot produce a PASS bundle.
+	if err = checkReleaseCurrent(root, artifact); err != nil {
 		return err
 	}
 	if err := os.Rename(staging, output); err != nil {
@@ -246,9 +301,14 @@ func validatePublishProjection(catalog *i18n.Catalog, projection *i18n.LocalePro
 	if err != nil {
 		return fmt.Errorf("determine publish workflow: %w", err)
 	}
-	if projection.UnitCount != total || projection.Ready != total || projection.Pending != 0 || projection.Blocked != 0 || projection.PageCount != pages || projection.ExampleCount != examples || projection.ArticleCount != expectedPublishArticles {
+	articles := map[string]bool{}
+	for _, p := range catalog.Pages {
+		articles[p.Article] = true
+	}
+	expectedArticles := len(articles)
+	if projection.UnitCount != total || projection.Ready != total || projection.Pending != 0 || projection.Blocked != 0 || projection.PageCount != pages || projection.ExampleCount != examples || projection.ArticleCount != expectedArticles {
 		return fmt.Errorf("publish requires units=%d ready=%d pending=0 blocked=0 pages=%d examples=%d articles=%d; got units=%d ready=%d pending=%d blocked=%d pages=%d examples=%d articles=%d",
-			total, total, pages, examples, expectedPublishArticles,
+			total, total, pages, examples, expectedArticles,
 			projection.UnitCount, projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ExampleCount, projection.ArticleCount)
 	}
 	return nil
@@ -295,53 +355,7 @@ func writeReleaseManifest(root string, manifest releaseManifest) error {
 	return nil
 }
 
-func bundleChecksums(root string) ([]byte, error) {
-	var paths []string
-	if err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if path == root || entry.IsDir() {
-			return nil
-		}
-		if entry.Type()&os.ModeSymlink != 0 {
-			return fmt.Errorf("bundle contains symlink %q", path)
-		}
-		if !entry.Type().IsRegular() {
-			return fmt.Errorf("bundle contains unsupported file %q", path)
-		}
-		rel, err := filepath.Rel(root, path)
-		if err != nil {
-			return err
-		}
-		rel = filepath.ToSlash(rel)
-		if rel != "SHA256SUMS" {
-			paths = append(paths, rel)
-		}
-		return nil
-	}); err != nil {
-		return nil, fmt.Errorf("list bundle files: %w", err)
-	}
-	sort.Strings(paths)
-	var result bytes.Buffer
-	for _, rel := range paths {
-		file, err := os.Open(filepath.Join(root, filepath.FromSlash(rel)))
-		if err != nil {
-			return nil, err
-		}
-		hash := sha256.New()
-		_, copyErr := io.Copy(hash, file)
-		closeErr := file.Close()
-		if copyErr != nil {
-			return nil, copyErr
-		}
-		if closeErr != nil {
-			return nil, closeErr
-		}
-		fmt.Fprintf(&result, "%s  %s\n", hex.EncodeToString(hash.Sum(nil)), rel)
-	}
-	return result.Bytes(), nil
-}
+func bundleChecksums(root string) ([]byte, error) { return releasecontract.Checksums(root) }
 
 func validateBundle(root string, wantManifest releaseManifest, wantChecksums []byte) error {
 	entries, err := os.ReadDir(root)
@@ -397,5 +411,6 @@ func validateBundle(root string, wantManifest releaseManifest, wantChecksums []b
 	if !bytes.Equal(actualChecksums, wantChecksums) {
 		return errors.New("SHA256SUMS verification failed")
 	}
-	return nil
+	_, _, err = releasecontract.VerifyBundle(root)
+	return err
 }

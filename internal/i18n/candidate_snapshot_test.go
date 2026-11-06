@@ -65,6 +65,23 @@ func addExportOnlySnapshotBatch(t *testing.T, root string, catalog *Catalog, bat
 
 func TestQualityCheckSnapshotFreezesCompleteWorkflowWithoutCopyingEvidence(t *testing.T) {
 	root, catalog := complete122PromotionFixture(t)
+	// The old promotion fixture rewrites locale.json after processing. Keep
+	// its native scope but provide the active gate's exact locale authority.
+	metadataPath := "locales/zh-CN/locale.json"
+	metadataBytes, err := os.ReadFile(filepath.Join(root, metadataPath))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var metadata map[string]any
+	if err := json.Unmarshal(metadataBytes, &metadata); err != nil {
+		t.Fatal(err)
+	}
+	metadata["html_lang"] = "zh-CN"
+	metadataBytes, err = json.Marshal(metadata)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeSnapshotSource(t, root, metadataPath, metadataBytes)
 	// Deliberately make Catalog order differ from lexical/batch order. Snapshot
 	// indices must remain Pages-first and follow the two Catalog inventories.
 	catalog.Pages[0], catalog.Pages[len(catalog.Pages)-1] = catalog.Pages[len(catalog.Pages)-1], catalog.Pages[0]

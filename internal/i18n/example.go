@@ -37,9 +37,17 @@ type TranslationUnit struct {
 	SourcePath   string
 	Source       []byte
 	SourceSHA256 string
+	Adapter      TranslationUnitAdapter
 }
 
 func (c *Catalog) Unit(id string) (*TranslationUnit, error) {
+	for i := range c.Adapted {
+		if c.Adapted[i].Unit.ID == id {
+			u := c.Adapted[i].Unit
+			u.Adapter = c.Adapted[i].Adapter
+			return &u, nil
+		}
+	}
 	if page, err := c.Page(id); err == nil {
 		return &TranslationUnit{
 			ID: page.ID, Kind: UnitKindPage,
@@ -57,9 +65,19 @@ func (c *Catalog) Unit(id string) (*TranslationUnit, error) {
 }
 
 func discoverExamples(root string, pages []Page) ([]Example, error) {
+	return discoverExamplesWith(pages,
+		func(article string, b []byte) error { return parseSinglePage(root, article, b) },
+		func() (map[string]string, bool, error) {
+			return readUpstreamLocalHashes(filepath.Join(root, "UPSTREAM_MANIFEST.tsv"))
+		},
+		func() ([]string, error) { return discoverExampleSourcePaths(root) },
+		func(p string) ([]byte, error) { return os.ReadFile(filepath.Join(root, filepath.FromSlash(p))) })
+}
+
+func discoverExamplesWith(pages []Page, parsePage func(string, []byte) error, manifestFrom func() (map[string]string, bool, error), pathsFrom func() ([]string, error), readSource func(string) ([]byte, error)) ([]Example, error) {
 	references := map[string][]string{}
 	for _, page := range pages {
-		if err := parseSinglePage(root, page.Article, page.Source); err != nil {
+		if err := parsePage(page.Article, page.Source); err != nil {
 			return nil, fmt.Errorf("%s: discover .play examples: %w", page.ID, err)
 		}
 		scanner := bufio.NewScanner(bytes.NewReader(page.Source))
@@ -73,21 +91,21 @@ func discoverExamples(root string, pages []Page) ([]Example, error) {
 			return nil, fmt.Errorf("%s: scan .play directives: %w", page.ID, err)
 		}
 	}
-	manifest, hasManifest, err := readUpstreamLocalHashes(filepath.Join(root, "UPSTREAM_MANIFEST.tsv"))
+	manifest, hasManifest, err := manifestFrom()
 	if err != nil {
 		return nil, err
 	}
 	// This is deliberately an inventory of upstream Go sources, rather than a
 	// projection of translation workflow units. A source need not be referenced
 	// by a currently published page to be tracked for upstream drift.
-	paths, err := discoverExampleSourcePaths(root)
+	paths, err := pathsFrom()
 	if err != nil {
 		return nil, err
 	}
 	examples := make([]Example, 0, len(paths))
 	for _, clean := range paths {
 		sourcePath := filepath.ToSlash(filepath.Join("_content", "tour", clean))
-		source, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(sourcePath)))
+		source, err := readSource(sourcePath)
 		if err != nil {
 			return nil, fmt.Errorf("example source %q: %w", clean, err)
 		}
@@ -178,6 +196,10 @@ func readUpstreamLocalHashes(path string) (map[string]string, bool, error) {
 		return nil, false, err
 	}
 	defer f.Close()
+	return parseUpstreamLocalHashes(f, path)
+}
+
+func parseUpstreamLocalHashes(f io.Reader, path string) (map[string]string, bool, error) {
 	r := csv.NewReader(f)
 	r.Comma = '\t'
 	r.FieldsPerRecord = 6

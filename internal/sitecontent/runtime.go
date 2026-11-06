@@ -1,6 +1,9 @@
 package sitecontent
 
-import "io/fs"
+import (
+	"fmt"
+	"io/fs"
+)
 
 func LocaleOrigin(root, locale string) (string, error) {
 	profiles, err := liveProfiles(root)
@@ -19,7 +22,7 @@ func LocaleOrigin(root, locale string) (string, error) {
 // redirect-only source aliases. Subtrees have fixed destinations, never suffix
 // concatenation. Runtime consumers must still require covered local targets.
 func RedirectContracts(root string, g *Global) (map[string]string, error) {
-	b, err := readRegular(root, SnapshotPath)
+	b, err := ReadSourceSnapshot(root)
 	if err != nil {
 		return nil, err
 	}
@@ -46,16 +49,37 @@ func RedirectContracts(root string, g *Global) (map[string]string, error) {
 			result[s.Alias] = s.ResolvedRedirect
 		}
 	}
+	for _, ref := range g.PackageAdoptions {
+		a, err := CheckPagePackageAdoption(root, ref)
+		if err != nil {
+			return nil, err
+		}
+		for _, alias := range a.Aliases {
+			if prior, ok := result[alias.Alias]; ok && prior != alias.Target {
+				return nil, fmt.Errorf("adopted canonical index alias conflicts with frozen redirect")
+			}
+			result[alias.Alias] = alias.Target
+		}
+	}
 	return result, nil
 }
 
 // LocalCoverage admits only current evidence, not a caller-provided completion
 // boolean. Sparse missing packages stay incomplete.
 func LocalCoverage(root, locale string) (*Global, *Locale, error) {
-	g, err := LoadCurrent(root)
+	v := newClosureValidation(root)
+	g, l, err := v.localCoverage(root, locale)
+	if err == nil {
+		err = v.verify()
+	}
+	return g, l, err
+}
+
+func (v *closureValidation) localCoverage(root, locale string) (*Global, *Locale, error) {
+	g, err := v.loadCurrent(root)
 	if err != nil {
 		return nil, nil, err
 	}
-	l, err := CheckLocale(root, g, locale)
+	l, err := v.checkLocale(root, g, locale)
 	return g, l, err
 }

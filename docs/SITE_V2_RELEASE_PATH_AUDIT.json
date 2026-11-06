@@ -1,0 +1,834 @@
+{
+  "SCHEMA": "go-learning/site-v2-release-path-audit/v1",
+  "STAGE": "site-v2-downstream-release-path-audit",
+  "RESULT": "FAILED",
+  "AS_OF": "2026-10-14 working tree",
+  "INVENTORY": "docs/RELEASE_EXECUTABLE_INVENTORY.json",
+  "FORMAL_ARTIFACT_MUTATION": "none",
+  "CODE_MUTATION": "known",
+  "STOP": "before-formal-automated-preview-browser-acceptance",
+  "FINDINGS": [
+    {
+      "ID": "G01",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "Release authority/runtime 未接 Site v2",
+      "EVIDENCE": "build/publish/publish-batch 读取 Tour projection；production runtime 仅 NewProductionHandler。fixture 比较当前 scope/browser plan 与发布 prerender source，漏掉 50 条 canonical route。",
+      "SOURCES": [
+        "cmd/tour-i18n/main.go#buildLocale",
+        "cmd/tour-i18n/publish.go#publishBundle",
+        "cmd/tour-i18n/publish_batch.go#executePublishBatch",
+        "cmd/tour-production/main.go#run"
+      ],
+      "REQUIRED_CHANGE": "沿现有 build/publish/runtime 接入 LocalCoverage/LoadContent/Compose；导出完整离线 Site payload，runtime 不回读 mutable repo。"
+    },
+    {
+      "ID": "G02",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "发布 Homepage 仍为旧 Tour 首页",
+      "EVIDENCE": "renderHome 读取 tour/template/home.tmpl；当前 _content/index.md completed Homepage、translation 与共享 structured shell 没有进入 release rendering。没有代码引用 retired data/site-shell/home.html 作为当前源，但缺少所有 release inputs 的 retirement rejection gate。",
+      "SOURCES": [
+        "internal/tour/tour.go#renderHome",
+        "internal/i18n/projection.go#BuildLocaleProjection",
+        "internal/site/shell_render.go#renderCurrentShellPage"
+      ],
+      "REQUIRED_CHANGE": "保留 Tour renderer，仅由 current Site resolver 接管首页；防止旧模板/retired artifact 从任一 wrapper 重入。"
+    },
+    {
+      "ID": "G03",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "build→publish→deploy→runtime identity chain 未闭合",
+      "EVIDENCE": "publish 不接受既有 reviewed build；重新从 source projection/build/prerender。release.json 无 activated scope/package/structured payload/browser plan/shared dependency identity。正常 staging 只 sha256sum -c listed entries，无安全 checksum path/exact file set/expected tree digest；already-current 分支才完整 tree SHA 对照。verify-production 不核对运行 PID executable/payload SHA。",
+      "SOURCES": [
+        "cmd/tour-i18n/publish.go",
+        "scripts/deploy-production.sh#validate_local_release",
+        "scripts/deploy-production.sh#validate_remote_release",
+        "scripts/deploy-production.sh#verify_already_current_release",
+        "scripts/verify-production.sh#verify_remote_and_source"
+      ],
+      "REQUIRED_CHANGE": "密封 build/publish identity，传递 exact payload hashes 与生产 predecessor；复用 Go validator 验 exact set/safe paths/remote payload/当前运行 binary；拒绝 stale、不做 fallback。"
+    },
+    {
+      "ID": "G04",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "每次部署 freshness 不满足",
+      "EVIDENCE": "repeat maintenance 单/批 preflight 不验证 shared export/origin/public freshness。完整 maintenance PASS receipt 可在同名目录 payload 改变后跳过全部命令。shared workflow 的 verification PASS 直接 return，可对已损坏 export payload 宣称 PASS。",
+      "SOURCES": [
+        "scripts/maintenance-production.py#execute",
+        "scripts/maintenance-production-batch.py#preflight",
+        "scripts/shared-assets-production.py#execute"
+      ],
+      "REQUIRED_CHANGE": "区分 immutable historical PASS 与 current invocation eligibility；每次 read-only preflight 重验 current activated/build/bundle/shared state/target，保留历史 evidence，不重做语言审核。"
+    },
+    {
+      "ID": "G05",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "batch per-locale evidence 不完整",
+      "EVIDENCE": "已有 serial fail-fast 和 PASS/FAILED/SKIPPED/PENDING 区分；但每个 locale 的 receipt/rows 无 input payload SHA、prior state、显式 mutation status。phase A 对全部 locale deploy/purge，phase B 才 machine/browser；第一个 locale acceptance failure 发现前，后续 locale 已 mutation。batch resume 跳过 passed deploy 阶段，不走 single 的 already-current revalidation。",
+      "SOURCES": [
+        "scripts/maintenance-production-batch.py#execute",
+        "scripts/maintenance-production.py#_new_receipt",
+        "scripts/production-release-batch.py#_maintenance_rows"
+      ],
+      "REQUIRED_CHANGE": "共享单 locale execution contract，每个 locale 保存 PREFLIGHT/INPUT_IDENTITY/PRIOR_STATE/RESULT/VERIFIER/MUTATION_STATUS；失败只报真实边界，unknown 阻止后续和重放。"
+    },
+    {
+      "ID": "G06",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "assets-go-dev 全链未支持 current Site/zh-CN",
+      "EVIDENCE": "SharedPaths 为旧 Tour 静态 inventory；当前 Site shell 输出 go.dev CSS/JS，不走 project assets policy。实测 plan 有 CSS/JS 不在 export allowlist。zh-CN profile same-origin；assets.URL 有 locale hardcode；first freshness/zh-only batch 不绑定 shared dependency；production browser 仅 shared-cloudflare presence。deploy-shared-assets 自身无 locale allowlist，single 与 batch 使用同一 global helper，但不代表 consumer complete。",
+      "SOURCES": [
+        "internal/assets/assets.go",
+        "internal/site/shell_render.go#renderCurrentShellPage",
+        "production/identity.json",
+        "scripts/first-production.py#shared_assets_freshness",
+        "scripts/production-release-batch.py",
+        "scripts/browser_acceptance.py#acceptance"
+      ],
+      "REQUIRED_CHANGE": "冻结 locale-neutral current asset authority，覆盖 Site CSS/JS/font/image，统一 renderer/export/validate/deploy/receipt/consumer/verifier；若当前 policy 继续 same-origin，明确与要求的 zh-CN assets-go-dev complete 区分，不伪造迁移。"
+    },
+    {
+      "ID": "G07",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "Production canonical/sitemap verifier 仍 Tour 固定 contract",
+      "EVIDENCE": "EXPECTED_SITEMAP_URLS 固定旧数量，prefix root+tour/list，剩余全部强制 Tour Page regex；Site routes 被拒绝。production sitemap 由 Tour lessons 派生，Preview 由 activated Resolver.Sitemap。first/repeat/batch 虽调用同一 verifier，但共享的是旧 contract。 Tour production canonical origin 还读取 hardcoded languageRegistry URL；虽现有测试对照 production profile，runtime 不直接消费唯一 production identity。",
+      "SOURCES": [
+        "scripts/verify-production.sh#verify_sitemap",
+        "internal/tour/seo.go#initSEO",
+        "internal/site/runtime.go#Sitemap"
+      ],
+      "REQUIRED_CHANGE": "所有 mode 共用 sealed current coverage/canonical/sitemap exact-set，不固定数量或顺序；校验部署后的 exact URLs/canonical。"
+    },
+    {
+      "ID": "G08",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "Production HTTP/browser/404 contract 与 Preview 分叉",
+      "EVIDENCE": "未知 Learn/Docs 请求落到 Tour rootHandler 返回 200 SPA；origin/public 仅 socket negative 与 fixed Tour routes。public browser CORE.acceptance 未读取 Site plan，仅 Tour sample/behavior/shared presence；first direct_origin 也使用固定 Tour samples。",
+      "SOURCES": [
+        "internal/tour/local.go#rootHandler",
+        "scripts/verify-production.sh",
+        "scripts/browser_acceptance.py#acceptance",
+        "scripts/verify-production-browser.py",
+        "scripts/first-production.py#direct_origin"
+      ],
+      "REQUIRED_CHANGE": "统一 current resolver/browser plan/asset policy；all activated Site pages、family unknown true404、retirement、assets hostname 和 Homepage executable 都进入各 mode verifier。"
+    },
+    {
+      "ID": "G09",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "Site Homepage runtime 辅助输入缺失",
+      "EVIDENCE": "current Homepage index.js 需要 same-origin /doc/play/hello.go；Compose/tourAuxiliary 不注册，现有 focused test 返回 404。Site CSS/JS 对 go.dev 的引用还不是 reviewed/deployed exact bytes。",
+      "SOURCES": [
+        "internal/site/render.go#Compose",
+        "_content/js/index.js",
+        "internal/site/browser_plan_test.go#TestPreviewBrowserPlanHomepageRuntimeBoundary",
+        "docs/SITE_V2_PREVIEW_BROWSER_AUDIT.md"
+      ],
+      "REQUIRED_CHANGE": "在现有 content/auxiliary authority 中冻结 toy/resource 输入并验证，不扩大 canonical coverage 或以 fallback 绕过 formal gate。"
+    },
+    {
+      "ID": "G10",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "search closeout 不绑定 current activated sitemap",
+      "EVIDENCE": "IndexNow 动态读取公网 sitemap，无旧固定 URL count，验证 host/unique/key/root，但可接受 stale root-only 或未激活同 host URL set；没有 release/current coverage/canonical 对照。Google/Bing/locale engine 仅 manual Dashboard，没有正式提交/verifier脚本；无 batch search orchestration。",
+      "SOURCES": [
+        "cmd/tour-i18n/indexnow.go#fetchIndexNowSitemap",
+        "scripts/indexnow-closeout.py",
+        "docs/PRODUCTION_RUNBOOK.md#新-locale-首次生产部署"
+      ],
+      "REQUIRED_CHANGE": "提交前只读比较 sealed deployed current sitemap exact-set/coverage/canonical，拒绝 incomplete/uncovered/stale；manual dashboards 按同一 current sitemap authority 收口。"
+    },
+    {
+      "ID": "G11",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "locale retry/uncertain CDN mutation 缺少持久化绑定",
+      "EVIDENCE": "deploy ALREADY_CURRENT 有 no-mutation exact tree revalidation，shared purge 有 ATTEMPTED guard；但 maintenance receipt 未记录 payload hash/unknown；locale purge API 已成功后若 receipt 写入失败，重试可能再 POST。batch passed-deploy resume 与 single 不同。不能据已有 skip 宣称完整 idempotence。",
+      "SOURCES": [
+        "scripts/maintenance-production.py#execute_mutation",
+        "scripts/maintenance-production.py#record",
+        "scripts/production-cdn.py#coordinator",
+        "scripts/production-cdn.py#shared_assets_coordinator",
+        "scripts/maintenance-production-batch.py#execute"
+      ],
+      "REQUIRED_CHANGE": "记录 invocation/input identity 和明确尝试/结果，unknown 持久化 fail closed；复用 provider reconciliation，已经成功 mutation 用 exact proof恢复，不盲重放。"
+    },
+    {
+      "ID": "G12",
+      "SEVERITY": "BLOCKER",
+      "TITLE": "service/rollback 无完整 Site+assets predecessor contract",
+      "EVIDENCE": "language 部署 whole release rename + atomic current CAS + restart、health失败恢复整个旧目录，unknown 保锁；但 payload 本身是 Tour-only，未绑定 Site/全局 shared-assets identity。shared assets in-place rsync --delete，备份回滚只属于自身树，期间可暴露 partial tree。first health recovery narrow，不是通用 rollback。manual service commands 仅刷新进程配置。",
+      "SOURCES": [
+        "scripts/deploy-production.sh#activate_release",
+        "scripts/deploy-shared-assets.sh#update_origin",
+        "scripts/recover-first-production-health-failure.sh",
+        "scripts/first-production.py#systemd_unit_text",
+        "docs/PRODUCTION_RUNBOOK.md"
+      ],
+      "REQUIRED_CHANGE": "在现有 release/current/lock 模型里验证完整 route+structured+assets predecessor，并按全局资产兼容性 fail closed；不增加平行部署系统。"
+    }
+  ],
+  "REMAINING_RELEASE_PATH_GAPS": [
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09",
+    "G10",
+    "G11",
+    "G12"
+  ],
+  "MODES": [
+    {
+      "MODE": "SINGLE_LOCALE_DEPLOY",
+      "ENTRYPOINTS": [
+        "tour-i18n publish",
+        "scripts/deploy-production.sh"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "正式低层 single；必须外层 first 或 maintenance 才收口；root HTTP 200 不等于 release PASS"
+    },
+    {
+      "MODE": "NORMAL_REPEAT_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/maintenance-production.sh",
+        "scripts/maintenance-production.py"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "live locale；不要求重新语言 review，但 current bundle/shared dependency 不完整"
+    },
+    {
+      "MODE": "FIRST_PRODUCTION_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/first-production.sh",
+        "scripts/first-production.py"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:shared-cloudflare-preflight-current-export-origin-public;same-origin-skipped:G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "first-production only；有 infrastructure/DNS/Playground/evidence gates，但无 Site payload/plan"
+    },
+    {
+      "MODE": "BATCH_LOCALE_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/maintenance-production-batch.sh",
+        "scripts/maintenance-production-batch.py"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "ordered explicit published releases；phase A/B 与 single resume不同"
+    },
+    {
+      "MODE": "ALL_LOCALES_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/production-release-batch.sh --all-live"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "实际是 all-live；非全部 identity/first-production profiles；没有全65门无条件部署模式。不得把 all-live 写作全locale PASS"
+    },
+    {
+      "MODE": "SELECTED_LOCALES_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/production-release-batch.sh --locale <locale>...",
+        "tour-i18n publish-batch"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "仅 selected live；共享单 publish；先全部 publish 成功才 Production mutation"
+    },
+    {
+      "MODE": "SHARED_ASSETS_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/shared-assets-production.sh",
+        "scripts/deploy-shared-assets.sh"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "not_applicable:static-tree;Site-consumer-derivation-missing:G06",
+        "SITE_V2_ROUTE_FAMILIES": "no:Site-asset-dependencies-missing:G06",
+        "HOMEPAGE": "no:current-Site-assets-missing:G06",
+        "TRANSLATION": "no:current-Site-assets-missing:G06",
+        "LEARN": "no:current-Site-assets-missing:G06",
+        "DOCS": "no:current-Site-assets-missing:G06",
+        "TOUR_PRESERVED": "yes:existing-allowlist",
+        "STRUCTURED_ASSETS": "not_applicable:not-language-YAML-export",
+        "SHARED_ASSETS": "yes:exact-Go-allowlist;Site-incomplete:G06",
+        "CANONICAL": "not_applicable:static-tree",
+        "SITEMAP": "not_applicable:static-tree",
+        "TRUE_404": "partial:three-existing-boundaries;Site-asset-boundaries-not-derived:G06",
+        "RETIRED_HOMEPAGE_EXCLUDED": "yes:HTML-outside-allowlist",
+        "CURRENT_PRODUCTION_IDENTITY": "partial:wrapper-identity;deploy-hardcoded-fixed-profile:G06",
+        "CORRECT_PREFLIGHT": "partial:current-export-validated;PASS-resume-skips:G04",
+        "CORRECT_VERIFIER": "partial:SHA/cache/boundary;CORS/CSP/fonts/Site-policy-unverified:G06",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "partial:static-paths-exact;Site-assets-omitted:G06",
+        "NO_STALE_BUNDLE": "no:existing-PASS-resume-skips-current-payload:G04",
+        "CURRENT_ZH_CN_POLICY": "no:consumer-not-bound:G06"
+      },
+      "NOTES": "一个全局静态 tree；无语言 renderer；structured YAML 与静态 shared资产分离，不伪称两者等价"
+    },
+    {
+      "MODE": "ASSETS_GO_DEV_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/shared-assets-production.sh",
+        "scripts/production-cdn.py purge-shared-assets",
+        "scripts/verify-shared-assets-production.sh"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "not_applicable:static-tree;Site-consumer-derivation-missing:G06",
+        "SITE_V2_ROUTE_FAMILIES": "no:Site-asset-dependencies-missing:G06",
+        "HOMEPAGE": "no:current-Site-assets-missing:G06",
+        "TRANSLATION": "no:current-Site-assets-missing:G06",
+        "LEARN": "no:current-Site-assets-missing:G06",
+        "DOCS": "no:current-Site-assets-missing:G06",
+        "TOUR_PRESERVED": "yes:existing-allowlist",
+        "STRUCTURED_ASSETS": "not_applicable:not-language-YAML-export",
+        "SHARED_ASSETS": "yes:exact-Go-allowlist;Site-incomplete:G06",
+        "CANONICAL": "not_applicable:static-tree",
+        "SITEMAP": "not_applicable:static-tree",
+        "TRUE_404": "partial:three-existing-boundaries;Site-asset-boundaries-not-derived:G06",
+        "RETIRED_HOMEPAGE_EXCLUDED": "yes:HTML-outside-allowlist",
+        "CURRENT_PRODUCTION_IDENTITY": "partial:wrapper-identity;deploy-hardcoded-fixed-profile:G06",
+        "CORRECT_PREFLIGHT": "partial:current-export-validated;PASS-resume-skips:G04",
+        "CORRECT_VERIFIER": "partial:SHA/cache/boundary;CORS/CSP/fonts/Site-policy-unverified:G06",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "partial:static-paths-exact;Site-assets-omitted:G06",
+        "NO_STALE_BUNDLE": "no:existing-PASS-resume-skips-current-payload:G04",
+        "CURRENT_ZH_CN_POLICY": "no:consumer-not-bound:G06"
+      },
+      "NOTES": "独立 EXPORT→VALIDATE→DEPLOY→PURGE→PUBLIC VERIFIER→CONSUMER 链；single/batch 同global helper；zh-CN complete未实现"
+    },
+    {
+      "MODE": "ORIGIN_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/deploy-production.sh",
+        "scripts/first-production.py#direct_origin"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "immutable locale directory/atomic current switch；service定位bin相邻_content；正常initial传输缺remote full-tree identity比较"
+    },
+    {
+      "MODE": "PUBLIC/CDN_DEPLOY",
+      "ENTRYPOINTS": [
+        "scripts/maintenance-production.py",
+        "scripts/production-cdn.py purge",
+        "scripts/first-production.py#cloudflare_dns"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "public是同origin payload经CDN；hostname purge/provider gate有效，Site exact payload/current coverage未验证"
+    },
+    {
+      "MODE": "POST_PUBLISH_RESUME",
+      "ENTRYPOINTS": [
+        "scripts/production-release-batch.sh --resume"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "local state binds HEAD/production-identity/release.json/SHA256SUMS/export manifest；still no activated Site identity"
+    },
+    {
+      "MODE": "MAINTENANCE_ONLY_RECOVERY",
+      "ENTRYPOINTS": [
+        "scripts/production-release-batch.sh --resume-maintenance"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "allows clean HEAD mismatch for maintenance-only recovery；保留formal identity/hash gate但未绑定Site consumers"
+    },
+    {
+      "MODE": "FIRST_HEALTH_FAILURE_RECOVERY",
+      "ENTRYPOINTS": [
+        "scripts/recover-first-production-health-failure.sh"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "no:G01/G03/G04",
+        "CORRECT_VERIFIER": "no:G07/G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "只支持exit22；恢复健康同release或保留失败release要求重新publish；不能替代一般rollback"
+    },
+    {
+      "MODE": "DOCUMENTED_SERVICE_UPDATE",
+      "ENTRYPOINTS": [
+        "runbook:systemctl daemon-reload",
+        "runbook:systemctl restart <profile-service>",
+        "runbook:nginx -t && service nginx reload"
+      ],
+      "RESULT": "FAILED",
+      "CHECKS": {
+        "CURRENT_ACTIVATED_COVERAGE": "no:G01",
+        "SITE_V2_ROUTE_FAMILIES": "no:G01",
+        "HOMEPAGE": "old-Tour-only:G02",
+        "TRANSLATION": "no:G01",
+        "LEARN": "no:G01",
+        "DOCS": "no:G01",
+        "TOUR_PRESERVED": "yes:existing-Tour-handler",
+        "STRUCTURED_ASSETS": "no:G01/G02",
+        "SHARED_ASSETS": "partial:old-static-copy/G04/G06",
+        "CANONICAL": "Tour-only:G07",
+        "SITEMAP": "Tour-only:G07",
+        "TRUE_404": "no:G08",
+        "RETIRED_HOMEPAGE_EXCLUDED": "partial:literal-historical-file-not-input;old-Homepage-remains:G02",
+        "CURRENT_PRODUCTION_IDENTITY": "yes:profile-from-production-identity;payload-binding-missing:G03",
+        "CORRECT_PREFLIGHT": "partial:operator-current-profile;no-release-currentness:G03",
+        "CORRECT_VERIFIER": "no:requires-follow-up-machine/browser:G08",
+        "NO_OLD_ROUTE_COUNT_OMISSION": "no:G07",
+        "NO_STALE_BUNDLE": "no:G03/G04",
+        "CURRENT_ZH_CN_POLICY": "partial:existing-Tour-same-origin-policy;Site-assets-unified-policy-missing:G06"
+      },
+      "NOTES": "正式配置更新命令；独立运行不重新构建content，不构成Site release验收"
+    }
+  ],
+  "IDENTITY_CHAIN": [
+    {
+      "TRANSITION": "ACTIVATED_COVERAGE_TO_BUILD",
+      "INPUT_SHA_IDENTITY": "scope/package completion/Surface refs exist",
+      "OUTPUT_SHA_IDENTITY": "Tour projection; no coverage digest",
+      "CURRENTNESS": "Tour TU currentness only; Site LocalCoverage absent",
+      "CAS_PREDECESSOR": "none",
+      "MUTATION_BOUNDARY": "local output directory",
+      "VERIFICATION": "G01: no exact activated→build relation"
+    },
+    {
+      "TRANSITION": "BUILD_TO_PUBLISH",
+      "INPUT_SHA_IDENTITY": "no --input-build or reviewed build SHA",
+      "OUTPUT_SHA_IDENTITY": "new binary/projection/prerender + release.json/SHA256SUMS",
+      "CURRENTNESS": "re-read mutable canonical/source at publish; no reviewed build comparison",
+      "CAS_PREDECESSOR": "none",
+      "MUTATION_BOUNDARY": "local staging→output rename",
+      "VERIFICATION": "G03: reviewed build not consumed; immutable publish output only after creation"
+    },
+    {
+      "TRANSITION": "PUBLISH_TO_PRODUCTION_BUNDLE",
+      "INPUT_SHA_IDENTITY": "Tour readiness/prerender runtime validation",
+      "OUTPUT_SHA_IDENTITY": "release.json SHA and manifest; optional batch HEAD",
+      "CURRENTNESS": "batch clean HEAD; no scope/packages/structured/browser/shared refs",
+      "CAS_PREDECESSOR": "output must not exist",
+      "MUTATION_BOUNDARY": "staging final rename",
+      "VERIFICATION": "G01/G03: exact byte checksum not proof of Site semantic input identity"
+    },
+    {
+      "TRANSITION": "PRODUCTION_BUNDLE_TO_DEPLOY_INPUT",
+      "INPUT_SHA_IDENTITY": "checksum paths supplied by input directory",
+      "OUTPUT_SHA_IDENTITY": "locally calculated tree SHA",
+      "CURRENTNESS": "no current repo/activated comparison; local input not sealed between preflight and rsync",
+      "CAS_PREDECESSOR": "identity lifecycle first/live; remote predecessor captured later",
+      "MUTATION_BOUNDARY": "origin lock/staging upload",
+      "VERIFICATION": "G03: listed checksum checks without safe exact-set closure; no fallback found"
+    },
+    {
+      "TRANSITION": "DEPLOY_INPUT_TO_ORIGIN",
+      "INPUT_SHA_IDENTITY": "release metadata/checksum directory",
+      "OUTPUT_SHA_IDENTITY": "normal path current release name; full-tree SHA compared only already-current branch",
+      "CURRENTNESS": "staging listed checksums; no initial remote equality to locally recorded tree SHA",
+      "CAS_PREDECESSOR": "expected current path rechecked before switch",
+      "MUTATION_BOUNDARY": "whole release rename/current atomic symlink/service restart",
+      "VERIFICATION": "G03/G12: prior whole-tree rollback exists but no Site/shared predecessor binding"
+    },
+    {
+      "TRANSITION": "ORIGIN_TO_PUBLIC_RUNTIME",
+      "INPUT_SHA_IDENTITY": "current link/service/root health",
+      "OUTPUT_SHA_IDENTITY": "public HTTP/HTML/old sitemap/cache/status; not bundle hash",
+      "CURRENTNESS": "hostname purge then verifier; no current Site exact-set/asset binding",
+      "CAS_PREDECESSOR": "provider authority; shared purge durable ATTEMPTED only",
+      "MUTATION_BOUNDARY": "CDN mutation and public reads",
+      "VERIFICATION": "G07/G08/G11: old verifier can accept Tour-only runtime and false404"
+    },
+    {
+      "TRANSITION": "SHARED_EXPORT_TO_ORIGIN_PUBLIC_CONSUMER",
+      "INPUT_SHA_IDENTITY": "SharedPaths + current source; export SHA256SUMS SHA",
+      "OUTPUT_SHA_IDENTITY": "deploy v1→v2 receipt manifest SHA/changed paths/purge/verification",
+      "CURRENTNESS": "new invocation export validation; existing wrapper PASS skips revalidation; first freshness only shared-cloudflare",
+      "CAS_PREDECESSOR": "fixed lock + complete backup; global assets independent of locale release",
+      "MUTATION_BOUNDARY": "in-place shared rsync; exact-URL purge",
+      "VERIFICATION": "G04/G06/G12: locale artifact/receipt not bound to deployed assets identity"
+    }
+  ],
+  "CROSS_ENTRYPOINT_REGRESSION": [
+    {
+      "REQUIREMENT": 1,
+      "CONTRACT": "single 与 batch 同locale route/publish contract",
+      "RESULT": "PARTIAL",
+      "EVIDENCE": "共用publishBundle，但双方均Tour-only；不满足current Site authority",
+      "TEST": "TestPublishBatchIsStrictSerialAndStopsAfterFailure;TestReleaseAuditTourRendererCoverageGap",
+      "GAPS": "G01"
+    },
+    {
+      "REQUIREMENT": 2,
+      "CONTRACT": "first 与 repeat 共享Site content authority",
+      "RESULT": "FAILED",
+      "EVIDENCE": "共用old bundle/deploy；first shared freshness 与 repeat 不同",
+      "TEST": "GapReproducerTest.test_repeat_single_and_batch_preflight_do_not_check_shared_freshness",
+      "GAPS": "G01/G04"
+    },
+    {
+      "REQUIREMENT": 3,
+      "CONTRACT": "batch不漏Homepage/Learn/Docs",
+      "RESULT": "FAILED",
+      "EVIDENCE": "route omission + old Homepage shared到batch",
+      "TEST": "TestReleaseAuditTourRendererCoverageGap",
+      "GAPS": "G01/G02"
+    },
+    {
+      "REQUIREMENT": 4,
+      "CONTRACT": "Tour coverage不退化",
+      "RESULT": "PASS",
+      "EVIDENCE": "本轮未改Tour实现；route source保留全部Tour；无真实部署验收",
+      "TEST": "TestReleaseAuditTourRendererCoverageGap",
+      "GAPS": "NONE"
+    },
+    {
+      "REQUIREMENT": 5,
+      "CONTRACT": "retired home.html永不重入任一mode",
+      "RESULT": "PARTIAL",
+      "EVIDENCE": "current Site renderer拒绝；production未接current Site且无通用输入retirement gate",
+      "TEST": "InventoryTest.test_source_snapshot_currentness_and_report_fail_closed",
+      "GAPS": "G02/G03"
+    },
+    {
+      "REQUIREMENT": 6,
+      "CONTRACT": "assets-go-dev single/batch exact authority相同",
+      "RESULT": "PARTIAL",
+      "EVIDENCE": "batch调用同global workflow/export；Site静态deps未进入authority",
+      "TEST": "TestReleaseAuditSiteSharedAssetDependencyGap;InventoryTest.test_reverse_calls_and_all_authoritative_document_script_references",
+      "GAPS": "G06"
+    },
+    {
+      "REQUIREMENT": 7,
+      "CONTRACT": "zh-CN与正式policy一致且不被legacy条件排除",
+      "RESULT": "FAILED",
+      "EVIDENCE": "current identity合法same-origin；要求的Site assets-go-dev consumer链未实现，不能伪改identity",
+      "TEST": "GapReproducerTest.test_first_and_batch_skip_same_origin_shared_dependency",
+      "GAPS": "G06"
+    },
+    {
+      "REQUIREMENT": 8,
+      "CONTRACT": "stale shared assets让locale Production fail closed",
+      "RESULT": "FAILED",
+      "EVIDENCE": "repeat无freshness；shared PASS缓存跳过current payload validation",
+      "TEST": "GapReproducerTest.test_repeat_single_and_batch_preflight_do_not_check_shared_freshness;GapReproducerTest.test_shared_passed_receipt_accepts_changed_export_payload_without_validation",
+      "GAPS": "G04"
+    },
+    {
+      "REQUIREMENT": 9,
+      "CONTRACT": "single/batch/Production verifier保持true404",
+      "RESULT": "FAILED",
+      "EVIDENCE": "Site未知路径TourSPA200；verifier仅socket负例",
+      "TEST": "TestReleaseAuditTourRendererCoverageGap",
+      "GAPS": "G08"
+    },
+    {
+      "REQUIREMENT": 10,
+      "CONTRACT": "canonical/sitemap所有mode同current coverage派生",
+      "RESULT": "FAILED",
+      "EVIDENCE": "Tour sitemap≠Site Resolver.Sitemap；verifier固定old contract",
+      "TEST": "TestReleaseAuditTourRendererCoverageGap;InventoryTest.test_source_snapshot_currentness_and_report_fail_closed",
+      "GAPS": "G07"
+    },
+    {
+      "REQUIREMENT": 11,
+      "CONTRACT": "batch locale failure无虚假整体PASS",
+      "RESULT": "PARTIAL",
+      "EVIDENCE": "mock fail-fast summary正确；仍缺逐locale exact identity/mutation status，phaseB前已全部mutation",
+      "TEST": "GapReproducerTest.test_batch_failure_stops_later_mutation_and_does_not_report_overall_pass",
+      "GAPS": "G05"
+    },
+    {
+      "REQUIREMENT": 12,
+      "CONTRACT": "successful mutation retry不盲重放",
+      "RESULT": "FAILED",
+      "EVIDENCE": "已有skip/alreadycurrent/SharedATTEMPTED局部保护；PASS receipt与payload未绑定、locale purge无durable unknown",
+      "TEST": "GapReproducerTest.test_passed_maintenance_receipt_accepts_changed_payload_without_revalidation",
+      "GAPS": "G03/G11"
+    },
+    {
+      "REQUIREMENT": 13,
+      "CONTRACT": "旧wrapper转发current implementation",
+      "RESULT": "PASS",
+      "EVIDENCE": "exec argv转发，无独立renderer；current target本身v2失败",
+      "TEST": "InventoryTest.test_compatibility_wrappers_forward_current_implementation",
+      "GAPS": "NONE"
+    },
+    {
+      "REQUIREMENT": 14,
+      "CONTRACT": "Production browser与Preview plan无Site route drift",
+      "RESULT": "FAILED",
+      "EVIDENCE": "production CORE.acceptance没有Site plan consumer",
+      "TEST": "InventoryTest.test_source_snapshot_currentness_and_report_fail_closed",
+      "GAPS": "G08"
+    }
+  ],
+  "ASSETS_GO_DEV_CHAIN": {
+    "EXPORT": "tour-i18n assets export; SharedPaths only; Site consumer gap G06",
+    "VALIDATE": "tour-i18n assets validate; exact current repository bytes; wrapper historical PASS bypass G04",
+    "PACKAGE": "export tree+SHA256SUMS, no separate version release",
+    "UPLOAD_DEPLOY": "deploy-shared-assets global fixed profile+staging/backup/rsync; same helper from batch",
+    "CURRENTNESS": "new deploy validates current export; wrapper PASS resume/locale repeat incomplete G04",
+    "PRODUCTION_STATE": "v1/v2 receipt export path+manifest SHA; not locale bundle dependency",
+    "CACHE_CDN_STATE": "production-cdn shared-assets-preflight/purge-shared-assets; changed exact URLs; ATTEMPTED fail closed",
+    "CONSUMER_GATE": "first shared-cloudflare freshness only; repeat none; zh-only shared skipped G04/G06",
+    "VERIFIER": "verify-shared-assets-production/public core SHA/cache/boundaries; no Site CORS/CSP/font policy/zh hostname exact dependency verification",
+    "ZH_CN": "same-origin authority retained; no hardcoded migration; ZH_CN_ASSETS_GO_DEV_COMPLETE=no",
+    "SINGLE_VS_BATCH": "same global shared workflow; no separate assets batch deployment system"
+  },
+  "SEARCH": {
+    "INDEXNOW": "active single closeout + Go bootstrap; dynamically fetched sitemap, no activated exact-set binding",
+    "GOOGLE": "manual dashboard only; no repository executable submission/verifier",
+    "BING": "manual dashboard only; no repository executable submission/verifier",
+    "LOCALE_SPECIFIC_ENGINE": "manual applicable dashboard; no repository executable submission/verifier",
+    "BATCH": "not supported as independent formal entrypoint",
+    "SUBMISSION_PERFORMED": "none"
+  },
+  "CLEANUP": {
+    "LEGACY": [],
+    "LEGACY_REFERENCED": [
+      "cmd/tour-production/main.go",
+      "scripts/deploy-production.sh",
+      "scripts/verify-production-browser.py",
+      "scripts/verify-production.sh",
+      "tour-i18n build",
+      "tour-i18n publish",
+      "tour-i18n publish-batch"
+    ],
+    "DEAD": [],
+    "STRATEGY": "保留current referenced v1入口及wrapper；不通过分类伪排除。统一改现有adapter/authority后更新targeted tests，才可以重新判定PASS；historical prose不计executable。"
+  },
+  "VALIDATION": {
+    "RESULT": "offline audit reproducers PASS; release contract FAILED",
+    "TESTS": [
+      "go test -mod=readonly ./cmd/tour-i18n -run '^TestReleaseAudit' -count=1 -v: PASS (3 top-level tests, 2 subcases)",
+      "PYTHONDONTWRITEBYTECODE=1 python3 scripts/release-path-audit-test.py GapReproducerTest -v: PASS (5 tests)",
+      "PYTHONDONTWRITEBYTECODE=1 python3 scripts/release-path-audit-test.py -v: PASS (10 tests)",
+      "PYTHONDONTWRITEBYTECODE=1 python3 scripts/release-path-audit-test.py InventoryTest -v: PASS (5 tests after report consistency assertions changed)",
+      "git diff --check: PASS",
+      "git diff --no-index --check /dev/null <each new audit file>: PASS (empty diagnostics; exit 1 is expected for added files)"
+    ],
+    "GIT_DIFF_CHECK": "PASS"
+  },
+  "CODE_MUTATION_SCOPE": [
+    "cmd/tour-i18n/release_path_audit_test.go",
+    "scripts/release-path-audit-test.py"
+  ]
+}

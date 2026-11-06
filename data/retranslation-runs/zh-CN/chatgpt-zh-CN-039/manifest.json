@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-039",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/vuln/database.md",
+      "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+      "input_path": "inputs/2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b.article",
+      "input_sha256": "e9e98d34c410f28e619471108ecccf8d74aee054ec7f414a7d9a50e085cb32a6",
+      "protected_token_count": 370,
+      "previous_snapshot_id": "learn-docs-v1-qc-008",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "affected[].ecosystem_specific 小节仍未 locally complete。ecosystem specific 是 formal input 中可编辑自然语言而非 protected identifier，current candidate 仍直接保留英文说明性短语；应保持 affected[].ecosystem_specific、imports 等 schema identifier 不变并本地化说明语。同一小节还存在 source fidelity 问题：canonical source 明确写 Each object in the array will have these two fields，current candidate 译为“都有以下字段”，省略数量限定 two。即使 source 随后列出四项，也不得由译文静默修正 frozen canonical source；exact revision 必须同时关闭这两个局部问题。"
+    }
+  ]
+}

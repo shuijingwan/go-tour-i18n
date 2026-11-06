@@ -33,7 +33,20 @@ func DefaultGenerationModelForProvider(provider string) (string, error) {
 }
 
 var translationUnitGenerationAuthorityPaths = []string{
+	"docs/LANGUAGE_DEFECT_EXHAUSTION.md",
+	"docs/SURFACE_REVISION_TRANSPORT.md",
+	"internal/i18n/surface_transport.go",
+	"internal/i18n/surface_transport_origin.go",
+	"internal/sitecontent/surface_transport.go",
+	"internal/i18n/bridge_successor.go",
+	"internal/i18n/same_unit_bridge.go",
+	"internal/sitecontent/same_unit_bridge.go",
+	"internal/i18n/surface_same_unit_bridge.go",
+	"internal/sitecontent/surface_same_unit_bridge.go",
+	"internal/i18n/comment_revision_transport.go",
+	"internal/sitecontent/comment_revision_transport.go",
 	"AGENTS.md",
+	"docs/SHARED_TRANSLATION_UNIT_LIFECYCLE.md",
 	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
 	"docs/CODEX_TRANSLATION.md",
@@ -95,18 +108,23 @@ type GenerationImportResult struct {
 }
 
 type generationContext struct {
-	SchemaVersion int      `json:"schema_version"`
-	Kind          string   `json:"kind"`
-	TaskKind      string   `json:"task_kind"`
-	Locale        string   `json:"locale"`
-	BatchID       string   `json:"batch_id"`
-	UnitKind      UnitKind `json:"unit_kind"`
-	Attempt       int      `json:"attempt"`
-	Instruction   string   `json:"instruction"`
-	UnitIDs       []string `json:"unit_ids"`
+	CurrentInputs            bool     `json:"current_inputs"`
+	RevisionTransportCapable bool     `json:"revision_transport_capable,omitempty"`
+	SchemaVersion            int      `json:"schema_version"`
+	Kind                     string   `json:"kind"`
+	TaskKind                 string   `json:"task_kind"`
+	Locale                   string   `json:"locale"`
+	BatchID                  string   `json:"batch_id"`
+	UnitKind                 UnitKind `json:"unit_kind"`
+	Attempt                  int      `json:"attempt"`
+	Instruction              string   `json:"instruction"`
+	UnitIDs                  []string `json:"unit_ids"`
 }
 
 func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, options GenerationBundleOptions) ([]byte, GenerationBundleManifest, error) {
+	if _, _, err := LoadLanguageAuditPolicy(root, options.Locale, nil); err != nil {
+		return nil, GenerationBundleManifest{}, err
+	}
 	if catalog == nil {
 		return nil, GenerationBundleManifest{}, errors.New("generation bundle catalog is required")
 	}
@@ -124,9 +142,52 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	if err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
+	// Prove the complete caller-selected package before historical revision
+	// readers derive their own predecessor catalogs. A receipt must never turn
+	// an explicitly wrong package into the right one or infer scope from a batch.
+	_, _, _, ordered, err := translationAuthorizationScope(catalog)
+	if err != nil {
+		return nil, GenerationBundleManifest{}, fmt.Errorf("generation bundle requires complete package scope: %w", err)
+	}
+	packageMembers := map[string]bool{}
+	for _, unit := range ordered {
+		packageMembers[unit.ID] = true
+	}
+	// Immutable saved inputs are transport evidence, not current source
+	// authority. Rebuild every formal input before declaring a bundle current.
+	glossary, err := LoadGlossary(root, options.Locale)
+	if err != nil {
+		return nil, GenerationBundleManifest{}, err
+	}
+	for _, record := range manifest.Units {
+		if !packageMembers[record.UnitID] {
+			return nil, GenerationBundleManifest{}, fmt.Errorf("generation batch Unit outside selected complete package scope: %s", record.UnitID)
+		}
+		unit, err := catalog.Unit(record.UnitID)
+		if err != nil {
+			return nil, GenerationBundleManifest{}, fmt.Errorf("stale formal unit: %w", err)
+		}
+		if unit.Kind != record.UnitKind || unit.SourcePath != record.SourcePath || unit.SourceSHA256 != record.SourceSHA256 || sum(unit.Source) != record.SourceSHA256 {
+			return nil, GenerationBundleManifest{}, fmt.Errorf("%s: stale formal source identity", record.UnitID)
+		}
+		protected, err := prepareTranslationUnitInput(unit, glossary)
+		if err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+		input := []byte(protected.Text)
+		if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+			input = canonicalizeRetranslationArtifactEOF(input)
+		}
+		if sum(input) != record.InputSHA256 || len(protected.Tokens) != record.ProtectedTokenCount {
+			return nil, GenerationBundleManifest{}, fmt.Errorf("%s: stale protected input", record.UnitID)
+		}
+	}
 	manifestRepo := filepath.ToSlash(filepath.Join("data", "retranslation-runs", options.Locale, options.BatchID, "manifest.json"))
 	manifestData, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(manifestRepo)))
 	if err != nil {
+		return nil, GenerationBundleManifest{}, err
+	}
+	if err := checkSurfaceTransportBatch(root, options.Locale, options.BatchID, manifest.Units, true); err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
 	taskKind := "translation-unit-initial"
@@ -140,6 +201,7 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 			break
 		}
 	}
+	originTaskKind := taskKind // Machine retry retains the original semantic task.
 	attempt := 1
 	selected := manifest.Units
 	var retryEvidence []struct {
@@ -219,11 +281,18 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 		)
 	}
 
-	type entry struct {
-		path, repositoryPath string
-		data                 []byte
-	}
+	type entry = generationBundleInput
 	entries := []entry{{"formal/manifest.json", manifestRepo, manifestData}}
+	if originTaskKind == "translation-unit-revision" {
+		revisionInputs, err := revisionGenerationInputs(root, catalog, options.Locale, manifest.Units)
+		if err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+		if err := validateOrdinaryQCRevisionTemplates(root, catalog, glossary, manifest, revisionInputs); err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+		entries = append(entries, revisionInputs...)
+	}
 	unitIDs := make([]string, 0, len(selected))
 	expected := make([]GenerationBundleExpectedOutput, 0, len(selected))
 	for _, record := range manifest.Units { // complete formal batch input is indivisible, including retry.
@@ -257,10 +326,42 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	}
 	entries = append(entries, entry{"formal/glossary.yaml", glossaryRepo, glossaryData})
 	context := generationContext{
+		CurrentInputs: true,
 		SchemaVersion: GenerationBundleSchemaVersion, Kind: "go-tour-i18n/generation-context",
 		TaskKind: taskKind, Locale: options.Locale, BatchID: options.BatchID, UnitKind: manifest.UnitKind,
 		Attempt: attempt, UnitIDs: unitIDs,
 		Instruction: "Generate only the exact expected output files. Preserve protected tokens exactly and uniquely; add no explanation or Markdown fence; every output must be UTF-8 and end with exactly one LF.",
+	}
+	if originTaskKind == "translation-unit-revision" {
+		for _, r := range manifest.Units {
+			if r.RevisionFeedbackSource == "surface_review" {
+				context.RevisionTransportCapable = true
+				break
+			}
+		}
+		context.Instruction += " Semantic task: translation-unit-revision. formal/inputs contains protected English/source input; formal/candidates contains the exact reviewed restored candidate for semantic, structure and finding closure comparison only. Edit formal/protected-candidates/<input basename>, the validated predecessor protected raw response. Outputs must remain protected raw responses with every protected token exactly and uniquely preserved; never output the restored candidate, reconstruct token mapping, retranslate the whole Unit from English, or fetch another candidate from the repository. Close every authorized finding and its affected locality."
+		if context.RevisionTransportCapable {
+			context.Instruction += " Surface revision transport capability is separately bound by formal/surface-transport-authority and formal/surface-transport. When kind is surface-source-region-projection, formal/protected-candidates is the supplied revision-only bounded editor, not the old raw: edit ONLY its exposed regions, preserving all boundary tokens exactly and in order. All other prose, comments, code, identifiers, directives, literals and link structure remain opaque. A source-bound inline API descriptor grants only its natural-language payload, never the adjacent API identity or code delimiters. formal/historical-protected-candidates retains exact passed raw. No new representation mapping may be invented. The authority does not approve language quality or grant QC/other-Unit scope."
+		}
+		context.Instruction += " For current-validation comment authority, formal/comment-revision-transport contains a deterministic candidate-specific projection: formal/protected-candidates exposes ONLY the exact authorized teaching-comment bodies and their source-owned bindings; all unrelated prose, code, delimiters, directives and other comments are opaque boundaries. Edit those exposed bodies, retain every projection token exactly and uniquely in its own slot, and use only this projection token set. formal/historical-protected-candidates preserves the original passed raw for reference. The importer/process restores the complete candidate; do not reconstruct token mappings."
+		for _, record := range manifest.Units {
+			if record.RepresentationBridge != nil {
+				context.Instruction += " An explicit same-Unit representation bridge authorizes the ordinary protected revision template in formal/protected-candidates. It restores to the exact same reviewed candidate under the existing artifact framing; formal/representation-bridge freezes its immutable QC, historical restricted raw, original mapping, ordinary ancestor and machine construction authority. Edit this supplied template only, preserve its tokens exactly and uniquely, and follow each unchanged QC rating/finding locally. Do not reconstruct mappings, re-protect candidate prose, treat the bridge as a language result, or expand the finding scope."
+				break
+			}
+		}
+		context.Instruction += " If formal/current-validation-predecessor-transport is present, it is a deterministic representation-only capability: use the supplied formal/protected-candidates template and preserve its exact tokens. The sealed Surface/QC ancestor supplies only the decoder; the unchanged current-validation reopen supplies this revision's A predecessor, exact Unit set and machine finding. Historical raw is preserved separately. Do not infer target-language mappings, reuse an ancestor QC finding as current authority, or treat this transport as candidate approval."
+
+		context.Instruction += " For an explicitly reconciled replacement, formal/protected-candidates is a deterministic source-coordinate rebase that restores byte-exactly to the historical candidate; formal/historical-protected-candidates retains the original raw response. The immutable successor reopen and frozen representation proof are in formal/surface-authority. Use only the current token set for outputs."
+		for _, record := range manifest.Units {
+			if record.RevisionFeedbackSource == RepresentationRevisionFeedback {
+				context.Instruction += " Exception for representation_machine authority: formal/protected-candidates is an explicitly INCOMPLETE revision scaffold, not the reviewed candidate. Only the exact unbindable prose intervals listed in formal/representation-revision-scope.json contain verbatim source text. Use formal/candidates and formal/historical-protected-candidates for the actual frozen reviewed translation. Generate a locally complete revision of those intervals and necessary adjacent grammar, preserving original meaning and unrelated reviewed prose. Do not treat source scaffolding as an approved translation or guess a historical protected-token occurrence. Output normal current protected raw with every current token exact and unique; validation and independent re-QC remain mandatory."
+				break
+			}
+		}
+		if taskKind == "translation-unit-retry" {
+			context.Instruction += fmt.Sprintf(" This is machine retry attempt %d for only the selected restore_failed/validation_failed Unit; retain the original exact revision semantics and finding closure contract.", attempt)
+		}
 	}
 	contextData, err := json.MarshalIndent(context, "", "  ")
 	if err != nil {
@@ -268,12 +369,39 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	}
 	contextData = append(contextData, '\n')
 	entries = append(entries, entry{"generation-context.json", "", contextData})
-	for _, repoPath := range translationUnitGenerationAuthorityPaths {
+	for _, repoPath := range append(append([]string(nil), translationUnitGenerationAuthorityPaths...), "locales/"+options.Locale+"/locale.json") {
 		data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(repoPath)))
 		if err != nil {
 			return nil, GenerationBundleManifest{}, fmt.Errorf("read generation authority %s: %w", repoPath, err)
 		}
 		entries = append(entries, entry{filepath.ToSlash(filepath.Join("authority", repoPath)), repoPath, data})
+	}
+	contextRefs := map[string]string{}
+	for _, id := range unitIDs {
+		unit, err := catalog.Unit(id)
+		if err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+		context, err := translationGenerationContexts(root, options.Locale, unit.Adapter)
+		if err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+		{
+			for _, ref := range context {
+				if sha, seen := contextRefs[ref.Path]; seen {
+					if sha != ref.SHA256 {
+						return nil, GenerationBundleManifest{}, fmt.Errorf("generation context reference conflict")
+					}
+					continue
+				}
+				data, err := readCompatibilityFile(root, ref.Path)
+				if err != nil || sum(data) != ref.SHA256 {
+					return nil, GenerationBundleManifest{}, fmt.Errorf("generation context hash mismatch: %s", ref.Path)
+				}
+				contextRefs[ref.Path] = ref.SHA256
+				entries = append(entries, entry{"context/" + ref.Path, ref.Path, data})
+			}
+		}
 	}
 	sort.Slice(entries, func(i, j int) bool { return entries[i].path < entries[j].path })
 	files := make([]TransportBundleFile, 0, len(entries))
@@ -299,10 +427,21 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	if err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
+	// Fresh entry/exit proof for Surface capability, including newly selected
+	// Review/registered-owner heads; a stored receipt is never a cached PASS.
+	checkedSurface := map[string]bool{}
+	for _, r := range manifest.Units {
+		if r.RevisionFeedbackSource == "surface_review" && !checkedSurface[r.RevisionAuthorizationID] {
+			if _, _, err := readSurfaceTransport(root, catalog, options.Locale, r.RevisionAuthorizationID); err != nil {
+				return nil, GenerationBundleManifest{}, err
+			}
+			checkedSurface[r.RevisionAuthorizationID] = true
+		}
+	}
 	return bundle, manifestOut, nil
 }
 
-func readGenerationBundle(data []byte) (GenerationBundleManifest, map[string][]byte, error) {
+func decodeGenerationBundle(data []byte) (GenerationBundleManifest, map[string][]byte, error) {
 	files, err := ReadTransportBundle(data, 512, 64<<20)
 	if err != nil {
 		return GenerationBundleManifest{}, nil, err
@@ -338,12 +477,12 @@ func PackGenerationResultBundle(root string, catalog *Catalog, generationBundleD
 	if err := requireFormalGenerationIdentity(provider, model, manifest.BatchID); err != nil {
 		return nil, GenerationResultBundleManifest{}, err
 	}
-	current, _, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: manifest.Locale, BatchID: manifest.BatchID, UnitID: retryUnitID(manifest)})
-	if err != nil || !bytes.Equal(current, generationBundleData) {
-		if err != nil {
-			return nil, GenerationResultBundleManifest{}, fmt.Errorf("generation bundle is stale: %w", err)
-		}
-		return nil, GenerationResultBundleManifest{}, errors.New("generation bundle is stale or non-canonical")
+	if _, _, err := currentGenerationBundle(root, catalog, generationBundleData); err != nil {
+		return nil, GenerationResultBundleManifest{}, err
+	}
+	var batch RetranslationBatchManifest
+	if err := decodeStrictBundleJSON(files["formal/manifest.json"], &batch); err != nil {
+		return nil, GenerationResultBundleManifest{}, err
 	}
 	info, err := os.Lstat(inputDir)
 	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
@@ -382,7 +521,16 @@ func PackGenerationResultBundle(root string, catalog *Catalog, generationBundleD
 		if err := validateGenerationOutputBytes(data); err != nil {
 			return nil, GenerationResultBundleManifest{}, fmt.Errorf("%s: %w", dirEntry.Name(), err)
 		}
-		if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, data); err != nil {
+		protected, surface, err := preimportSurfaceGenerationOutput(catalog, manifest, files, expected.UnitID)
+		if err != nil {
+			return nil, GenerationResultBundleManifest{}, fmt.Errorf("%s: %w", dirEntry.Name(), err)
+		}
+		if surface {
+			err = validatePreparedGenerationOutput(root, catalog, manifest.Locale, expected.UnitID, data, protected, batch.ArtifactEOF)
+		} else {
+			err = validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, data)
+		}
+		if err != nil {
 			return nil, GenerationResultBundleManifest{}, fmt.Errorf("%s: %w", dirEntry.Name(), err)
 		}
 		file := NewTransportBundleFile(expected.BundlePath, "", data)
@@ -404,6 +552,9 @@ func PackGenerationResultBundle(root string, catalog *Catalog, generationBundleD
 	manifestData = append(manifestData, '\n')
 	bundle, err := WriteDeterministicTransportBundle(manifestData, zipEntries)
 	if err != nil {
+		return nil, GenerationResultBundleManifest{}, err
+	}
+	if err := checkPreimportSurfaceGenerationContext(root, catalog, manifest, files); err != nil {
 		return nil, GenerationResultBundleManifest{}, err
 	}
 	return bundle, resultManifest, nil
@@ -466,6 +617,12 @@ func currentGenerationBundle(root string, catalog *Catalog, generationBundleData
 	if err != nil {
 		return manifest, nil, fmt.Errorf("generation bundle is stale: %w", err)
 	}
+	if manifest.TaskKind == "translation-unit-retry" {
+		current, err = canonicalRetryBundleWithOriginalResult(root, catalog, manifest, files, current)
+		if err != nil {
+			return manifest, nil, fmt.Errorf("generation bundle is stale: %w", err)
+		}
+	}
 	if !bytes.Equal(current, generationBundleData) {
 		return manifest, nil, errors.New("generation bundle is stale or non-canonical")
 	}
@@ -505,10 +662,6 @@ func validateGenerationOutputSet(root string, catalog *Catalog, manifest Generat
 	if len(outputs) != len(manifest.ExpectedOutputs) {
 		return errors.New("generation result bundle output set mismatch")
 	}
-	glossary, err := LoadGlossary(root, manifest.Locale)
-	if err != nil {
-		return err
-	}
 	for _, expected := range manifest.ExpectedOutputs {
 		data, ok := outputs[expected.BundlePath]
 		if !ok {
@@ -517,9 +670,8 @@ func validateGenerationOutputSet(root string, catalog *Catalog, manifest Generat
 		if err := validateGenerationOutputBytes(data); err != nil {
 			return fmt.Errorf("%s: %w", expected.BundlePath, err)
 		}
-		if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, data); err != nil {
-			return fmt.Errorf("%s: %w", expected.BundlePath, err)
-		}
+		// Semantic failures belong to process/retry, where every independent
+		// Unit is retained and receives its own validation evidence.
 		if err := validateGenerationInstallPath(expected.InstallPath); err != nil {
 			return err
 		}
@@ -646,6 +798,9 @@ func installGenerationOutputs(root string, manifest GenerationBundleManifest, ge
 	if _, err := os.Lstat(receiptPath); err == nil {
 		return nil, fmt.Errorf("generation import provenance already exists: %s; inspect batch state before retrying", filepath.Base(receiptPath))
 	} else if !os.IsNotExist(err) {
+		return nil, err
+	}
+	if err := writeCompatibilityImmutable(root, importedGenerationArchive(manifest.Locale, sum(generationBundleData)), generationBundleData); err != nil {
 		return nil, err
 	}
 	var installed []string
@@ -920,21 +1075,34 @@ func validateTranslationUnitGenerationOutput(root string, catalog *Catalog, glos
 	if err != nil {
 		return err
 	}
-	protected, err := prepareTranslationUnitInput(unit, glossary)
-	if err != nil {
-		return err
-	}
-	restored, failures := protected.restore(string(data))
-	if len(failures) != 0 {
-		return fmt.Errorf("protected output validation failed: %s", strings.Join(failures, "; "))
-	}
 	batchDir := filepath.Join(root, "data", "retranslation-runs", locale, batchID)
 	batchManifest, err := readRetranslationProcessManifest(batchDir, locale, batchID)
 	if err != nil {
 		return err
 	}
+	var record *RetranslationBatchUnit
+	for i := range batchManifest.Units {
+		if batchManifest.Units[i].UnitID == unit.ID {
+			record = &batchManifest.Units[i]
+		}
+	}
+	if record == nil {
+		return fmt.Errorf("output Unit absent from batch")
+	}
+	protected, err := prepareInvocationRetranslationOutput(root, catalog, glossary, locale, batchManifest.Units, *record)
+	if err != nil {
+		return err
+	}
+	return validatePreparedGenerationOutput(root, catalog, locale, unitID, data, protected, batchManifest.ArtifactEOF)
+}
+
+func validatePreparedGenerationOutput(root string, catalog *Catalog, locale, unitID string, data []byte, protected protectedTranslation, artifactEOF string) error {
+	restored, failures := protected.restore(string(data))
+	if len(failures) != 0 {
+		return fmt.Errorf("protected output validation failed: %s", strings.Join(failures, "; "))
+	}
 	candidate := []byte(restored)
-	if batchManifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+	if artifactEOF == retranslationArtifactEOFSingleLF {
 		candidate = canonicalizeRetranslationArtifactEOF(candidate)
 	}
 	if err := ValidateTranslationUnitCandidate(root, catalog, unitID, locale, candidate); err != nil {

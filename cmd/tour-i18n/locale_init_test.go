@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/languageaudit"
 )
 
 func TestInitializeLocaleCreatesMechanicalSkeleton(t *testing.T) {
@@ -25,7 +26,7 @@ func TestInitializeLocaleCreatesMechanicalSkeleton(t *testing.T) {
 		ID: "welcome/1", Article: "welcome.article", Route: "/welcome/1", SourceSHA256: strings.Repeat("a", 64),
 	}}}
 	result, err := initializeLocale(root, catalog, localeInitOptions{
-		Locale: "it-IT", LanguageName: "Italiano", EnglishName: "Italian", HTMLLang: "it-IT",
+		LanguagePolicy: testLocaleInitLanguagePolicy("it-IT"), Locale: "it-IT", LanguageName: "Italiano", EnglishName: "Italian", HTMLLang: "it-IT",
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -83,7 +84,7 @@ func TestInitializeLocaleFailsClosedWhenLocaleExists(t *testing.T) {
 		t.Fatal(err)
 	}
 	_, err := initializeLocale(root, &i18n.Catalog{}, localeInitOptions{
-		Locale: "it-IT", LanguageName: "Italiano", EnglishName: "Italian", HTMLLang: "it-IT",
+		LanguagePolicy: testLocaleInitLanguagePolicy("it-IT"), Locale: "it-IT", LanguageName: "Italiano", EnglishName: "Italian", HTMLLang: "it-IT",
 	})
 	if err == nil || !strings.Contains(err.Error(), "拒绝覆盖") {
 		t.Fatalf("existing locale error=%v", err)
@@ -105,7 +106,7 @@ func TestInitializeLocaleFailsClosedWhenUICatalogExists(t *testing.T) {
 		t.Fatal(err)
 	}
 	_, err := initializeLocale(root, &i18n.Catalog{}, localeInitOptions{
-		Locale: "it-IT", LanguageName: "Italiano", EnglishName: "Italian", HTMLLang: "it-IT",
+		LanguagePolicy: testLocaleInitLanguagePolicy("it-IT"), Locale: "it-IT", LanguageName: "Italiano", EnglishName: "Italian", HTMLLang: "it-IT",
 	})
 	if err == nil || !strings.Contains(err.Error(), "拒绝覆盖") {
 		t.Fatalf("existing UI error=%v", err)
@@ -130,7 +131,7 @@ func TestInitializeLocaleRollsBackWhenStatusInitializationFails(t *testing.T) {
 	}
 	page := i18n.Page{ID: "welcome/1", Article: "welcome.article", Route: "/welcome/1", SourceSHA256: strings.Repeat("a", 64)}
 	_, err := initializeLocale(root, &i18n.Catalog{Pages: []i18n.Page{page, page}}, localeInitOptions{
-		Locale: "it-IT", LanguageName: "Italiano", EnglishName: "Italian", HTMLLang: "it-IT",
+		LanguagePolicy: testLocaleInitLanguagePolicy("it-IT"), Locale: "it-IT", LanguageName: "Italiano", EnglishName: "Italian", HTMLLang: "it-IT",
 	})
 	if err == nil || !strings.Contains(err.Error(), "duplicate catalog translation unit") {
 		t.Fatalf("status initialization error=%v", err)
@@ -139,5 +140,35 @@ func TestInitializeLocaleRollsBackWhenStatusInitializationFails(t *testing.T) {
 		if _, err := os.Stat(path); !os.IsNotExist(err) {
 			t.Fatalf("failed init left target %s: %v", path, err)
 		}
+	}
+}
+
+func testLocaleInitLanguagePolicy(locale string) *languageaudit.Authority {
+	return &languageaudit.Authority{Schema: languageaudit.PolicySchema, Version: 1, Policy: languageaudit.Policy{Locale: locale, Profile: "explicit-init-test", ProseScripts: []string{"Latin"}, SentenceTerminators: ".!?", ResidualMinWords: 2}}
+}
+func TestLocaleInitLanguagePolicyCommandContract(t *testing.T) {
+	root := t.TempDir()
+	p := testLocaleInitLanguagePolicy("it-IT")
+	b, err := json.Marshal(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "policy.json"), b, 0644); err != nil {
+		t.Fatal(err)
+	}
+	args := []string{"--locale", "it-IT", "--language-name", "Italiano", "--english-name", "Italian"}
+	if _, err := initializeLocaleCommand(root, &i18n.Catalog{}, args); err == nil || !strings.Contains(err.Error(), "language-policy") {
+		t.Fatal("missing policy flag", err)
+	}
+	for _, path := range []string{filepath.Join(root, "policy.json"), "../policy.json"} {
+		if _, err := initializeLocaleCommand(root, &i18n.Catalog{}, append(append([]string(nil), args...), "--language-policy", path)); err == nil || !strings.Contains(err.Error(), "repository-relative") {
+			t.Fatal("policy path contract", err)
+		}
+	}
+	wrong := testLocaleInitLanguagePolicy("fr-FR")
+	b, _ = json.Marshal(wrong)
+	_ = os.WriteFile(filepath.Join(root, "wrong.json"), b, 0644)
+	if _, err := initializeLocaleCommand(root, &i18n.Catalog{}, append(args, "--language-policy", "wrong.json")); err == nil {
+		t.Fatal("wrong locale policy")
 	}
 }

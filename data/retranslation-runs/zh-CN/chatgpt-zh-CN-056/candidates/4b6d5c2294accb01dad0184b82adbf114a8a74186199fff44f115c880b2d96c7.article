@@ -1,0 +1,256 @@
+<!--{
+	"Title": "下载并安装",
+  "HideTOC": true,
+  "Sidebar": "bug",
+  "Breadcrumb": true
+}-->
+
+<p>
+  按照此处介绍的步骤快速下载并安装 Go。
+</p>
+<p>关于安装的其他内容，你可能还会感兴趣：</p>
+<ul>
+  <li>
+    <a href="/doc/manage-install">管理 Go 安装</a>——如何
+    安装多个版本以及卸载。
+  </li>
+  <li>
+    <a href="/doc/install/source">从源代码安装 Go</a>——如何
+    检出源代码、在自己的计算机上构建并运行。
+  </li>
+</ul>
+<p class="DownloadBtn">
+  <a href="/dl/" id="start" class="btn download">
+    <span id="download-description" class="js-downloadDescription">
+      下载
+    </span>
+  </a>
+</p>
+
+<h2 id="install">安装 Go</h2>
+<p>
+  在下方选择与你的计算机操作系统对应的标签页，然后按照相应的
+  安装说明操作。
+</p>
+<div id="os-install-tabs" class="TabSection js-tabSection">
+  <div id="os-install-tablist" class="TabSection-tabList" role="tablist">
+    <button
+      role="tab"
+      aria-selected="true"
+      aria-controls="linux-tab"
+      id="linux"
+      tabindex="0"
+      class="TabSection-tab active"
+    >
+      Linux
+      <img class="TabSection-underline" src="/images/icons/underline.svg" width="51" height="4" aria-hidden="true" />
+    </button>
+    <button
+      role="tab"
+      aria-selected="false"
+      aria-controls="mac-tab"
+      id="mac"
+      tabindex="-1"
+      class="TabSection-tab"
+    >
+      Mac
+      <img class="TabSection-underline" src="/images/icons/underline.svg" width="51" height="4" aria-hidden="true" />
+    </button>
+    <button
+      role="tab"
+      aria-selected="false"
+      aria-controls="windows-tab"
+      id="windows"
+      tabindex="-1"
+      class="TabSection-tab"
+    >
+      Windows
+      <img class="TabSection-underline" src="/images/icons/underline.svg" width="51" height="4" aria-hidden="true" />
+    </button>
+  </div>
+  <div
+    role="tabpanel"
+    id="linux-tab"
+    class="TabSection-tabPanel"
+    aria-labelledby="linux"
+  >
+    <ol>
+      <li>
+        <strong>删除任何以前的 Go 安装</strong>，方法是删除 <code>/usr/local/go</code> 文件夹
+		（如果存在），然后将刚下载的压缩包解压到 <code>/usr/local</code>，从而创建一个全新的
+		Go 目录树，其位置为 <code>/usr/local/go</code>：
+		<pre class="CopyPaste">
+      <span>$ rm -rf /usr/local/go &amp;&amp; tar -C /usr/local -xzf <span id="linux-filename">go1.14.3.linux-amd64.tar.gz</span></span>
+      <button aria-label="Copy and paste the code.">
+        <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+        <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+      </button>
+    </pre>
+		<p>
+          （你可能需要以 root 身份或通过 <code>sudo</code>，使用所需权限分别运行每条命令。）
+        </p>
+		<p>
+		  <strong>不要</strong>将压缩包解压到现有的 <code>/usr/local/go</code> 目录树中。已知这样会
+		  导致 Go 安装损坏。
+		 </p>
+      </li>
+      <li>
+        将 <code>/usr/local/go/bin</code> 添加到 <code>PATH</code> 环境变量中。
+        <p>
+          可以将以下内容添加到你的 <code>$HOME/.profile</code> 或
+          <code>/etc/profile</code>（对于系统范围的安装）：
+        </p>
+        <pre class="CopyPaste">
+          <span>export PATH=$PATH:/usr/local/go/bin</span>
+          <button aria-label="Copy and paste the code.">
+            <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+            <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+          </button>
+        </pre>
+        <p>
+          <strong>注意：</strong> 对配置文件所做的更改可能要到
+          下次登录计算机时才会生效。若要立即应用更改，
+          可以直接运行 shell 命令，或从
+          配置文件中使用类似
+          <code>source $HOME/.profile</code> 的命令来执行这些命令。
+        </p>
+      </li>
+      <li>
+        <!-- TODO: Update to GOBIN once go.dev/issue/23439 is addressed. -->
+        将 <code>$HOME/go/bin</code>（Go 的默认 bin 路径）添加到你的
+        <code>PATH</code> 环境变量中，以便使用通过
+        <code>go install</code> 安装的工具。
+        <p>
+          可以将以下内容添加到你的 <code>$HOME/.profile</code> 或 <code>$HOME/.bashrc</code> 文件中：
+        </p>
+        <pre class="CopyPaste">
+          <span>export PATH="$PATH:$(go env GOPATH)/bin"</span>
+          <button aria-label="Copy and paste the code.">
+            <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+            <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+          </button>
+        </pre>
+      </li>
+      <li>
+        重启所有已打开的终端会话，使更改生效。
+        <p><!-- for consistent spacing --></p>
+      </li>
+      <li>
+        要验证 Go 是否已安装，请打开命令提示符并输入
+        以下命令：
+        <pre class="CopyPaste">
+          <span>$ go version</span>
+          <button aria-label="Copy and paste the code.">
+            <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+            <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+          </button>
+        </pre>
+      </li>
+      <li>确认该命令输出已安装的 Go 版本。</li>
+    </ol>
+  </div>
+  <div
+    role="tabpanel"
+    id="mac-tab"
+    class="TabSection-tabPanel"
+    aria-labelledby="mac"
+    hidden
+  >
+    <ol>
+      <li>
+        打开下载的软件包文件，并按照提示安装
+        Go。
+        <p>
+          该软件包会将 Go 发行版安装到 <code>/usr/local/go</code>。该软件包
+          还会将 <code>/usr/local/go/bin</code> 目录添加到你的
+          <code>PATH</code> 环境变量中，方式是创建一个 <code>/etc/paths.d/go</code> 文件。
+        </p>
+      </li>
+      <li>
+        <!-- TODO: Update to GOBIN once go.dev/issue/23439 is addressed. -->
+        将 <code>$HOME/go/bin</code>（Go 的默认 bin 路径）添加到你的
+        <code>PATH</code> 环境变量中，以便使用通过
+        <code>go install</code> 安装的工具。
+        <p>
+          可以将以下内容添加到你的 <code>~/.zshrc</code> 或 <code>~/.bash_profile</code> 文件中：
+        </p>
+        <pre class="CopyPaste">
+          <span>export PATH="$PATH:$(go env GOPATH)/bin"</span>
+          <button aria-label="Copy and paste the code.">
+            <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+            <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+          </button>
+        </pre>
+      </li>
+      <li>
+        重启所有已打开的终端会话，使更改生效。
+        <p><!-- for consistent spacing --></p>
+      </li>
+      <li>
+        要验证 Go 是否已安装，请打开一个<strong>新的</strong>终端会话并输入
+        以下命令：
+        <pre class="CopyPaste">
+          <span>$ go version</span>
+          <button aria-label="Copy and paste the code.">
+            <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+            <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+          </button>
+        </pre>
+      </li>
+      <li>确认该命令输出已安装的 Go 版本。</li>
+    </ol>
+  </div>
+  <div
+    role="tabpanel"
+    id="windows-tab"
+    class="TabSection-tabPanel"
+    aria-labelledby="windows"
+    hidden
+  >
+    <ol>
+      <li>
+        打开下载的 MSI 文件，并按照提示安装 Go。
+        <p>
+          默认情况下，安装程序会将 Go 安装到 <code>Program Files</code>
+          或 <code>Program Files (x86)</code>。你可以根据需要更改
+          安装位置。安装完成后，需要关闭并
+          重新打开所有已打开的命令提示符，以便让安装程序对环境
+          所做的更改反映到命令提示符中。
+        </p>
+      </li>
+      <li>
+        验证 Go 是否已安装。
+        <ol>
+          <li>
+            在 <strong>Windows</strong> 中，点击 <strong>开始</strong> 菜单。
+          </li>
+          <li>
+            在菜单的搜索框中输入 <code>cmd</code>，然后按下
+            <strong>Enter</strong> 键。
+          </li>
+          <li>
+            在出现的 Command Prompt 窗口中输入以下
+            命令：
+            <pre class="CopyPaste">
+              <span>$ go version</span>
+              <button aria-label="Copy and paste the code.">
+                <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+                <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+              </button>
+            </pre>
+          </li>
+          <li>确认该命令输出已安装的 Go 版本。</li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+</div>
+<h2 id="code">一切就绪！</h2>
+<p class="DocInstall-footer">
+  访问
+  <a href="tutorial/getting-started.html">入门教程</a>，编写
+  一些简单的 Go 代码。完成教程大约需要 10 分钟。
+</p>
+
+<script async src="/doc/download.js"></script>
+<script async src="/doc/hats.js"></script>

@@ -41,12 +41,13 @@ REMOTE_FORWARD_ATTEMPTS = 3
 REMOTE_FORWARD_COLLISION = "remote port forwarding failed for listen port"
 SHARED_ASSETS_RECEIPT_V1 = "go-tour-i18n/shared-assets-production-receipt/v1"
 SHARED_ASSETS_RECEIPT_V2 = "go-tour-i18n/shared-assets-production-receipt/v2"
+SHARED_PURGE_BATCH_LIMIT = 100
 SHARED_ASSETS_BOUNDARY_PATHS = [
     "tour/script.js",
     "tour/static/img/tree.png",
     "tour/static/partials/editor.html",
 ]
-SAFE_SHARED_PATH = re.compile(r"^[A-Za-z0-9._/-]+$")
+SAFE_SHARED_PATH = re.compile(r"^[A-Za-z0-9._/&-]+$")
 
 
 class CDNError(RuntimeError):
@@ -263,7 +264,7 @@ def poll_edgeone_task(client, zone_id, job_id, hostname):
             if attempt + 1 < POLL_ATTEMPTS:
                 client.sleep(2)
                 continue
-            raise CDNError("EdgeOne purge JobId did not become visible before polling exhausted")
+            raise MutationUncertain("EdgeOne purge JobId did not become visible before polling exhausted")
         task = _one_exact(tasks, "EdgeOne purge JobId")
         status = _task_state(task, job_id, hostname)
         if status == "success":
@@ -272,7 +273,7 @@ def poll_edgeone_task(client, zone_id, job_id, hostname):
             raise CDNError("EdgeOne purge task ended with status %s" % status)
         if attempt + 1 < POLL_ATTEMPTS:
             client.sleep(2)
-    raise CDNError("EdgeOne purge task polling exhausted")
+    raise MutationUncertain("EdgeOne purge task polling exhausted")
 
 
 def reconcile_edgeone_task(client, zone_id, hostname, started_at):
@@ -316,7 +317,8 @@ def purge_edgeone(client, zone_id, hostname):
         try:
             response = client.call("CreatePurgeTask", payload, mutation=True)
         except MutationUncertain:
-            task = reconcile_edgeone_task(client, zone_id, hostname, started_at)
+            try: task = reconcile_edgeone_task(client, zone_id, hostname, started_at)
+            except CDNError as exc: raise MutationUncertain("EdgeOne reconciliation is not exact; stop") from exc
             if task is not None:
                 status = _task_state(task, task.get("JobId"), hostname)
                 if status == "success":
@@ -326,13 +328,14 @@ def purge_edgeone(client, zone_id, hostname):
                 return poll_edgeone_task(client, zone_id, task.get("JobId"), hostname)
             if mutation_attempt == 0:
                 continue
-            raise CDNError("EdgeOne mutation result remains unresolved after reconciliation")
+            raise MutationUncertain("EdgeOne mutation result remains unresolved after reconciliation")
         failed = response.get("FailedList")
         job_id = response.get("JobId")
-        if type(failed) is not list or failed:
+        if type(failed) is not list:raise MutationUncertain("EdgeOne purge response lacks terminal failure/task identity")
+        if failed:
             raise CDNError("EdgeOne CreatePurgeTask FailedList is not empty")
         if type(job_id) is not str or not job_id:
-            raise CDNError("EdgeOne CreatePurgeTask returned no JobId")
+            raise MutationUncertain("EdgeOne CreatePurgeTask returned no JobId")
         return poll_edgeone_task(client, zone_id, job_id, hostname)
     raise CDNError("EdgeOne purge did not reach a terminal result")
 
@@ -362,6 +365,8 @@ class CloudflareClient(object):
                 if mutation:
                     raise MutationUncertain("Cloudflare mutation response is incomplete")
                 raise CDNError("Cloudflare response is not an object")
+            if mutation and type(data.get("success")) is not bool:
+                raise MutationUncertain("Cloudflare mutation response has no definite success/failure")
             if data.get("success") is not True:
                 raise CDNError("Cloudflare API reported a definite failure")
             return data
@@ -379,11 +384,11 @@ class CloudflareClient(object):
         try:
             response = self._request("POST", "/zones/%s/purge_cache" % zone_id,
                                      {"hosts": [hostname]}, mutation=True)
-        except MutationUncertain:
+        except MutationUncertain as exc:
             # Cloudflare exposes no formal purge-task query for this operation.
-            raise CDNError("Cloudflare purge result is uncertain; no duplicate mutation was attempted")
-        if type(response.get("result")) is not dict:
-            raise CDNError("Cloudflare purge response has no result object")
+            raise MutationUncertain("Cloudflare purge result is uncertain; no duplicate mutation was attempted") from exc
+        if type(response.get("result")) is not dict or not response["result"].get("id"):
+            raise MutationUncertain("Cloudflare purge response has no exact result.id")
 
     def purge_files(self, zone_id, urls):
         try:
@@ -475,11 +480,14 @@ def load_shared_assets_receipt(receipt_path, shared):
             "production_base_url", "changed_paths", "boundary_paths"}
     schema = receipt.get("schema")
     expected = core if schema == SHARED_ASSETS_RECEIPT_V1 else core | {"purge_result", "verification_result"}
+    if schema==SHARED_ASSETS_RECEIPT_V2 and "purge_chunks" in receipt: expected.add("purge_chunks")
     if schema not in (SHARED_ASSETS_RECEIPT_V1, SHARED_ASSETS_RECEIPT_V2) or set(receipt) != expected:
         raise CDNError("shared-assets receipt schema or keys are invalid")
     export_dir = pathlib.Path(receipt.get("export_dir", ""))
     if (not export_dir.is_absolute() or not export_dir.is_dir() or export_dir.is_symlink() or
-            export_dir.resolve() != export_dir or path.resolve() != pathlib.Path(str(export_dir) + ".verification-receipt.json")):
+            export_dir.resolve() != export_dir or path.resolve() not in (
+                pathlib.Path(str(export_dir) + ".verification-receipt.json"),
+                pathlib.Path(str(export_dir) + ".shared-assets-execution.json"))):
         raise CDNError("shared-assets receipt is not bound to a canonical export directory")
     manifest = export_dir / "SHA256SUMS"
     try:
@@ -497,7 +505,7 @@ def load_shared_assets_receipt(receipt_path, shared):
         raise CDNError("shared-assets receipt boundary policy mismatch")
     changed = receipt.get("changed_paths")
     deployed = receipt.get("deployment_result")
-    if (type(changed) is not list or len(changed) > 100 or len(changed) != len(set(changed)) or
+    if (type(changed) is not list or len(changed) != len(set(changed)) or
             any(not _safe_shared_path(value) for value in changed)):
         raise CDNError("shared-assets receipt changed_paths are invalid")
     if deployed == "DEPLOYED" and not changed:
@@ -514,7 +522,23 @@ def load_shared_assets_receipt(receipt_path, shared):
         if ((deployed == "DEPLOYED") != (receipt["purge_result"] in ("PENDING", "ATTEMPTED", "PASS")) or
                 (deployed == "NO_CHANGES") != (receipt["purge_result"] == "SKIPPED")):
             raise CDNError("shared-assets receipt purge state conflicts with deployment_result")
+        if "purge_chunks" in receipt:
+            urls=[origin+"/"+p for p in changed]
+            expected_chunks=shared_purge_chunks(urls,receipt["manifest_sha256"])
+            chunks=receipt["purge_chunks"]
+            if type(chunks) is not list or len(chunks)!=len(expected_chunks): raise CDNError("shared purge chunk set mismatch")
+            pending=False
+            for actual,want in zip(chunks,expected_chunks):
+                if type(actual) is not dict or set(actual)!=set(want) or any(actual.get(k)!=want[k] for k in ("identity","input_identity","urls")) or actual.get("result") not in ("PENDING","ATTEMPTED","PASS"):
+                    raise CDNError("shared purge chunk input/result mismatch")
+                if actual["result"]=="PASS" and pending:raise CDNError("shared purge chunks must be a completed prefix")
+                if actual["result"]!="PASS":pending=True
+            if receipt["purge_result"]=="PASS" and pending:raise CDNError("partial shared purge cannot pass")
     return receipt, [origin + "/" + value for value in changed]
+
+def shared_purge_chunks(urls,input_identity):
+    return [{"identity":_sha256(_json_bytes(part)),"input_identity":input_identity,"urls":part,"result":"PENDING"}
+            for part in [urls[i:i+SHARED_PURGE_BATCH_LIMIT] for i in range(0,len(urls),SHARED_PURGE_BATCH_LIMIT)]]
 
 
 def write_shared_assets_receipt(receipt_path, receipt):
@@ -646,7 +670,7 @@ def _open_aliyun_reverse_forward(base, temp, aliyun, local_port):
     raise CDNError("remote reverse-forward setup did not complete")
 
 
-def _run_remote_config(shared, config):
+def _run_remote_config(shared, config, before_request=None):
     action = config["action"]
     provider = config["provider"]
     temp = pathlib.Path(tempfile.mkdtemp(prefix="go-tour-production-cdn-"))
@@ -667,15 +691,16 @@ def _run_remote_config(shared, config):
             config["socks"] = "127.0.0.1:%d" % aliyun_port
         encoded = base64.b64encode(_json_bytes(config)).decode("ascii")
         source = pathlib.Path(__file__).read_text(encoding="utf-8")
+        if before_request is not None: before_request()
         try:
             result = subprocess.run(["ssh"] + aliyun_options + [aliyun, "python3", "-", "--remote", encoded],
                                     input=source, text=True, check=False, timeout=300)
         except subprocess.TimeoutExpired as exc:
-            if action == "purge-shared-assets":
+            if action in ("purge","purge-shared-assets"):
                 raise MutationUncertain("remote exact-URL purge timed out") from exc
             raise
         if result.returncode != 0:
-            if action == "purge-shared-assets" and result.returncode != 1:
+            if action in ("purge","purge-shared-assets") and result.returncode != 1:
                 raise MutationUncertain("remote exact-URL purge result is uncertain (exit %d)" % result.returncode)
             raise CDNError("remote CDN %s failed (exit %d)" % (action, result.returncode))
     finally:
@@ -684,7 +709,7 @@ def _run_remote_config(shared, config):
         shutil.rmtree(str(temp), ignore_errors=True)
 
 
-def coordinator(action, locale):
+def coordinator(action, locale, execution_state=None):
     identity = _load_identity()
     profiles = [profile for profile in identity["locales"] if profile["locale"] == locale]
     if len(profiles) != 1:
@@ -693,6 +718,44 @@ def coordinator(action, locale):
     if profile["production_state"] != "live":
         raise CDNError("CDN maintenance requires production_state=live")
     shared = identity["shared"]
+    if action == "purge":
+        if execution_state is None:
+            raise CDNError("hostname purge requires current per-locale execution state")
+        path = pathlib.Path(execution_state)
+        if not path.is_file() or path.is_symlink() or not path.name.endswith(".maintenance-production-state.json"):
+            raise CDNError("invalid purge execution state")
+        state = json.loads(path.read_text())
+        if state.get("locale") != locale or state.get("schema")!="go-learning/maintenance-execution-state/v2":
+            raise CDNError("purge state locale/action mismatch")
+        spec=importlib.util.spec_from_file_location("cdn_current_release_contract",ROOT/"scripts/release_contract.py")
+        contract=importlib.util.module_from_spec(spec);spec.loader.exec_module(contract)
+        release=path.with_name(path.name[:-len(".maintenance-production-state.json")])
+        info=contract.load(release,current=True)
+        if info["input_identity"]!=state.get("INPUT_IDENTITY") or info["locale"]!=locale:
+            raise CDNError("stale purge input identity")
+        deployed=state.get("stages",{}).get("deploy",{})
+        if deployed.get("result")!="PASS" or deployed.get("input_identity")!=info["input_identity"]:
+            raise CDNError("purge requires exact successful deployment evidence")
+        if state.get("stages", {}).get("purge", {}).get("result") == "PASS":
+            print("HOSTNAME PURGE: CARRIED (no repeated POST)"); return
+        if state.get("ACTION")!="PURGE": raise CDNError("purge action mismatch")
+        prior=contract.prior_state(profile,info)
+        if prior.get("input_identity")!=info["input_identity"]: raise CDNError("purge runtime changed from deployed input")
+        if state.get("MUTATION_STATUS") != "ATTEMPTED" or state.get("cdn_attempt_started"):
+            raise MutationUncertain("hostname purge attempted/unknown; refusing replay")
+        def persist_attempt(started=True):
+            marker=path.with_name(path.name+".cdn-attempt")
+            if started:
+                try:
+                    with marker.open("x") as proof:
+                        proof.write(info["input_identity"]+"\n");proof.flush();os.fsync(proof.fileno())
+                except FileExistsError: raise MutationUncertain("exclusive hostname purge attempt exists; never replay")
+            elif marker.is_file() and not marker.is_symlink() and marker.read_text()==info["input_identity"]+"\n":
+                marker.unlink()
+            state["cdn_attempt_started"] = started
+            temporary = path.with_name(path.name + ".cdn-tmp-%d" % os.getpid())
+            temporary.write_text(json.dumps(state, sort_keys=True, separators=(",", ":")) + "\n")
+            os.replace(temporary, path)
     config = {
         "action": action,
         "provider": profile["cdn"],
@@ -704,7 +767,18 @@ def coordinator(action, locale):
         config.update(zone_name=shared["cloudflare_zone_name"], secret_file=shared["cloudflare_secret_file"])
     else:
         raise CDNError("unsupported formal CDN")
-    _run_remote_config(shared, config)
+    if action=="purge":
+        try: _run_remote_config(shared,config,before_request=persist_attempt)
+        except MutationUncertain:raise
+        except (CDNError,OSError,subprocess.SubprocessError,ValueError,KeyError):
+            persist_attempt(False)
+            print("MUTATION_STATUS=NONE")
+            raise
+        state["stages"]["purge"]={"result":"PASS","input_identity":info["input_identity"],
+                                  "completed_at":datetime.datetime.now(datetime.timezone.utc).isoformat()}
+        state["MUTATION_STATUS"]="KNOWN"
+        write_shared_assets_receipt(path,state)
+    else: _run_remote_config(shared,config)
 
 
 def shared_assets_coordinator(action, receipt_path=None):
@@ -719,23 +793,33 @@ def shared_assets_coordinator(action, receipt_path=None):
     }
     if action == "purge-shared-assets":
         receipt, urls = load_shared_assets_receipt(receipt_path, shared)
+        result=subprocess.run(["go","run","-mod=readonly","./cmd/tour-i18n","assets","validate","--input",receipt["export_dir"]],cwd=ROOT,stdin=subprocess.DEVNULL,check=False)
+        if result.returncode:raise CDNError("shared assets export no longer current")
         if not urls:
             raise CDNError("shared-assets exact-URL purge requires changed_paths")
         if receipt["schema"] != SHARED_ASSETS_RECEIPT_V2 or receipt["purge_result"] != "PENDING":
             raise CDNError("shared-assets exact-URL purge requires a v2 PENDING receipt")
-        config["files"] = urls
-        receipt["purge_result"] = "ATTEMPTED"
-        write_shared_assets_receipt(receipt_path, receipt)
-        try:
-            _run_remote_config(shared, config)
-        except MutationUncertain:
-            # Without a reconciliation API, ATTEMPTED must remain durable so a
-            # later invocation cannot blindly duplicate the POST.
-            raise
-        except (CDNError, OSError, subprocess.SubprocessError, ValueError, KeyError):
-            receipt["purge_result"] = "PENDING"
+        if not str(receipt_path).endswith(".shared-assets-execution.json"):
+            raise CDNError("historical deployed receipt is immutable; use current shared-assets workflow")
+        if "purge_chunks" not in receipt: receipt["purge_chunks"]=shared_purge_chunks(urls,receipt["manifest_sha256"])
+        for chunk in receipt["purge_chunks"]:
+            if chunk["result"]=="PASS":continue
+            if chunk["result"]=="ATTEMPTED":raise MutationUncertain("shared purge chunk attempted; never replay")
+            config["files"]=chunk["urls"]
+            marker=pathlib.Path(str(receipt_path)+".purge-"+chunk["identity"])
+            try:
+                with marker.open("x") as proof: proof.write(receipt["manifest_sha256"]+"\n");proof.flush();os.fsync(proof.fileno())
+            except FileExistsError:raise MutationUncertain("exclusive shared purge chunk attempt exists; never replay")
+            chunk["result"]="ATTEMPTED";receipt["purge_result"]="ATTEMPTED"
             write_shared_assets_receipt(receipt_path, receipt)
-            raise
+            try:
+                _run_remote_config(shared, config)
+            except MutationUncertain:raise
+            except (CDNError,OSError,subprocess.SubprocessError,ValueError,KeyError):
+                chunk["result"]="PENDING";receipt["purge_result"]="PENDING"
+                write_shared_assets_receipt(receipt_path,receipt);marker.unlink();raise
+            chunk["result"]="PASS";receipt["purge_result"]="PENDING"
+            write_shared_assets_receipt(receipt_path,receipt)
         receipt["purge_result"] = "PASS"
         write_shared_assets_receipt(receipt_path, receipt)
         return
@@ -757,14 +841,17 @@ def main(argv=None):
     parser.add_argument("action", choices=("preflight", "purge", "shared-assets-preflight", "purge-shared-assets"))
     parser.add_argument("--locale")
     parser.add_argument("--receipt")
+    parser.add_argument("--execution-state")
     args = parser.parse_args(argv)
     try:
         if args.action in ("preflight", "purge"):
             if not args.locale or args.receipt:
                 raise CDNError("language CDN action requires only --locale")
-            coordinator(args.action, args.locale)
+            if args.action=="preflight" and args.execution_state:
+                raise CDNError("preflight must not carry mutation state")
+            coordinator(args.action, args.locale,args.execution_state)
         else:
-            if args.locale or (args.action == "purge-shared-assets") != bool(args.receipt):
+            if args.locale or args.execution_state or (args.action == "purge-shared-assets") != bool(args.receipt):
                 raise CDNError("shared-assets CDN action has invalid arguments")
             shared_assets_coordinator(args.action, args.receipt)
         return 0

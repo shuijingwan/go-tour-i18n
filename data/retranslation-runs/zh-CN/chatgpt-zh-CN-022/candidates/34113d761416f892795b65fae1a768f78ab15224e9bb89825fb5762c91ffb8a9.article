@@ -1,0 +1,279 @@
+<!--{
+  "Title": "教程：多模块工作区入门",
+  "Breadcrumb": true
+}-->
+
+本教程介绍 Go 多模块工作区的基础知识。
+借助多模块工作区，可以告诉 go 命令你正在
+同时编写多个模块中的代码，并且能够轻松构建和
+运行这些模块中的代码。
+
+在本教程中，你将在一个共享的多模块
+工作区中创建两个模块，跨这些模块进行修改，并在构建中查看
+这些修改的结果。
+
+<!-- TODO TOC -->
+
+**注意：** 其他教程请参阅 [教程](/doc/tutorial/index.html)。
+
+## 先决条件
+
+*   **Go。** 建议使用最新版 Go 学习本教程。
+    有关安装说明，请参阅 [安装 Go](/doc/install)。
+*   **用于编辑代码的工具。** 任意文本编辑器都可以。
+*   **命令行终端。** Go 可以在 Linux 和 Mac 上的任意终端中良好运行，
+    在 Windows 上则可以使用 PowerShell 或 cmd。
+
+## 为代码创建模块 {#create_folder}
+
+首先，为即将编写的代码创建一个模块。
+
+1. 打开命令提示符并切换到主目录。
+
+   在 Linux 或 Mac 上：
+
+    ```
+    $ cd
+    ```
+
+   在 Windows 上：
+
+    ```
+    C:\> cd %HOMEPATH%
+    ```
+
+   本教程后续会用 $ 表示命令提示符。所用命令
+   同样可以在 Windows 上运行。
+
+2. 在命令提示符中，为代码创建一个名为 workspace 的目录。
+
+    ```
+    $ mkdir workspace
+    $ cd workspace
+    ```
+
+3. 初始化模块
+
+   本例将创建一个新的 `hello` 模块，它依赖 golang.org/x/example 模块。
+
+   创建 hello 模块：
+
+   ```
+   $ mkdir hello
+   $ cd hello
+   $ go mod init example.com/hello
+   go: creating new go.mod: module example.com/hello
+   ```
+
+   使用 `go get` 添加对 golang.org/x/example/hello/reverse 包的依赖项。
+
+   ```
+   $ go get golang.org/x/example/hello/reverse
+   ```
+
+   在 hello 目录中创建 hello.go，内容如下：
+
+   ```
+   package main
+
+   import (
+       "fmt"
+
+       "golang.org/x/example/hello/reverse"
+   )
+
+   func main() {
+       fmt.Println(reverse.String("Hello"))
+   }
+   ```
+
+   现在运行 hello 程序：
+
+   ```
+   $ go run .
+   olleH
+   ```
+
+## 创建工作区
+
+这一步将创建一个 `go.work` 文件，用来指定包含该模块的工作区。
+
+#### 初始化工作区
+
+在 `workspace` 目录中运行：
+
+   ```
+   $ go work init ./hello
+   ```
+
+`go work init`命令会告诉 `go` 创建一个 `go.work` 文件，
+用于包含 `./hello`
+目录中模块的工作区。
+
+`go`命令生成的 `go.work` 文件如下所示：
+
+   ```
+   go 1.18
+
+   use ./hello
+   ```
+
+`go.work`文件的语法与 `go.mod` 相似。
+
+`go`指令告诉 Go 应使用哪个 Go 版本解释该文件。
+它类似于 `go.mod`
+文件中的 `go` 指令。
+
+`use`指令告诉 Go，在进行构建时，`hello`
+目录中的模块应作为主模块。
+
+因此，在 `workspace` 的任何子目录中，该模块都会处于活动状态。
+
+#### 在工作区目录中运行程序
+
+在 `workspace` 目录中运行：
+
+   ```
+   $ go run ./hello
+   olleH
+   ```
+
+go 命令会把工作区中的所有模块都视为主模块。这样，即使位于模块之外，
+也可以引用模块中的包。如果在模块或工作区之外运行 `go run` 命令，
+就会报错，因为 `go` 命令
+不知道应使用哪些模块。
+
+接下来，把 `golang.org/x/example/hello` 模块的本地副本添加到工作区。
+该模块存储在 `go.googlesource.com/example` Git 仓库的一个子目录中。
+随后，我们会向 `reverse` 包添加一个新函数，用它来代替 `String`。
+
+## 下载并修改 `golang.org/x/example/hello` 模块
+
+   这一步会下载包含 `golang.org/x/example/hello` 模块的 Git 仓库副本，
+   将其添加到工作区，然后添加一个新函数供 hello 程序使用。
+
+1. 克隆仓库
+
+   在 workspace 目录中运行 `git` 命令克隆仓库：
+
+   ```
+   $ git clone https://go.googlesource.com/example
+   Cloning into 'example'...
+   remote: Total 165 (delta 27), reused 165 (delta 27)
+   Receiving objects: 100% (165/165), 434.18 KiB | 1022.00 KiB/s, done.
+   Resolving deltas: 100% (27/27), done.
+   ```
+
+2. 将模块添加到工作区
+
+   刚才已把 Git 仓库检出到 `./example`。
+   `golang.org/x/example/hello`模块的源代码位于 `./example/hello`。
+   将它添加到工作区：
+
+   ```
+   $ go work use ./example/hello
+   ```
+
+   `go work use`命令会向 go.work 文件添加一个新模块。现在该文件如下所示：
+
+   ```
+   go 1.18
+
+   use (
+       ./hello
+       ./example/hello
+   )
+   ```
+
+   工作区现在同时包含 `example.com/hello` 模块和 `golang.org/x/example/hello` 模块，
+   后者提供 `golang.org/x/example/hello/reverse` 包。
+
+   这样就可以使用我们将在 `reverse` 包本地副本中编写的新代码，
+   而不是使用模块缓存中
+   通过 `go get` 命令下载的包版本。
+
+3. 添加新函数。
+
+   我们将向 `golang.org/x/example/hello/reverse` 包添加一个用于反转数字的新函数。
+
+   在 `workspace/example/hello/reverse` 目录中创建名为 `int.go` 的新文件，内容如下：
+
+   ```
+   package reverse
+
+   import "strconv"
+
+   // Int returns the decimal reversal of the integer i.
+   func Int(i int) int {
+       i, _ = strconv.Atoi(String(strconv.Itoa(i)))
+       return i
+   }
+   ```
+
+4. 修改 hello 程序以使用该函数。
+
+   修改 `workspace/hello/hello.go` 的内容，使其如下所示：
+
+   ```
+   package main
+
+   import (
+       "fmt"
+
+       "golang.org/x/example/hello/reverse"
+   )
+
+   func main() {
+       fmt.Println(reverse.String("Hello"), reverse.Int(24601))
+   }
+   ```
+
+#### 在工作区中运行代码
+
+   在 workspace 目录中运行
+
+   ```
+   $ go run ./hello
+   olleH 10642
+   ```
+
+   go 命令会在 `hello` 目录中找到命令行
+   指定的 `example.com/hello` 模块；该目录由 `go.work`
+   文件指定，并且同样通过`golang.org/x/example/hello/reverse`
+   `go.work`文件解析导入。
+
+   可以使用 `go.work`，而不必添加 [`replace`](/ref/mod#go-mod-file-replace)
+   指令来跨多个模块工作。
+
+   由于两个模块位于同一工作区中，
+   在一个模块中进行修改并在另一个模块中使用它非常方便。
+
+#### 后续步骤
+
+   要正式发布这些模块，还需要发布 `golang.org/x/example/hello`
+   模块，例如发布为 `v0.1.0`。通常做法是在模块的版本
+   控制仓库中给某次提交打标签。更多详情请参阅
+   [模块发布工作流文档](/doc/modules/release-workflow)。
+   发布完成后，可以提高 `hello/go.mod` 中对
+   `golang.org/x/example/hello`模块的版本要求：
+
+   ```
+   cd hello
+   go get golang.org/x/example/hello@v0.1.0
+   ```
+
+   这样，`go`命令就能在工作区之外正确解析这些模块。
+
+## 进一步了解工作区
+
+   除了本教程前面见过的 `go work init` 外，`go`命令还有几个用于操作工作区的子命令：
+   
+
+   - `go work use [-r] [dir]`会为 `dir` 向 `go.work` 文件添加一条 `use` 指令；
+   如果目录存在就添加，如果作为参数的目录不存在，则移除 `use` 目录。`-r`
+   标志会递归检查 `dir` 的子目录。
+   - `go work edit`编辑 `go.work` 文件，方式与 `go mod edit`
+   - 类似。`go work sync`会把工作区构建列表中的依赖项同步到各个工作区模块。
+
+   有关工作区和 `go.work` 文件的更多详情，请参阅 Go 模块参考中的 [工作区](/ref/mod#workspaces)。
+   

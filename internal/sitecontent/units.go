@@ -14,6 +14,11 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/parser"
+	gmtext "github.com/yuin/goldmark/text"
+
 	"golang.org/x/net/html"
 )
 
@@ -31,17 +36,18 @@ type Unit struct {
 	Protected []ProtectedToken `json:"protected"`
 }
 type Document struct {
-	Contract     string       `json:"contract"`
-	UnitScope    string       `json:"unit_scope,omitempty"`
-	StableIndex  int          `json:"stable_index,omitempty"`
-	Slots        []Unit       `json:"internal_slots,omitempty"`
-	Path         string       `json:"path"`
-	Kind         string       `json:"kind"`
-	Route        string       `json:"route"`
-	SourceSHA    string       `json:"source_sha256"`
-	StructureSHA string       `json:"structure_sha256"`
-	Dependencies []Dependency `json:"dependencies"`
-	Units        []Unit       `json:"units"`
+	ReferenceDefinitions []MarkdownReferenceDefinition `json:"reference_definitions,omitempty"`
+	Contract             string                        `json:"contract"`
+	UnitScope            string                        `json:"unit_scope,omitempty"`
+	StableIndex          int                           `json:"stable_index,omitempty"`
+	Slots                []Unit                        `json:"internal_slots,omitempty"`
+	Path                 string                        `json:"path"`
+	Kind                 string                        `json:"kind"`
+	Route                string                        `json:"route"`
+	SourceSHA            string                        `json:"source_sha256"`
+	StructureSHA         string                        `json:"structure_sha256"`
+	Dependencies         []Dependency                  `json:"dependencies"`
+	Units                []Unit                        `json:"units"`
 }
 type span struct {
 	start, end int
@@ -58,6 +64,12 @@ func textBytes(b []byte) error {
 // ParseDocument uses the Markdown AST and HTML tokenizer; unsupported metadata
 // and data schemas fail closed. It never treats redirect/assets as language.
 func ParseDocument(s Source, b []byte) (*Document, error) {
+	return parseDocument(s, b, true)
+}
+
+// lexical controls source-only machine-word protection. Structural validation
+// parses both sides without it; the persisted source contract remains unchanged.
+func parseDocument(s Source, b []byte, lexical bool) (*Document, error) {
 	if !validPath(s.Path) || (s.Kind != "page" && s.Kind != "data") || digest(b) != s.SHA256 {
 		return nil, fmt.Errorf("invalid document identity/kind: %s", s.Path)
 	}
@@ -71,6 +83,8 @@ func ParseDocument(s Source, b []byte) (*Document, error) {
 		}
 	}
 	spans := []span{}
+	teaching := map[int]i18n.TeachingCommentBody{}
+	var refs []parser.Reference
 	add := func(a, z int, c string) {
 		if a < z {
 			spans = append(spans, span{a, z, c})
@@ -86,16 +100,26 @@ func ParseDocument(s Source, b []byte) (*Document, error) {
 			return nil, err
 		}
 		body := b[offset:]
-		if err := teachingSpans(body, offset, path.Ext(s.Path) == ".md", add); err != nil {
+		if path.Ext(s.Path) == ".md" {
+			pc := parser.NewContext()
+			goldmark.New().Parser().Parse(gmtext.NewReader(body), parser.WithContext(pc))
+			refs = pc.References()
+			if len(refs) > 0 {
+				if err := markdownReferenceTitleSpans(body, func(a, z int, c string) { add(a+offset, z+offset, c) }); err != nil {
+					return nil, err
+				}
+			}
+		}
+		if err := teachingSpans(body, offset, path.Ext(s.Path) == ".md", add, func(start int, c i18n.TeachingCommentBody) { teaching[start] = c }); err != nil {
 			return nil, err
 		}
 		switch path.Ext(s.Path) {
 		case ".html":
-			if err := htmlBlocks(body, offset, "html", add); err != nil {
+			if err := htmlBlocksMode(body, offset, "html", add, lexical); err != nil {
 				return nil, err
 			}
 		case ".md":
-			if err := markdownBlocks(body, offset, add); err != nil {
+			if err := markdownBlocksMode(body, offset, add, lexical); err != nil {
 				return nil, err
 			}
 		default:
@@ -107,6 +131,13 @@ func ParseDocument(s Source, b []byte) (*Document, error) {
 	}
 	sort.Slice(spans, func(i, j int) bool { return spans[i].start < spans[j].start })
 	d := &Document{Contract: UnitContract, Path: s.Path, Kind: s.Kind, Route: s.Route, SourceSHA: s.SHA256, Units: []Unit{}, Dependencies: s.Dependencies}
+	if path.Ext(s.Path) == ".md" && len(refs) > 0 {
+		var err error
+		d.ReferenceDefinitions, err = markdownReferenceDefinitions(b)
+		if err != nil {
+			return nil, err
+		}
+	}
 	seen := map[string]int{}
 	previous := 0
 	var structure bytes.Buffer
@@ -115,16 +146,31 @@ func ParseDocument(s Source, b []byte) (*Document, error) {
 			return nil, fmt.Errorf("overlapping parser text spans")
 		}
 		a, z := sp.start, sp.end
-		for a < z && unicode.IsSpace(rune(b[a])) {
-			a++
+		for a < z {
+			r, size := utf8.DecodeRune(b[a:z])
+			if !unicode.IsSpace(r) {
+				break
+			}
+			a += size
 		}
-		for z > a && unicode.IsSpace(rune(b[z-1])) {
-			z--
+		for z > a {
+			r, size := utf8.DecodeLastRune(b[a:z])
+			if !unicode.IsSpace(r) {
+				break
+			}
+			z -= size
 		}
 		if a == z {
 			continue
 		}
-		source, locked, err := protectBlock(b[a:z], sp.context)
+		var source string
+		var locked []ProtectedToken
+		var err error
+		if c, ok := teaching[sp.start]; ok {
+			source, locked, err = protectTeachingBody(b, a, z, c)
+		} else {
+			source, locked, err = protectBlockReferences(b[a:z], sp.context, lexical, refs)
+		}
 		if err != nil {
 			return nil, fmt.Errorf("%s at %d: %w", s.Path, a, err)
 		}
@@ -319,6 +365,7 @@ func parseMetadata(b []byte, add func(int, int, string)) (int, error) {
 			Breadcrumb bool
 			Template   bool
 			HideTOC    bool
+			Sidebar    string
 		}
 		if err := StrictJSON(raw, &m); err != nil {
 			return 0, err
@@ -532,28 +579,63 @@ func Reconstruct(s Source, source []byte, targets map[string]string) ([]byte, er
 	b := out.Bytes()
 	next := s
 	next.SHA256 = digest(b)
-	parsed, err := ParseDocument(next, b)
+	// restoreBlock already enforces the exact source token authority. Compare
+	// actual structure symmetrically, without promoting target lexical atoms
+	// to new protected authority (or dropping a target consisting of CLI).
+	shape, err := parseDocument(s, source, false)
 	if err != nil {
 		return nil, err
 	}
-	if parsed.StructureSHA != d.StructureSHA || len(parsed.Units) != len(d.Units) {
+	parsed, err := parseDocument(next, b, false)
+	if err != nil {
+		return nil, err
+	}
+	if parsed.StructureSHA != shape.StructureSHA || len(parsed.Units) != len(shape.Units) {
 		return nil, fmt.Errorf("protected structure/parser round-trip changed")
 	}
 	return b, nil
 }
 
-func PackageDocuments(root string, g *Global, id string) ([]Document, map[string][]byte, error) {
+func PackageDocuments(root string, g *Global, id string, contexts ...*structuredSuccessorValidation) ([]Document, map[string][]byte, error) {
 	if _, err := packageByID(g, id); err != nil {
 		return nil, nil, err
 	}
 	raw := map[string][]byte{}
 	docs := []Document{}
+	if g.Membership != nil {
+		var m PackageMembership
+		if err := readReference(root, *g.Membership, &m); err != nil {
+			return nil, nil, err
+		}
+		if id == m.Package {
+			// Preserve source-owned parser classification; membership changes no
+			// source bytes or representation. All refs were verified by LoadCurrent.
+			base, err := loadSourceCurrent(root, contexts...)
+			if err != nil {
+				return nil, nil, err
+			}
+			for _, old := range m.Predecessors {
+				part, files, err := PackageDocuments(root, base, old.Package, contexts...)
+				if err != nil {
+					return nil, nil, err
+				}
+				docs = append(docs, part...)
+				for p, b := range files {
+					if _, ok := raw[p]; ok {
+						return nil, nil, fmt.Errorf("membership output overlap")
+					}
+					raw[p] = b
+				}
+			}
+			return docs, raw, nil
+		}
+	}
 	if id == "site-v2-shell" {
 		for _, s := range g.Sources {
 			if s.Package != id {
 				continue
 			}
-			b, err := readRegular(root, s.Path)
+			b, err := readRegularReference(root, currentSourceReference(s))
 			if err != nil {
 				return nil, nil, err
 			}
@@ -570,9 +652,9 @@ func PackageDocuments(root string, g *Global, id string) ([]Document, map[string
 		return docs, raw, nil
 	}
 	if id != "learn-docs-v1" {
-		return nil, nil, fmt.Errorf("Tour retains its existing TranslationUnit workflow")
+		return adoptedPageDocuments(root, g, id, contexts...)
 	}
-	snapshot, err := readRegular(root, SnapshotPath)
+	snapshot, err := ReadSourceSnapshot(root)
 	if err != nil {
 		return nil, nil, err
 	}

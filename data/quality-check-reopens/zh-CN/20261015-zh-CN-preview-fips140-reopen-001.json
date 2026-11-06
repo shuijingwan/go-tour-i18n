@@ -1,0 +1,37 @@
+{
+  "preview_failure": {
+    "path": "data/preview-tu-failures/zh-CN/20261015-zh-CN-preview-fips140-001.json",
+    "sha256": "d2cbc17fbb4401f5190131647a44893fd1c0f37043f24cc53f7fa1001658349c"
+  },
+  "schema_version": 1,
+  "evidence_type": "quality_check_surface_reopen",
+  "locale": "zh-CN",
+  "reopen_id": "20261015-zh-CN-preview-fips140-reopen-001",
+  "previous_snapshot_id": "learn-docs-v1-qc-012",
+  "previous_finalization_path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-012/finalization.json",
+  "previous_finalization_sha256": "cfd5f19966fbcc1221367145fc8cf2abbe21e1277f58dc8c6e315b2145611477",
+  "surface_review_id": "",
+  "surface_review_path": "",
+  "surface_review_sha256": "",
+  "finding": "missing-source-bound-link: route=/doc/security/fips140 source=_content/doc/security/fips140.md missing=[\"https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search?SearchMode=Basic\u0026ModuleName=Go+Cryptographic+Module\u0026CertificateStatus=Active\u0026ValidationYear=0\"]",
+  "unit_count": 1,
+  "units": [
+    {
+      "index": 40,
+      "unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+      "snapshot": {
+        "index": 40,
+        "unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-038",
+        "source_path": "_content/doc/security/fips140.md",
+        "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-038/candidates/3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c.article",
+        "candidate_sha256": "85179fc5651a3ed3ea6b71c3baa208a5362784b3a773d45e8f9cd6dc857581b3",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-038/validation/3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c.json",
+        "validation_sha256": "f6a2e379f021d298f5e08c97627f6b0b577da40efb70ff12a42d9bacb58c1c79",
+        "attempt": 1
+      }
+    }
+  ]
+}

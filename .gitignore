@@ -9,6 +9,7 @@ Thumbs.db
 
 # Go 测试和构建产物
 *.test
+!/_content/talks/2017/state-of-go/runtime/mutex/mutex.test
 coverage.out
 coverage/
 bin/
@@ -21,3 +22,9 @@ dist/
 # Python 本地产物
 __pycache__/
 *.py[cod]
+
+# 本地 workflow staging / transport（保留本地恢复材料，不作为正式 authority）
+/tmp/
+/.site-v2-staging/
+/.integrated-surface-staging/
+/.structured-import-staging/

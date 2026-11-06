@@ -35,7 +35,7 @@ func TestBootstrapIndexNowSubmitsProbeThenRemainingSitemapURLs(t *testing.T) {
 		}
 	})
 	profile := indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}
-	result, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", profile, key)
+	result, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", profile, key, testIndexNowURLs(3))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,7 +73,7 @@ func TestBootstrapIndexNowCountsSingleProbeURLAsSubmitted(t *testing.T) {
 		}
 		return http.StatusNotFound, ""
 	})
-	result, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key)
+	result, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key, testIndexNowURLs(1))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,7 +82,7 @@ func TestBootstrapIndexNowCountsSingleProbeURLAsSubmitted(t *testing.T) {
 	}
 }
 
-func TestBootstrapIndexNowFailsWhenSitemapLacksFormalRootProbe(t *testing.T) {
+func TestBootstrapIndexNowRejectsDifferentActivatedCoverage(t *testing.T) {
 	key := "index-now-test-key"
 	posts := 0
 	client := indexNowTestClient(func(r *http.Request) (int, string) {
@@ -97,8 +97,8 @@ func TestBootstrapIndexNowFailsWhenSitemapLacksFormalRootProbe(t *testing.T) {
 		}
 		return http.StatusNotFound, ""
 	})
-	_, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key)
-	if err == nil || !strings.Contains(err.Error(), "does not contain fixed probe URL https://locale.example/") {
+	_, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key, testIndexNowURLs(3))
+	if err == nil || !strings.Contains(err.Error(), "current complete activated coverage") {
 		t.Fatalf("err = %v", err)
 	}
 	if posts != 0 {
@@ -124,7 +124,7 @@ func TestBootstrapIndexNowStopsWhenProbeIsPending(t *testing.T) {
 		}
 		return http.StatusNotFound, ""
 	})
-	_, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key)
+	_, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key, testIndexNowURLs(3))
 	if err == nil || !strings.Contains(err.Error(), "remained pending") {
 		t.Fatalf("err = %v", err)
 	}
@@ -162,7 +162,7 @@ func TestBootstrapIndexNowProbeRecoversFromPendingWithSamePayload(t *testing.T) 
 		}
 		return http.StatusNotFound, ""
 	})
-	result, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key)
+	result, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key, testIndexNowURLs(3))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -377,3 +377,36 @@ func indexNowTestClient(handler func(*http.Request) (int, string)) *http.Client 
 type roundTripFunc func(*http.Request) (*http.Response, error)
 
 func (f roundTripFunc) RoundTrip(request *http.Request) (*http.Response, error) { return f(request) }
+
+func testIndexNowURLs(count int) []string {
+	urls := []string{"https://locale.example/"}
+	for i := 1; i < count; i++ {
+		urls = append(urls, fmt.Sprintf("https://locale.example/tour/test/%d", i))
+	}
+	return urls
+}
+
+func TestBootstrapIndexNowSparseCoverageProbesLocalTour(t *testing.T) {
+	key := "index-now-test-key"
+	url := "https://locale.example/tour/test/1"
+	posts := 0
+	client := indexNowTestClient(func(r *http.Request) (int, string) {
+		if r.Method == "POST" {
+			var s indexNowSubmission
+			json.NewDecoder(r.Body).Decode(&s)
+			if len(s.URLList) != 1 || s.URLList[0] != url {
+				t.Fatal("uncovered root submitted")
+			}
+			posts++
+			return 200, ""
+		}
+		if strings.HasSuffix(r.URL.Path, ".txt") {
+			return 200, key
+		}
+		return 200, `<urlset><url><loc>` + url + `</loc></url></urlset>`
+	})
+	_, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key, []string{url})
+	if err != nil || posts != 1 {
+		t.Fatalf("sparse current submission: %v posts=%d", err, posts)
+	}
+}

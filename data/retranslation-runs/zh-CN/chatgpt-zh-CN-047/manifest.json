@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-047",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/fips140.md",
+      "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "input_path": "inputs/8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3.article",
+      "input_sha256": "70a9a2fee5443cdd51d094057b47ac39979e835d178508602af3fdf616bb2c46",
+      "protected_token_count": 255,
+      "previous_snapshot_id": "learn-docs-v1-qc-014",
+      "revision_feedback_source": "quality_check_representation",
+      "revision_authorization_id": "learn-docs-qc014-representation-successor",
+      "previous_rating": "B",
+      "previous_finding": "原 preview finding 的 collapsed Markdown reference binding 已关闭：current usage `[CMVP validation certificate][]` 与 reference definition label 完全一致，且 definition 仍绑定 canonical source 中的 CMVP validation-certificate external URL，因此 rendered source-bound link 已恢复，未发现 link target、Markdown binding 或邻近 `inprocess` / `certified` 技术语义损坏。但修订后用户可见链接文本 `CMVP validation certificate` 保持为完整英文短语；其中 `CMVP` 可保持正式 identity，而 `validation certificate` 是普通可翻译自然语言，并非代码、API 或必须 keep 的 machine identity。同一 Page 后文对同一概念已经使用中文“CMVP 验证证书”，因此这里形成局部不必要英文残留和页内术语表达不一致。后续 exact revision 应仅在该受影响 reference usage/definition 局部闭合此语言问题，继续保持 collapsed-reference label 一致、原 external URL 不变，并不得破坏相邻 `inprocess` / `certified` 对应关系。除此之外，本次 affected local context 未发现新的结构、链接、技术语义或术语缺陷。",
+      "previous_review_decision": "representation-reconciled",
+      "previous_review_summary": "learn-docs-qc014-representation-successor",
+      "previous_review_path": "data/quality-check-snapshots/zh-CN/learn-docs-v1-qc-014/quality-check-results.json",
+      "previous_review_sha256": "08dfd54ff7c6090fd29c1e2859394dc7d12b650d5fd8a724537490c4bfb6706b"
+    }
+  ]
+}

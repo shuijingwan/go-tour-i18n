@@ -1,0 +1,231 @@
+<!--{
+  "Title": "打开数据库句柄",
+  "Breadcrumb": true
+}-->
+
+[`database/sql`](https://pkg.go.dev/database/sql) 包通过减少你需要自行管理连接的工作
+，简化了数据库访问
+。与许多数据访问 API 不同，使用
+`database/sql` 时，你无需显式打开连接、执行工作、再关闭
+连接。相反，代码会打开一个表示
+连接池的数据库句柄，然后使用该句柄执行数据访问操作；只有在需要释放资源时才调用 
+`Close` 方法，例如释放查询结果行或预处理语句所占用的资源
+。
+
+换句话说，由 
+[`sql.DB`](https://pkg.go.dev/database/sql#DB) 表示的数据库句柄
+会代表你的代码管理连接，包括打开和关闭连接。当代码使用
+句柄执行数据库操作时，这些操作可以并发访问数据库
+。更多信息请参阅
+[管理连接](/doc/database/manage-connections)。
+
+**注意：**也可以保留一个数据库连接。更多
+信息请参阅
+[使用专用连接](/doc/database/manage-connections#dedicated_connections)。
+
+除了 `database/sql` 包提供的 API 外，Go
+社区还为绝大多数常见（以及很多不常见）的
+数据库管理系统（DBMS）开发了驱动程序。
+
+打开数据库句柄时，一般遵循以下步骤：
+
+1. 找到驱动程序。
+
+    驱动程序负责在 Go 代码与
+    数据库之间转换请求和响应。更多信息请参阅 [查找并导入数据库驱动程序](#database_driver)。
+
+2. 打开数据库句柄。
+
+    导入驱动程序后，可以为特定
+    数据库打开句柄。更多信息请参阅 [打开数据库句柄](#opening_handle)。
+
+3. 确认连接。
+
+    打开数据库句柄后，代码可以检查是否有可用
+    连接。更多信息请参阅 [确认连接](#confirm_connection)。
+
+通常，你的代码不会显式打开或关闭数据库连接 --；这项工作
+由数据库句柄完成。不过，代码应当释放执行过程中获取的资源，
+例如包含查询结果的 `sql.Rows`。更多信息请参阅 
+[释放资源](#free_resources)。
+
+### 查找并导入数据库驱动程序 {#database_driver}
+
+需要一个支持所用 DBMS 的数据库驱动程序。要查找
+适用于你的数据库的驱动程序，请参阅 [SQLDrivers](/wiki/SQLDrivers)。
+
+要让代码能够使用驱动程序，可以像导入
+其他 Go 包一样导入它。例如：
+
+```
+import "github.com/go-sql-driver/mysql"
+```
+
+请注意，如果代码不会直接调用驱动程序
+包中的任何函数 -- 例如驱动程序由 `sql` 包隐式使用时，
+就需要使用空白导入，在导入路径前加一个
+下划线：
+
+
+```
+import _ "github.com/go-sql-driver/mysql"
+```
+
+**注意：**作为最佳实践，避免使用数据库驱动程序自己的 API
+执行数据库操作。请改用 `database/sql`
+包中的函数。这样可以降低代码与 DBMS 的耦合度
+，需要时也更容易切换到其他 DBMS。
+
+### 打开数据库句柄 {#opening_handle}
+
+`sql.DB` 数据库句柄提供读取和写入
+数据库的能力，既可以单独执行操作，也可以在事务中执行。
+
+可以通过调用 `sql.Open`（接收
+连接字符串）或 `sql.OpenDB`（接收 `driver.Connector`）获得数据库句柄。两者
+都会返回一个指向 [`sql.DB`](https://pkg.go.dev/database/sql#DB) 的指针。
+
+**注意：**务必不要把数据库凭据写入 Go 源代码。
+更多信息请参阅 [存储数据库凭据](#store_credentials)。
+
+#### 使用连接字符串打开 {#open_connection_string}
+
+如果希望通过连接字符串建立连接，请使用 [`sql.Open` 函数](https://pkg.go.dev/database/sql#Open)。连接字符串的格式会因所使用的驱动程序而异
+
+。 
+
+下面是 MySQL 的示例：
+
+```
+db, err = sql.Open("mysql", "username:password@tcp(127.0.0.1:3306)/jazzrecords")
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+不过，把连接属性以更结构化的方式保存，通常能让代码
+更易阅读。具体方式会因
+驱动程序而异。
+
+例如，可以把上面的示例替换成下面的代码，它
+使用 MySQL 驱动程序的 [`Config`](https://pkg.go.dev/github.com/go-sql-driver/mysql#Config)
+指定属性，并使用其
+[`FormatDSN method`](https://pkg.go.dev/github.com/go-sql-driver/mysql#Config.FormatDSN)
+构建连接字符串。
+
+```
+// 指定连接属性。
+cfg := mysql.NewConfig()
+cfg.User = username
+cfg.Passwd = password
+cfg.Net = "tcp"
+cfg.Addr = "127.0.0.1:3306"
+cfg.DBName = "jazzrecords"
+
+// 获取数据库句柄。
+db, err = sql.Open("mysql", cfg.FormatDSN())
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+#### 使用 Connector 打开 {#open_connector}
+
+当希望利用连接字符串无法提供的驱动程序特定连接功能时，请使用 [`sql.OpenDB function`](https://pkg.go.dev/database/sql#OpenDB)
+。每个驱动程序都支持自己的一组
+连接属性，通常可以针对所用 
+
+DBMS自定义连接请求。
+
+把前面的 `sql.Open` 示例改为使用 `sql.OpenDB` 后，可以
+用如下代码创建句柄：
+
+```
+// 指定连接属性。
+cfg := mysql.NewConfig()
+cfg.User = username
+cfg.Passwd = password
+cfg.Net = "tcp"
+cfg.Addr = "127.0.0.1:3306"
+cfg.DBName = "jazzrecords"
+
+// 获取驱动程序专用的 connector。
+connector, err := mysql.NewConnector(&cfg)
+if err != nil {
+	log.Fatal(err)
+}
+
+// 获取数据库句柄。
+db = sql.OpenDB(connector)
+```
+
+#### 处理错误 {#handle_errors}
+
+代码应检查尝试创建句柄时返回的错误，例如
+来自 `sql.Open` 的错误。这不会是连接错误；相反，如果 
+`sql.Open`无法初始化句柄，就会返回
+错误。例如，当它无法解析你指定的 DSN 时就可能发生这种情况。
+
+### 确认连接 {#confirm_connection}
+
+打开数据库句柄时，`sql` 包未必会立即自行创建新的
+数据库连接；它可能会等到代码真正需要连接时再创建
+。如果不会立即使用数据库，但希望确认能够建立连接，请调用
+
+[`Ping`](https://pkg.go.dev/database/sql#DB.Ping) 或
+[`PingContext`](https://pkg.go.dev/database/sql#DB.PingContext)。
+
+下面的示例代码会 ping 数据库以确认连接。
+
+```
+db, err = sql.Open("mysql", connString)
+
+// 确认连接成功。
+if err := db.Ping(); err != nil {
+	log.Fatal(err)
+}
+```
+
+### 存储数据库凭据 {#store_credentials}
+
+避免把数据库凭据保存在 Go 源代码中，否则可能向他人暴露
+数据库内容。应当找到一种方式，把凭据存放在代码之外但代码又能够访问的位置。例如，可以考虑使用
+保存凭据的密钥管理应用，并由它提供代码可用于
+API获取凭据的接口，以便向 
+DBMS进行身份验证。
+
+一种常见做法是在程序启动前把密钥存入环境中，
+可能由密钥管理器加载，然后 Go 程序可以使用 
+[`os.Getenv`](https://pkg.go.dev/os#Getenv)读取它们：
+
+```
+username := os.Getenv("DB_USER")
+password := os.Getenv("DB_PASS")
+```
+
+这种方式也允许你在本地测试时自行设置环境变量
+。 
+
+### 释放资源 {#free_resources}
+
+虽然使用 
+`database/sql` 包时无需显式管理或关闭连接，但代码仍应在
+不再需要所获取的资源时释放它们。这些资源可能包括由表示查询返回数据的 `sql.Rows`
+持有的资源，或由表示`sql.Stmt`预处理语句的对象持有的资源
+。
+
+通常，可以 defer 调用 `Close` 函数来关闭资源，
+从而在外层函数退出前释放资源。
+
+下面的示例代码会 defer 调用 `Close`，释放由
+[`sql.Rows`](https://pkg.go.dev/database/sql#Rows)持有的资源。
+
+```
+rows, err := db.Query("SELECT * FROM album WHERE artist = ?", artist)
+if err != nil {
+	log.Fatal(err)
+}
+defer rows.Close()
+
+// 遍历返回的 rows。
+```

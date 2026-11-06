@@ -1,12 +1,14 @@
 # ChatGPT 正式语言生成执行规范
 
-本文定义某个 locale 在开始正式 generation 前选定 `provider=chatgpt` 后，普通 ChatGPT **GPT-5.6 Sol + High** 配合 Remote Desktop Commander 执行正式语言生成时的仓库边界。它与 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md) 并列；不新增 Translation Engine，也不改变任何 validation、Quality Check、Locale Surface Review 或 Production gate。
+全项目执行共同遵守[共享翻译单元生命周期与五角色协作](SHARED_TRANSLATION_UNIT_LIFECYCLE.md)：所有内容表面复用同一生命周期；页面差异限于适配器；传输安全与逐单元机器校验分层；先恢复、先复用，中文说明，交接只给一个执行者、动作和停止条件。本文中 Tour 的 present / Example 细节属于 Tour 适配边界，不另建 Learn/Docs 状态机。Learn/Docs 两批生成和机器校验全部完成后才初审，两批初审全部完成后集中修订。角色与工具分工不替代任何正式 machine authority 或语言质量 gate。
+
+本文定义某个 locale 在开始正式 generation 前选定 `provider=chatgpt` 后，普通 ChatGPT **GPT-5.6 Sol + High** 使用完整 current Bundle 执行正式语言生成、维护者 Local terminal 默认执行 deterministic workflow 时的仓库边界。它与 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md) 并列；不新增 Translation Engine，也不改变任何 validation、Quality Check、Locale Surface Review 或 Production gate。
 
 ## 单 locale 固定会话角色
 
-所有 Generation/Reviewer/Local terminal 阶段交接统一遵守 [正式阶段交接合同](WORKFLOW_HANDOFF.md)：先完成合法的闭环内短机械操作，再提供真实 current attachment 或完整恢复命令；不得编造路径、hash 或 CURRENT。
+所有 Generation/Reviewer/Local terminal 阶段交接统一遵守 [正式阶段交接合同](WORKFLOW_HANDOFF.md)：默认提供完整 Local terminal 命令并消费合法 terminal evidence，再交接已真实生成的 current attachment；remote 例外遵守 Call-Zero-First；不得编造路径、hash 或 CURRENT。
 
-一个 locale 默认维护一个长期 **Generation session**、一个与之独立的长期 **Reviewer session**，再由维护者 **Local terminal** 执行闭环外的成组 deterministic lifecycle；闭环内短机械步骤按下文由具备仓库终端能力的 AI execution environment 自动完成。这是协作职责规则，不是机器身份系统；不得为此新增 session 字段、receipt、schema、CLI flag 或 machine gate。
+一个 locale 默认维护一个长期 **Generation session**、一个与之独立的长期 **Reviewer session**，再由维护者 **Local terminal** 默认执行闭环内外全部 deterministic repository / shell workflow，与预计耗时无关；AI 提供完整命令并消费终态。这是协作职责规则，不是机器身份系统；不得为此新增 session 字段、receipt、schema、CLI flag 或 machine gate。
 
 ### Generation session
 
@@ -22,7 +24,7 @@ Generation session 负责所有产生或修订该 locale 语言内容的模型�
 
 Generation session 不得执行正式 TranslationUnit Quality Check、revision 后正式 re-QC、Locale Surface Review，或批准自己生成的输出。
 
-Generation session 制定完整 glossary 后必须停在 Glossary Review 边界；只有 generation-independent Reviewer PASS 且当前 AI execution environment 记录并检查 current gate 后，才正式生成 UI / article metadata 并进入 TranslationUnit generation。若 Reviewer 返回 failed finding，Generation session 负责修订 glossary，并在继续下游 generation 前交回同一独立 Reviewer session 完整复审。
+Generation session 制定完整 glossary 后必须停在 Glossary Review 边界；只有 generation-independent Reviewer PASS 且维护者 Local terminal 记录并检查 current gate 后，才正式生成 UI / article metadata 并进入 TranslationUnit generation。若 Reviewer 返回 failed finding，Generation session 负责修订 glossary，并在继续下游 generation 前交回同一独立 Reviewer session 完整复审。
 
 ### Reviewer session
 
@@ -40,7 +42,7 @@ Reviewer 发现问题时必须遵循：
 ```text
 reviewer finding
 → Generation session 产生 replacement
-→ AI execution environment 执行闭环内 deterministic lifecycle
+→ Maintainer Local terminal 执行既有 deterministic lifecycle，AI 消费合法终态
 → Reviewer session re-review
 ```
 
@@ -48,21 +50,33 @@ Reviewer session 不得直接修改 candidate、生成 replacement translation �
 
 TranslationUnit Quality Check 与 revision re-QC 的单次 Reviewer model invocation / response 最多审核 60 TranslationUnits；Page / Example 分开。60 是实际审核质量边界，不得通过在同一次 response 内串联多个 `<=60` working set 绕过；下一组需要新的用户请求和新的 model invocation。每组必须逐 TranslationUnit 审核，不得抽样。首次 122-Unit locale 的 full QC 推荐使用 Page stable index `1-60`、Page stable index `61-103`、Example stable index `104-122` 三组；revision re-QC 按实际 pending scope 分组，每组最多仍为 60。
 
+### RDC 调用预算与回退
+
+长期执行策略以[Call-Zero-First 交接合同](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)为准：默认 **RDC / repository remote calls = 0** 是成本/风险默认值，不是 zero-call KPI，不机械追求 0。先复用 current conversation、current Bundle 与 sufficient terminal evidence，不以任务 duration 或月度剩余额度决定执行者。完整 current Generation / Reviewer Bundle 直接从附件或本地解压内容完整读取；**Generation semantic RDC calls = 0，Reviewer semantic RDC calls = 0**，Coordinator 不为同一 source/candidate/glossary/finding/manifest/authority 再次扫描 repo。
+
+所有 deterministic repository / shell workflow 默认交 Maintainer Local terminal：AI 根据当前 conversation、checked Bundle 与合法 terminal evidence 提供完整可复制命令，保持依赖顺序和 fail-closed gate。用户返回 `===== FINAL =====`、`RESULT=PASS`，且 identity / SHA / counts / stop point 合法时直接继续；除矛盾、缺项或相关 mutation 外禁止 remote re-verification。下一阶段规定的正式 current-check 与 validation 仍默认由 Local terminal 执行，不把消费已有 PASS 当作省略 gate。
+
+Coordinator / engineering 可为安全推进所缺的 exact machine fact、真实 FAILED / unexpected state / mutation=unknown diagnosis、当前 conversation 未包含的 canonical docs / exact command contract，或维护者明确请求使用 targeted readonly RDC。若一次合并读取明显比要求维护者手工执行纯读取 discovery、重复粘贴或多轮回传更高效，允许并优先采用 RDC；failure diagnosis 优先一次读所需 docs + relevant implementation/tests，而不是先转交 `rg/sed/cat/find`。若 RDC 不可用或没有明显收益，再提供合并只读 Local terminal discovery command。这不允许因为“能用 RDC”就调用，不允许重验合法 FINAL PASS、重扫完整 current Bundle 或反复确认已知事实。
+
+普通 workflow step 最多 **一个合并 readonly RDC call**，优先一次读 canonical docs + relevant implementation/tests（只读，不运行测试）与必要 current-state facts，不拆 calls。**second call 仅针对第一 call 新暴露的、具体且阻塞安全推进的未知 fact**；不预留异步结果读取，不用 `start_process` + `read_process_output` 轮询可交 Local terminal 的操作。实际使用 remote call 的 handoff 必须报告 `REMOTE_CALLS_USED=<n>` 与 `REMOTE_CALL_REASON=<missing-machine-fact|failure-diagnosis|canonical-doc-read|maintainer-request>`；`canonical-doc-read` 是正式合法 reason，减少未知事实 discovery 的人工成本按 `missing-machine-fact` 或 `canonical-doc-read` 披露；0 call 不增加字段。
+
+RDC readonly diagnosis 不等于 repository mutation，不自动授权 write、Git mutation、activation、import、record、finalization、Production 或其他 lifecycle mutation。deterministic workflow / lifecycle mutation 仍默认由 Maintainer Local terminal 执行，repository engineering writes 仍交获授权的本地 Codex，remote 写入须有维护者明确授权；角色隔离和正式 workflow 边界不变。
+
+RDC 不可用不阻断 Bundle-local 语言工作或正常 Local terminal workflow；已有可信 outputs/result/staging 优先复用，不重做。repository engineering 仍交获授权的本地 Codex CLI，不改变 Generation / Reviewer 角色隔离、正式模型政策或任何 gate。sequential QC/re-QC 仍[只导出当前下一组](WORKFLOW_HANDOFF.md#qc--re-qc-reviewer-bundle-按需即时导出jit)，previous record 成功后才导下一组，禁止预导未来 Reviewer ZIP。
+
 ### 闭环机械操作与 Local terminal
 
-新增 locale 的首次大批量 TranslationUnit Generation 仍由维护者 Local terminal 导出 current provider-neutral Generation Bundle ZIP 并上传给 Generation session。ChatGPT 不通过 Remote Desktop Commander 逐文件读取正式输入，也不重新扫描仓库替代附件。ChatGPT 将完整 TranslationUnit 成组保存到按 locale + batch 隔离的本机隐藏 staging；每个文件先写入临时文件，完整写入后再 rename 为该 TranslationUnit 的正式 staging 文件，避免把不完整文件暴露为完成结果。完成 exact-set 检查后默认执行目录 import；不制作或下载 outputs ZIP。随后执行正式 process / automatic validation，每批通过后停下等待维护者明确“继续”。跨环境传输、RDC 不可用或目录导入不适用时保留 Result ZIP 回退。
+维护者 Local terminal 默认执行初次 bulk、revision 与 retry 的 export / Bundle current-check / hash / import / process / automatic validation，以及 Snapshot / scope / Reviewer Bundle、evidence save/check、QC record / finalize / authorization、locale-level replacement 落盘、Surface Reviewer bundle / record-a、Course SEO description 落盘与正式 assemble / refresh / revise、package closure / activation。ChatGPT 负责 Bundle-local 语言工作、完整命令和终态解释；具备 RDC 或终端能力本身不授权自动 import/process/validation。“短”不改变默认执行者。
 
-首次 Generation ZIP handoff 后，具备仓库与终端访问能力时，ChatGPT + Remote Desktop Commander 默认从本地隐藏 staging 直接 import 首次 bulk 输出并执行 process / automatic validation；小批 revision / retry 也复用目录 import，只有兼容回退需要时才处理 outputs ZIP / Result ZIP。其余闭环内短 deterministic 操作包括 Snapshot / scope / reviewer-bundle、审核结果 current-check / record / finalize、locale-level replacement 落盘、Surface Reviewer bundle / record-a，以及 Course SEO description 落盘和正式 assemble / refresh / revise。机械执行不得让 Generation session 承担 Reviewer 的语言判断，也不得让 Reviewer 生成 replacement；每个 current-check、exact-set、A-only、schema 与 provenance gate 都照常执行。终端能力不可用、需要新的附件 handoff 或出现真实 failure / mutation-unknown 时才停下交回维护者。
+Generation session 按既有 locale + batch 隔离 staging contract 成组产出完整 TranslationUnit；每个文件先完整写入临时文件再 rename 为 staging 成品。维护者 Local terminal 完成 exact-set 检查后默认执行 `generation-bundle import --input-dir`，不制作或下载 outputs ZIP；仅确需跨环境传输、目录不可访问或恢复时保留 outputs ZIP / Result ZIP 兼容路径。随后执行正式 process / retry / automatic validation，每批通过后按原停止点等待维护者明确“继续”。目录与 ZIP transport 都不改变 provenance、attempt 或质量 gate。
 
-维护者 Local terminal 负责闭环外或闭环收口后的成组步骤：locale init、首次 bulk export / Generation ZIP handoff、promotion、build、preview、browser verifier、publish、shared assets、Production、deploy、verifier、checksum / curl、search closeout，以及按正式顺序需要的最终 Git commit / push。ChatGPT 给维护者提供可直接粘贴的终端命令时，不得在当前交互 shell 顶层启用 `set -e` / `set -u` / `set -o pipefail` 或组合形式；需要 fail-fast 时必须用独立 subshell 或独立脚本进程，避免失败退出或改变维护者当前 shell。
+locale init、promotion、build、preview、browser verifier、publish、shared assets、Production / deploy / verifier、checksum / curl、search closeout 与最终 Git commit / push 同样默认由维护者 Local terminal 执行；不按耗时划分闭环内外。ChatGPT 提供可直接粘贴命令时，不得在当前交互 shell 顶层启用 `set -e` / `set -u` / `set -o pipefail`；需要 fail-fast 时放独立 subshell 或脚本进程。所有脚本内部 machine gate、receipt、bounded retry 与 HUMAN gate 保持不变。
 
-对 `preview` + browser verifier、`publish`、`shared-assets-production.sh`、`first-production.sh`、`indexnow-closeout.sh` 等可能持续数十秒到数分钟的成组确定性命令，普通 ChatGPT + Remote Desktop Commander 只给出一条完整可粘贴命令，由维护者在本地终端执行并把终态输出回传；不要为了等待完成而反复调用远程 process-output 轮询。脚本内部的 machine gate、receipt、bounded retry 和 HUMAN gate 均保持不变。
+Legacy Locale Surface Review 输入默认由 Local terminal 使用 `surface-review reviewer-bundle` 生成、完成 current-check 并上传给独立 Reviewer。完整 current Bundle 的附件读取满足本次正式输入要求，不再通过 RDC 扫描同一 repo context；任何正式输入或 Bundle authority 真实变化都须 fail closed，按现有 checker 结果重导。附件模式不允许抽样、跳过 Course SEO full-context coverage，亦不改变独立 Reviewer 与 finding → Generation 回流。
 
-Locale Surface Review 的 Reviewer 输入默认由当前 AI execution environment 使用 `surface-review reviewer-bundle` 生成并完成 current-check；产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者。只要该 bundle 来自未变化的正式输入且 `manifest.json` hash 校验成立，Reviewer 对附件内 `surface-review.json` 与 `authority/` 的完整读取即满足本轮正式输入读取，不应再通过 Remote Desktop Commander 重复扫描这些仓库文件。任何正式输入或 bundle 内 authority 发生变化，都必须重新导出 bundle；附件模式不允许抽样、跳过 Course SEO full-context coverage，亦不改变独立 Reviewer 与 finding → Generation 回流边界。
+Site v2 Integrated Surface 使用独立的 `site-content surface-reviewer-bundle` / `site-content surface-reviewer-bundle-check`，不能用上述 legacy ZIP 替代。Local terminal 只需提供 current scope input，或 locale + prospective closures；标准跨 locale 命令矩阵见 [Site v2 Workflow](SITE_V2_WORKFLOW.md#integrated-surface-reviewer-bundle)，Reviewer 输入与原 receipt 输出合同见 [Integrated Surface contract](INTEGRATED_SURFACE_REVIEW.md)。fresh exact assets 的完整 source/restored target 必须全部在附件中，carried 与 Tour context 仅作 integration comparison，不重新给 carried rating。semantic RDC=0。缺项是 INPUT_GATE failure，不是语言 failed receipt，也不授权 reopen/revision；修复输入后使用新的 Reviewer invocation/review_id。Bundle 通过 current-check 后才交独立 GPT-5.6 Sol High Reviewer；正常 `surface-record` 与后续 gates 保持不变。
 
-canonical English source-description extraction / review 是所有 locale 共享的 authority，不属于单个 locale 固定的 Generation / Reviewer 配对。只有其 authority 确实 stale 时才按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因新增每个 locale 重复，也不默认交给该 locale 的 Reviewer session。
-
-本规范只适用于已经选定 ChatGPT 的 locale Generation role。provider-neutral 的选择、持续使用和例外切换规则由 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 与 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md) 规定；Remote Desktop Commander 的闭环自动化边界不扩展到维护者的 promotion / build / Production / Git 成组操作，也不接管 Codex 的 repository-level code/docs/config、tooling 与复杂诊断职责。无论 Generation provider 为 ChatGPT 还是 Codex，generation 与 formal review 的会话隔离规则不变，Reviewer 继续使用独立 ChatGPT GPT-5.6 Sol + High session。
+canonical English source-description extraction / review 是跨 locale 共享 authority，不归入单个 locale 固定的 Generation / Reviewer 配对；只有其 authority 真正 stale 时才按[课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md)执行。provider-neutral 选择、持续使用和例外切换仍由[多语言翻译流程](TRANSLATION_WORKFLOW.md)与[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md)规定；不因 Call-Zero-First 改变任何正式语言模型或角色政策。无论 Generation provider 为 ChatGPT 还是 Codex，Reviewer 继续使用独立 ChatGPT **GPT-5.6 Sol + High** session。
 
 ## TranslationUnit 正式输入与 export
 
@@ -108,7 +122,7 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
 
 首次 122 Unit 的默认调度固定为 60 Page、43 Page、19 Example 三个 initial batch；每个 batch 使用一次 model invocation，正式落地并取得 automatic validation evidence 后停止，等待维护者明确“继续”。不得在一次 response 串联多个 initial batch。完整顺序与合法恢复边界见[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md#新增-locale-默认调度路径效率优先)。
 
-ChatGPT 在隔离 staging 中成组保存完整 TranslationUnit，并检查 expected filename exact set、protected token、glossary、明显未翻译文本、无解释/fence 与 single-LF。具备本地文件访问能力时直接运行：
+ChatGPT 在隔离 staging 中成组保存完整 TranslationUnit，并检查 expected filename exact set、protected token、glossary、明显未翻译文本、无解释/fence 与 single-LF。维护者 Local terminal 具备输出目录访问能力时执行以下命令；ChatGPT 不 remote 代跑：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
@@ -125,7 +139,28 @@ Reviewer ZIP 继续由维护者上传给独立 Reviewer。只有确需兼容 out
 
 恢复执行前先核对 `raw-responses/` 或 retry attempt、generation import provenance、`result.json`、`validation/`、Snapshot 与 QC evidence。若正式输出已经 import，直接从缺失的 process / retry 或后续 evidence 继续；若 automatic validation evidence 已 current，则不得覆盖输出、重复 import 或重放 validation。若产品消息流/模型 invocation 在 import 前中断且正式输出尚不存在，不得立即让 ChatGPT 重做整个 batch：先对仍 CURRENT 的 Generation Bundle 运行 `generation-bundle recover`，把旧 hidden staging、临时单文件和可识别的 interrupted tar/tar.gz artifact 作为一个或多个 `--source`，只把通过 filename、UTF-8/EOF、protected restore、glossary 与 machine candidate 检查的完整 Unit 写入新的 recovery staging；archive 尾部损坏不抹掉此前独立验证通过的完整成员。随后只生成命令列出的 `missing` Unit，补齐 exact set 后再正常 import。CLI 的 stale、conflicting valid candidate、exact-set 与 no-overwrite failure 都是保护信号，不是要求清空可信成果后重来。
 
+### Generation finding closure 执行规范
+
+`translation-unit-revision` 及其 machine retry 的完整 CURRENT Bundle 必须同时包含三层表示：protected source/input、`formal/candidates/<input basename>` 中的精确 reviewed restored candidate、`formal/protected-candidates/<input basename>` 中的 passed predecessor protected raw response，以及 Snapshot/validation、finding authorization、glossary 和 authority，详见[Generation Bundle contract](TRANSLATION_TASK_SPEC.md#deterministic-generation-bundle-transport)。实际编辑从 protected predecessor baseline 开始；finding closure 对照 restored candidate。输出必须是保留全部 tokens exactly and uniquely 的 protected raw response，不得直接输出 restored candidate或自行重建 token mapping。不得从聊天记忆恢复、通过 RDC/repo scan 另取 latest candidate，或从 English input 整页重译替代 exact revision。缺项时正式 FAILED 且不生成 outputs；修复合同后，无正式输出时重导同 batch，有失败 evidence 时仅走下一连续 attempt 的单 Unit retry，保留旧 failure evidence。`task_kind=translation-unit-retry` 不丢失原 revision semantic inputs 或 finding closure 责任。
+
+若 CURRENT Bundle 携带 `formal/comment-revision-transport`，`formal/protected-candidates` 是机器从精确 reviewed candidate 派生的 revision-only 编辑投影，仅开放 current-validation receipt 授权的 teaching-comment bodies；原 passed raw 位于 `formal/historical-protected-candidates`。使用投影中现成的 body 文本与 token bindings，不重建 mapping、不编辑 opaque boundaries、不改其它代码/注释/正文。输出仍是同一个 TranslationUnit 的 protected raw response；机器 restore 全 Page 后执行 active validator。三层输入和历史原 raw 都保留，细节见上述 Bundle contract；这不授权 Page representation migration、整页重译或新的 comment TU。
+
+Quality Check、re-QC 或 Locale Surface Review finding 进入 TranslationUnit revision 后，Generation 必须按[精确修订任务语义](TRANSLATION_TASK_SPEC.md#精确修订任务语义)逐 Unit、逐 category 完成 closure。**finding-anchored / locally complete 不等于 enumerated-example-only**：Reviewer examples 是 evidence，不默认构成 exhaustive revision boundary；只有 persisted finding 明确标为 **exact-instance-only** 才仅修列出的具体实例。不得只机械修改 listed examples、最严重或最显眼的一项就视为 Unit 完成。
+
+1. 完整对照正式输入中的 source、current candidate、persisted Reviewer finding、glossary 与 protected/structure requirements，识别每个独立 defect category、exact predicate 与 bounded scope。实际 candidate defect 必须修复；source 原貌、protected content、合法结构移动或 validator / Reviewer 误判必须区分，不能一律当作译文缺陷。
+2. 先修明列实例，再在**同一 current Unit、同一 finding category、同一授权 scope**内做 **same-class complete sweep**，一并修复其他明确匹配 predicate 的实例；它们未被逐项列出不等于越界。scope 明确为当前 Page 全文时，扫描全文；scope 限于 section/table/comment 区域或 exact instances 时，保持该限制。“local”不是只看 examples 附近几句；同时核对修复直接影响的句段，确保局部完整。
+3. 可重复的 category 包括不当 inline code/API/identifier 与目标语言正文粘连、同型标点空格、bounded section 内同一术语错误、同一表格列的同型语义错误或 teaching-comment 局部问题；它们是解释 completeness 的非穷举示例，不自动成为本轮 finding。涉及技术语义时，重新核对 source 的分类、条件与流程关系，不凭 finding 增补语义。不同类别分别处理，不能合并成“改好全文”。
+4. 不得借 sweep 修改其他类别、一般措辞偏好、无关标点/style、普通润色或已正确内容，更不得整页重译。predicate/scope 不清楚或无法可靠判断某处是否同类时，fail closed：不猜、不扩大范围，保持不确定处原文并报告 ambiguity / blocker。canonical source、code/identifier/link/directive、protected literal/token、machine semantics 与合法结构继续保持；合法词缀、软换行和允许的完整结构移动不应被机械消除。未授权 slot 或 opaque/protected span 不因同类问题而开放；缺合法 editable location 时报告 representation blocker，不自行 reprotect candidate 或重建 token mapping。对保持项明确 source/protected/structure 依据，疑似 validator 误判按下节诊断，不改写 Reviewer finding/evidence。
+5. 每个 revised Unit 提交前必须完成 **finding closure check**（任务完成性检查）：重新对照 source、revised candidate、persisted finding 与 protected/structure requirements，确认每个 category 的明列实例及授权 scope 内其他明确同类实例均已修复，或有明确依据保持，并检查直接受影响的局部完整性。未关闭或仍有 ambiguity 的问题不能视为完成。检查使用当前完整 Bundle 内的正式材料，遵守 Bundle-local semantic work、语言 semantic RDC calls 默认 0 的边界。
+6. finding closure check 不是正式 Quality Check，也不是 self-review：Generation 不得给自己 A/B/C/D、决定通过、替代 Independent Reviewer 或伪造 reviewer evidence。修订仍输出完整 Unit，处置说明不得混入 raw response；后续 machine validation、独立 re-QC / Surface re-review 与 A-only finalization 全部照常执行，不新增 closure schema、receipt、状态或机器 gate。
+
+Transport Bundle 大小与 semantic completion contract 分开：一个正式 Revision Generation Bundle 仍可包含现有 export 上限与 Page / Example 分离约束内的当前完整 revision scope，不因 closure 规则拆成每 3–5 Page 一个 ZIP，也不新增 Generation invocation size 上限。正式 B/C/D / Surface reopen revision 可跨 initial group；Learn/Docs 固定 batch 调度仅约束 initial Generation / initial QC，revision re-QC 使用[共享 pending 调度](SHARED_TRANSLATION_UNIT_LIFECYCLE.md#固定调度与独立审核)。未来若研究 invocation size，须另有 benchmark/evidence；finding closure 不改变 Reviewer invocation 上限或 Reviewer Bundle JIT。
+
+这些例子不成为 hard validator 新规则：部分形式可能来自 source/protected content，当前 evidence 只支持加强 revision closure contract，尚不足以建立可安全泛化、无误报的 machine rule。未来若多 locale 重复出现，可另行依据 evidence 评估 advisory lint / precise validator；现有 validator 与 gate 保持不变。
+
 ### Validator 冲突的主动诊断
+
+已完成的 structured Generation 因 execution authority drift 失去旧 Bundle currentness 时，保留原 outputs 与真实 provider/model/session/generated_at。按[Structured carry-forward](SITE_V2_WORKFLOW.md#structured-generation-stale-bundle-carry-forward)由维护者 Local terminal 运行正式 preflight / apply；Generation session 不修改 `bundle_identity_sha256`，不伪造新 invocation，也不因运输/执行说明更新而重新生成。`structured-language/v1` 的语义依赖以[正式 structured language contract](STRUCTURED_GENERATION_SEMANTICS.md)为准，执行说明不覆盖语言语义；真正 source/slot/glossary/semantic authority drift 仍 fail closed。
 
 长期 ChatGPT Generation session 在目标语言自然句法与 validator 冲突、或怀疑 validator 漏检时，必须按 [翻译任务规范](TRANSLATION_TASK_SPEC.md#generation-执行者主动诊断-validator) 主动完成证据诊断，而不是把所有报错归为译文错误或为过 gate 机械改写自然译文。诊断至少核对完整 source/candidate、全部 protected token、restore/validation evidence，必要时核对真实 Go Present 解析/渲染或 Go 源码语义，并明确区分翻译缺陷、非法结构/代码变化、受保护内容破坏、validator 误报/漏报及 session 自行增加的过度预检。
 
@@ -133,20 +168,20 @@ Reviewer ZIP 继续由维护者上传给独立 Reviewer。只有确需兼容 out
 
 ChatGPT Generation session 可以保存完整复现、positive/negative fixtures 与确定性最小修正方案，优先提出通用修正；只有充分证据证明通用方案不适用时才提出窄化的 locale-specific 规则。它不得自行修改生产 validator 或共享校验规则，必须停在维护者批准边界并交给获授权的仓库级 Codex 任务。不得用不自然空格、删句、伪造 retry、重译已审核通过成果或降低任何语言 gate 绕过疑似误报。只有正式批准并实施规则修复、restore 已成功且原 candidate 已证实有效时，才使用正式 `retranslation revalidate`；真正的语言质量问题继续走 revision 与独立 re-QC。
 
-## Remote Desktop Commander 安全写入
+## 兼容恢复的安全写入
 
-首次翻译或 revision 不得逐个文件直接建立正式 `raw-responses/`。在同一 batch filesystem 内执行以下顺序：
+以下是目录与 Result ZIP importer 均不可用时的既有兼容恢复边界，不是正常 remote 执行授权。默认给维护者完整 Local terminal 命令；只有维护者明确要求 remote 写入时才适用于 RDC，并披露 remote calls/理由。首次翻译或 revision 不得逐个文件直接建立正式 `raw-responses/`。在同一 batch filesystem 内执行以下顺序：
 
 1. 确认正式 `raw-responses/` 尚不存在，在 batch 内创建隐藏 staging directory，例如 `.raw-responses.staging/`。
 2. 将整个 batch 的每个 Unit 完整输出写入 staging；Page 使用对应 `.article`，Example 使用对应 `.txt`。
 3. 对照 manifest 核对 expected filename exact set 与 count，并逐文件检查 protected token、glossary、明显未翻译自然语言、无 Markdown/code fence/解释，以及恰好一个结尾 LF。
 4. 只有全部检查通过后，才在同一 batch 内将整个 staging directory rename/move 为 `raw-responses/`。
 
-任何检查失败或 Remote Desktop Commander 中断时，隐藏 staging 不是正式 raw response，必须保留为未完成工作或安全清理；不得留下部分 `raw-responses/`。正式目录已存在时不得覆盖或合并，必须先查明当前 batch 状态。
+任何检查失败或执行环境中断时，隐藏 staging 不是正式 raw response，必须保留为未完成工作或安全清理；不得留下部分 `raw-responses/`。正式目录已存在时不得覆盖或合并，必须先查明当前 batch 状态。
 
 Retry 使用同一原子提交思想：先将完整内容写入目标 Unit retry 目录内的隐藏 staging file，核对它满足当前连续 attempt 编号、文件名、protected token、glossary 和 single-LF contract，再 rename 为正式 `attempt-NNN.article` 或 `attempt-NNN.txt`。不得覆盖既有 attempt、跳号或伪造 provenance。
 
-手工 Remote Desktop Commander 直接安装到正式 `raw-responses/` / retry 路径，只作为目录与 Result ZIP importer 都不可用时的兼容恢复路径；不得与同一 attempt 的 `generation-bundle import` 混用或覆盖既有文件。标准目录 import 使用独立隐藏 staging 作为输入，再由 CLI 安装验证过的字节。无论哪种 transport，`retranslation process` / `retranslation retry` 继续是 candidate、validation evidence 与 attempt lifecycle 的正式 fail-closed authority。
+手工直接安装到正式 `raw-responses/` / retry 路径，只作为目录与 Result ZIP importer 都不可用时的兼容恢复路径，默认由 Local terminal 执行；RDC 写入还必须有维护者明确要求；不得与同一 attempt 的 `generation-bundle import` 混用或覆盖既有文件。标准目录 import 使用独立隐藏 staging 作为输入，再由 CLI 安装验证过的字节。无论哪种 transport，`retranslation process` / `retranslation retry` 继续是 candidate、validation evidence 与 attempt lifecycle 的正式 fail-closed authority。
 
 ## 非 TranslationUnit 语言资产
 
@@ -176,9 +211,9 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-export \
   --output /tmp/<locale>-surface-replacement-<review-id>.zip
 ```
 
-`glossary` 包含完整 locale identity、English/source corpus 与 terminology authority；`locale-assets` 在 current Glossary Review 后包含完整 UI/article source、当前 target 与 glossary；`surface-replacement` 还绑定指定 reviewer evidence 和 current full Surface Review package。开始或记录结果前用 `generation-bundle locale-check --bundle <zip>` 确认 current。此 contract 只运输生成上下文和预期 deliverable，不直接覆盖正式 locale 资产；闭环内由当前 AI execution environment 按现有 validator/lifecycle 正式落盘，Reviewer finding 仍须返回 Generation session 后再独立复审。
+`glossary` 包含完整 locale identity、English/source corpus 与 terminology authority；`locale-assets` 在 current Glossary Review 后包含完整 UI/article source、当前 target 与 glossary；`surface-replacement` 还绑定指定 reviewer evidence 和 current full Surface Review package。开始或记录结果前用 `generation-bundle locale-check --bundle <zip>` 确认 current。此 contract 只运输生成上下文和预期 deliverable，不直接覆盖正式 locale 资产；默认由维护者 Local terminal 按现有 validator/lifecycle 正式落盘，Reviewer finding 仍须返回 Generation session 后再独立复审。
 
-首次 schema v2 Course SEO localization bundle 默认由当前 AI execution environment 从正式 working tree 生成并检查；产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者：
+首次 schema v2 Course SEO localization bundle 默认由维护者 Local terminal 从正式 working tree 生成、检查并完成实际 ZIP handoff：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
@@ -191,7 +226,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle-check \
 
 ZIP 的 `course-seo-localization.json` 对 Catalog 全部当前 Page 逐页序列化 canonical English description、完整 English Page source、完整最终 ready target、source/source-description/target identity，并绑定 current canonical source-review authority、完整 glossary 与 `locale.json` identity；`formal/source-descriptions.json` 同时保留 canonical asset 的原始正式字节，`formal/` 还包含 glossary 与 locale identity；`authority/` 封装 ChatGPT/Codex generation、Course SEO、workflow 与 `AGENTS.md`。`manifest.json` 为全部文件提供 SHA-256。只要 bundle 来自未变化的正式 working tree 且 manifest/hash 完整，Generation session 直接完整读取附件，不再通过 Remote Desktop Commander 分批读取同一 103-Page context。ZIP 只优化传输，不新增 Course SEO schema、receipt 或 stale identity，也不允许跳过任一 Page；Codex 使用完全相同的 bundle contract。
 
-schema v2 refresh/revise 使用独立 maintenance bundle，仍由既有 CLI 写正式 asset：
+schema v1/v2 refresh 与 schema v2 revise 使用同一独立 maintenance bundle，仍由既有 CLI 写正式 asset：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata generation-bundle \
@@ -205,7 +240,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata generation-bundle \
   --output /tmp/<locale>-course-seo-revise-<review-id>.zip
 ```
 
-refresh 自动选择 exact stale subset；revise 要求 current schema-v2 base、显式 Page subset 与 repository 内 reviewer finding。下载的 strict `page_id`/`description` JSON 仍交给 `course-metadata refresh` / `revise`，真实 provenance 由调用者明确记录。
+refresh 复用正式 refresh 的 exact stale-subset selector，不允许调用者另选 Page。v1 base 的 Bundle 包含每个 selected Page 完整 English source、完整 ready canonical locale target、完整 current glossary 与原 base entry/description/identity，沿用 `course-seo-description-v1` semantic scope；不迁移 schema、不要求或绑定 canonical source-description asset/review。v2 继续以 canonical English description 为唯一 semantic-scope authority。revise Bundle 仍要求 current schema-v2 base、显式 Page subset 与 repository 内 reviewer finding，不扩大到 v1。开始语言工作前完整读取自包含 Bundle，不通过手工 repo scan 拼上下文；`generation-bundle-check` 对 v1/v2 同样重导逐字节比较、验证 inventory/hash 与 exact stale set。下载的 strict `page_id`/`description` JSON 仍交给现有 `course-metadata refresh` / `revise`，模型不得输出 hash/route/schema/provenance；真实 provenance 由调用者明确记录。
 
 schema v2 Course SEO localization 允许并推荐为每个当前 Page 提供 canonical English description、完整 English source、完整最终 ready canonical locale target、完整 locale glossary、locale identity 与 `course-seo-localization-v2` constraints。canonical description 是唯一 semantic-scope authority；source/target 只用于技术语义核对、正文术语一致性、自然表达和实际内容对齐，不授权重新摘要、增删语义或重选重点。同一 session/batch 可处理多个 Page，但每页必须只用自己的 canonical description 决定 semantic scope，不得跨页补充、混合或推断语义。普通 ChatGPT 的真实 provenance 固定记录为：
 
@@ -214,6 +249,6 @@ provider=chatgpt
 model=gpt-5.6-sol-high
 ```
 
-生成 session 只产出 `page_id → localized description` 输入，不得直接手写正式 `course-metadata.json`。具备仓库终端能力的当前 AI execution environment 默认把 strict descriptions JSON 正式落盘，并立即运行现有 `course-metadata assemble` / `refresh` / `revise` CLI 机械生成资产、记录真实 provenance 并通过现有 gate。canonical English source-description 使用当前共享 authority；普通 locale 生成不重新生成它，也不改变其 review gate。
+生成 session 只产出 `page_id → localized description` 输入，不得直接手写正式 `course-metadata.json`。维护者 Local terminal 默认把 strict descriptions JSON 正式落盘，并运行现有 `course-metadata assemble` / `refresh` / `revise` CLI 机械生成资产、记录真实 provenance 并通过现有 gate。canonical English source-description 使用当前共享 authority；普通 locale 生成不重新生成它，也不改变其 review gate。
 
-Course SEO revise 对明确 subset 可额外向 generation session 提供 current localized description 与独立 reviewer finding，两者只用于定位和修复语言质量问题，不能取代 canonical description 的 semantic scope，也不得把 finding 当作增加新语义的依据。生成 replacement 后由当前 AI execution environment 自动运行 `course-metadata revise`，机械更新正式资产与真实 provenance，再交由独立 Locale Surface Review session 复审。
+Course SEO revise 对明确 subset 可额外向 generation session 提供 current localized description 与独立 reviewer finding，两者只用于定位和修复语言质量问题，不能取代 canonical description 的 semantic scope，也不得把 finding 当作增加新语义的依据。生成 replacement 后默认由维护者 Local terminal 运行 `course-metadata revise`，机械更新正式资产与真实 provenance，再交由独立 Locale Surface Review session 复审。

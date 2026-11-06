@@ -1,8 +1,8 @@
 * 默认选择
 
-`default` case 在 `select` 中，会在其他 case 都没有就绪时执行。
+在 `select` 中，如果没有其他分支就绪，就会执行 `default` 分支。
 
-使用 `default` case，可以尝试进行不会阻塞的发送或接收：
+使用 `default` 分支，可以在不阻塞的情况下尝试发送或接收：
 
 	select {
 	case i := <-c:

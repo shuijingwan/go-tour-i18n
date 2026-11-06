@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -8,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/sitecontent"
 )
 
 func assembleCourseMetadata(root string, catalog *i18n.Catalog, args []string) error {
@@ -67,9 +69,29 @@ func refreshCourseMetadata(root string, catalog *i18n.Catalog, args []string) er
 	if err != nil {
 		return fmt.Errorf("read course refresh descriptions: %w", err)
 	}
-	refreshed, stale, err := i18n.RefreshCourseMetadata(root, catalog, i18n.CourseMetadataRefreshOptions{
+	options := i18n.CourseMetadataRefreshOptions{
 		SchemaVersion: *schemaVersion, Locale: *locale, Provider: *provider, Model: *model, GeneratedAt: *generatedAt, Descriptions: descriptions,
-	})
+	}
+	outputAbs, err := filepath.Abs(*output)
+	if err != nil {
+		return err
+	}
+	canonicalAbs, err := filepath.Abs(filepath.Join(root, "locales", *locale, "course-metadata.json"))
+	if err != nil {
+		return err
+	}
+	if outputAbs == canonicalAbs {
+		// Native receipts may consume a closure predating reviewed Site
+		// activation. Only its representation-owned proof can restore that SHA.
+		sitecontent.AttachIntegratedSurfaceAuthority(catalog)
+		_, stale, err := i18n.ApplyCourseMetadataRefresh(root, catalog, options)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("refreshed course metadata: %s (locale=%s stale_pages=%d: %s)\n", *output, *locale, len(stale), strings.Join(stale, ", "))
+		return nil
+	}
+	refreshed, stale, err := i18n.RefreshCourseMetadata(root, catalog, options)
 	if err != nil {
 		return err
 	}
@@ -78,6 +100,54 @@ func refreshCourseMetadata(root string, catalog *i18n.Catalog, args []string) er
 	}
 	fmt.Printf("refreshed course metadata: %s (locale=%s stale_pages=%d: %s)\n", *output, *locale, len(stale), strings.Join(stale, ", "))
 	return nil
+}
+
+func recoverCourseMetadataHistory(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("course-metadata recover-history", flag.ContinueOnError)
+	locale := fs.String("locale", "", "target locale")
+	input := fs.String("input", "", "explicit exact historical metadata source (never inferred from Git)")
+	apply := fs.Bool("apply", false, "save immutable archive and historical recovery authority")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" || *input == "" || fs.NArg() != 0 {
+		return fmt.Errorf("--locale and --input are required")
+	}
+	path, err := filepath.Abs(*input)
+	if err != nil {
+		return err
+	}
+	// Reject symlink components, including outside-repository supplied sources.
+	for p := path; ; p = filepath.Dir(p) {
+		info, err := os.Lstat(p)
+		if err != nil {
+			return err
+		}
+		if info.Mode()&os.ModeSymlink != 0 {
+			return fmt.Errorf("symlink recovery source")
+		}
+		if p == filepath.Dir(p) {
+			break
+		}
+	}
+	info, err := os.Stat(path)
+	if err != nil || !info.Mode().IsRegular() {
+		return fmt.Errorf("recovery source must be a regular file")
+	}
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	sitecontent.AttachIntegratedSurfaceAuthority(catalog)
+	e, evidence, err := i18n.RecoverCourseMetadataHistory(root, catalog, *locale, b, *apply)
+	if err != nil {
+		return err
+	}
+	return json.NewEncoder(os.Stdout).Encode(struct {
+		Applied  bool                      `json:"applied"`
+		Path     string                    `json:"evidence_path"`
+		Evidence *i18n.CourseSEOTransition `json:"evidence"`
+	}{*apply, evidence, e})
 }
 
 func reviseCourseMetadata(root string, catalog *i18n.Catalog, args []string) error {

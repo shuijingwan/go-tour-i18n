@@ -1,0 +1,288 @@
+<!--{
+  "Title": "组织 Go 模块"
+}-->
+
+刚接触 Go 的开发者经常会问：“从文件和文件夹的布局来看，我该如何组织 Go
+项目？”本文旨在提供一些指导原则，帮助回答这个问题。为了
+充分利用本文，请确保你已经熟悉 Go
+模块的基础知识；为此可阅读
+ [相关教程](/doc/tutorial/create-module)以及
+[管理模块源代码](/doc/modules/managing-source)。
+
+Go 项目可以包含包、命令行程序，或两者的
+组合。本指南按项目类型组织内容。
+
+### 基础包
+
+基础 Go 包的所有代码都位于项目根目录中。项目
+由单个模块组成，而该模块又由单个包组成。包
+名与模块名路径的最后一个组成部分一致。对于只需一个 Go 文件的非常简单的
+包，项目结构如下：
+
+```
+project-root-directory/
+  go.mod
+  modname.go
+  modname_test.go
+```
+
+_[本文示例中的文件名和包名均可自行选择（file/package）]_
+
+假设该目录已上传到 GitHub 代码仓库
+`github.com/someuser/modname`，那么 `go.mod` 文件中的 `module` 行应写为
+`module github.com/someuser/modname`。
+
+`modname.go` 中的代码通过以下声明定义包：
+
+```
+package modname
+
+// ... 此处为包代码
+```
+
+随后，用户可以在自己的 Go 代码中通过 `import` 来使用这个包：
+
+```
+import "github.com/someuser/modname"
+```
+
+Go 包可以拆分成多个文件，并且这些文件都位于同一
+目录中（e.g）：
+
+```
+project-root-directory/
+  go.mod
+  modname.go
+  modname_test.go
+  auth.go
+  auth_test.go
+  hash.go
+  hash_test.go
+```
+
+该目录中的所有文件都声明 `package modname`。
+
+### 基础命令
+
+基础可执行程序（或命令行工具）的结构取决于其
+复杂度和代码规模。最简单的程序可以只包含一个 Go 文件，
+其中定义 `func main`。较大的程序可以将代码拆分到
+多个文件中，这些文件都声明 `package main`：
+
+```
+project-root-directory/
+  go.mod
+  auth.go
+  auth_test.go
+  client.go
+  main.go
+```
+
+这里，`main.go` 文件包含 `func main`，但这只是一种约定。
+“main”文件也可以命名为 `modname.go`（其中
+`modname` 取适当的值），或者使用其他任意名称。
+
+假设该目录已上传到 GitHub 代码仓库
+`github.com/someuser/modname`，那么 `go.mod` 文件中的 `module` 行应
+写为：
+
+```
+module github.com/someuser/modname
+```
+
+用户随后应能使用以下命令将其安装到自己的机器上：
+
+```
+$ go install github.com/someuser/modname@latest
+```
+
+### 带辅助包的包或命令
+
+对于较大的包或命令，可以考虑把部分功能拆分到辅助包中。
+
+开始时，建议把这些包放在名为 `internal` 的目录中；
+[这样可以防止](https://pkg.go.dev/cmd/go#hdr-Internal_Directories)其他
+模块依赖那些我们并不打算对外公开和
+长期支持的包。由于其他项目无法导入我们
+`internal` 目录中的代码，我们可以自由重构其中的 API，并整体调整内容位置，
+而不会破坏外部用户。于是，一个包项目的结构如下：
+
+
+```
+project-root-directory/
+  internal/
+    auth/
+      auth.go
+      auth_test.go
+    hash/
+      hash.go
+      hash_test.go
+  go.mod
+  modname.go
+  modname_test.go
+```
+
+`modname.go` 文件使用 `package modname` 作为包声明，`auth.go` 文件则使用 `package
+auth`，其余文件依此类推。`modname.go` 可以按以下方式导入 `auth` 包：
+
+```
+import "github.com/someuser/modname/internal/auth"
+```
+
+带辅助包的命令如果使用 `internal` 目录，其布局
+非常相似；区别只在于根目录中的文件以 `package
+main` 声明包。
+
+### 多个包
+
+一个模块可以由多个可导入的包组成；每个包都有自己的
+目录，并且可以按层级组织。下面是一个示例项目
+结构：
+
+```
+project-root-directory/
+  go.mod
+  modname.go
+  modname_test.go
+  auth/
+    auth.go
+    auth_test.go
+    token/
+      token.go
+      token_test.go
+  hash/
+    hash.go
+  internal/
+    trace/
+      trace.go
+```
+
+再提醒一下，我们假设 `module` 行在 `go.mod` 中写的是：
+
+```
+module github.com/someuser/modname
+```
+
+`modname` 包位于根目录中，声明 `package modname`，
+用户可以通过以下方式导入它：
+
+```
+import "github.com/someuser/modname"
+```
+
+用户可以按以下方式导入子包：
+
+```
+import "github.com/someuser/modname/auth"
+import "github.com/someuser/modname/auth/token"
+import "github.com/someuser/modname/hash"
+```
+
+`trace` 包位于 `internal/trace` 中，无法从本
+模块之外导入。建议尽可能将包放在 `internal` 中。
+
+### 多个命令
+
+同一代码仓库中的多个程序通常分别放在独立目录中：
+
+```
+project-root-directory/
+  go.mod
+  internal/
+    ... shared internal packages
+  prog1/
+    main.go
+  prog2/
+    main.go
+```
+
+在每个目录中，程序的 Go 文件都声明 `package main`。顶层
+`internal` 目录可以存放仓库中所有命令共享的包。
+
+
+用户可以按以下方式安装这些程序：
+
+```
+$ go install github.com/someuser/modname/prog1@latest
+$ go install github.com/someuser/modname/prog2@latest
+```
+
+一种常见约定是把仓库中的所有命令都放在 `cmd`
+目录中；如果仓库只包含命令，这并非严格必要，
+但对于同时包含命令
+和可导入包的混合仓库，这种布局非常有用，后文会进一步说明。
+
+### 同一代码仓库中的包和命令
+
+有时，一个代码仓库会同时提供可导入的包和具有相关功能、可安装的
+命令。下面是这种仓库的一种示例项目
+结构：
+
+```
+project-root-directory/
+  go.mod
+  modname.go
+  modname_test.go
+  auth/
+    auth.go
+    auth_test.go
+  internal/
+    ... internal packages
+  cmd/
+    prog1/
+      main.go
+    prog2/
+      main.go
+```
+
+假设这个模块名为 `github.com/someuser/modname`，用户现在既可以
+从中导入包：
+
+```
+import "github.com/someuser/modname"
+import "github.com/someuser/modname/auth"
+```
+
+也可以从中安装程序：
+
+```
+$ go install github.com/someuser/modname/cmd/prog1@latest
+$ go install github.com/someuser/modname/cmd/prog2@latest
+```
+
+### 服务器项目
+
+Go 经常用于实现 *服务器*。这类项目的结构差异很大，
+因为服务器开发涉及许多方面：
+协议（REST？gRPC？）、部署、前端文件、
+容器化、脚本等。这里我们只针对
+项目中用 Go 编写的部分提供指导。
+
+服务器项目通常不会提供供其他项目导入和复用的公共包，因为服务器
+一般是一个自包含的二进制文件（或一组二进制文件）。因此，
+建议将实现服务器逻辑的 Go 包放在
+`internal` 目录中。此外，由于项目往往还会有很多
+存放非 Go 文件的目录，最好把所有 Go 命令集中
+放在 `cmd` 目录中：
+
+```
+project-root-directory/
+  go.mod
+  internal/
+    auth/
+      ...
+    metrics/
+      ...
+    model/
+      ...
+  cmd/
+    api-server/
+      main.go
+    metrics-analyzer/
+      main.go
+    ...
+  ... the project's other directories with non-Go code
+```
+
+如果服务器代码仓库后来出现了适合与
+其他项目共享的包，最好将这些包拆分到独立模块中。

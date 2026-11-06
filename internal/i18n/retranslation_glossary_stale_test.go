@@ -45,6 +45,8 @@ func writeGlossaryStaleTestGlossary(t *testing.T, root, reviewID string, keepPre
 		if _, _, err := RecordGlossaryReview(root, "zh-CN", reviewID, "independent-reviewer", "passed", nil); err != nil {
 			t.Fatal(err)
 		}
+		copyBundleAuthority(t, root, []string{"locales/zh-CN/locale.json"})
+		recordSyntheticUnifiedReview(t, root, reviewID+"-unified")
 	}
 }
 
@@ -93,6 +95,71 @@ func snapshotDirectoryBytes(t *testing.T, root string) map[string][]byte {
 		t.Fatal(err)
 	}
 	return result
+}
+
+type glossaryStaleLegacyManifestFixture struct {
+	SchemaVersion   int                              `json:"schema_version"`
+	BatchID         string                           `json:"batch_id"`
+	Locale          string                           `json:"locale"`
+	ProtectionMode  string                           `json:"protection_mode"`
+	TranslationUnit string                           `json:"translation_unit"`
+	PageCount       int                              `json:"page_count"`
+	Pages           []glossaryStaleLegacyPageFixture `json:"pages"`
+}
+
+type glossaryStaleLegacyPageFixture struct {
+	PageID              string `json:"page_id"`
+	Article             string `json:"article"`
+	SourceSHA256        string `json:"source_sha256"`
+	InputPath           string `json:"input_path"`
+	InputSHA256         string `json:"input_sha256"`
+	ProtectedTokenCount int    `json:"protected_token_count"`
+}
+
+func convertGlossaryStaleBatchToLegacyEOF(t *testing.T, root, batchID string) (*glossaryStaleLegacyManifestFixture, map[string][]byte) {
+	t.Helper()
+	manifest := readRetranslationManifest(t, root, batchID)
+	legacy := &glossaryStaleLegacyManifestFixture{
+		SchemaVersion: 1, BatchID: batchID, Locale: "zh-CN", ProtectionMode: "default",
+		TranslationUnit: "present.Section", PageCount: len(manifest.Units),
+		Pages: make([]glossaryStaleLegacyPageFixture, 0, len(manifest.Units)),
+	}
+	original := map[string][]byte{}
+	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
+	for _, unit := range manifest.Units {
+		path := filepath.Join(batchDir, filepath.FromSlash(unit.InputPath))
+		input, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		input = append(append([]byte(nil), input...), '\n')
+		if err := os.WriteFile(path, input, 0644); err != nil {
+			t.Fatal(err)
+		}
+		original[unit.UnitID] = append([]byte(nil), input...)
+		legacy.Pages = append(legacy.Pages, glossaryStaleLegacyPageFixture{
+			PageID: unit.UnitID, Article: filepath.Base(unit.SourcePath), SourceSHA256: unit.SourceSHA256,
+			InputPath: unit.InputPath, InputSHA256: sum(input), ProtectedTokenCount: unit.ProtectedTokenCount,
+		})
+	}
+	if err := writeTranslationJSON(filepath.Join(batchDir, "manifest.json"), legacy); err != nil {
+		t.Fatal(err)
+	}
+	return legacy, original
+}
+
+func writeGlossaryStaleEquivalentTestGlossary(t *testing.T, root, reviewID string) {
+	t.Helper()
+	path := filepath.Join(root, "locales", "zh-CN", "glossary.yaml")
+	text := "# byte-only refresh\nmandatory:\n  Go: Go\nkeep:\n  - Go\n  - present\n"
+	if err := os.WriteFile(path, []byte(text), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := RecordGlossaryReview(root, "zh-CN", reviewID, "independent-reviewer", "passed", nil); err != nil {
+		t.Fatal(err)
+	}
+	copyBundleAuthority(t, root, []string{"locales/zh-CN/locale.json"})
+	recordSyntheticUnifiedReview(t, root, reviewID+"-unified")
 }
 
 func TestGlossaryStaleRecoveryExportsOnlyDriftedUnitsAndBuildsFullSnapshot(t *testing.T) {
@@ -209,7 +276,7 @@ func TestGlossaryStaleRecoveryRejectsUnaffectedUnitAndStaleReview(t *testing.T) 
 	processGlossaryStaleTestBatch(t, root, catalog, initial.BatchID)
 	writeGlossaryStaleTestGlossary(t, root, "", false)
 	options := RetranslationExportOptions{Locale: "zh-CN", AllowReexport: true, GlossaryStale: true, UnitIDs: []string{"lesson/1"}}
-	if _, err := ExportRetranslationBatch(root, catalog, options); err == nil || !strings.Contains(err.Error(), "Glossary Review gate missing or stale") {
+	if _, err := ExportRetranslationBatch(root, catalog, options); err == nil || !strings.Contains(err.Error(), "unified Glossary Review missing/stale/ambiguous or non-passed") {
 		t.Fatalf("stale Glossary Review error=%v", err)
 	}
 	writeGlossaryStaleTestGlossary(t, root, "current-glossary", false)
@@ -301,6 +368,145 @@ func TestGlossaryStaleRecoveryRejectsUntrustedLatestEvidence(t *testing.T) {
 	})
 }
 
+func TestGlossaryStaleRecoveryLegacyArtifactEOF(t *testing.T) {
+	t.Run("EOF-only difference is not glossary drift", func(t *testing.T) {
+		root := t.TempDir()
+		catalog := glossaryStaleTestCatalog()
+		writeGlossaryStaleTestGlossary(t, root, "old-glossary", true)
+		initial, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		processGlossaryStaleTestBatch(t, root, catalog, initial.BatchID)
+		convertGlossaryStaleBatchToLegacyEOF(t, root, initial.BatchID)
+		writeGlossaryStaleEquivalentTestGlossary(t, root, "current-glossary")
+		_, err = ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+			Locale: "zh-CN", AllowReexport: true, GlossaryStale: true, UnitIDs: []string{"lesson/1"},
+		})
+		if err == nil || !strings.Contains(err.Error(), "has no glossary-induced drift") {
+			t.Fatalf("EOF-only legacy recovery error=%v", err)
+		}
+	})
+
+	t.Run("real drift preserves historical provenance and writes single LF", func(t *testing.T) {
+		root := t.TempDir()
+		catalog := glossaryStaleTestCatalog()
+		writeGlossaryStaleTestGlossary(t, root, "old-glossary", true)
+		initial, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		processGlossaryStaleTestBatch(t, root, catalog, initial.BatchID)
+		_, historical := convertGlossaryStaleBatchToLegacyEOF(t, root, initial.BatchID)
+		writeGlossaryStaleTestGlossary(t, root, "current-glossary", false)
+		recovery, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+			Locale: "zh-CN", AllowReexport: true, GlossaryStale: true, UnitIDs: []string{"lesson/1"},
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		manifest := readRetranslationManifest(t, root, recovery.BatchID)
+		if manifest.SchemaVersion != 2 || manifest.ArtifactEOF != retranslationArtifactEOFSingleLF || len(manifest.Units) != 1 {
+			t.Fatalf("recovery manifest=%+v", manifest)
+		}
+		record := manifest.Units[0]
+		oldInput := historical[record.UnitID]
+		if record.PreviousBatchID != initial.BatchID || record.PreviousInputSHA256 != sum(oldInput) || record.PreviousInputSHA256 == sum(canonicalizeRetranslationArtifactEOF(oldInput)) {
+			t.Fatalf("legacy previous provenance=%+v", record)
+		}
+		newInput, err := os.ReadFile(filepath.Join(root, recovery.BatchPath, filepath.FromSlash(record.InputPath)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := validateRetranslationArtifactEOF(newInput); err != nil {
+			t.Fatalf("new recovery input EOF: %v", err)
+		}
+		oldPath := filepath.Join(root, initial.BatchPath, filepath.FromSlash(record.PreviousInputPath))
+		unchanged, err := os.ReadFile(oldPath)
+		if err != nil || !bytes.Equal(unchanged, oldInput) {
+			t.Fatalf("historical input mutated: err=%v", err)
+		}
+	})
+
+	t.Run("unsupported EOF policy remains rejected", func(t *testing.T) {
+		root := t.TempDir()
+		catalog := glossaryStaleTestCatalog()
+		writeGlossaryStaleTestGlossary(t, root, "old-glossary", true)
+		initial, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		processGlossaryStaleTestBatch(t, root, catalog, initial.BatchID)
+		manifest := readRetranslationManifest(t, root, initial.BatchID)
+		manifest.ArtifactEOF = "unknown_policy"
+		if err := writeTranslationJSON(filepath.Join(root, initial.BatchPath, "manifest.json"), manifest); err != nil {
+			t.Fatal(err)
+		}
+		writeGlossaryStaleTestGlossary(t, root, "current-glossary", false)
+		_, err = ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+			Locale: "zh-CN", AllowReexport: true, GlossaryStale: true, UnitIDs: []string{"lesson/1"},
+		})
+		if err == nil || !strings.Contains(err.Error(), "incompatible manifest metadata") {
+			t.Fatalf("unsupported EOF error=%v", err)
+		}
+	})
+
+	integrityTests := []struct {
+		name   string
+		want   string
+		mutate func(t *testing.T, root, batchID string, legacy *glossaryStaleLegacyManifestFixture)
+	}{
+		{name: "SHA mismatch", want: "saved input hash does not match manifest", mutate: func(t *testing.T, root, batchID string, legacy *glossaryStaleLegacyManifestFixture) {
+			path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, filepath.FromSlash(legacy.Pages[0].InputPath))
+			input, _ := os.ReadFile(path)
+			if err := os.WriteFile(path, append([]byte("changed "), input...), 0644); err != nil {
+				t.Fatal(err)
+			}
+		}},
+		{name: "token count mismatch", want: "protected token count", mutate: func(t *testing.T, root, batchID string, legacy *glossaryStaleLegacyManifestFixture) {
+			legacy.Pages[0].ProtectedTokenCount++
+		}},
+		{name: "duplicate token", want: "contains duplicate protected token", mutate: func(t *testing.T, root, batchID string, legacy *glossaryStaleLegacyManifestFixture) {
+			path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, filepath.FromSlash(legacy.Pages[0].InputPath))
+			input, _ := os.ReadFile(path)
+			token := translationTokenRE.Find(input)
+			if len(token) == 0 {
+				t.Fatal("test input has no protected token")
+			}
+			input = append(append(append([]byte(nil), token...), ' '), input...)
+			if err := os.WriteFile(path, input, 0644); err != nil {
+				t.Fatal(err)
+			}
+			legacy.Pages[0].InputSHA256 = sum(input)
+			legacy.Pages[0].ProtectedTokenCount = len(translationTokenRE.FindAll(input, -1))
+		}},
+	}
+	for _, test := range integrityTests {
+		t.Run(test.name, func(t *testing.T) {
+			root := t.TempDir()
+			catalog := glossaryStaleTestCatalog()
+			writeGlossaryStaleTestGlossary(t, root, "old-glossary", true)
+			initial, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			processGlossaryStaleTestBatch(t, root, catalog, initial.BatchID)
+			legacy, _ := convertGlossaryStaleBatchToLegacyEOF(t, root, initial.BatchID)
+			test.mutate(t, root, initial.BatchID, legacy)
+			if err := writeTranslationJSON(filepath.Join(root, initial.BatchPath, "manifest.json"), legacy); err != nil {
+				t.Fatal(err)
+			}
+			writeGlossaryStaleTestGlossary(t, root, "current-glossary", false)
+			_, err = ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+				Locale: "zh-CN", AllowReexport: true, GlossaryStale: true, UnitIDs: []string{"lesson/1"},
+			})
+			if err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("legacy integrity error=%v, want %q", err, test.want)
+			}
+		})
+	}
+}
+
 func TestGlossaryStaleRecoveryPreservesKindAndLimitGuards(t *testing.T) {
 	t.Run("mixed Page and Example", func(t *testing.T) {
 		root := t.TempDir()
@@ -368,6 +574,9 @@ func TestGlossaryStaleRecoveryCurrentInputMatchesNewManifest(t *testing.T) {
 		t.Fatal(err)
 	}
 	manifest := readRetranslationManifest(t, root, recovery.BatchID)
+	if manifest.ArtifactEOF != retranslationArtifactEOFSingleLF {
+		t.Fatalf("new recovery artifact_eof=%q", manifest.ArtifactEOF)
+	}
 	input, err := os.ReadFile(filepath.Join(root, recovery.BatchPath, filepath.FromSlash(manifest.Units[0].InputPath)))
 	if err != nil {
 		t.Fatal(err)

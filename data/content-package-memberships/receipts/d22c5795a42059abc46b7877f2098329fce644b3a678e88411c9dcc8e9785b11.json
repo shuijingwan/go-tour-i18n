@@ -1,0 +1,231 @@
+{
+  "schema": "go-learning/package-membership-successor/v1",
+  "package": "learn-docs-v1",
+  "predecessors": [
+    {
+      "package": "learn-docs-v1",
+      "package_identity_sha256": "bcd457bfd9c459548e391f0e90262c5ef3cd4e2a41d0f7430a6680cfd579696d",
+      "ordered_page_sources": [
+        {
+          "path": "_content/learn/index.md",
+          "sha256": "0fde7be422a294f252116fe27325131192cd6931aa1ea84779f2e1d5c0fface9"
+        },
+        {
+          "path": "_content/doc/tutorial/add-a-test.html",
+          "sha256": "d5ea155f25736df5051fddc35df81af3600b57700972d8fde4c344345c9a0ca0"
+        },
+        {
+          "path": "_content/doc/tutorial/call-module-code.html",
+          "sha256": "e15097929f143836d6b0ba6f7ed56b1a6f61fec64d8e4fbab78407af439a2460"
+        },
+        {
+          "path": "_content/doc/tutorial/compile-install.html",
+          "sha256": "207de8898ceffd8fe454d8d94ffabe348b1579dd0c5dbd31cd5625f39291d3a0"
+        },
+        {
+          "path": "_content/doc/tutorial/create-module.html",
+          "sha256": "e86bbbcbb07dbd6aa9a5e3e00ddf7525888f8f4298299818b9c7cf7b2407d144"
+        },
+        {
+          "path": "_content/doc/tutorial/database-access.md",
+          "sha256": "006b82bedadb9fbf37ab24e3e7e09ae8f86abc8870d0b1df45e67b4d6ea337e1"
+        },
+        {
+          "path": "_content/doc/tutorial/fuzz.md",
+          "sha256": "91f902e95484e8320b35801d1bb22c12b90f08983a3a269ca373cce96c8cc903"
+        },
+        {
+          "path": "_content/doc/tutorial/generics.md",
+          "sha256": "c15398a80cb69b1b0d486d14bb35ccb2a807a4fbcac6b7bd5319a997513aa67f"
+        },
+        {
+          "path": "_content/doc/tutorial/getting-started.html",
+          "sha256": "b4794678dc335ab850ceb21bc7b3a9896a401717d906a5242758803b444d45bd"
+        },
+        {
+          "path": "_content/doc/tutorial/govulncheck-ide.md",
+          "sha256": "b0173a57e407fe2937c85ed434dee7037eee0a9d91f495cb4d43a4e6f7dabd35"
+        },
+        {
+          "path": "_content/doc/tutorial/govulncheck.md",
+          "sha256": "6517f5eb2bc73ca2e1befbb643fcc5cd4d381dbbf404acf03bc12395393809f9"
+        },
+        {
+          "path": "_content/doc/tutorial/greetings-multiple-people.html",
+          "sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b"
+        },
+        {
+          "path": "_content/doc/tutorial/handle-errors.html",
+          "sha256": "10e61d7f50095845bd2e313add841500b189bb7ddda6c3b7fee248f8cdc53a89"
+        },
+        {
+          "path": "_content/doc/tutorial/index.html",
+          "sha256": "c9ecfeee2bb8e450f8f30e38b997cd663b0d904021299d5cb400796e1b43eb55"
+        },
+        {
+          "path": "_content/doc/tutorial/json.md",
+          "sha256": "9bb5bed860a71bdb4dc9776c9eff2e5f4a40f1ca9851851bfd1619c1793970be"
+        },
+        {
+          "path": "_content/doc/tutorial/module-conclusion.html",
+          "sha256": "94311530fc64ba2d3f5d25e60f68df4d37248d255ecde743214d22d786f70f40"
+        },
+        {
+          "path": "_content/doc/tutorial/random-greeting.html",
+          "sha256": "9951ede236291e2db0beaa868159e101bc2983f9754c587c3ab3954fa26cdfbe"
+        },
+        {
+          "path": "_content/doc/tutorial/web-service-gin.md",
+          "sha256": "3342ff17a8b087b5d5a2a3c03d3fbcf4197eafd943c65a05c62c43df0cf33cf4"
+        },
+        {
+          "path": "_content/doc/tutorial/workspaces.md",
+          "sha256": "4991323de780ed74be6286cb07f2b1cfae1c03d27aa80ff864a151782bd293de"
+        },
+        {
+          "path": "_content/doc/database/cancel-operations.md",
+          "sha256": "c71ef831003d93f55e7ffb503aadb883797e574b21d905caa42c783cf02ff683"
+        },
+        {
+          "path": "_content/doc/database/change-data.md",
+          "sha256": "7d33ffb1904495008147b115fbace5f82640e209c492b13f406363a61837bb55"
+        },
+        {
+          "path": "_content/doc/database/execute-transactions.md",
+          "sha256": "3e8e4ee1071772b796cf0e467f4a2cc8065e866385604116a6ddd3d0b07ee59f"
+        },
+        {
+          "path": "_content/doc/database/index.md",
+          "sha256": "8335626ef100c20d927f52d02c60850eca7b0e9d4c097c796484529a7f3dd3c9"
+        },
+        {
+          "path": "_content/doc/database/manage-connections.md",
+          "sha256": "c0af88c4644c5118003126a32219fd786b47ae719f267d9b22cbc4954628ee0d"
+        },
+        {
+          "path": "_content/doc/database/open-handle.md",
+          "sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c"
+        },
+        {
+          "path": "_content/doc/database/prepared-statements.md",
+          "sha256": "37854cb2a8e7ef640129566162422472821faadcbab8dd2a7514513d40eff004"
+        },
+        {
+          "path": "_content/doc/database/querying.md",
+          "sha256": "02e399c4e8b9895689676f976ce052da6d6efa6f6bed3c7368314a47e3314864"
+        },
+        {
+          "path": "_content/doc/database/sql-injection.md",
+          "sha256": "b8dac8aa9f02e71bd0b5dda8f6e26706ff22e19c0a3149aae53946b2b10f864a"
+        },
+        {
+          "path": "_content/doc/modules/developing.md",
+          "sha256": "b536e09618906a025e579d4715c3218dd4cc32ba4b1a4554d8dd6e582a7f8ed8"
+        },
+        {
+          "path": "_content/doc/modules/gomod-ref.md",
+          "sha256": "f2d3e578640d2a9522a9667b8a203e6a14d60509df1e5c04ad54ca14a6c3d8bd"
+        },
+        {
+          "path": "_content/doc/modules/layout.md",
+          "sha256": "3cf064a34e84e48dc66ffdf9277fea2b2c9fdc52d0b5dd7d4de506fb8eeba4a5"
+        },
+        {
+          "path": "_content/doc/modules/major-version.md",
+          "sha256": "7d052c1b96c1d537cfede56c69dc92684344172ff03ef2bc87c33d2271c5d36c"
+        },
+        {
+          "path": "_content/doc/modules/managing-dependencies.md",
+          "sha256": "0d0ba363e0214a23116f0d4e6e016968a31412674970839d0caa7957e17b1ee7"
+        },
+        {
+          "path": "_content/doc/modules/managing-source.md",
+          "sha256": "9edc5cfdd586954d36a2851147eff163cf3e71aaebf3c3499a1a3934245b6a5b"
+        },
+        {
+          "path": "_content/doc/modules/publishing.md",
+          "sha256": "b01eeb7a552c865ef4333be351060487e835185b1345b6d378e26f4e46c46b9f"
+        },
+        {
+          "path": "_content/doc/modules/release-workflow.md",
+          "sha256": "27cf24c2eb872b60acadfd57f3a39fffdd3bb01ef35880cb640a6724864b6b6d"
+        },
+        {
+          "path": "_content/doc/modules/version-numbers.md",
+          "sha256": "43668bda4143e7107f12dc3b3d9a49a1b15f96e1ba1c93c1a6a464b7fbfabbd5"
+        },
+        {
+          "path": "_content/doc/security/best-practices.md",
+          "sha256": "9f1184cde64388824a4d5cb19ee5938b3fe75ce5b5378ee2475552b8da6dcbe4"
+        },
+        {
+          "path": "_content/doc/security/decisions.md",
+          "sha256": "6c15e82b42de1a7fa6b2984144570d2ded12f1b7df86e15a82fb54226be487b4"
+        },
+        {
+          "path": "_content/doc/security/fips140.md",
+          "sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4"
+        },
+        {
+          "path": "_content/doc/security/fuzz/index.md",
+          "sha256": "69bd18d0702cab7d9f3a9a4e1fb20f316cbefc518d0e804c7e753a538bd15bbb"
+        },
+        {
+          "path": "_content/doc/security/fuzz/technical.md",
+          "sha256": "30f0008d41be96f888cf08aaa8b7cf9101b93d1438ad17d8838016f74fc263b6"
+        },
+        {
+          "path": "_content/doc/security/index.md",
+          "sha256": "272aa1d0fb5c22f687b747955f1927a78be8ad0f19169096cb0437e9f7fb1b45"
+        },
+        {
+          "path": "_content/doc/security/policy.md",
+          "sha256": "a5b5e3a901c57743ad9f6da63e0f73668273b1ca17cacd865e7becc32bc69d28"
+        },
+        {
+          "path": "_content/doc/security/threat-model.md",
+          "sha256": "c58e1f16eb682643adc1d6a74502920aa1700b02463eca04f26949a0a6fd0b9d"
+        },
+        {
+          "path": "_content/doc/security/vuln/cna.md",
+          "sha256": "baeefa9cc4fcf4983062a2012ebdf4940357d7084333bf470a27a7d00f6e1a73"
+        },
+        {
+          "path": "_content/doc/security/vuln/database.md",
+          "sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7"
+        },
+        {
+          "path": "_content/doc/security/vuln/editor.md",
+          "sha256": "0b494da11a9af83183ed913e3c72f4bd8e9a7b7a9359a3b5d66a1abbf6145363"
+        },
+        {
+          "path": "_content/doc/security/vuln/index.md",
+          "sha256": "67c5adf783fd88accf098042728568e8c9ad3e2a04fb390ba147678a38a2a823"
+        }
+      ]
+    },
+    {
+      "package": "docs-entry-v1",
+      "package_identity_sha256": "63058db3ad64e6ab1b61e75e6ad8ee371dbc5454812bb4f4b5b4cd4ce4dc0ca5",
+      "ordered_page_sources": [
+        {
+          "path": "_content/doc/index.html",
+          "sha256": "1e1ec2ae02d56739bc7491c64cc3d1d3e269423f22566d2a822b06c35c9470e3"
+        },
+        {
+          "path": "_content/doc/install.html",
+          "sha256": "bbebc94da105910fb6f002a31a97f859c47202417cba4a0a60d6b1093e731c5c"
+        }
+      ]
+    }
+  ],
+  "previous_page_registry": {
+    "path": "data/content-package-memberships/history/learn-docs-pages-49.json",
+    "sha256": "2cc3415578e9a0018d6bba7e6357ac079949ff4b8cd5971aa114eef08e734bf3"
+  },
+  "current_page_registry": {
+    "path": "data/content-package-memberships/registries/eb9463cfaec56a52198d445e81a751bd18b0db5abe6f07f6f12344c19582213d.json",
+    "sha256": "39de133d6bbfe6e5c3ac65d5b81e5d51a1a4ec3c8361c3896f6b59e6b9f0458e"
+  },
+  "identity_sha256": "d22c5795a42059abc46b7877f2098329fce644b3a678e88411c9dcc8e9785b11"
+}

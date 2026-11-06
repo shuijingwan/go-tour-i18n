@@ -1,0 +1,115 @@
+<!--{
+  "Title": "教程：使用 VS Code Go 查找并修复有漏洞的依赖项",
+  "Breadcrumb": true
+}-->
+
+[返回 Go 安全](/security)
+
+借助 Visual Studio Code 的 Go 扩展，可以直接在编辑器中扫描代码中的漏洞。
+
+注意：要了解下方图片所示漏洞修复的说明，请参阅 [govulncheck 教程](/doc/tutorial/govulncheck)。
+
+## 先决条件：
+
+- **Go。** 建议使用最新版 Go 学习本教程。有关安装说明，请参阅 [安装 Go](/doc/install)。
+- **VS Code**，并更新到最新版本。[在此下载](https://code.visualstudio.com/)。你也可以使用 Vim（详情请参阅[这里](/security/vuln/editor#editor-specific-instructions)），但本教程重点介绍 VS Code Go。
+- **VS Code Go 扩展**，可以[在此下载](https://marketplace.visualstudio.com/items?itemName=golang.go)。
+- **针对编辑器的设置修改。** 要复现下面的结果，需要先按照 [这些说明](/security/vuln/editor#editor-specific-instructions) 修改 IDE 设置。
+
+
+## 如何使用 VS Code Go 扫描漏洞
+
+**第 1 步。** 运行“Go: Toggle Vulncheck”
+
+[Toggle Vulncheck](https://github.com/golang/vscode-go/wiki/Commands#go-toggle-vulncheck) 命令会显示模块中列出的所有依赖项的漏洞分析。要使用此命令，请在 IDE 中打开[命令面板](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)（在 Linux/Windows 上按 Ctrl+Shift+P，在 Mac OS 上按 Cmd+Shift+P），然后运行“Go: Toggle Vulncheck.”。在 go.mod 文件中，你会看到代码直接或间接使用的有漏洞依赖项的诊断信息。
+
+<div class="image">
+  <center>
+    <img style="width: 100%" width="2110" height="952" src="editor_tutorial_1.png" alt="运行 Toggle Vulncheck"></img>
+  </center>
+</div>
+
+注意：要在自己的编辑器中复现本教程，请把下面的代码复制到 main.go 文件中。
+
+```
+// 此程序接收 language 标签作为命令行
+// 参数并解析它们。
+
+package main
+
+import (
+  "fmt"
+  "os"
+
+  "golang.org/x/text/language"
+)
+
+func main() {
+  for _, arg := range os.Args[1:] {
+    tag, err := language.Parse(arg)
+    if err != nil {
+      fmt.Printf("%s: error: %v\n", arg, err)
+    } else if tag == language.Und {
+      fmt.Printf("%s: undefined\n", arg)
+    } else {
+      fmt.Printf("%s: tag %s\n", arg, tag)
+    }
+  }
+}
+```
+
+然后确认程序对应的 go.mod 文件如下所示：
+
+
+```
+module module1
+
+go 1.18
+
+require golang.org/x/text v0.3.5
+```
+
+现在运行 `go mod tidy`，确保 go.sum 文件已更新。
+
+**第 2 步。** 通过代码操作运行 govulncheck。
+
+通过代码操作运行 govulncheck，可以把注意力集中在代码实际调用的依赖项上。VS Code 中的代码操作以灯泡图标标示；将鼠标悬停在相关依赖项上查看漏洞信息，然后选择“Quick Fix”打开选项菜单。在这些选项中，选择“run govulncheck to verify.”。相关的 govulncheck 输出会显示在终端中。
+
+<div class="image">
+  <center>
+    <img style="width: 100%" width="2110" height="952" src="editor_tutorial_2.png" alt="govulncheck 代码操作"></img>
+  </center>
+</div>
+
+<div class="image">
+  <center>
+    <img style="width: 100%" width="2110" height="952" src="editor_tutorial_3.png" alt="VS Code Go 的 govulncheck 输出"></img>
+  </center>
+</div>
+
+**第 3 步**。将鼠标悬停在 go.mod 文件中列出的依赖项上。
+
+也可以把鼠标悬停在 go.mod 文件中的依赖项上，查看 govulncheck 针对该依赖项的相关输出。如果只是快速查看依赖项信息，这种方式甚至比使用代码操作更高效。
+
+<div class="image">
+  <center>
+    <img style="width: 100%" width="2110" height="952" src="editor_tutorial_4.png" alt="悬停查看依赖项的漏洞信息"></img>
+  </center>
+</div>
+
+**第 4 步。** 将依赖项升级到“fixed in”版本。
+
+还可以使用代码操作快速升级到已经修复漏洞的依赖项版本。方法是在代码操作下拉菜单中选择“Upgrade”。
+
+<div class="image">
+  <center>
+    <img style="width: 100%" width="2110" height="952" src="editor_tutorial_5.png" alt="通过代码操作菜单升级到最新版本"></img>
+  </center>
+</div>
+
+
+## 其他资源
+
+- 有关在 IDE 中进行漏洞扫描的更多信息，请参阅[此页面](/security/vuln/editor)。其中的[“Notes and Caveats”部分](/security/vuln/editor#notes-and-caveats)尤其介绍了某些特殊情况，在这些情况下漏洞扫描可能比上面的示例更复杂。
+- [Go 漏洞数据库](https://pkg.go.dev/vuln/)除了 Go 包维护者直接向 Go 安全团队报告的信息外，还汇集了许多现有来源的信息。
+- [Go 漏洞管理](/security/vuln/)页面从较高层次介绍了 Go 用于检测、报告和管理漏洞的架构。

@@ -1,0 +1,131 @@
+<!--{
+  "Title": "使用预处理语句"
+}-->
+
+可以定义一个预处理语句并重复使用。这样可以避免代码每次执行数据库操作时都重新创建语句的开销
+，从而让代码运行得稍快一些
+。
+
+**注意：**预处理语句中的参数占位符会因所使用的 
+DBMS 和驱动程序而异。例如，Postgres 的
+[pq 驱动程序](https://pkg.go.dev/github.com/lib/pq)要求使用类似 
+`$1` 的占位符，而不是 `?`。
+
+### 什么是预处理语句？ {#what_prepared_statement}
+
+预处理语句是由 SQL 解析并保存的 DBMS，通常
+包含占位符，但不包含实际参数值。之后可以使用一组参数值执行该
+语句。
+
+### 如何使用预处理语句 {#use_prepared_statement}
+
+如果预计会反复执行同一条 SQL，可以使用 `sql.Stmt`
+预先准备该 SQL 语句，然后在需要时执行。
+
+下面的示例创建一个预处理语句，用于从数据库中选择特定的
+唱片。 [`DB.Prepare`](https://pkg.go.dev/database/sql#DB.Prepare)
+返回一个 [`sql.Stmt`](https://pkg.go.dev/database/sql#Stmt)，表示为给定 
+SQL文本准备好的预处理语句。可以把 
+SQL语句的参数传给 `Stmt.Exec`、`Stmt.QueryRow` 或 `Stmt.Query` 来执行该
+语句。
+
+```
+// AlbumByID 获取指定的 album.
+func AlbumByID(id int) (Album, error) {
+	// 定义预处理语句。通常会在其他位置定义该语句并保存，
+	// 供此类函数使用。
+	stmt, err := db.Prepare("SELECT * FROM album WHERE id = ?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+
+	var album Album
+
+	// 执行预处理语句，并为占位符为 ? 的 id 
+	// 参数传入一个值
+	err := stmt.QueryRow(id).Scan(&album.ID, &album.Title, &album.Artist, &album.Price, &album.Quantity)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// 处理没有返回行的情况。
+		}
+		return album, err
+	}
+	return album, nil
+}
+```
+
+### 预处理语句的行为 {#behavior}
+
+预处理后的 [`sql.Stmt`](https://pkg.go.dev/database/sql#Stmt)提供常用的
+`Exec`、`QueryRow` 和 `Query` 方法来执行语句。有关
+这些方法的更多信息，请参阅 [查询数据](/doc/database/querying)
+以及 [执行不返回数据的 SQL 语句](/doc/database/change-data)。
+
+不过，由于 `sql.Stmt` 已经表示一条预设的 SQL 语句，因此它的
+`Exec`、`QueryRow` 和 `Query` 方法只接收与占位符对应的 SQL 参数值
+，不再接收 SQL 文本。
+
+可以根据用途，通过不同方式定义新的 `sql.Stmt`
+。
+
+*   `DB.Prepare` 和 `DB.PrepareContext` 会创建可独立执行的预处理语句，也就是在事务之外单独执行，正如
+    
+    `DB.Exec` 和 `DB.Query` 一样。
+*   `Tx.Prepare`、`Tx.PrepareContext`、`Tx.Stmt` 和 `Tx.StmtContext` 会创建
+    用于特定事务的预处理语句。`Prepare` 和
+    `PrepareContext`使用 SQL 文本定义语句；`Stmt` 和
+    `StmtContext`则使用 `DB.Prepare` 或 `DB.PrepareContext` 的结果。也就是说，
+    它们会把一个不用于事务的 `sql.Stmt` 转换成
+    用于当前事务的 `sql.Stmt`。
+*   `Conn.PrepareContext`会从表示保留连接的 `sql.Conn` 创建预处理语句
+    。
+
+代码用完某个语句后，务必调用 `stmt.Close`
+。这会释放可能与该语句关联的数据库资源（例如底层
+连接）。如果语句只是函数中的局部变量，使用 
+`defer stmt.Close()` 即可。
+
+#### 用于创建预处理语句的函数 {#prepared_statement_functions}
+
+<table id="prepared-statement-functions-list" class="DocTable">
+    <thead>
+        <tr class="DocTable-head">
+            <th class="DocTable-cell" width="20%">函数</th>
+            <th class="DocTable-cell">说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="DocTable-row">
+            <td class="DocTable-cell">
+                <code><a href="https://pkg.go.dev/database/sql#DB.Prepare">DB.Prepare</a></code><br />
+                <code><a href="https://pkg.go.dev/database/sql#DB.PrepareContext">DB.PrepareContext</a></code>
+            </td>
+            <td class="DocTable-cell">准备一条语句，使其可以独立执行，
+                或者之后使用 
+                Tx.Stmt 转换为事务内的预处理语句。</td>
+        </tr>
+        <tr class="DocTable-row">
+            <td class="DocTable-cell">
+                <code><a href="https://pkg.go.dev/database/sql#Tx.Prepare">Tx.Prepare</a></code><br />
+                <code><a href="https://pkg.go.dev/database/sql#Tx.PrepareContext">Tx.PrepareContext</a></code><br />
+                <code><a href="https://pkg.go.dev/database/sql#Tx.Stmt">Tx.Stmt</a></code><br />
+                <code><a href="https://pkg.go.dev/database/sql#Tx.StmtContext">Tx.StmtContext</a></code>
+            </td>
+            <td class="DocTable-cell">准备一条用于特定
+                事务的语句。更多信息请参阅
+                <a href="/doc/database/execute-transactions">执行
+                事务</a>。
+            </td>
+        </tr>
+        <tr class="DocTable-row">
+            <td class="DocTable-cell">
+                <code><a href="https://pkg.go.dev/database/sql#Conn.PrepareContext">Conn.PrepareContext</a></code>
+            </td>
+            <td class="DocTable-cell">用于保留的专用连接。
+                更多信息请参阅 
+                <a href="/doc/database/manage-connections">管理连接</a>。
+            </td>
+        </tr>
+    </tbody>
+</table>

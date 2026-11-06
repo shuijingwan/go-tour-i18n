@@ -188,7 +188,7 @@ func TestValidatePublishProjectionUsesDynamicWorkflowCounts(t *testing.T) {
 		t.Fatal(err)
 	}
 	projection := &i18n.LocaleProjection{
-		UnitCount: total, Ready: total, PageCount: pages, ExampleCount: examples, ArticleCount: expectedPublishArticles,
+		UnitCount: total, Ready: total, PageCount: pages, ExampleCount: examples, ArticleCount: len(i18n.ArticleOrder),
 	}
 	if err := validatePublishProjection(catalog, projection); err != nil {
 		t.Fatalf("complete dynamic workflow rejected: %v", err)
@@ -200,20 +200,20 @@ func TestValidatePublishProjectionUsesDynamicWorkflowCounts(t *testing.T) {
 	}
 }
 
-func TestBuildReleaseManifestSchemaV2UsesWorkflowCounts(t *testing.T) {
+func TestBuildReleaseManifestSchemaV3UsesWorkflowCounts(t *testing.T) {
 	_, catalog := publishTestCatalog(t)
 	total, pages, examples, err := i18n.LocaleWorkflowUnitCounts(catalog)
 	if err != nil {
 		t.Fatal(err)
 	}
 	projection := &i18n.LocaleProjection{
-		UnitCount: total, PageCount: pages, ExampleCount: examples, ArticleCount: expectedPublishArticles,
+		UnitCount: total, PageCount: pages, ExampleCount: examples, ArticleCount: len(i18n.ArticleOrder),
 	}
 	manifest, err := buildReleaseManifest(catalog, projection, publishOptions{Locale: "zh-CN", PublishedAt: testPublishedAt})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if manifest.SchemaVersion != 2 || manifest.TranslationUnits != 122 || manifest.Pages != 103 || manifest.EligibleExamples != 19 || manifest.Articles != 7 {
+	if manifest.SchemaVersion != releaseManifestSchemaVersion || manifest.TranslationUnits != total || manifest.Pages != pages || manifest.EligibleExamples != examples || manifest.Articles != len(i18n.ArticleOrder) {
 		t.Fatalf("current workflow manifest = %+v", manifest)
 	}
 
@@ -239,7 +239,21 @@ func TestBuildReleaseManifestSchemaV2UsesWorkflowCounts(t *testing.T) {
 	}
 }
 
-func TestValidateBundleAcceptsSchemaV2AndChecksums(t *testing.T) {
+func TestPublishReviewedBuildRequiresExactIdentityPair(t *testing.T) {
+	base := []string{"--locale", "zh-CN", "--output", "/tmp/fixture", "--published-at", testPublishedAt}
+	for _, extra := range [][]string{{"--input-build", "/tmp/reviewed"}, {"--build-identity", strings.Repeat("a", 64)}, {"--input-build", "/tmp/reviewed", "--build-identity", "looks-same"}} {
+		if _, e := parsePublishOptions(append(append([]string{}, base...), extra...)); e == nil {
+			t.Fatal("unbound reviewed build accepted")
+		}
+	}
+	id := strings.Repeat("a", 64)
+	got, e := parsePublishOptions(append(base, "--input-build", "/tmp/reviewed", "--build-identity", id))
+	if e != nil || got.BuildIdentity != id {
+		t.Fatalf("exact reviewed build rejected: %v", e)
+	}
+}
+
+func TestValidateBundleRejectsUnsealedTourOnlyPayload(t *testing.T) {
 	root := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(root, "bin"), 0755); err != nil {
 		t.Fatal(err)
@@ -264,8 +278,8 @@ func TestValidateBundleAcceptsSchemaV2AndChecksums(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(root, "SHA256SUMS"), checksums, 0644); err != nil {
 		t.Fatal(err)
 	}
-	if err := validateBundle(root, manifest, checksums); err != nil {
-		t.Fatalf("schema v2 bundle validation failed: %v", err)
+	if err := validateBundle(root, manifest, checksums); err == nil {
+		t.Fatal("self-consistent Tour-only bundle accepted without sealed Site contract")
 	}
 }
 

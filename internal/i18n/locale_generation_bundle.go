@@ -19,6 +19,7 @@ const (
 )
 
 var localeGenerationAuthorityPaths = []string{
+	"docs/LANGUAGE_DEFECT_EXHAUSTION.md",
 	"AGENTS.md",
 	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
@@ -70,6 +71,9 @@ type LocaleGenerationBundleManifest struct {
 // for locale-level language generation. Formal mutation remains with the
 // existing task-specific local workflow; this bundle is not a receipt or gate.
 func ExportLocaleGenerationBundle(root string, catalog *Catalog, options LocaleGenerationBundleOptions) ([]byte, LocaleGenerationBundleManifest, error) {
+	if _, _, err := LoadLanguageAuditPolicy(root, options.Locale, nil); err != nil {
+		return nil, LocaleGenerationBundleManifest{}, err
+	}
 	if options.TaskKind == LocaleGenerationTaskGlossary {
 		if options.ReviewID != "" {
 			return nil, LocaleGenerationBundleManifest{}, fmt.Errorf("glossary generation cannot use surface Review ID")

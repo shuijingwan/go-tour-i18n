@@ -32,6 +32,8 @@ except (OSError, json.JSONDecodeError) as exc:
     raise SystemExit(f"invalid JSON receipt: {exc}")
 schema = receipt.get("schema") if type(receipt) is dict else None
 required = core if schema == "go-tour-i18n/shared-assets-production-receipt/v1" else core | {"purge_result", "verification_result"}
+if schema=="go-tour-i18n/shared-assets-production-receipt/v2" and "purge_chunks" in receipt:
+    required.add("purge_chunks")
 if schema not in ("go-tour-i18n/shared-assets-production-receipt/v1", "go-tour-i18n/shared-assets-production-receipt/v2") or set(receipt) != required:
     raise SystemExit("receipt must contain exactly the required object keys")
 for key in core - {"changed_paths", "boundary_paths"}:
@@ -49,6 +51,10 @@ values = [
 if any("\0" in value for value in values):
     raise SystemExit("receipt strings must not contain NUL")
 if schema == "go-tour-i18n/shared-assets-production-receipt/v2":
+    if "purge_chunks" in receipt:
+        chunks=receipt["purge_chunks"]
+        if type(chunks) is not list or not chunks or any(type(c) is not dict or c.get("result")!="PASS" or c.get("input_identity")!=receipt["manifest_sha256"] for c in chunks):
+            raise SystemExit("partial shared purge chunks cannot pass")
     if receipt["verification_result"] not in ("PENDING", "PASS"):
         raise SystemExit("invalid verification_result")
     if receipt["deployment_result"] == "DEPLOYED" and receipt["purge_result"] != "PASS":
@@ -101,7 +107,7 @@ main() {
     rm -f -- "$parsed"
     [[ ${#receipt_values[@]} -ge 7 ]] || { error 'invalid receipt schema'; return 1; }
     schema=${receipt_values[index++]}; export_dir=${receipt_values[index++]}; manifest_sha=${receipt_values[index++]}; result=${receipt_values[index++]}; base=${receipt_values[index++]}; changed_count=${receipt_values[index++]}
-    [[ $changed_count =~ ^[0-9]+$ && $changed_count -le 100 ]] || { error 'invalid receipt changed paths'; return 1; }
+    [[ $changed_count =~ ^[0-9]+$ && $changed_count -le ${#receipt_values[@]} ]] || { error 'invalid receipt changed paths'; return 1; }
     changed_paths=("${receipt_values[@]:index:changed_count}"); index=$((index + changed_count))
     [[ ${receipt_values[index]+set} ]] || { error 'invalid receipt boundary paths'; return 1; }
     boundary_count=${receipt_values[index++]}
@@ -111,7 +117,7 @@ main() {
     [[ ( $schema == "$RECEIPT_SCHEMA" || $schema == "$RECEIPT_SCHEMA_V2" ) && $base == "$SHARED_ASSETS_PUBLIC_BASE_URL" && $manifest_sha =~ ^[0-9a-f]{64}$ ]] || { error 'receipt contains unsupported schema, base URL, or manifest SHA'; return 1; }
     [[ $result == NO_CHANGES || $result == DEPLOYED ]] || { error 'receipt has unsupported deployment result'; return 1; }
     [[ $export_dir == /* && -d $export_dir && ! -L $export_dir && $(readlink -f -- "$export_dir") == "$export_dir" ]] || { error 'receipt export directory is not a canonical real directory'; return 1; }
-    [[ $receipt == "$export_dir.verification-receipt.json" ]] || { error 'receipt path is not the formal sibling of its export directory'; return 1; }
+    [[ $receipt == "$export_dir.verification-receipt.json" || $receipt == "$export_dir.shared-assets-execution.json" ]] || { error 'receipt path is not the formal sibling of its export directory'; return 1; }
     [[ ${boundary_paths[*]} == "${SHARED_ASSETS_EXPECTED_BOUNDARY_PATHS[*]}" ]] || { error 'receipt boundary paths do not match the fixed policy'; return 1; }
     if [[ $result == NO_CHANGES ]]; then
         [[ ${#changed_paths[@]} == 0 ]] || { error 'NO_CHANGES receipt contains changed paths'; return 1; }

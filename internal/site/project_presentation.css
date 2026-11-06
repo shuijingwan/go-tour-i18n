@@ -1,0 +1,7 @@
+.ProjectPage{max-width:76rem;margin:auto;padding:2.5rem 1.5rem 4rem;color:inherit}
+.ProjectHero{max-width:55rem;padding:1.5rem 0 2.5rem}.ProjectHero h1{font-size:clamp(2rem,4vw,3.25rem);line-height:1.15;margin:0 0 1.5rem}.ProjectHero p{font-size:1.2rem;line-height:1.75}
+.ProjectSection{padding:2rem 0;border-top:1px solid #8885}.ProjectSection h2{margin:0 0 1.25rem;font-size:1.6rem}.ProjectSection p{max-width:65ch;line-height:1.8}
+.ProjectDirectory{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1rem}.ProjectCard{border:1px solid #8885;border-radius:.5rem;padding:1rem;min-width:0}.ProjectCard summary{cursor:pointer;overflow-wrap:anywhere}.ProjectCard ul{padding-inline-start:1.25rem;line-height:1.8;max-height:24rem;overflow:auto}.ProjectCard a{overflow-wrap:anywhere}
+.ProjectLanguages{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:.65rem 1.5rem;padding-inline-start:1.25rem;line-height:1.65}.ProjectLanguages li{overflow-wrap:anywhere}
+.ProjectSection nav{display:flex;flex-wrap:wrap;gap:1rem 2rem;line-height:1.8}
+@media(max-width:600px){.ProjectPage{padding:1rem 1rem 2rem}.ProjectHero{padding:1rem 0 1.5rem}.ProjectSection{padding:1.5rem 0}.ProjectLanguages{display:block}.ProjectLanguages li+li{margin-top:.65rem}}

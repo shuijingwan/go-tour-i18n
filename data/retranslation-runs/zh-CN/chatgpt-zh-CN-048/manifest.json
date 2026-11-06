@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-048",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/vuln/database.md",
+      "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+      "input_path": "inputs/a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f.article",
+      "input_sha256": "ae6c673af48a9455e132101146d4a7fcfbaf9082fa5bc76a0ffa01a4c0fae885",
+      "protected_token_count": 363,
+      "previous_snapshot_id": "learn-docs-v1-qc-014",
+      "revision_feedback_source": "representation_machine",
+      "revision_authorization_id": "learn-docs-qc014-vuln-database-representation-revision",
+      "previous_rating": "A",
+      "previous_finding": "representation-unbindable: {\"kind\":\"duplicate-prose-literal\",\"intervals\":[{\"source_start\":11114,\"source_end\":11184,\"source_text\":\"vulnerability, package B depends on package A, and there are separate \",\"reviewed_target\":\"漏洞，包 B 依赖包 A，而且包 A 和 B 分别有不同的 \",\"left_anchor\":\"⟦P345⟧\",\"right_anchor\":\"⟦P346⟧\",\"atoms\":[{\"literal\":\"A\",\"source_start\":11158,\"source_end\":11159,\"target_raw_sites\":[9486,9500]},{\"literal\":\"B\",\"source_start\":11137,\"source_end\":11138,\"target_raw_sites\":[9474,9506]}]}]}. Revise only the listed frozen prose intervals and necessary adjacent grammar to express the complete original meaning with the current protected token set. The source-only scaffold is incomplete English input, not an accepted translation. Do not select a historical occurrence mechanically, copy a guessed binding, change unrelated prose, URLs, code or machine identities. This machine finding does not assert a language defect or change the predecessor A. Validation and independent re-QC are required.",
+      "previous_review_decision": "reopened",
+      "previous_review_summary": "learn-docs-qc014-vuln-database-representation-revision",
+      "previous_review_path": "docs/PROTECTED_REPRESENTATION_FORMAL_IMPACT.json",
+      "previous_review_sha256": "8fb332e4ba2b8be55de91c057a3f174ac4bb922536c90e9d4e927e21e6b74e0e"
+    }
+  ]
+}

@@ -839,6 +839,7 @@ func writeCourseMetadataRefreshFixture(t *testing.T, count int) (string, *Catalo
 	t.Helper()
 	root := t.TempDir()
 	locale := "test-LOCALE"
+	ensureTestCurrentLocaleAuthority(t, root, locale, testLanguageAuditAuthority(locale, "Latin", map[string]string{"。": "."}))
 	glossary := []byte("locale: test-LOCALE\nmandatory:\n  slides: slides\n")
 	catalog := &Catalog{Pages: make([]Page, 0, count)}
 	metadata := &CourseMetadata{SchemaVersion: CourseMetadataSchemaVersion, Locale: locale, GeneratorContract: CourseMetadataGeneratorContract, Pages: make([]CoursePageMetadata, 0, count)}

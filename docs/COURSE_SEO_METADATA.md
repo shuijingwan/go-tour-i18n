@@ -231,7 +231,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle-check \
 
 当 ZIP 来自未变化的正式 working tree 且 manifest/hash 完整时，ChatGPT 或 Codex Generation session 对附件的完整读取即满足这批首次 localization context 的传输要求，不再重复读取相同 Page/source/target/glossary。该 ZIP 只改变传输；canonical description 仍是唯一 semantic-scope authority，103/103 Page coverage、正式 provenance、assemble validator 和后续 Locale Surface Review 均不变。
 
-普通 ChatGPT 使用 GPT-5.6 Sol + High；Codex 新启动的正式 Generation 默认使用 GPT-5.6 Sol + High（正式 provenance `gpt-5.6-sol-high`）。两者都是 schema v2 localized description 的正式生成环境，实际使用该 locale 开始正式 generation 前选定并原则上持续使用的 provider。两者都必须遵守相同的 `course-seo-localization-v2` semantic-scope、bundle contract 与上下文使用边界。ChatGPT 使用 `provider=chatgpt`、`model=gpt-5.6-sol-high`；新启动的 Codex Generation 使用 `provider=codex`、`model=gpt-5.6-sol-high`；已开始的 `mr-IN` Luna Generation 按实际身份记录 `model=gpt-6-luna-high`，并都使用真实 RFC 3339 UTC `generated_at`。Generation session 只生成 strict description 输入，不得直接手写正式 `course-metadata.json`；具备仓库终端能力的当前 AI execution environment 默认负责结果落盘，并立即调用下述 assemble / refresh / revise CLI 机械生成正式资产。
+普通 ChatGPT 使用 GPT-5.6 Sol + High；Codex 新启动的正式 Generation 默认使用 GPT-5.6 Sol + High（正式 provenance `gpt-5.6-sol-high`）。两者都是 schema v2 localized description 的正式生成环境，实际使用该 locale 开始正式 generation 前选定并原则上持续使用的 provider。两者都必须遵守相同的 `course-seo-localization-v2` semantic-scope、bundle contract 与上下文使用边界。ChatGPT 使用 `provider=chatgpt`、`model=gpt-5.6-sol-high`；新启动的 Codex Generation 使用 `provider=codex`、`model=gpt-5.6-sol-high`；已开始的 `mr-IN` Luna Generation 按实际身份记录 `model=gpt-6-luna-high`，并都使用真实 RFC 3339 UTC `generated_at`。Generation session 只生成 strict description 输入，不得直接手写正式 `course-metadata.json`；维护者 Local terminal 默认负责结果落盘，并调用下述 assemble / refresh / revise CLI 机械生成正式资产。
 
 生成 session 与最终独立 ChatGPT Locale Surface Review session 必须分离，包括语言质量 revision：发现缺陷的审核 session 不得同时生成替换译文并批准自己的输出。这一独立性要求不要求 Course SEO generation session 是从未读取过 Page source/target 的新 conversation；同一 locale generation session 可在 TranslationUnit generation/revision 后继续执行 Course SEO localization/refresh/revision。本项不改变 schema、canonical source-description review authority 或 Locale Surface Review gate。
 
@@ -299,7 +299,9 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata generation-bundle-check \
   --bundle /tmp/<locale>-course-seo-<task>.zip
 ```
 
-refresh 从 schema-v2 base、current ready targets、glossary 与 canonical descriptions 自动计算 exact stale Page subset，不接受调用者另选 Page；无 stale Page 时拒绝导出。revise 要求 strict-current schema-v2 base、显式去重 Page subset，以及 repository 内的 Reviewer finding。ZIP 同时封装完整首次 localization context、当前 base 与 task context；同一输入重复导出 byte-stable，current-check 逐字节重算，stale 或额外成员 fail closed。它仍只是 provider-neutral transport，不修改 `course-metadata.json`；Generation 输出继续是下方 strict descriptions JSON，再由当前 AI execution environment 默认运行 `refresh` / `revise` 写入真实 provenance。
+maintenance Generation Bundle 的 `refresh` 同时支持 schema-v1/v2 base，复用正式 refresh 的同一 stale-entry predicate、prepared glossary compatibility 与 exact subset selector；调用者不得另选 Page，无 stale Page 时拒绝导出。v1 不迁移为 v2，每个 selected Page 在 `generation-context.json` 中包含完整 English source、完整 ready canonical locale target、当前 identity/route 与原 base entry/description，另封装完整 current glossary、原始 v1 base 和 authority docs。其 semantic scope 保持 `course-seo-description-v1`，不读取或绑定 canonical `source-descriptions.json` / source-description review / v2-only fields，模型仍只输出 strict `page_id`/`description` JSON，不填写 schema、hash、route 或 provenance。
+
+v2 refresh 继续封装完整首次 localization context、当前 base 与 task context，以 canonical English description 为唯一 semantic-scope authority。maintenance Bundle 的 `revise` 继续只接受 strict-current schema-v2 base、显式去重 Page subset 与 repository 内 Reviewer finding；本扩展不改变原 v1 revise CLI 的既有语义，也不扩大 revise Bundle 范围。两种 refresh 共用同一 maintenance transport schema，新增 context 字段仅在 v1 使用；v2 的 context 表示保持原样。同一输入重复导出 byte-stable，current-check 验证完整 inventory/hash、机器派生 exact stale subset，再逐字节重导比较；source/target/glossary/base drift、缺失或额外成员均 fail closed。Bundle 不修改 `course-metadata.json`、不生成 description，也不替代 provenance、strict validation 或 Surface gate。
 
 schema v2 的三个入口都要求 current canonical source-description asset 与 current passed source review gate。模型输出严格仍为：
 
@@ -313,9 +315,9 @@ refresh 对 non-stale entry 原样保留 description 与真实 generation proven
 
 `revise` 与 `refresh` 的语义不可互换：identity stale 时必须使用 `refresh`；只有人工语言审核判定 description 需要改写、且 base 全部 identity current 时才使用 `revise`。`revise` 在任何 Page identity stale、base malformed/incomplete 或 schema v2 source-description/review authority non-current 时整体 fail closed，不顺带刷新 identity。它只替换输入中所选 Page 的 description，按当前正式输入重新派生该 Page identity，并写入本轮真实 generation provenance；未选 Page 的 description、identity 与原 generation provenance 原样保留。命令沿用 base schema，显式 `--schema-version` 只做一致性核对，不自动迁移 v1/v2；最终完整 asset 必须通过同一 strict validator。
 
-schema v2 局部 revision 的每个被选 Page 使用与首次生成相同的当前 Page 上下文，并可额外提供 current localized description 与独立 reviewer 的 finding/defect description。current description 和 finding 只用于定位并修复语言质量问题；它们不是 semantic-scope authority，reviewer finding 也不得授权增加 canonical description 之外的语义。明确 subset 可在同一 generation session/batch 处理，但每页仍必须保持独立 semantic scope 和 Page identity。生成 session 只写上述 strict description 输入；当前 AI execution environment 默认紧接着运行 `course-metadata revise` 机械更新正式 JSON 并记录真实 provenance。发现缺陷的 reviewer session 不得生成 replacement 后再审核自己的修复，之后仍由独立 Locale Surface Review session 重审受影响范围。
+schema v2 局部 revision 的每个被选 Page 使用与首次生成相同的当前 Page 上下文，并可额外提供 current localized description 与独立 reviewer 的 finding/defect description。current description 和 finding 只用于定位并修复语言质量问题；它们不是 semantic-scope authority，reviewer finding 也不得授权增加 canonical description 之外的语义。明确 subset 可在同一 generation session/batch 处理，但每页仍必须保持独立 semantic scope 和 Page identity。生成 session 只写上述 strict description 输入；维护者 Local terminal 默认随后运行 `course-metadata revise` 机械更新正式 JSON 并记录真实 provenance。发现缺陷的 reviewer session 不得生成 replacement 后再审核自己的修复，之后仍由独立 Locale Surface Review session 重审受影响范围。
 
-上述自动落盘与 assemble / refresh / revise 属于 Generation / Reviewer 闭环内部的短机械操作，不授权 AI 自动执行 promotion、build、preview / publish、Production 或最终 Git commit / push；这些成组步骤仍由维护者 Local terminal 在对应闭环收口后执行。任何 CLI failure、stale input 或 mutation-unknown 都必须 fail closed，不得以手写正式 JSON 绕过。
+上述落盘与 assemble / refresh / revise，以及 promotion、build、preview / publish、Production 与最终 Git，均按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)默认由维护者 Local terminal 执行；AI 提供完整命令并消费合法 FINAL PASS，不按 duration 授权 remote call。任何 CLI failure、stale input 或 mutation-unknown 都必须 fail closed，不得以手写正式 JSON 绕过。
 
 ## v2 stale graph
 
@@ -331,6 +333,20 @@ v2 只有全部 identity 当前时才合法：
 source review gate 过期时不能执行 v2 assemble/refresh/revise，且任何 v2 loader/consumer 都会 fail closed。工具不伪造 generation provenance。
 
 ## Locale Surface Review 与 runtime
+
+### 历史 Course SEO archive / transition（实现恢复中，尚未完成交接）
+
+TU promotion receipt/recovery 不授权 Course SEO。新增独立 Go contract 位于 `internal/i18n/course_history.go`：`go-learning/historical-course-seo-recovery/v1` 明确标记 `missing-original-refresh-receipt`，不能冒称旧 refresh 的原始事件；`go-learning/native-course-seo-refresh/v1` 用于未来 canonical refresh。两者不迁移 metadata schema v1/v2，不产生语言生成或 Surface A。
+
+旧 bytes 必须真实存在：维护者显式提供 `course-metadata recover-history --locale <locale> --input <regular-file>`，默认 dry-run，显式 `--apply` 才保存。一次性的 supplied source 可以来自 Git index，但程序不读取 Git；其 SHA 必须 exact 等于 immutable legacy closure 的 CourseMetadata ref。正式 archive 在 `data/course-seo/history/<locale>/<sha>.json`，transition 在 `data/course-seo/transitions/<locale>/<identity>.json`。后续只读 repository artifact；严格 JSON、路径/symlink、self identity、exact membership 与 no-overwrite 验证不变。
+
+重建使用旧 bytes、当前 source/ready canonical/glossary、独立 finalized QC/target authority、pre-refresh `seo:` 与 `seo-page:` compatibility world，以及 current changed entries 的原有 description/provenance，调用同一个 stale-subset refresh 实现；必须得到 exact current file bytes。non-stale entry 不得修改，missing/stale compatibility 不得当作 affected。当前 strict loader 仍另行验证，不自动授予 UI/article/Surface currentness。
+
+未来写入 canonical path 的 refresh 先保存 old/new immutable archives，再建立 per-locale exclusive staging（backup、完整 result、sealed receipt），复验输入后原子安装 metadata，最后 exclusive 发布 receipt。发布失败 rollback 并复验 old bytes；panic/crash 或 rollback unknown 保留 `.course-refresh-staging-*`，strict loader/planner/下一写操作 fail closed。不宣称跨文件 crash-atomic 或断电 durability。
+
+canonical `course-metadata refresh` 与 `course-metadata recover-history` 在命令入口注册 `sitecontent.AttachIntegratedSurfaceAuthority`，复用 representation-owned historical context reader。当 `content-scope.json` 已经由正式 reviewed activation 演进，旧 reference 只能通过 immutable Integrated Surface receipt 的 `ExistingCoverage` 和 exact activation transition proof 重建，重建 bytes 仍必须匹配原 SHA。missing/stale/tampered receipt 继续 fail closed；current scope 不能替代旧 bytes。该接线不扩大 Tour TU inventory，不授权 TU、package completion 或 Surface，不改变 Generation Bundle 合同。
+
+**历史恢复 WIP 保留、停止扩展且不 apply**。此前隔离 fixture 的完整 original Tour context digest 未闭合，不将局部 transition proof 冒充历史 Surface PASS；不再要求恢复所有旧 bytes 才继续 Site v2。主路径改为合法 legacy completion root + 重新独立审核的 exact-current schema-v4 full Surface A + current Unified Glossary Review、finalized A-only TU、canonical authorization 和 strict-current Course SEO，组合出只读 current Tour checkpoint，无新持久化 schema。Course SEO loader 及 `seo:`/`seo-page:` compatibility 仍独立严格验证，TU successor 不授权 SEO。此 checkpoint 是一次 baseline reset，后续 Integrated Surface 只审核真实 new/changed/affected scope，unchanged Tour carry。
 
 schema v2 审核包按 Catalog 顺序为每页包含：完整 English Page source、canonical English description、完整最终 canonical locale target、完整 glossary、localized description，以及 source/source-description/target/glossary identity。审核者必须判断本地化是否忠实于 canonical description、canonical description 是否与完整 source 对齐、localized description 是否与实际 target 一致、术语是否正确、表达是否自然，以及是否存在 unsupported expansion、generic/duplicate 或 route 错配。
 

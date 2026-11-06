@@ -3,6 +3,7 @@ package i18n
 import (
 	"bytes"
 	"fmt"
+	"github.com/shuijingwan/go-tour-i18n/internal/languageaudit"
 	"go/format"
 	"go/parser"
 	"go/scanner"
@@ -26,11 +27,40 @@ func ValidateTranslationUnitCandidate(root string, catalog *Catalog, unitID, loc
 	if err != nil {
 		return err
 	}
+	glossary, err := LoadGlossary(root, locale)
+	if err != nil {
+		return err
+	}
+	return validateTranslationUnitWithGlossary(root, catalog, unit, locale, candidate, glossary)
+}
+
+// Current and archived-glossary evidence use the same representation dispatch.
+// Historical context must not silently force an adapted Page through Present.
+func validateTranslationUnitWithGlossary(root string, catalog *Catalog, unit *TranslationUnit, locale string, candidate []byte, glossary *Glossary) error {
+	if err := validateTranslationUnitRepresentation(root, catalog, unit, locale, candidate, glossary); err != nil {
+		return err
+	}
+	if _, err := ValidateTranslationUnitCommentCoverage(root, catalog, unit, locale, candidate); err != nil {
+		return err
+	}
+	result, err := TranslationUnitLanguageAudit(root, catalog, unit, locale, candidate, glossary)
+	if err != nil {
+		return err
+	}
+	return languageaudit.Blocking(result)
+}
+
+// Immutable historical proof checks the original representation, input and
+// candidate relation. Today's completeness policy belongs to current validation.
+func validateTranslationUnitRepresentation(root string, catalog *Catalog, unit *TranslationUnit, locale string, candidate []byte, glossary *Glossary) error {
+	if unit.Adapter != nil {
+		return unit.Adapter.Validate(candidate, glossary)
+	}
 	switch unit.Kind {
 	case UnitKindPage:
-		return ValidateCandidateForLocale(root, catalog, unit.ID, locale, candidate)
+		return validateCandidateWithGlossary(root, catalog, unit.ID, locale, candidate, glossary)
 	case UnitKindExample:
-		return ValidateGoExampleCandidate(root, unit, locale, candidate)
+		return validateGoExampleWithGlossary(root, unit, locale, candidate, glossary)
 	default:
 		return fmt.Errorf("翻译单元 %s 的类型 %q 不受支持", unit.ID, unit.Kind)
 	}
@@ -40,6 +70,15 @@ func ValidateTranslationUnitCandidate(root string, catalog *Catalog, unitID, loc
 // language comment payloads. Every other source byte and lexical event remains
 // independently checked against the complete upstream Go source.
 func ValidateGoExampleCandidate(root string, unit *TranslationUnit, locale string, candidate []byte) error {
+	glossary, err := LoadGlossary(root, locale)
+	if err != nil {
+		return err
+	}
+	c := &Catalog{Examples: []Example{{ID: unit.ID, SourcePath: unit.SourcePath, Source: unit.Source, SourceSHA256: unit.SourceSHA256}}}
+	return validateTranslationUnitWithGlossary(root, c, unit, locale, candidate, glossary)
+}
+
+func validateGoExampleWithGlossary(root string, unit *TranslationUnit, locale string, candidate []byte, glossary *Glossary) error {
 	if unit == nil || unit.Kind != UnitKindExample {
 		return fmt.Errorf("Go 示例校验器需要 example 翻译单元")
 	}
@@ -105,10 +144,6 @@ func ValidateGoExampleCandidate(root string, unit *TranslationUnit, locale strin
 		return fmt.Errorf("示例翻译单元 %s 的注释数量发生变化: source=%d candidate=%d", unit.ID, len(sourceComments), len(candidateComments))
 	}
 	if err := compareGoExampleImmutableBytes(unit.ID, unit.Source, candidate, sourceComments, candidateComments); err != nil {
-		return err
-	}
-	glossary, err := LoadGlossary(root, locale)
-	if err != nil {
 		return err
 	}
 	return validateGoExampleGlossary(unit.ID, unit.Source, candidate, sourceComments, candidateComments, glossary)

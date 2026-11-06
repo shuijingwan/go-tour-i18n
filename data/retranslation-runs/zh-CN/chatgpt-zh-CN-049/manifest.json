@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-049",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/fips140.md",
+      "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "input_path": "inputs/8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3.article",
+      "input_sha256": "70a9a2fee5443cdd51d094057b47ac39979e835d178508602af3fdf616bb2c46",
+      "protected_token_count": 255,
+      "previous_snapshot_id": "learn-docs-v1-qc-015",
+      "revision_feedback_source": "surface_review",
+      "revision_authorization_id": "20261018-zh-CN-is003-fips140-001",
+      "previous_rating": "A",
+      "previous_finding": "source 正文为 `NIST FIPS 140-3 is a U.S. Government compliance regime...`，current target 对应位置为 `NIST FIPS 140-3 是 U.S 政府针对密码学应用的一套合规制度...`。其中 `U.S 政府` 是用户可见自然语言，不属于 source representation 的 protected identity；当前写法既保留了不必要的英语国家缩写，又把规范的 `U.S.` 写成缺少终止点的 `U.S`，形成明显的中英混杂和不规范表达。",
+      "previous_review_decision": "reopened",
+      "previous_review_summary": "20261018-zh-CN-is003-fips140-001",
+      "previous_review_path": "data/locale-language/zh-CN/surface/20261018-zh-CN-integrated-surface-003.json",
+      "previous_review_sha256": "9b6ca3b63d71c55bb6da5e03b8c07c247634d900dbeaa2d31afbb4a140a500b5"
+    }
+  ]
+}

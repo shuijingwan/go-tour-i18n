@@ -169,7 +169,7 @@ zh-CN 采用以下术语边界：
 
 这些概念在代码区域中的 keyword、标识符或语法形式仍应由 protector 保持原样。例如自然语言中的 `package` 译为“包”，代码中的 `package` token 不变；自然语言中的 `mutex` 译为“互斥锁”，标识符 `sync.Mutex` 不变。
 
-本表仅用于说明分类原则，不取代 locale glossary，也不是完整术语表。
+本表仅用于说明分类原则，不取代 locale glossary，也不是完整术语表，更不是必须逐项复制到每个 locale glossary 的 required-entry list。表中某个教学译法没有单独出现在 `glossary.yaml`，本身不构成 blocking omission；是否值得建立 entry，以及缺失是否足以阻塞 Glossary Review，必须按 [Terminology Guide](TERMINOLOGY_GUIDE.md) 的“尽量少，但必须有价值”原则和 [Glossary Review](GLOSSARY_REVIEW.md) 的 omission threshold 判断。
 
 ## 6. 官方品牌和技术固定名称
 
@@ -257,7 +257,7 @@ Locale glossary 决定目标语言中的自然语言译法。例如 zh-CN 包括
 - `forbidden`；
 - `keep`。
 
-`PromptRules` 会把已加载的 `keep` 作为“保持原样；不得翻译”规则提供给翻译任务。默认 protector 会在适用的开放自然语言区域保护精确 keep 表面形式；Example candidate validator 会逐普通注释比较 keep identity，并对全大写 ASCII 技术标识支持窄的英语单个小写复数后缀 `s` 归一化。该归一化只属于 Example validation，不改变共享 protector、protected input 或 Page validation。
+`PromptRules` 会把已加载的 `keep` 作为“**对应技术 identity 出现时**保持原样；普通语言中的同形词按上下文翻译”的规则提供给翻译任务，而不是把同一拼写的所有自然语言 occurrence 都声明为不可翻译。默认 protector 会在适用的开放自然语言区域保护精确 keep 表面形式；对于仓库已经显式实现的高置信普通词例外（当前包括 `Where to Go` 中的普通动词 `Go`）不建立保护。Example candidate validator 会逐普通注释比较 keep identity，并对全大写 ASCII 技术标识支持窄的英语单个小写复数后缀 `s` 归一化。该归一化只属于 Example validation，不改变共享 protector、protected input 或 Page validation。
 
 `terms` 是为历史 locale 文件保留的兼容 section，当前仍不加载其映射。不得因为某项政策存在，就推断 validator 已自动覆盖所有正文或 locale surface。
 
@@ -275,10 +275,11 @@ Locale glossary 决定目标语言中的自然语言译法。例如 zh-CN 包括
 遇到新术语时，按以下顺序判断：
 
 1. **它是结构对象或代码身份吗？**  如果是，优先由 protector 处理，不进入普通 glossary。
-2. **它是普通教学概念吗？**  如果是，优先确定 locale 的 mandatory 或 preferred 译法。
-3. **它虽然位于自然语言中，但仍必须保留规范原文吗？**  如果是，再考虑 keep / do-not-translate。
-4. **某个错误译法需要明确禁止吗？**  如果是，评估加入 forbidden，并确保规则不会误伤合理语境。
-5. **它是否只是当前模型偶然不一致？**  如果只是单次波动，不要立即新增规则；先判断是否属于稳定、长期的术语政策。
+2. **它是否真的值得成为 glossary entry？**  先按 [Terminology Guide](TERMINOLOGY_GUIDE.md) 的“尽量少，但必须有价值”原则判断；普通、稳定、无明显歧义的自然译法不因 corpus 出现或频率高就自动扩表。
+3. **它是值得统一治理的普通教学概念吗？**  如果是，再确定 locale 的 mandatory 或 preferred 译法；存在正常语境变化时优先 preferred。
+4. **它虽然位于自然语言中，但仍必须保留规范原文吗？**  如果是，再考虑 keep / do-not-translate。
+5. **某个错误译法需要明确禁止吗？**  如果是，评估加入 forbidden，并确保规则不会误伤合理语境。
+6. **它是否只是当前模型偶然不一致？**  如果只是单次波动，不要立即新增规则；先判断是否属于稳定、长期的术语政策。
 
 ## 11. 保持简单的架构方向
 

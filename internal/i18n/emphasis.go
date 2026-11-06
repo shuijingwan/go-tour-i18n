@@ -36,13 +36,19 @@ func parsedFontSpans(root, article string, source []byte) ([]fontSpanKind, error
 }
 
 func parsePresentPage(root, article string, source []byte) (*present.Doc, error) {
+	return parsePresentPageWithReadFile(article, source, func(clean string) ([]byte, error) {
+		return os.ReadFile(filepath.Join(root, "_content", "tour", clean))
+	})
+}
+
+func parsePresentPageWithReadFile(article string, source []byte, read func(string) ([]byte, error)) (*present.Doc, error) {
 	present.PlayEnabled = true
 	ctx := &present.Context{ReadFile: func(name string) ([]byte, error) {
 		clean := filepath.Clean(filepath.FromSlash(name))
 		if filepath.IsAbs(clean) || clean == ".." || strings.HasPrefix(clean, ".."+string(filepath.Separator)) {
 			return nil, fmt.Errorf("unsafe referenced path %q", name)
 		}
-		return os.ReadFile(filepath.Join(root, "_content", "tour", clean))
+		return read(clean)
 	}}
 	wrapped := append([]byte("Tour page\n\n"), source...)
 	doc, err := ctx.Parse(bytes.NewReader(wrapped), article, 0)

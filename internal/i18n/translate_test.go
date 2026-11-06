@@ -734,7 +734,7 @@ func TestTranslationKeepSkipsOnlyHighConfidenceOrdinaryGoVerb(t *testing.T) {
 		})
 	}
 
-	for _, keep := range []string{"gofmt", "PageUp", "PageDown", "Shift", "Enter", "Ctrl"} {
+	for _, keep := range []string{"gofmt", "PageUp", "PageDown", "Ctrl", "Ctrl+Shift+P", "Cmd+Shift+P"} {
 		t.Run("other keep "+keep, func(t *testing.T) {
 			p := protectTranslation([]byte(keep), "12345678", keepOnly)
 			if len(p.Values) != 1 || p.Values[0] != keep || p.Kinds[0] != protectedGlossaryOrKeep {
@@ -781,7 +781,7 @@ func TestTranslationKeepProtectsGoroutineButNotMap(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	source := []byte("Go gofmt PageUp PageDown Shift Enter Ctrl goroutine goroutines Goroutines map maps `Go`\n")
+	source := []byte("Go gofmt PageUp PageDown Ctrl Ctrl+Shift+P Cmd+Shift+P goroutine goroutines Goroutines map maps `Go`\n")
 	p := protectTranslation(source, "12345678", glossary)
 	values := strings.Join(p.Values, "\n")
 	for _, keep := range glossary.Keep {
@@ -797,12 +797,15 @@ func TestTranslationKeepProtectsGoroutineButNotMap(t *testing.T) {
 			t.Errorf("%q entered keep protection: values=%q", visible, p.Values)
 		}
 	}
-	for _, keep := range []string{"goroutine", "goroutines", "Goroutines"} {
-		if strings.Contains(p.Text, keep) {
-			t.Errorf("%q remained visible instead of being protected: %s", keep, p.Text)
+	if strings.Contains(p.Text, "goroutine ") || !containsString(p.Values, "goroutine") {
+		t.Errorf("canonical goroutine identity was not protected: text=%q values=%q", p.Text, p.Values)
+	}
+	for _, plural := range []string{"goroutines", "Goroutines"} {
+		if !strings.Contains(p.Text, plural) {
+			t.Errorf("%q should remain visible for context-aware normalization: %s", plural, p.Text)
 		}
-		if !containsString(p.Values, keep) {
-			t.Errorf("%q missing from protected values: %q", keep, p.Values)
+		if containsString(p.Values, plural) {
+			t.Errorf("%q incorrectly remained an independent keep token: values=%q", plural, p.Values)
 		}
 	}
 	goValues := 0

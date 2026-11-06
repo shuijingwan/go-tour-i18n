@@ -1,0 +1,296 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "learn-docs-v1-qc-001",
+  "snapshot_manifest_sha256": "0cfa2bdfab907cdc5cf6f807b12c4ff870ce9028bf849d54d3ea1bd548386f5c",
+  "rubric": "translation-quality/v1",
+  "result_count": 49,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "8426f1da8d90fc8a8717f7ba1d9879c9bcbb1d499c3cbdca65ba4b9c1783b2ef",
+      "rating": "B",
+      "finding": "Learn 首页主体翻译自然、完整，但 Qwiklabs 卡片模板将表示使用额度/点数的 `Credits` 译为“鸣谢”，语义不符实际 UI 语境。该动态模板会影响对应卡片的用户可见标签，需要修订这一小范围语义错误。"
+    },
+    {
+      "index": 2,
+      "unit_id": "222d561fdcfcc7b1bae13ce24757be32dee3cf49602463c5f82525d806fc358f",
+      "rating": "C",
+      "finding": "页面存在多处整句开放自然语言未翻译，包括运行 `go test` 的命令行操作说明、故意破坏 `greetings.Hello` 以观察失败测试的说明，以及后续再次运行测试的步骤；同时出现“`--而`”这类明显不自然的连接。核心教学步骤中存在连续英文残留，当前状态不适合直接发布。"
+    },
+    {
+      "index": 3,
+      "unit_id": "a8a7bcccd2947c72dafc56ad38debb7cd45cf3a9787b3f7389b853009dac2326",
+      "rating": "C",
+      "finding": "多个关键操作步骤仍为完整英文，包括创建 `hello` 目录、编写调用 `Hello` 的代码、让 `example.com/hello` 使用本地 `example.com/greetings`、运行 `go mod tidy` 同步依赖项。另有 `go.mod` / pseudo-version 说明出现 token 周边语序错乱，降低了模块依赖教学的可理解性。需针对本 Page 完整修订这些开放自然语言及受影响句子。"
+    },
+    {
+      "index": 4,
+      "unit_id": "9682704b58c5523b5e4f4d7734274f63395e43b359a3256129f4c1d2a626b95d",
+      "rating": "C",
+      "finding": "编译安装流程中仍有完整英文教学步骤，包括运行新生成的 `hello` 可执行文件确认代码工作，以及查找 Go 安装路径的说明。这些属于页面核心操作流程，不是技术标识符或机器内容，必须本地化。"
+    },
+    {
+      "index": 5,
+      "unit_id": "8c52c070c06dc5808cb82c1743e20a78424aefc2d595eceb309c234cb9dee0dd",
+      "rating": "C",
+      "finding": "页面保留多处完整英文操作说明，包括切换到主目录、创建 `greetings` 源代码目录、使用 `go mod init` 初始化模块、实现 `Hello` 函数、声明 `message` 变量等；同时有“模块路径 --；”等明显不自然标点。未翻译内容直接覆盖教程的主要步骤，需要修订。"
+    },
+    {
+      "index": 6,
+      "unit_id": "6ab8c22a6bd6dd7281d49d00deea62bce81f4673d9e385e4f316aded236d758a",
+      "rating": "C",
+      "finding": "正文整体质量较好，但完整代码示例中存在系统性的开放 teaching comment 英文残留，例如获取数据库句柄、查询指定艺术家的唱片、保存返回行的切片、使用 `Scan` 赋值、按 ID 查询、为测试硬编码 ID、添加唱片等说明。根据当前 Page contract，这些可翻译 teaching comment 属于正式 Page 语言内容；多处连续遗漏需要修订。"
+    },
+    {
+      "index": 7,
+      "unit_id": "7e2b101749d045df4cf9be3f50225d400bb41aa5e5b433d3c071fed8f8797451",
+      "rating": "B",
+      "finding": "页面主体准确自然，fuzzing、fuzz target、seed corpus 等概念表达基本一致；但完整代码中的一处开放 teaching comment 仍残留英文 `to provide a seed corpus`。属于单一、局部的语言完整性问题，需要精确修订后才能达到 A。"
+    },
+    {
+      "index": 8,
+      "unit_id": "e6404a75442381a01ddea7603ec5b9d60058392f9ad7cb8314e34fbf75742e2f",
+      "rating": "C",
+      "finding": "泛型正文总体技术准确，但多个正式开放 teaching comment 仍为英文，包括初始化整数/浮点映射、对映射值求和，以及说明同时支持整数和浮点值等。由于这些注释属于教程解释内容而非受保护机器代码，连续英文残留构成明显完整性缺陷。"
+    },
+    {
+      "index": 9,
+      "unit_id": "ab4a5a47c4ec4462c2c48641fde33c7e970bf4513500cec239006ec38cd241af",
+      "rating": "C",
+      "finding": "核心操作步骤“In your Go code, import the `rsc.io/quote` package and add a call to its `Go` function.”仍完整保留英文。该步骤直接指导用户修改程序，不属于 UI 固定标签或技术 identity；页面其余内容虽基本可用，但这一关键教学步骤必须本地化。"
+    },
+    {
+      "index": 10,
+      "unit_id": "447efb9972318d8da5dd586f4603750174791f5cbc5f48564d77b862160edeb3",
+      "rating": "B",
+      "finding": "漏洞扫描教程整体准确，VS Code 命令名称等保留英文具有合理 UI identity；但“针对编辑器修改设置”“需要先按照IDE这些说明修改设置”等表达明显生硬且语法关系不顺，影响简体中文自然度。属于小范围措辞问题，不涉及技术含义改变。"
+    },
+    {
+      "index": 11,
+      "unit_id": "cf033420e0eaa8551fda291eeeb433e6890ee52f8a5a1593b6037764864a9483",
+      "rating": "C",
+      "finding": "两处关键操作说明出现明显的 token 周边语序/语义破损：其一，`go mod tidy` 的说明形成“用……代码`go.mod`所需的所有依赖项填充 文件”这类错位句式；其二，将 `golang.org/x/text` 降级到 `v0.3.5` 的说明中版本与“包含已知漏洞”的关系断裂。两处都影响用户正确理解依赖与漏洞复现步骤，需要修订。"
+    },
+    {
+      "index": 12,
+      "unit_id": "a0b2705ae3217d1b86dda6e2c11e062857b0f4d5a876bc10c8e9c76fb57bf830",
+      "rating": "C",
+      "finding": "页面仍保留完整英文操作步骤，要求切换到包含 `hello/hello.go` 的目录并运行 `go run`；此外部分开放 teaching comment 出现中英文混杂或残缺，如 `names` 周边注释形成不完整中文。属于用户直接阅读的教学内容，需要完整修订。"
+    },
+    {
+      "index": 13,
+      "unit_id": "3028d05df0c02c236b71e88f5ef1ef6c35a75e9b211922145fcf7af864e98b46",
+      "rating": "C",
+      "finding": "两个关键教程步骤仍完整保留英文：在 `hello/hello.go` 中处理 `Hello` 返回的 error，以及在 `hello` 目录运行程序确认工作。它们不是代码或固定 UI 文案，而是正式开放自然语言，构成明显翻译遗漏。"
+    },
+    {
+      "index": 14,
+      "unit_id": "d4f137c2ef85c5dd753a9604e8b9ccb20fc758f6b722df889fbbd25898eca2d5",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "f5d71ccafb0457155eab86b0a06262d146276c2204859b5e635fdfe6648d331a",
+      "rating": "B",
+      "finding": "JSON 技术内容整体准确，但存在局部明显自然度问题：标题形成“使用 `any`JSON处理通用数据”的粘连表达；正文又出现“`Cmd` 字段 and/or 或 `Msg` 字段”，把英文 `and/or` 与中文“或”重复混用。语义尚可恢复，但不达到发布级 A。"
+    },
+    {
+      "index": 16,
+      "unit_id": "8eafdd7a23781d41ad01de6a5b46d597b781d0ef9c085dcba81918b0f2550991",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "164cff8e421c0f81385460d6097dd494a740c898314bf09358aa27a6f05f9119",
+      "rating": "C",
+      "finding": "页面存在多处开放 teaching comment 的中英文混杂/残缺表达；同时“把 Gladys 的名字……作为参数传给 `Hello` 中的 `hello.go` 函数调用”将文件与函数调用关系组织错误，产生明显语义/语序问题。需要按完整 Page 上下文修订。"
+    },
+    {
+      "index": 18,
+      "unit_id": "2fecae0061d1f0a34632d79118a2bf1af10e8acba325bbde63e713e9c63eed47",
+      "rating": "C",
+      "finding": "RESTful API 教程存在多处明显语言缺陷：开头“使用 GoAPI以及 Gin”语序/分词异常；完整代码中大量正式开放 teaching comment 仍为英文；部分中文注释中出现 `album` 等中英文混杂；创建资源的说明形成“附上表示JSON所添加唱片的”这类语义残缺句。缺陷分布跨多个章节，必须修订后重新审核。"
+    },
+    {
+      "index": 19,
+      "unit_id": "34113d761416f892795b65fae1a768f78ab15224e9bb89825fb5762c91ffb8a9",
+      "rating": "B",
+      "finding": "多模块工作区教程整体准确，但“go 命令会在……找到……模块；该目录由 `go.work` 文件指定，并且同样通过`golang.org/x/example/hello/reverse` `go.work`文件解析导入”这一关键解释出现 token 周边语序错乱，使 import 如何由 `go.work` 解析的关系不自然且难读。属于局部问题，需要修订。"
+    },
+    {
+      "index": 20,
+      "unit_id": "54f01004345e173d10052bd3a6b194af1292ba0d1d50fcb01b00125f2762eade",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "a34a5c04d189c15899084d16cb42017f5f7b25a6658261eb7b0533cd8791f137",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "bb64c7810e5c03eab18084368a46be54d2e2961643ca0e67487f0b1d443934d7",
+      "rating": "C",
+      "finding": "事务示例的编号步骤发生语义拆分：原本“库存足够时更新库存，并减去订购数量”的单一步骤被拆成一段无编号内容和仅含“订购的专辑数量”的下一编号项，破坏了操作流程的完整含义；另有 `--。` 等明显残留标点。事务教程的步骤关系需要修订。"
+    },
+    {
+      "index": 23,
+      "unit_id": "3d5986d66404f4530a5dd3976653b256f62fb2231cb58a19502a4be455b57093",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "e7629170860f831e59d329f5d51042b6ab6399eea782c6d142bd8dcd79ae443b",
+      "rating": "C",
+      "finding": "连接池核心说明出现两处技术句法破损：把 `sql.DB` 与 `Query` / `Exec` 并列成“方法”，使 `sql.DB` 看起来像方法名；后文又形成“所有已有连接`sql.DB`都正在使用， 会新建连接”，导致 `sql.DB` 主语错位。这直接影响对连接池行为的理解，需要修订。"
+    },
+    {
+      "index": 25,
+      "unit_id": "6052db6a0e2099fd25b7a55fec52169237a1ed59800e5bd195f46c75d2f28a66",
+      "rating": "B",
+      "finding": "数据库句柄与驱动程序说明整体技术准确，但 blank import 段落形成“……隐式使用时 --——就需要……”的重复、混合标点，明显不符合自然中文排版和句法。属于局部可修订问题。"
+    },
+    {
+      "index": 26,
+      "unit_id": "770fe80b23e2deb4619d1ad7ef40f6cb691c349f5712dffd9d31fe0f70926086",
+      "rating": "C",
+      "finding": "“预处理语句是由 SQL 解析并保存的 DBMS”颠倒了核心技术关系。source 的含义是 SQL 语句由 DBMS 解析并保存，而当前译文把 DBMS 写成了被 SQL 解析/保存的对象。这是明确的技术误译，必须修订。"
+    },
+    {
+      "index": 27,
+      "unit_id": "554eaa7b7d70b8b634e5bbc5d4309b72bd63abae2a18e1af103b357e5f53a8fb",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "73f43581dde77f8784659cb40fe4bea604200de89c3cb1ff98f58cdeb3807231",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "6ffc24b4617c1441364ad2fa27e3f9528ab0e50f43c7388f588df91e84bb79ff",
+      "rating": "B",
+      "finding": "模块开发与发布内容整体准确，但列表中出现“管理****依赖项”这一明显损坏的 Markdown emphasis/可见文本结构，影响正式页面呈现；需要精确修复该局部格式与语言边界。"
+    },
+    {
+      "index": 30,
+      "unit_id": "375db21a6686ad848034672a6fa7c9f297627bc303c7822d2d293125a72b4578",
+      "rating": "C",
+      "finding": "`tool` 指令章节的核心介绍句被截断为“将一个包添加为当前模块的依赖项；当当前工作目录位于该模块内时，`go tool`还可通过”，在进入“语法”标题前没有完成 source 中“可通过 `go tool` 运行该工具”的完整语义。属于明确的内容遗漏/句子截断，需要修订该 Page。"
+    },
+    {
+      "index": 31,
+      "unit_id": "2dc9a561d950be08d2963289b78129362fb12e4c57519637b3e1eea632057f46",
+      "rating": "C",
+      "finding": "页面开头关于先阅读两个前置文档的句子发生明显链接标签/语序错位：当前呈现为“相关教程[以及]…”以及“管理模块源代码[，确保你已经熟悉 Go]…模块的基础知识”，导致链接文字与其目标语义不匹配，整句也不自然。该 Page 还存在若干同类 token 周边表达生硬问题。需按完整句义修订前置阅读段落，并检查本页链接绑定周边的中文语序。"
+    },
+    {
+      "index": 32,
+      "unit_id": "81e2cb6978408912f86cb86f1bd34cf964f8c1e4a6d5c3c6395156587bbbbbab",
+      "rating": "B",
+      "finding": "主版本更新内容整体准确自然，但 Note 中破折号恢复后形成“发布类型--——主版本、次版本、补丁版本或预发布版本——--”的重复混合标点，属于明显可见的排版/自然度缺陷。其余核心技术语义没有发现需要修订的问题。"
+    },
+    {
+      "index": 33,
+      "unit_id": "2a2116ee48edd06f9ddac08c7b54b05422d8a34dbae7387166ea1f9de4686bf0",
+      "rating": "C",
+      "finding": "长页面存在多处需修订问题。其中“在 `replace` 文件中使用 go.mod 指令”颠倒了 source 的技术关系；source 是“在 `go.mod` 文件中使用 `replace` 指令”。另有“在 fork and/or 或克隆它之后”这类明显英文残留/重复连接词，以及若干 `go.mod`/指令链接周边语序不自然。涉及实际依赖管理操作，不能直接发布。"
+    },
+    {
+      "index": 34,
+      "unit_id": "6e789f817e0374428fdb3e249447c83bfec22568dc5b3348797cf1caf7af1611",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "e99db54999fdb6c5822fd6f05b7e666611c25a3eb60572a916af049cc9cc9b68",
+      "rating": "B",
+      "finding": "页面主体和发布步骤准确，但“包含发布环节的高级模块开发工作流，---- 请参阅……”形成明显异常的连续连字符/标点，影响正式页面自然度。该问题范围局部；source 中原有的空链接目标不是本轮译文新增缺陷。"
+    },
+    {
+      "index": 36,
+      "unit_id": "8a428c4d4268d85836f07a17aaccc3f02f3de97c23f92e6c49984432465c3e9a",
+      "rating": "C",
+      "finding": "“常见工作流步骤”核心列表发生大范围 token/链接周边语序破损，多项步骤被拆散或相互粘连，例如预发布、v0、v1、bug 修复、非破坏性 API 更改和主版本升级等步骤出现粗体标记错位、链接文字断裂、`API` 与中文句子错位，以及“从 -- 升级到 v1.x.xv2.x.x——”等不可接受的表达。后文还出现“从客户端模块的 文件在本地引用模块，方法是go.mod使用 `replace` 指令”这种技术说明错序。需针对整个 Page 的受影响段落进行集中修订。"
+    },
+    {
+      "index": 37,
+      "unit_id": "00f8aa9a1d858fbb54fd317c1f894a9e205338649d13f647dc62a6308b3f3051",
+      "rating": "C",
+      "finding": "伪版本 `baseVersionPrefix` 的关键定义发生语义/语序破损：“要么派生自……标签，要么在没有vX.0.0此类标签时使用”，没有正确表达 source 的“若不存在这样的标签，则使用 `vX.0.0`”。这是模块版本规则的核心技术说明，应精确修订。另有少量中英文/空格自然度问题，但主要 blocker 是该定义。"
+    },
+    {
+      "index": 38,
+      "unit_id": "a8d233408d36f1d3cf05b4436f6af6afadd1bb8615edcd0bedcaa0ec194091ed",
+      "rating": "B",
+      "finding": "安全最佳实践整体准确，但数据竞争检测器段落形成“请在运行测试或`-race`构建应用程序时添加 标志”这一 token 落点错误，`-race` 与“标志”及“构建应用程序”之间的句法关系被打乱。另有“GitHub用于 govulncheck 的 Action”等轻微不自然表达。需局部修订。"
+    },
+    {
+      "index": 39,
+      "unit_id": "e9dc82ff7a64e06c1828e963d99e24a346d1776ffb3ca419328ab03c6bfc156a",
+      "rating": "B",
+      "finding": "页面技术含义整体忠实，但一般原则示例中出现连续重复“后端。后端。”，属于明确的可见重复文本。其余安全分类、威胁模型边界和重定向说明未发现 blocking 技术误译。"
+    },
+    {
+      "index": 40,
+      "unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+      "rating": "C",
+      "finding": "`GOFIPS140` 的关键取值说明发生 token 周边破损：当前写成“与 `latest``off` 类似，但默认启用 FIPS 140-3 模式”，把 `latest` 与 `off` 粘连并颠倒句法；source 的含义是“`latest` 与 `off` 类似，但默认启用 FIPS 140-3 模式”。此外开头出现“美国U.S政府”等明显混杂。由于涉及用户如何配置 FIPS 模式，需修订后才能发布。"
+    },
+    {
+      "index": 41,
+      "unit_id": "b1b2eeb71c293563be3585cd7461d100600ab2907ed45741f3b23097d7ea3bc5",
+      "rating": "C",
+      "finding": "模糊测试主体大部分技术术语正确，但多处重要句子存在 token/链接落点问题。最明显的是术语表中“模糊测试目标”定义被拆成“通过把该函数传给 / ，将其提供给模糊测试。`(*testing.F).Fuzz`”，方法标识符被移到句末，破坏定义语义。另有 `e.g` 与中文“例如”重复、`file2fuzz` 工具位置说明冗余错序等。需检查并修订本 Page 全部受影响的 token 周边句子。"
+    },
+    {
+      "index": 42,
+      "unit_id": "43da2736fe7fb24ef7db2e50e005f823099b3f08c6575e3cedc1eb4f362fea3f",
+      "rating": "C",
+      "finding": "技术细节页面存在多处明显翻译质量问题，包括 `e.g，例如`、`i.e，例如` 的重复表达；更重要的是覆盖率计数器说明把 source 的 `2^bit-position times` 译成“至少达到 2^位位置 次”，技术表达不可理解。该段用于解释覆盖率量化算法，必须修订为准确、自然的中文技术说明。"
+    },
+    {
+      "index": 43,
+      "unit_id": "03f7c8e1e4556661c7537927828036e3424c2f1bdf88762c2eaead63d4c5376d",
+      "rating": "C",
+      "finding": "govulncheck 章节发生标题/正文语义边界错位。source 的标题是“Scan code for vulnerabilities with govulncheck”，下一句以“Developers can use…”开始；当前却呈现为正文“使用 govulncheck 扫描代码中的漏洞”，随后把“开发者可以使用 govulncheck 工具判断是否有任何”变成三级标题，再由正文“漏洞会影响自己的代码……”续接。虽然 Markdown 结构机器合法，但用户可见标题与正文被错误重组，必须修订。"
+    },
+    {
+      "index": 44,
+      "unit_id": "126f2e430e4ad62ded97b90668a9621eb8f9b1b9bd9d316643afd1211cc6a9e6",
+      "rating": "B",
+      "finding": "安全政策整体忠实，但严重性轨道段落出现“严重程度and/or和影响范围”这一明显英文残留和重复连接词；同页还有 `e.g CRITICAL...` 等局部中英文衔接不自然。核心政策含义仍可恢复，因此评级为 B，但正式发布前需要清理这些开放自然语言残留。"
+    },
+    {
+      "index": 45,
+      "unit_id": "3b1b400ea7db47c5a226df85cebf94837417e2264f2ef4d8008f711ab61ab845",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "d87ca1767f1739882e4dbd08643e0b1573c52554747f68ab15a3e57a94e84ec6",
+      "rating": "C",
+      "finding": "“Requesting a CVE ID for a public vulnerability”段落的关键句发生语义错序。source 是“为 Go 生态系统中一个现有的 PUBLIC 漏洞申请 CVE ID”，当前却呈现为“要为 Go 生态系统中现有的 CVE ID 漏洞申请 PUBLIC”，使申请对象从 CVE ID 变成了 PUBLIC，技术/流程含义被反转。必须精确修订。"
+    },
+    {
+      "index": 47,
+      "unit_id": "2fdb32dbf7afa3b472911994cca882ce4b57e9432a19e731b294306dd9ff405b",
+      "rating": "C",
+      "finding": "漏洞数据库页面存在多处 token 周边语言破损：`modified` 时间说明出现“** 与实际时钟时间”“e.g例如”；“Usage in govulncheck”标题/正文被拆成“在 `govulncheck` / 中使用`govulncheck`默认使用……”；Schema 部分出现孤立的 `affected`，以及后文 `e.g“…”` 等混杂表达。问题分布跨 API 与 schema 多个章节，需要按完整 Page 修订，而不是只处理单一短语。"
+    },
+    {
+      "index": 48,
+      "unit_id": "8ec984658f343516692029836d613a227a0bb0760411a23bcbd8cbf5ed56a27c",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "aa80c16e03ba1b5a11c8f81678c8d3bdf7e4b27e6ef81663565acbfbfdd2251c",
+      "rating": "C",
+      "finding": "漏洞管理架构与资源章节存在多处明显 token/链接周边错位。架构第 3 项把 source 的“**Integrations** with pkg.go.dev and govulncheck”破坏为“**与 **[pkg.go.dev]以及 govulncheck 的集成”，粗体和句法异常；数据库资源段落的链接文字也被拆成“[pkg.go.dev/vuln 在浏览器中查看数据库中的]漏洞”等不自然结构，并导致相邻段落断裂。需修订这些组合句及链接标签，使其恢复完整自然语义。"
+    }
+  ]
+}

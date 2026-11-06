@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-052",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "d799614a9f1efd848505c615a88f2fb0f092ac22f743b3da042e12de1127fd8b",
+      "unit_kind": "page",
+      "source_path": "_content/doc/database/cancel-operations.md",
+      "source_sha256": "c71ef831003d93f55e7ffb503aadb883797e574b21d905caa42c783cf02ff683",
+      "input_path": "inputs/d799614a9f1efd848505c615a88f2fb0f092ac22f743b3da042e12de1127fd8b.article",
+      "input_sha256": "bc0f0763e3ad12ab31c187c68c1536f3a628333f7955bf8f5d1f1967288aacb9",
+      "protected_token_count": 86,
+      "previous_snapshot_id": "learn-docs-v1-qc-018",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "正文中从“当一个 上下文 从外层 上下文 派生时”开始、至 QueryWithTimeout 示例说明结束的段落，多次在“上下文”前后保留不自然的空格（如“外层 上下文”“关联的 上下文”“该 上下文”“HTTP 请求的 上下文”），形成明显的中文排版/表达瑕疵，并与页面前文对 Context/context 的处理不协调。应只收口该局部自然语言的术语与空格表达，同时保持 queryCtx、ctx、http.Request.Context、HTTP/2、QueryWithTimeout 等技术 identity 和原有语义不变。"
+    },
+    {
+      "unit_id": "872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983",
+      "unit_kind": "page",
+      "source_path": "_content/doc/database/open-handle.md",
+      "source_sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c",
+      "input_path": "inputs/872da6c618956d7ff25dbe8db7d898808b6a78fc1b91244ffcda0f59ce2b1983.article",
+      "input_sha256": "df95ddcb0777c5e4b5ac65d6101aa89262b7f372dc431c1d82cd48fc65ca467b",
+      "protected_token_count": 210,
+      "previous_snapshot_id": "learn-docs-v1-qc-018",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "当前 Page 存在需要实际修订的发布质量问题，而非仅轻微润色。最明显的是“存储数据库凭据”段落：source 表达的是密钥管理应用保存凭据并提供 API，代码通过该 API 获取用于向 DBMS 认证的凭据；current candidate 的“并由它提供代码可用于 API获取凭据的接口，以便向 DBMS进行身份验证”语序和角色关系混乱，不能自然、准确地表达该技术关系。此外同 Page 多处存在明显的中文标点/空格断裂，例如开头的“工作\n，简化了数据库访问\n。”、“通常……连接 --；这项工作”、连接字符串段落中句号与正文脱离，以及若干中文标点前出现异常空白。修订应以这些具体局部为范围，恢复自然、准确的中文技术表达和标点，不改动 database/sql、sql.DB、API、DBMS、DSN、Connector、Go identifier、链接或代码语义。"
+    },
+    {
+      "unit_id": "21946bff61d8f7c52c444edcd122ea398ba80574a8095c37befa936541a9cd4c",
+      "unit_kind": "page",
+      "source_path": "_content/doc/database/querying.md",
+      "source_sha256": "02e399c4e8b9895689676f976ce052da6d6efa6f6bed3c7368314a47e3314864",
+      "input_path": "inputs/21946bff61d8f7c52c444edcd122ea398ba80574a8095c37befa936541a9cd4c.article",
+      "input_sha256": "3c8a3c50988a6cb6cf5b4944df597cef9a21bae02a62a555dab1a0e307f7ef64",
+      "protected_token_count": 280,
+      "previous_snapshot_id": "learn-docs-v1-qc-018",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "页面技术含义总体正确，但仍有一组局部发布质量瑕疵需要收口：多处中文句号被拆到 inline technical token/上一行之后，产生“Row 。 ”、“false 。 ”及 rows.Close 段落中的类似异常空格/标点；两个函数表格中 source 的 reserved connections 被表达为“保留的专用连接”，措辞重复、生硬，与该连接概念的页面语境不够自然。应只修订这些局部措辞与中文标点/空格，保持 Query/QueryRow/Rows/Scan/Conn、SQL、DBMS、prepared statement 等技术语义及代码 identity 不变。"
+    },
+    {
+      "unit_id": "a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f",
+      "unit_kind": "page",
+      "source_path": "_content/doc/security/vuln/database.md",
+      "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+      "input_path": "inputs/a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f.article",
+      "input_sha256": "ae6c673af48a9455e132101146d4a7fcfbaf9082fa5bc76a0ffa01a4c0fae885",
+      "protected_token_count": 363,
+      "previous_snapshot_id": "learn-docs-v1-qc-018",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "完整 Page 中仍有两处可翻译的英文举例缩写直接残留在中文正文：修改时间说明中的“e.g，不能据此判断缓存是否失效”和 database_specific.url 说明中的“URL；e.g，可写作……”。这两处 e.g./e.g, 并非 identifier、schema 字段或必须保留的技术 token，在中文技术文档中形成明显语言残留。应仅修订这两处举例引导表达，保持 URL、database_specific.url、OSV schema、ID 及所有 API/JSON identity 不变。"
+    }
+  ]
+}

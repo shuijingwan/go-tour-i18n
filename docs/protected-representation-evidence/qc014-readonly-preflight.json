@@ -1,0 +1,45 @@
+{
+  "authority_source": "quality-check",
+  "byte_exact_predecessor_rebase": true,
+  "engineering_proof": {
+    "path": "docs/protected-representation-evidence/qc014-representation-necessity.json",
+    "sha256": "cd3de15656e6c624386e8755912e4fd4f1cd44073ebc3744a9c9b37f28492c76"
+  },
+  "formal_authorization_gate": "NOT_EXECUTED: canonical CLI must recompute complete QC authority, currentness and unconsumed-output gates before any write.",
+  "formal_mutation": "none",
+  "historical_documents": {
+    "path": "docs/protected-representation-evidence/qc014-historical-representations.json",
+    "sha256": "e119897a3822d9abc42360c46889ac08c850c870f00ad51f250e3b71e91162e4"
+  },
+  "next_canonical_command": "'go' 'run' '-mod=readonly' './cmd/tour-i18n' 'quality-check' 'surface-reopen' '--content-package' 'learn-docs-v1' '--authority-source' 'quality-check' '--locale' 'zh-CN' '--reopen-id' 'learn-docs-qc014-representation-successor' '--previous-snapshot-id' 'learn-docs-v1-qc-014' '--previous-rating' 'B' '--finding' '原 preview finding 的 collapsed Markdown reference binding 已关闭：current usage `[CMVP validation certificate][]` 与 reference definition label 完全一致，且 definition 仍绑定 canonical source 中的 CMVP validation-certificate external URL，因此 rendered source-bound link 已恢复，未发现 link target、Markdown binding 或邻近 `inprocess` / `certified` 技术语义损坏。但修订后用户可见链接文本 `CMVP validation certificate` 保持为完整英文短语；其中 `CMVP` 可保持正式 identity，而 `validation certificate` 是普通可翻译自然语言，并非代码、API 或必须 keep 的 machine identity。同一 Page 后文对同一概念已经使用中文“CMVP 验证证书”，因此这里形成局部不必要英文残留和页内术语表达不一致。后续 exact revision 应仅在该受影响 reference usage/definition 局部闭合此语言问题，继续保持 collapsed-reference label 一致、原 external URL 不变，并不得破坏相邻 `inprocess` / `certified` 对应关系。除此之外，本次 affected local context 未发现新的结构、链接、技术语义或术语缺陷。' '--unit-id' '8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3' '--historical-documents' 'docs/protected-representation-evidence/qc014-historical-representations.json' '--representation-proof' 'docs/protected-representation-evidence/qc014-representation-necessity.json'",
+  "replacement": {
+    "old_unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+    "current_unit_id": "8e2b3ec2b00595cb7e8ea8587ea6002107a0e616c18f49fc46562702af10f1c3",
+    "package": "learn-docs-v1",
+    "package_sha256": "bcd457bfd9c459548e391f0e90262c5ef3cd4e2a41d0f7430a6680cfd579696d",
+    "source_path": "_content/doc/security/fips140.md",
+    "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+    "stable_index": 40,
+    "route": "/doc/security/fips140",
+    "old_input_sha256": "8eb49d799c36782e3b26c4de8329919bc7c9f2d570077f4a1fa26db904cfed27",
+    "current_input_sha256": "70a9a2fee5443cdd51d094057b47ac39979e835d178508602af3fdf616bb2c46",
+    "reconciliation_sha256": "5d3a8d71c9cfa2b5385325c9291d3eb4a88e86194fb337febe80b9b48b52221b"
+  },
+  "report_type": "engineering-read-only-no-formal-apply",
+  "result": "PASS",
+  "results_sha256": "08dfd54ff7c6090fd29c1e2859394dc7d12b650d5fd8a724537490c4bfb6706b",
+  "snapshot_sha256": "234a37330a348590ab3b46e30d720ad42718dc798cb3002e212b86ce47acb619",
+  "snapshot_unit": {
+    "index": 40,
+    "unit_id": "3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c",
+    "unit_kind": "page",
+    "selected_batch_id": "chatgpt-zh-CN-045",
+    "source_path": "_content/doc/security/fips140.md",
+    "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+    "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-045/candidates/3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c.article",
+    "candidate_sha256": "7a5918b50ba49440f12023cc37746b1a69d54a8e24d196f727b337a822ede9ba",
+    "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-045/validation/3d04565df345ae012a9e34fddf1eabc577320d02a2eb124dcf3004bfdfa9132c.json",
+    "validation_sha256": "dfa83671155e084a2f7c2b68dc8cf16ed498245a8cb55d49147c6a89f940f5a3",
+    "attempt": 1
+  }
+}

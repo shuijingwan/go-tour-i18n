@@ -30,7 +30,7 @@ func ValidatePageRegistry(r PageRegistry) error {
 	}
 	seen := map[string]bool{}
 	for i, p := range r.Pages {
-		if p.Index != i+1 || !validPath(p.Path) || seen[p.Path] || !strings.Contains(" learn tutorial database modules security ", " "+p.Surface+" ") {
+		if p.Index != i+1 || !validPath(p.Path) || seen[p.Path] || !component(p.Surface) {
 			return fmt.Errorf("invalid Page index/path/surface")
 		}
 		seen[p.Path] = true
@@ -63,6 +63,21 @@ func FreezePageRegistry(g *Global) (*PageRegistry, error) {
 }
 func LoadPageRegistry(root string, g *Global) (*PageRegistry, error) {
 	b, err := readRegular(root, PageRegistryPath)
+	// Immutable source-package readers use the explicitly frozen predecessor
+	// registry, never infer a historical subset from the current 51-Page file.
+	if g.Membership == nil {
+		m, readErr := readPackageMembership(root)
+		if readErr != nil {
+			return nil, readErr
+		}
+		if m != nil {
+			var previous PageRegistry
+			if err := readReference(root, m.PreviousRegistry, &previous); err != nil {
+				return nil, err
+			}
+			b, err = Encode(previous)
+		}
+	}
 	if err != nil {
 		return nil, err
 	}

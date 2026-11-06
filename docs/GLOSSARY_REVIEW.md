@@ -8,6 +8,8 @@ v1/v2/v3 是 implementation/content-package milestone，不是 locale language g
 
 新 unified receipt `go-learning/unified-glossary-review/v1` 与 old v1/Tour legacy coverage additive 共存。新 Generation 要求 current unified coverage；旧 completion仍按旧 evidence合法验证。unified current exact优先；多个 current unified receipts、glossary/corpus mismatch fail closed。旧 receipt immutable，不 retroactively upgrade corpus coverage。glossary bytes不变但 corpus变了仍需一次 full unified Review；不猜造 corpus compatibility shortcut。新 glossary byte change须 full unified PASS后才用 V2-B semantic delta/精确 lineage复用旧结果。
 
+source/corpus 扩展后的 readonly refresh inspection 不作语言判断。current corpus/terminology gates 和 glossary schema/显式规则检查通过、没有 machine-required byte delta 时，可以保留当前完整 glossary bytes，作为新的 full Unified Reviewer Bundle 输入；不为 byte-identical 输入伪造一次 Generation。其语义充分性仍由独立 Reviewer 对完整 current glossary/corpus fresh 判断，不能把机器检查或 byte-identical 当语言 PASS。真正需要术语决定或 Reviewer finding replacement 时回到既有 Generation role 刷新完整 glossary；不另设 delta-only Review，也不复用旧 full Review。
+
 历史/current Tour completion 的 `RequireCurrentGlossaryReview` 优先接受唯一 current PASS unified review；well-formed FAILED 或 conflicting unified campaign receipts 不遮蔽仍 exact-valid 的旧 Tour formal/legacy proof。glossary bytes 真正改变后，旧 proof 不再匹配，不能 fallback carry。新工作使用 `RequireNewLanguageGlossaryReview` / `RequireUnifiedGlossaryReview`，仍严格拒绝 FAILED、conflicting 或 stale unified authority。malformed/schema/self-identity/unsafe-path/archived bundle 损坏属于证据完整性错误，两类 gate 均 fail closed，不以 legacy fallback 掩盖。
 
 
@@ -21,7 +23,7 @@ Glossary Review 是新 locale 在正式语言生成前对完整 `locales/<locale
 locale init
 → Generation session 制定完整 glossary
 → generation-independent Reviewer session 完整 Glossary Review
-→ AI execution environment 记录并检查 current passed receipt
+→ Maintainer Local terminal 记录并检查 current passed receipt
 → Generation session 一次 Unified Structured Assets（只输出 pending assets）
 → 同一 locale campaign 内 Tour TranslationUnits / Learn-Docs Pages generation
 → TranslationUnit Quality Check / promotion / Course SEO
@@ -30,13 +32,19 @@ locale init
 
 Reviewer session 必须从未参与该 locale 的 language generation。同一个符合此条件的长期 Reviewer session 可以依次承担 Glossary Review、TranslationUnit Quality Check / re-QC 与 Locale Surface Review；三个 gate 的范围和 evidence 始终独立。Reviewer 发现问题时只返回 finding，不自行修改 glossary 或生成 replacement；Generation session 修订后，原 Reviewer session 可以重新完整审核当前 glossary。
 
-Reviewer 给出正式结论后，具备仓库终端能力的当前 AI execution environment 默认连续完成 reviewer bundle current-check、receipt record / check，以及 failed finding 回流后 glossary replacement 的必要落盘与再次导出。这里自动化的只是既有机械步骤；Reviewer 仍不得生成 replacement，Generation session 仍不得批准自己的 glossary，所有完整覆盖与 current gate 保持不变。locale init 与首次 bulk TranslationUnit ZIP handoff 仍由维护者 Local terminal 执行。
+Reviewer 给出正式结论后，维护者 Local terminal 默认执行 reviewer bundle current-check、receipt record / check，以及 failed finding 回流后 glossary replacement 的必要落盘与再次导出。AI 按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)提供完整命令，直接消费合法 FINAL PASS，不 remote 重验；“短”不改变默认执行者。Reviewer 不得生成 replacement，Generation session 不得批准自己的 glossary，所有完整覆盖与 current gate 保持不变。locale init 与首次 bulk TranslationUnit ZIP handoff 同样由维护者执行。
 
 UI / article metadata 目前没有文件写入级 machine block，但正式生成必须发生在 Glossary Review PASS 后。若在途 locale 已提前生成这些资产，Glossary Review 直接 PASS 时可继续使用；若 glossary revision，Generation session 必须同步检查和修订受影响的 UI / metadata 后再继续。
 
 本 gate 引入时的 `bn-BD` 属于上述在途状态：glossary、UI 与 article metadata 已由 Generation session 生成，但尚未执行 TranslationUnit export。不得为它补造 passed receipt；它是第一门必须完成正式 Glossary Review 的 locale。若当前 glossary PASS，既有 UI / metadata 可继续使用；若 glossary revision，必须先同步检查和修订受影响资产。
 
 ## 完整审核范围
+
+“完整审核”要求 Reviewer 不抽样地审核**当前 glossary 已有全部规则及其所需 source context**，但不把 glossary 解释成 exhaustive dictionary。Reviewer 不得仅因为某个英文词出现在 Unified Corpus、或某个教学译法出现在 `TRANSLATION_TERMINOLOGY.md` 的示例/分类表中，就把“未建立 glossary entry”判为 blocking omission。
+
+缺失 entry 只有在以下至少一种情况有当前正式 evidence 时才可以成为 blocking finding：仓库 authority 明确要求该对象形成显式 glossary 决定；当前正式 target 已出现跨 Page / surface 的实际术语冲突或明显漂移；存在多个合理译法且缺少统一决定已经形成可重复的质量风险；或该对象属于 UI、navigation、project naming、technical identity 等缺少显式决定会产生高影响歧义的内容。单纯“常见”“高频”“有一个标准中文译法”不足以要求继续扩表。glossary 仍遵守 [Terminology Guide](TERMINOLOGY_GUIDE.md) 的“尽量少，但必须有价值”原则。
+
+Reviewer 即使已经发现足以导致 `failed` 的 blocker，也必须继续完成本次完整审核，不得在首个或前几个 finding 后提前停止。若最终 decision 为 `failed`，必须在同一次 invocation 中列出当前相同 Reviewer Bundle / corpus / authority 已能够发现的全部 blocking findings；不得把已经可发现的问题留到后续轮次逐步追加。后续 re-review 如果又提出一个依据在上一轮完全相同输入中已经存在的新 blocker，必须明确解释上一轮为何未发现；只有 revision 新引入的问题或 source/corpus/authority 后续真实变化产生的问题，才属于正常的新 finding。
 
 不得抽样。Reviewer 必须完整读取当前 glossary 及制定术语所需的正式 English/source context，逐项审核 `mandatory`、`preferred`、`forbidden` 和 `keep`：
 
@@ -50,7 +58,7 @@ UI / article metadata 目前没有文件写入级 machine block，但正式生�
 
 正式结论只有 `passed` / `failed`，不使用 TranslationUnit 的 A/B/C/D。`failed` 必须给出至少一条 finding；finding 回到 Generation session 产生 replacement。
 
-Generation session 的完整输入默认由当前 AI execution environment 用 `generation-bundle locale-export --task glossary` 一次性导出；修订前用 `generation-bundle locale-check --bundle <zip>` 验证 current。产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者。该 generation ZIP 与 Reviewer ZIP 不得混用：前者允许生成 glossary，后者明确只允许 findings / passed/failed。
+Generation session 的完整输入默认由维护者 Local terminal 用 `generation-bundle locale-export --task glossary` 一次性导出；修订前用 `generation-bundle locale-check --bundle <zip>` 验证 current。维护者完成 Local terminal 导出与 current-check 后，按产品需要完成实际 ZIP handoff。该 generation ZIP 与 Reviewer ZIP 不得混用：前者允许生成 glossary，后者明确只允许 findings / passed/failed。
 
 独立 Reviewer 优先读取 deterministic、自包含 ZIP：
 
@@ -66,9 +74,11 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review reviewer-bundle-check \
 
 新 ZIP 包含完整 glossary、locale identity、完整 Unified Glossary Source Corpus、术语与审核 authority，以及 exact inventory/hash。Corpus 已机械覆盖 Tour、UI、metadata、canonical SEO、shell、Learn data 和 Learn/Docs Page；不再只使用 122 Tour TU。相同 working tree 重复导出必须 byte-stable；记录结论前必须运行 current-check，任何 glossary、source 或 authority 变化都使旧 ZIP fail closed。bundle 只是 transport，不是 receipt 或 review decision，Reviewer 不得在审核 session 生成 replacement。
 
+显式启用 frozen terminology-discovery authority 后，Corpus v2 还包含 `purpose=terminology-discovery` 的 go.dev / Go source 可见语言 projection。它不是 active package coverage、V2-C1 sync、第二份 glossary 或独立 Review identity；Reviewer 仍审核唯一 `locales/<locale>/glossary.yaml`。Corpus identity 改变时，即使 glossary bytes 完全相同，也必须重新执行一次完整 Unified Glossary Review，禁止 corpus compatibility shortcut。discovery 只用于更早发现高价值术语并降低未来 byte churn，不把 corpus 中每个词变成 required glossary entry。
+
 ## Receipt 与 current gate
 
-审核完成后由当前 AI execution environment 默认记录机器 receipt；reviewer 不填写 glossary SHA：
+审核完成后由维护者 Local terminal 默认记录机器 receipt；reviewer 不填写 glossary SHA：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n glossary-review record \

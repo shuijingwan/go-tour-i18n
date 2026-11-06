@@ -13,7 +13,7 @@ import (
 // It never rewrites source snapshots or historical language/review evidence.
 // This is not a future upstream-sync or completion-activation workflow.
 func RepairUncommittedV2A(root string) (int, error) {
-	snapshot, err := readRegular(root, SnapshotPath)
+	snapshot, err := ReadSourceSnapshot(root)
 	if err != nil {
 		return 0, err
 	}

@@ -426,15 +426,15 @@
     {
       "page_id": "flowcontrol/9",
       "route": "/flowcontrol/9",
-      "description": "介绍 switch 如何执行首个匹配分支、自动结束该分支，以及 Go 的分支条件不必是常量或整数等特点。",
+      "description": "介绍 Go 的 switch 如何执行首个匹配分支并自动结束该分支，以及 case 值不必是常量、相关值也不必是整数。",
       "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
       "target_sha256": "57cd8b0ba41a8e47a076fa761cecc8857d23e98854a07ea92d2ed7a5990cd73b",
-      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "glossary_sha256": "5c6f5666eb17e0563221259a560605b878ee7a9faf46112bd62c0debac2b6f63",
       "generation": {
-        "provider": "codex",
+        "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-10-09T02:29:24Z"
       }
     },
     {
@@ -1294,29 +1294,29 @@
     {
       "page_id": "concurrency/1",
       "route": "/concurrency/1",
-      "description": "介绍由 Go 运行时管理的轻量级线程 goroutine，说明启动与求值过程，以及共享内存访问必须同步的原因。",
+      "description": "介绍由 Go 运行时管理的轻量级线程 goroutine，说明 go 语句的求值与执行发生在哪个 goroutine，以及共享内存访问为何必须同步。",
       "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
-      "target_sha256": "18da5c9f63240f5c471aa7ce1733aa47af46f132a6275417600c74fc673eea7a",
-      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "target_sha256": "b703bbb23f51488b63599a82c6d82cbba5f4c290421d9d23e387d481b05e175f",
+      "glossary_sha256": "5c6f5666eb17e0563221259a560605b878ee7a9faf46112bd62c0debac2b6f63",
       "generation": {
-        "provider": "codex",
+        "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-10-09T02:29:24Z"
       }
     },
     {
       "page_id": "concurrency/2",
       "route": "/concurrency/2",
-      "description": "讲解 goroutines 之间通过带类型的通道发送和接收值、阻塞等待对端，并以分工求和展示无需显式锁的同步。",
+      "description": "讲解通道作为带类型的通信通路，如何在 goroutine 之间发送和接收值，并通过默认阻塞行为实现无需显式锁的同步。",
       "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
-      "target_sha256": "365cbe79b0f4d9cceabbb94f8f7fca32ebb924ab4279933b1a8eef8911ca3cac",
-      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "target_sha256": "a6bfc23635bdb7f109ef4a452caf52b4b3d1a0005fd311d37e0078f107719878",
+      "glossary_sha256": "5c6f5666eb17e0563221259a560605b878ee7a9faf46112bd62c0debac2b6f63",
       "generation": {
-        "provider": "codex",
+        "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-10-09T02:29:24Z"
       }
     },
     {
@@ -1353,12 +1353,12 @@
       "description": "介绍 select 如何让 goroutine 等待多个通信操作，在某个分支可执行时选择它，并在多个分支就绪时随机选择。",
       "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
       "target_sha256": "7bb830c3df7f181cae18f73068dc490707f8671d9fa4eaa77c170f9709429170",
-      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "glossary_sha256": "5c6f5666eb17e0563221259a560605b878ee7a9faf46112bd62c0debac2b6f63",
       "generation": {
-        "provider": "codex",
+        "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-10-09T02:29:24Z"
       }
     },
     {
@@ -1366,13 +1366,13 @@
       "route": "/concurrency/6",
       "description": "讲解 select 中的 default 分支会在其他分支均未就绪时执行，从而尝试不会阻塞的通道发送或接收。",
       "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
-      "target_sha256": "1bcece8a05eb05e5c012ba11af6c631b16d8fd6ead8a660aa05e9c00da90ae2e",
-      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "target_sha256": "5c507919a0a7f959d96c4e7e3145bd09a4714b2e9ffd85805279490855dad070",
+      "glossary_sha256": "5c6f5666eb17e0563221259a560605b878ee7a9faf46112bd62c0debac2b6f63",
       "generation": {
-        "provider": "codex",
+        "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-10-09T02:29:24Z"
       }
     },
     {
@@ -1406,15 +1406,15 @@
     {
       "page_id": "concurrency/9",
       "route": "/concurrency/9",
-      "description": "介绍防止 goroutines 并发访问变量产生冲突的互斥机制，以及使用 sync.Mutex、Lock、Unlock 和 defer 保护代码。",
+      "description": "介绍如何用互斥机制避免多个 goroutine 同时访问变量产生冲突，并通过 sync.Mutex、Lock、Unlock 与 defer 让代码块以互斥方式执行。",
       "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
-      "target_sha256": "3831cbd810eac0c0ecb74313c29cbb7e5caa038f0dfe23020dfd1b20c562b870",
-      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "target_sha256": "95365b2e09fbc9adcabdc3f5a6f5ce2b74c0942d6d0562f8017c0045699e50ee",
+      "glossary_sha256": "5c6f5666eb17e0563221259a560605b878ee7a9faf46112bd62c0debac2b6f63",
       "generation": {
-        "provider": "codex",
+        "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-10-09T02:29:24Z"
       }
     },
     {
@@ -1434,15 +1434,15 @@
     {
       "page_id": "concurrency/11",
       "route": "/concurrency/11",
-      "description": "为教程结束后的继续学习提供资料指引，涵盖 Go 文档、标准库、语言规范、并发模式、Web 应用、函数类型和博客。",
+      "description": "提供后续学习资源指引，涵盖 Go 文档、标准库和语言规范，以及并发模式视频与幻灯片、Web 应用教程、函数类型代码导览和 Go 博客。",
       "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
-      "target_sha256": "674a15a50938ec8d8cb465cd362e8a121d1eba4eafd8ec6658fdea6623bfc7eb",
-      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "target_sha256": "b855c2bacecead2d703c5a0e004bc704c47d55a63d86aaf4ae83014cf15b8677",
+      "glossary_sha256": "70be302647a76f00de9f9802001e9f106b24cae666906c3a6dbef7f5c57bdb39",
       "generation": {
-        "provider": "codex",
+        "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-10-12T12:06:02Z"
       }
     }
   ]

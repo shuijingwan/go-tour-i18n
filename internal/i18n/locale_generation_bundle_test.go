@@ -5,15 +5,27 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 )
 
-func TestLocaleGlossaryGenerationBundleDeterministicAndComplete(t *testing.T) {
-	root := repoRoot(t)
+func localeGenerationBundleFixture(t *testing.T) (string, *Catalog) {
+	t.Helper()
+	root := copyTestLocaleSurfaceTree(t, "uk-UA")
+	ensureTestCurrentLocaleAuthority(t, root, "uk-UA", testLanguageAuditAuthority("uk-UA", "Cyrillic", map[string]string{"。": "."}))
+	copyTestLanguageAuditMachineAuthority(t, root)
+	copyBundleAuthority(t, root, localeGenerationAuthorityPaths)
+	copyQualityBundleTestFile(t, filepath.Join(repoRoot(t), "data/locale-surface-reviews/uk-UA/20260921-first-production.md"), filepath.Join(root, "data/locale-surface-reviews/uk-UA/20260921-first-production.md"))
+	recordSyntheticUnifiedReview(t, root, "synthetic-locale-generation-review", "uk-UA")
 	catalog, err := BuildCatalog(root)
 	if err != nil {
 		t.Fatal(err)
 	}
+	return root, catalog
+}
+
+func TestLocaleGlossaryGenerationBundleDeterministicAndComplete(t *testing.T) {
+	root, catalog := localeGenerationBundleFixture(t)
 	options := LocaleGenerationBundleOptions{Locale: "uk-UA", TaskKind: LocaleGenerationTaskGlossary}
 	first, manifest, err := ExportLocaleGenerationBundle(root, catalog, options)
 	if err != nil {
@@ -33,12 +45,41 @@ func TestLocaleGlossaryGenerationBundleDeterministicAndComplete(t *testing.T) {
 	if err := ValidateTransportBundleInventory(files, manifest.Files, true); err != nil {
 		t.Fatal(err)
 	}
-	var context LocaleGenerationContext
-	if err := json.Unmarshal(files["generation-context.json"], &context); err != nil {
+	// Glossary tasks consume the unified corpus transport, not the retired
+	// Tour-only generation-context.json. Verify complete current JSON inputs.
+	var embedded UnifiedGlossaryBundle
+	if err := decodeStrictBundleJSON(files["manifest.json"], &embedded); err != nil {
 		t.Fatal(err)
 	}
-	if len(context.SourceUnits) != 122 || len(context.ExpectedOutputs) != 1 || context.ExpectedOutputs[0] != "glossary.yaml" {
-		t.Fatalf("incomplete locale generation context: %+v", context)
+	if manifest.SchemaVersion != 2 || embedded.Schema != "go-learning/unified-glossary-bundle/v1" || embedded.Role != "generation" || embedded.Locale != options.Locale || embedded.Identity != manifest.InputIdentitySHA256 || !reflect.DeepEqual(embedded.ExpectedOutputs, []string{glossaryReviewGlossaryPath(options.Locale)}) {
+		t.Fatalf("incomplete unified glossary contract: %+v", embedded)
+	}
+	corpus, err := LoadUnifiedGlossaryCorpus(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var archived GlossarySourceCorpus
+	corpusPath := "inputs/" + GlossaryCorpusPath
+	if len(files[corpusPath]) == 0 {
+		t.Fatalf("missing complete corpus JSON: %s", corpusPath)
+	}
+	if err := decodeStrictBundleJSON(files[corpusPath], &archived); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(&archived, corpus) || embedded.CorpusSHA != corpus.Identity {
+		t.Fatal("unified generation corpus was truncated or changed")
+	}
+	for _, path := range []string{GlossaryCorpusPath, glossaryReviewGlossaryPath(options.Locale), "locales/" + options.Locale + "/locale.json"} {
+		original, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(path)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !bytes.Equal(files["inputs/"+path], original) {
+			t.Fatalf("generation input incomplete: %s", path)
+		}
+	}
+	if _, err := CheckUnifiedGlossaryBundle(root, first); err != nil {
+		t.Fatal(err)
 	}
 	if _, err := VerifyCurrentLocaleGenerationBundle(root, catalog, first); err != nil {
 		t.Fatalf("current locale generation bundle rejected: %v", err)
@@ -46,11 +87,7 @@ func TestLocaleGlossaryGenerationBundleDeterministicAndComplete(t *testing.T) {
 }
 
 func TestLocaleGenerationBundleTaskContracts(t *testing.T) {
-	root := repoRoot(t)
-	catalog, err := BuildCatalog(root)
-	if err != nil {
-		t.Fatal(err)
-	}
+	root, catalog := localeGenerationBundleFixture(t)
 	for _, test := range []struct {
 		task, reviewID string
 		outputs        []string
@@ -110,11 +147,7 @@ func TestLocaleGenerationBundleTaskContracts(t *testing.T) {
 }
 
 func TestLocaleGenerationBundleLocaleAssetsArticleHeaderChangeMakesOldBundleStale(t *testing.T) {
-	sourceRoot := repoRoot(t)
-	catalog, err := BuildCatalog(sourceRoot)
-	if err != nil {
-		t.Fatal(err)
-	}
+	sourceRoot, catalog := localeGenerationBundleFixture(t)
 	options := LocaleGenerationBundleOptions{Locale: "uk-UA", TaskKind: LocaleGenerationTaskLocaleAssets}
 	bundle, manifest, err := ExportLocaleGenerationBundle(sourceRoot, catalog, options)
 	if err != nil {
@@ -127,16 +160,11 @@ func TestLocaleGenerationBundleLocaleAssetsArticleHeaderChangeMakesOldBundleStal
 			copyLocaleGenerationTestFile(t, sourceRoot, fixtureRoot, file.RepositoryPath)
 		}
 	}
-	receipts, err := filepath.Glob(filepath.Join(sourceRoot, "data", "glossary-reviews", "uk-UA", "*.review.json"))
-	if err != nil || len(receipts) == 0 {
-		t.Fatalf("find uk-UA Glossary Review receipt: files=%v err=%v", receipts, err)
-	}
-	for _, receipt := range receipts {
-		relative, err := filepath.Rel(sourceRoot, receipt)
-		if err != nil {
-			t.Fatal(err)
-		}
-		copyLocaleGenerationTestFile(t, sourceRoot, fixtureRoot, filepath.ToSlash(relative))
+	// Carry the current synthetic review and its immutable archived input,
+	// rather than the retired glossary-review receipt family.
+	copyLocaleGenerationTestFile(t, sourceRoot, fixtureRoot, GlossaryCorpusPath)
+	for _, dir := range []string{"data/unified-glossary-reviews/uk-UA", "data/unified-glossary-reviews/uk-UA-bundles"} {
+		copyQualityBundleTestTree(t, filepath.Join(sourceRoot, dir), filepath.Join(fixtureRoot, dir))
 	}
 	for article := range catalogArticleSet(catalog) {
 		copyLocaleGenerationTestFile(t, sourceRoot, fixtureRoot, filepath.ToSlash(filepath.Join("_content", "tour", article)))

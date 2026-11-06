@@ -19,7 +19,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
 
@@ -123,7 +122,10 @@ func FrozenSnapshot(sourceRoot string) ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
-func snapshotFS(b []byte) (fs.FS, error) {
+func snapshotFS(b []byte, contexts ...*structuredSuccessorValidation) (fs.FS, error) {
+	if len(contexts) > 0 && contexts[0] != nil {
+		contexts[0].countHistorical("snapshotFS")
+	}
 	z, err := zip.NewReader(bytes.NewReader(b), int64(len(b)))
 	if err != nil {
 		return nil, err
@@ -396,7 +398,31 @@ func learnInventory(f fs.FS) ([]Source, error) {
 	return all, nil
 }
 
-func BuildGlobal(root string, snapshot []byte) (*Global, error) {
+func BuildGlobal(root string, snapshot []byte, contexts ...*structuredSuccessorValidation) (*Global, error) {
+	return observedGlobalSource(root, snapshot, contexts...)
+}
+
+func buildGlobalCanonical(root string, snapshot []byte, contexts ...*structuredSuccessorValidation) (*Global, error) {
+	if len(contexts) > 0 && contexts[0] != nil {
+		contexts[0].countHistorical("BuildGlobal")
+		contexts[0].countHistorical("BuildSourceCatalog")
+	}
+	f, err := snapshotFS(snapshot, contexts...)
+	if err != nil {
+		return nil, err
+	}
+	sources, err := learnInventory(f)
+	if err != nil {
+		return nil, err
+	}
+	o, err := observeGlobalSource(root)
+	if err != nil {
+		return nil, err
+	}
+	return assembleGlobalSource(snapshot, o, f, sources)
+}
+
+func deriveGlobalSource(snapshot []byte, o globalSourceObservation) (*Global, error) {
 	f, err := snapshotFS(snapshot)
 	if err != nil {
 		return nil, err
@@ -405,52 +431,29 @@ func BuildGlobal(root string, snapshot []byte) (*Global, error) {
 	if err != nil {
 		return nil, err
 	}
-	catalog, err := i18n.BuildSourceCatalog(root)
-	if err != nil {
-		return nil, err
-	}
+	return assembleGlobalSource(snapshot, o, f, sources)
+}
+
+func assembleGlobalSource(snapshot []byte, o globalSourceObservation, f fs.FS, sources []Source) (*Global, error) {
 	g := &Global{Schema: GlobalSchema, PublicName: PublicName, UpstreamRepository: "https://github.com/golang/website.git", UpstreamCommit: tour.FrozenUpstreamCommit, SnapshotSHA256: digest(snapshot), Sources: sources,
 		Versions: []Version{{"site-v1", []string{"tour-v1"}}, {"site-v2", []string{"tour-v1", "site-v2-shell", "learn-docs-v1"}}},
 		Surfaces: []Surface{{"tour", "tour-v1", "/tour/**", "present.Section", "legacy-formal-local"}, {"homepage", "site-v2-shell", "/", UnitContract, "requires-independent-completion"}, {"translation", "site-v2-shell", "/translation/", UnitContract, "requires-independent-completion"}},
 		Packages: []Package{{ID: "tour-v1", Activation: "legacy-evidence", Routes: []string{"/tour/", "/tour/list"}, Surfaces: []string{"tour"}}, {ID: "site-v2-shell", Activation: "independent-shell-gates", Routes: []string{"/", "/translation/"}, Surfaces: []string{"homepage", "translation"}}, {ID: "learn-docs-v1", Activation: "atomic-locale-package", Routes: []string{}, Surfaces: []string{"learn", "tutorial", "database", "modules", "security"}}},
 	}
 	for i, id := range g.Packages[2].Surfaces {
-		g.Surfaces = append(g.Surfaces, Surface{id, "learn-docs-v1", strings.TrimPrefix(learnRoots[i], "_content") + "/**", UnitContract, "requires-independent-completion"})
+		g.Surfaces = append(g.Surfaces, Surface{id, "learn-docs-v1", strings.TrimPrefix(o.LearnRoots[i], "_content") + "/**", UnitContract, "requires-independent-completion"})
 	}
-	for _, s := range ShellSources() {
-		b, err := readRegular(root, s.Path)
-		if err != nil {
-			return nil, err
-		}
-		s.Origin = "repository"
-		s.SHA256 = digest(b)
-		s.Dependencies = []Dependency{}
-		g.Sources = append(g.Sources, s)
-	}
-	for _, p := range catalog.Pages {
+	g.Sources = append(g.Sources, o.Shell...)
+	for _, route := range o.Routes {
 		// Page.Route remains the Tour-internal identity; scope owns its public projection.
-		g.Packages[0].Routes = append(g.Packages[0].Routes, "/tour"+p.Route)
+		g.Packages[0].Routes = append(g.Packages[0].Routes, "/tour"+route)
 	}
 	for _, s := range sources {
 		if s.Kind == "page" {
 			g.Packages[2].Routes = append(g.Packages[2].Routes, s.Route)
 		}
 	}
-	files, err := listFiles(os.DirFS(root), "_content/tour")
-	if err != nil {
-		return nil, err
-	}
-	for _, p := range files {
-		b, err := readRegular(root, p)
-		if err != nil {
-			return nil, err
-		}
-		kind := "asset"
-		if path.Ext(p) == ".article" {
-			kind = "page"
-		}
-		g.Sources = append(g.Sources, Source{Path: p, Kind: kind, Origin: "repository", Package: "tour-v1", Surface: "tour", SHA256: digest(b), Dependencies: []Dependency{}})
-	}
+	g.Sources = append(g.Sources, o.Tour...)
 	for i := range g.Packages {
 		p := &g.Packages[i]
 		if p.ID == "site-v2-shell" || p.ID == "learn-docs-v1" {
@@ -466,7 +469,7 @@ func BuildGlobal(root string, snapshot []byte) (*Global, error) {
 		// Contract dependencies are part of learn/doc source authority, outside its exact 80-file scope.
 		deps := []Dependency{}
 		if p.ID == "learn-docs-v1" {
-			for _, dp := range append(append([]string{}, contractPaths...), "_content/site.tmpl", "_content/article.tmpl", "_content/doc/default.tmpl") {
+			for _, dp := range append(append([]string{}, o.Contracts...), "_content/site.tmpl", "_content/article.tmpl", "_content/doc/default.tmpl") {
 				b, err := fs.ReadFile(f, dp)
 				if err != nil {
 					return nil, err

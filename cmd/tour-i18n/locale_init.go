@@ -13,13 +13,15 @@ import (
 	"strings"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/languageaudit"
 )
 
 type localeInitOptions struct {
-	Locale       string
-	LanguageName string
-	EnglishName  string
-	HTMLLang     string
+	LanguagePolicy *languageaudit.Authority
+	Locale         string
+	LanguageName   string
+	EnglishName    string
+	HTMLLang       string
 }
 
 type localeInitResult struct {
@@ -71,6 +73,7 @@ var localeInitRichTagRE = regexp.MustCompile(`</?[^>]+>`)
 
 func initializeLocaleCommand(root string, catalog *i18n.Catalog, args []string) (*localeInitResult, error) {
 	fs := flag.NewFlagSet("locale init", flag.ContinueOnError)
+	policyPath := fs.String("language-policy", "", "repository-relative explicit language policy authority JSON")
 	locale := fs.String("locale", "", "locale 标识，例如 it-IT")
 	languageName := fs.String("language-name", "", "该语言的本地名称（autonym）")
 	englishName := fs.String("english-name", "", "该语言的英文名称")
@@ -87,7 +90,39 @@ func initializeLocaleCommand(root string, catalog *i18n.Catalog, args []string) 
 	if *htmlLang == "" {
 		*htmlLang = *locale
 	}
-	options := localeInitOptions{Locale: *locale, LanguageName: *languageName, EnglishName: *englishName, HTMLLang: *htmlLang}
+	if *policyPath == "" {
+		return nil, errors.New("--language-policy is required")
+	}
+	if filepath.IsAbs(*policyPath) || filepath.ToSlash(filepath.Clean(*policyPath)) != *policyPath || strings.HasPrefix(*policyPath, "../") {
+		return nil, errors.New("language policy path must be repository-relative")
+	}
+	current := root
+	for _, part := range strings.Split(*policyPath, "/") {
+		if part == "" || part == "." || part == ".." {
+			return nil, errors.New("invalid policy path")
+		}
+		current = filepath.Join(current, part)
+		st, err := os.Lstat(current)
+		if err != nil {
+			return nil, err
+		}
+		if st.Mode()&os.ModeSymlink != 0 {
+			return nil, errors.New("policy symlink forbidden")
+		}
+	}
+	st, err := os.Lstat(current)
+	if err != nil || !st.Mode().IsRegular() {
+		return nil, errors.New("regular policy input required")
+	}
+	raw, err := os.ReadFile(current)
+	if err != nil {
+		return nil, err
+	}
+	policy, err := languageaudit.DecodeAuthority(raw, *locale)
+	if err != nil {
+		return nil, err
+	}
+	options := localeInitOptions{Locale: *locale, LanguageName: *languageName, EnglishName: *englishName, HTMLLang: *htmlLang, LanguagePolicy: &policy}
 	return initializeLocale(root, catalog, options)
 }
 
@@ -105,6 +140,12 @@ func initializeLocale(root string, catalog *i18n.Catalog, options localeInitOpti
 		return nil, errors.New("language_name 和 english_name 不能为空")
 	}
 
+	if options.LanguagePolicy == nil {
+		return nil, errors.New("explicit language policy required before locale initialization")
+	}
+	if err := options.LanguagePolicy.Validate(options.Locale); err != nil {
+		return nil, err
+	}
 	localeDir := filepath.Join(root, "locales", options.Locale)
 	uiPath := filepath.Join(root, "internal", "tour", "ui", options.Locale+".json")
 	for _, path := range []string{localeDir, uiPath} {
@@ -167,7 +208,8 @@ func initializeLocale(root string, catalog *i18n.Catalog, options localeInitOpti
 
 func writeLocaleSkeletonFiles(root, directory string, catalog *i18n.Catalog, options localeInitOptions) error {
 	metadata := i18n.Locale{
-		Locale: options.Locale, LanguageName: options.LanguageName, EnglishName: options.EnglishName,
+		LanguageAudit: options.LanguagePolicy,
+		Locale:        options.Locale, LanguageName: options.LanguageName, EnglishName: options.EnglishName,
 		HTMLLang: options.HTMLLang, Phase: "scaffold", TranslationUnit: "present.Section", DefaultLanguage: false,
 	}
 	if err := writeLocaleInitJSON(filepath.Join(directory, "locale.json"), metadata); err != nil {

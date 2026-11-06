@@ -1,5 +1,9 @@
 # 新增 Locale 执行手册
 
+当前 Learn/Docs 统一为 **51 Page，package=`learn-docs-v1`**。initial Page Generation按1–30、31–51各一次独立 invocation（30+21），全部机器校验通过后建立完整 Snapshot；initial QC也按30+21两次独立 invocation，完成后才集中 revision。新 locale没有独立 `docs-entry-v1` 阶段。locale init不新增第二次初始化；Tour status/metadata/Course SEO保留自己的范围，Learn/Docs通过 complete registered Page catalog进入共享流程。历史49+2的接受证明及 closure composition见[统一 membership contract](LEARN_DOCS_MEMBERSHIP.md)。
+
+全项目执行共同遵守[共享翻译单元生命周期与五角色协作](SHARED_TRANSLATION_UNIT_LIFECYCLE.md)：所有内容表面复用同一生命周期；页面差异限于适配器；传输安全与逐单元机器校验分层；先恢复、先复用，中文说明，交接只给一个执行者、动作和停止条件。本文中 Tour 的 present / Example 细节属于 Tour 适配边界，不另建 Learn/Docs 状态机。Learn/Docs 两批生成和机器校验全部完成后才初审，两批初审全部完成后集中修订。角色与工具分工不替代任何正式 machine authority 或语言质量 gate。
+
 ## Versionless locale authority（V2-D 收敛）
 
 v1/v2/v3 是 implementation/content-package milestone，不是 locale language governance namespace。Content package 可以版本化；Locale language system 不版本化。全站只有 `locales/<locale>/glossary.yaml`，不得 Tour/Docs/v2 split。current executable migration、统一 corpus、一次完整 glossary generation/refresh、统一 structured assets、完整 Page TU 与 delta-aware integrated Surface contract 见 [Site v2 Workflow](SITE_V2_WORKFLOW.md)。本节是全站扩展入口；下文旧 Tour workflow/evidence 保持兼容，不授权重复初始化 locale 或改写历史证据。
@@ -59,7 +63,7 @@ locale / domain / CDN 决策
 
 新增 locale 始终以质量 gate 为先。每个 locale 固定维护 **1 个长期 Generation role/session + 1 个独立长期 Reviewer role/session + 维护者 Local terminal**：Generation session 只产生或修订语言内容；Reviewer session 执行 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担这些审核，不要求拆分更多 reviewer conversation/session；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement。
 
-新增 locale 的 initial Page / Example 大批量 TranslationUnit Generation 仍由维护者 Local terminal 导出 provider-neutral Generation ZIP 并交给 Generation session。具备仓库终端访问能力时，生成者将完整输出保存在按 locale + batch 隔离的隐藏 staging，随后默认以目录 import 直接落地，不生成或下载 outputs ZIP；跨环境传输或目录不可用时保留 outputs ZIP → `result-pack` → `import` 回退。Reviewer ZIP 仍由维护者上传给独立 Reviewer。进入 Generation / Reviewer 往返后，当前 AI execution environment 默认自动完成短机械步骤，包括小批 revision/retry、审核结果 current-check / record / finalize、locale-level replacement、Surface Reviewer bundle / record-a，以及 Course SEO 结果落盘和正式 assemble / refresh / revise。promotion、build、preview / publish / Production、search closeout 与最终 Git commit / push 仍由维护者 Local terminal 成组执行。该分工不改变 gate、身份隔离或 provenance。
+新增 locale 的 initial Page / Example 大批量 TranslationUnit Generation 仍由维护者 Local terminal 导出 provider-neutral Generation ZIP 并交给 Generation session。具备仓库终端访问能力时，生成者将完整输出保存在按 locale + batch 隔离的隐藏 staging，随后默认以目录 import 直接落地，不生成或下载 outputs ZIP；跨环境传输或目录不可用时保留 outputs ZIP → `result-pack` → `import` 回退。Reviewer ZIP 仍由维护者上传给独立 Reviewer。进入 Generation / Reviewer 往返后，同样由维护者 Local terminal 默认执行所有 deterministic repository / shell workflow，包括小批 revision/retry、审核结果 current-check / record / finalize、locale-level replacement、Surface Reviewer bundle / record-a，以及 Course SEO 结果落盘和正式 assemble / refresh / revise。promotion、build、preview / publish / Production、search closeout 与最终 Git commit / push 仍由维护者 Local terminal 成组执行。AI 按长期[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)提供完整可复制命令并消费合法 FINAL PASS；“短”不授权 remote call。该分工不改变 gate、身份隔离或 provenance。
 
 在开始该 locale 的正式 generation 前，根据当时真实的 ChatGPT 可用额度、Codex 5 小时额度与周额度、Remote Desktop Commander 月额度、历史实测成本和并发计划，选择 `chatgpt` 或 `codex` 作为 Generation provider；ChatGPT 与 Codex 新启动的正式 Generation 默认均使用 **GPT-5.6 Sol + High**（Codex provenance：`gpt-5.6-sol-high`）。正式 generation 开始后沿用已选模型；`mr-IN` 已批准的 Luna 批次继续按真实 `gpt-6-luna-high` provenance 完成。一旦开始正式 generation，原则上 glossary generation / revision、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / 需要新译文的 retry、schema v2 Course SEO localization / refresh / revise replacement，以及 Locale Surface Review finding replacement generation 全程沿用同一 provider 与已选模型。模型只可在维护者明确批准、位于安全批次边界且有真实额度或 provider/tool 依据时切换，并须保留真实 provenance，不新增虚假 generation 记录，不弱化任何 gate。该选择不新增 schema、receipt、machine gate 或 locale state 字段。
 
@@ -79,7 +83,7 @@ locale / domain / CDN 决策
 | 集中 revision / re-QC | 按 Page / Example 分开、每个 revision batch 最多 60 Unit，集中处理汇总的 B/C/D；不得为凑满批次扩大 scope。生成新的 full Snapshot；只有旧 A 且 rubric、source、selected batch、candidate、validation、attempt 与 glossary lineage 完全符合现有规则时才 carry-forward，其余只按 pending scope re-QC，直到全 A 后 finalization。 |
 | 闭环收口与上线 | `promote`、build、preview / browser verifier、publish、Production / deploy / verifier、search closeout、最终 commit / push 继续由维护者 Local terminal 成组执行；`first-production` / `live`、Production HUMAN gate 与 visual HUMAN gate 的现有规则不变。 |
 
-若历史或当前执行已经在首审中途合法 revision，不倒退状态、不删除或伪造 evidence，也不强行补完旧 Snapshot 的三组。应从当前 full Snapshot / scope 和已有结果恢复：重新导出下一份 current Reviewer ZIP，按 identity 规则 carry-forward 旧 A，并只审核当前 pending Unit。只有真实缺少 terminal 能力、确需跨 ChatGPT / Ubuntu 或跨 session 上传附件，或发生真实 failure / mutation-unknown 时才交回维护者；不能要求维护者把已下载 ZIP 手工 `cp` 到 `/tmp`，也不能声称当前 ChatGPT / Remote Desktop Commander 已有无需人工附件传递的跨环境通道。
+若历史或当前执行已经在首审中途合法 revision，不倒退状态、不删除或伪造 evidence，也不强行补完旧 Snapshot 的三组。应从当前 full Snapshot / scope 和已有结果恢复：重新导出下一份 current Reviewer ZIP，按 identity 规则 carry-forward 旧 A，并只审核当前 pending Unit。正常 deterministic 步骤默认给维护者完整 Local terminal 命令；缺 exact fact、canonical docs / command contract 或需要 FAILED / unexpected / mutation=unknown diagnosis 时，若一次合并 readonly RDC 读取 docs + implementation/tests 能明显降低手工 discovery 总成本，则按 [Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同) 优先采用；不可用或无明显收益时再提供合并 Local terminal discovery command。读取不授权 mutation，完整 Bundle semantic RDC=0 与可信 PASS 不重验不变。不能要求维护者把已下载 ZIP 手工 `cp` 到 `/tmp`，也不能声称当前 ChatGPT / Remote Desktop Commander 已有无需人工附件传递的跨环境通道。
 
 ## 1. 冻结语言与生产身份
 
@@ -88,7 +92,7 @@ locale / domain / CDN 决策
 - 规范 locale、`html_lang`、本地显示名、英文名和域名使用的 lowercase language code；
 - production hostname 与 CDN；除 zh-CN 既有站外，社区语言遵循 [LANGUAGES.md](../LANGUAGES.md) 的 `<language-code>-go-dev.shuijingwanwq.com` 与 Cloudflare 约定；
 - 独立 data root、release/current/lock 路径、systemd service、未占用的 loopback port、public URL；
-- 是否使用非中文共享静态资源基线；
+- current sealed shared-assets dependency（全部 locale 同一 policy）；
 - Playground 代理需要新增的精确 HTTPS Origin；
 - 首页语言 registry 中的显示顺序与目标 URL。
 
@@ -104,6 +108,7 @@ locale / domain / CDN 决策
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n locale init \
+  --language-policy <repository-relative-policy.json> \
   --locale <locale> \
   --language-name <autonym> \
   --english-name <English-name> \
@@ -114,7 +119,7 @@ go run -mod=readonly ./cmd/tour-i18n locale init \
 
 随后阅读 [术语治理政策](TRANSLATION_TERMINOLOGY.md) 和 [术语制定指南](TERMINOLOGY_GUIDE.md)，由 Generation session 建立完整 `locales/<locale>/glossary.yaml`。不得机器翻译 zh-CN、ja-JP 或其他 locale 的 glossary。
 
-当前 AI execution environment 默认先导出 provider-neutral generation ZIP，ChatGPT 或 Codex 完整读取同一 contract；修订前以 `locale-check` 确认 current。产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者：
+维护者 Local terminal 默认先导出 provider-neutral generation ZIP，ChatGPT 或 Codex 完整读取同一 contract；修订前以 `locale-check` 确认 current。维护者完成 Local terminal 导出与 current-check 后，按产品需要完成实际 ZIP handoff：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-export \
@@ -131,7 +136,7 @@ Glossary 同时承担两项正式职责：
 
 对 `Go Playground` 这类可能翻译、部分本地化或 keep 的名称，必须在该 locale 的 glossary 中形成显式决定。不同 locale 可以做不同决定，但同一 locale 不得在不同表层混用。此步骤只建立新 locale 的规则，不顺带修改 zh-CN 或 ja-JP 的现有译文。
 
-完整 glossary 制定后，必须按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 由未参与该 locale generation 的 Reviewer session 完整审核，并由当前 AI execution environment 默认记录、检查 current passed receipt：
+完整 glossary 制定后，必须按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 由未参与该 locale generation 的 Reviewer session 完整审核，并由维护者 Local terminal 默认记录、检查 current passed receipt：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n glossary-review reviewer-bundle \
@@ -207,7 +212,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata source check
 go run -mod=readonly ./cmd/tour-i18n course-metadata source review-check
 ```
 
-再生成 ChatGPT 与 Codex 共用的 provider-neutral deterministic ZIP；该准备步骤可由当前 AI execution environment 自动完成，产品界面需要附件上传时只把实际 ZIP handoff 留给维护者：
+再生成 ChatGPT 与 Codex 共用的 provider-neutral deterministic ZIP；该准备步骤默认由维护者 Local terminal 执行并完成实际 ZIP handoff：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
@@ -220,7 +225,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle-check \
 
 把该 ZIP 交给长期 Generation session。只要它来自未变化的正式 working tree 且 `manifest.json`/SHA-256 完整，ChatGPT 或 Codex 都直接读取附件内 103/103 Page full context、完整 glossary、locale identity 与当前 authority，不再重复扫描同一批输入；正式输入变化后必须重新导出 ZIP。ZIP 只是 transport container，不是 Course SEO authority 或 gate。
 
-随后由选定的 Generation provider 为每个 Page 输出完整 `page_id → localized description`。ChatGPT 与 Codex 新启动的 Generation 默认均使用 GPT-5.6 Sol + High；已开始并获批使用 Luna 的 `mr-IN` batch 按真实模型身份继续。canonical description 仍是唯一 semantic-scope authority；source/target 只用于技术语义、正文术语、自然度与实际内容对齐，不授权重新摘要。同一 generation session/batch 可处理多页，但不得跨 Page 补充、混合或推断语义。Generation 结果由具备仓库终端能力的当前 AI execution environment 默认正式落盘，并立即使用离线命令组装 v2 asset；target body 由命令机械读取并计算 `target_sha256` freshness，与其作为生成上下文的职责互不替代。真实 provenance 必须与本 locale 实际 Generation provider 一致：ChatGPT 使用 `--provider chatgpt --model gpt-5.6-sol-high`，新启动的 Codex Generation 使用 `--provider codex --model gpt-5.6-sol-high`；已启动的 `mr-IN` Luna Generation 使用其真实模型 `--provider codex --model gpt-6-luna-high`：
+随后由选定的 Generation provider 为每个 Page 输出完整 `page_id → localized description`。ChatGPT 与 Codex 新启动的 Generation 默认均使用 GPT-5.6 Sol + High；已开始并获批使用 Luna 的 `mr-IN` batch 按真实模型身份继续。canonical description 仍是唯一 semantic-scope authority；source/target 只用于技术语义、正文术语、自然度与实际内容对齐，不授权重新摘要。同一 generation session/batch 可处理多页，但不得跨 Page 补充、混合或推断语义。Generation 结果默认由维护者 Local terminal 正式落盘，并使用离线命令组装 v2 asset；target body 由命令机械读取并计算 `target_sha256` freshness，与其作为生成上下文的职责互不替代。真实 provenance 必须与本 locale 实际 Generation provider 一致：ChatGPT 使用 `--provider chatgpt --model gpt-5.6-sol-high`，新启动的 Codex Generation 使用 `--provider codex --model gpt-5.6-sol-high`；已启动的 `mr-IN` Luna Generation 使用其真实模型 `--provider codex --model gpt-6-luna-high`：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
@@ -239,7 +244,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
 go run -mod=readonly ./cmd/tour-i18n build --locale <locale>
 ```
 
-并行 locale 必须先完成[默认调度路径](#新增-locale-默认调度路径效率优先)中的共享输入落定检查。随后由当前 AI execution environment 默认从 working tree 导出完整、确定性且自包含的审核输入；自包含包括实际 first-party Playground/Tour runtime JavaScript、首页/Tour shell/footer Go template 与 Tour list/editor/navigation partial 的完整 source context，并明确排除 `static/lib` vendored third-party library，而不只是包含负责加载它们的 Go 文件。该步骤不调用模型、不生成 evidence 或 gate，不能替代 ChatGPT 对完整 source ↔ target 的语言审核。普通 ChatGPT Reviewer 优先使用可直接上传的 deterministic ZIP；产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者：
+并行 locale 必须先完成[默认调度路径](#新增-locale-默认调度路径效率优先)中的共享输入落定检查。随后由维护者 Local terminal 默认从 working tree 导出完整、确定性且自包含的审核输入；自包含包括实际 first-party Playground/Tour runtime JavaScript、首页/Tour shell/footer Go template 与 Tour list/editor/navigation partial 的完整 source context，并明确排除 `static/lib` vendored third-party library，而不只是包含负责加载它们的 Go 文件。该步骤不调用模型、不生成 evidence 或 gate，不能替代 ChatGPT 对完整 source ↔ target 的语言审核。普通 ChatGPT Reviewer 优先使用可直接上传的 deterministic ZIP；维护者完成 Local terminal 导出与 current-check 后，按产品需要完成实际 ZIP handoff：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review reviewer-bundle \
@@ -278,7 +283,7 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 scripts/verify-preview-browser.py http://127.0.0.1:<port>/ <locale>
 ```
 
-Remote Desktop Commander 是 ChatGPT 自动完成闭环内短机械操作和 failure diagnosis 的正式辅助工具，但不接管闭环后的维护者批量操作。对于上述 browser verifier，以及后续 `publish`、shared-assets Production、`first-production.sh`、IndexNow closeout 等可能持续数十秒到数分钟的确定性长任务，普通 ChatGPT + Remote Desktop Commander 只提供一条完整可粘贴命令，由维护者在本地终端执行并回传终态；不要仅为等待完成而反复远程轮询，也不要自行执行最终 Git commit / push。该协作规则不改变脚本内部任何 gate、receipt、retry 或 HUMAN gate。
+Remote Desktop Commander 默认不参与正常 workflow；闭环内外所有 deterministic repository / shell 步骤，包括 browser verifier、`publish`、shared-assets Production、`first-production.sh`、IndexNow closeout 与最终 Git，均默认由维护者 Local terminal 执行，AI 提供完整可复制命令并直接消费合法终态。remote 必要性例外、单次合并只读 discovery、第二 call 的具体 blocker 与调用披露统一按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)；不得用 process-output 轮询可交 Local terminal 的任务。脚本内部 gate、receipt、retry 与 HUMAN gate 不变。
 
 执行 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 时，先以 exporter 提供的英文/source、目标资产和 glossary 为正式输入，完整审核 TranslationUnit 之外的 UI catalog、article metadata、首页及其他 locale-level 文案；不得用浏览器抽查替代。严格顺序为 promotion → course metadata → build → surface-review reviewer-bundle（standalone export 仅用于诊断）→ ChatGPT Locale Surface Review A → 必要 revision/fix + 重新生成 reviewer bundle → 写 Markdown evidence → record current A gate → full locale preview → automated rendered acceptance → visual HUMAN gate → publish。机器已经覆盖的 canonical、sitemap、language selector URL、Run / Format / Reset、SPA、`/socket` 和 desktop/mobile overflow 不由人工重复。
 
@@ -286,11 +291,11 @@ Remote Desktop Commander 是 ChatGPT 自动完成闭环内短机械操作和 fai
 
 ## 6. Publish 与首次生产部署
 
-Surface Review 通过并完成其中所有修复后，使用 `assets-go-dev.shuijingwanwq.com` 的非中文 locale 必须在首次 production release 激活前通过 shared-assets current-state freshness gate：以当前仓库最终状态执行正式 `assets export` 与 `assets validate`，然后运行 [生产运维手册](PRODUCTION_RUNBOOK.md#shared-assets-production-发布状态机) 的 `scripts/shared-assets-production.sh <export-dir>`。状态机正式比较 current export 与 production origin；`NO_CHANGES` 完全不调用 purge 但仍执行 public verifier，`DEPLOYED` 则只根据 receipt 的安全 changed paths 自动发出一次 Cloudflare exact-URL purge，明确 PASS 后才执行 verifier。验证继续覆盖 changed URL 缓存验收（如有）、完整 14 个 allowlist 公网 SHA-256 与当前 export 的对照及 boundary 404；不再要求维护者进入 Cloudflare Dashboard。purge 明确失败可保留原 changed paths 重试，purge 已 PASS 而 verification 失败时只重试 verification，mutation 不确定则 fail closed 且禁止盲目重复 POST。仅当最终为 14/14 一致且全部验证通过时，本 gate 才通过。不得以历史“11/11 已部署”记录、Git 历史、上次部署时间或人工判断文件是否变化替代此流程；receipt 只是本次 execution evidence，不能替代未来 locale 的 freshness gate。本 gate 只在首次 production 激活前检查当前最终状态，不要求每次 Surface Review 都部署 production。
+Surface Review 通过后，所有 locale，包括 zh-CN，first/repeat/batch release 均检查完整 current shared-assets export/origin/public currentness。按 [Production shared-assets workflow](PRODUCTION_RUNBOOK.md#shared-assets-production-发布状态机) 执行现有 export/validate/workflow；完整 inventory 从 `internal/assets.Paths(root)` 派生，不固定数量。locale sealed bundle 绑定 exact shared dependency，stale 或 mutation unknown 立即停止；历史 PASS 与语言审核不能替代每次 current machine gate。
 
 随后按 [生产运维手册](PRODUCTION_RUNBOOK.md) 生成 Linux/amd64 production bundle，并核对 `release.json`、bundle 内 `site-metadata.json`、文件集合和 `SHA256SUMS`。`publish` 只生成 release，不创建 hostname、service、TLS、vhost 或部署脚本 profile。
 
-随后执行该手册的“新 locale 首次生产部署”：先完成并记录 production profile、基础设施和 AdSense production 接入，再部署已验收 bundle。首次 deployment 的 `current` 可以尚不存在；脚本首次原子创建它后，如新 release 健康检查失败，没有旧 release 可回滚，必须保留现场并人工检查。已有 locale 的日常 deployment 继续要求 `current` 为指向 release root 内既有 release 的合法 symlink，并沿用既有 rollback 流程。首次激活的页面必须已是最终的启用广告形态，不安排“先无广告上线、再接广告”的两次发布。当前 `scripts/deploy-production.sh` 与 `scripts/verify-production.sh` 都对 locale fail closed；新 locale 未经明确 deployment/verification profile 实现和测试前，不能假定通用命令已经支持它。
+随后执行该手册的“新 locale 首次生产部署”：先完成并记录 production profile、基础设施和 AdSense production 接入，再部署已验收 bundle。首次 deployment 的 `current` 可以尚不存在；脚本首次原子创建它后，如新 release 健康检查失败，没有旧 release 可回滚，必须保留现场并人工检查。已有 locale 的日常 deployment 继续要求 `current` 为指向 release root 内既有 release 的合法 symlink，并要求完整 sealed predecessor 与相同 shared dependency 才具备自动 rollback eligibility。首次激活的页面必须已是最终的启用广告形态，不安排“先无广告上线、再接广告”的两次发布。当前 `scripts/deploy-production.sh` 与 `scripts/verify-production.sh` 都对 locale fail closed；新 locale 未经明确 deployment/verification profile 实现和测试前，不能假定通用命令已经支持它。
 
 ## 7. 正式上线验收与移交
 
@@ -325,16 +330,16 @@ Google Search Console 和 Bing Webmaster Tools 是所有新增 production locale
 IndexNow 是 `first-production finalize` 之后的 search-engine closeout，不是另一种 Production deployment。它使用正式 `production/identity.json`，且只接受 `production_state=live` 的目标 locale。Google、Bing 与适用 locale-specific search engine 的 UI sitemap submission 完成后，正式入口为：
 
 ```sh
-scripts/indexnow-closeout.sh --locale <locale>
+scripts/indexnow-closeout.sh --locale <locale> --release-dir <current-release-dir>
 ```
 
-首次运行会在仓库外的 `${XDG_DATA_HOME:-$HOME/.local/share}/go-tour-indexnow/<locale>/` 生成 locale-specific key；store 和 locale directory 为 `0700`，`<key>.txt` 为 `0600`。生成的 key 是 64 个 lowercase hex 字符，符合 8–128 个 `[A-Za-z0-9-]` 字符、仅可选一个末尾 LF/CRLF 的正式 contract。重跑自动复用该目录中唯一的有效 key；多个 candidate、symlink、非 regular file、非法 key 或其他造成 identity 不明确的条目都会 fail closed，绝不生成替代 key。若维护者已有受保护 key，可显式使用 `--key-file /secure/path/<key>.txt`；此时不会访问或生成默认 store key。closeout 仅从唯一 production identity 取得 Aliyun origin、目标 data root、Nginx vhost 与正式 Nginx test/reload command，部署 root verification key、配置精确 Nginx location 并执行 test/reload。配置 test 或 reload 明确失败时会恢复本轮 vhost/key 变更；已存在完全一致 location 时幂等，不一致则 fail closed。本流程不声称 vhost 写入具备 crash-safe atomic transaction 语义。随后 Go primitive 使用调用机的正常直连网络验证公网 HTTPS key 并提交。没有实际 failure evidence 时，它不建立 zgocloud/SOCKS tunnel；若将来需要稳定境外公网 runner，应复用既有 first-production / verify-production 的 direct-runner 基线，而不是为 IndexNow 新建代理栈。第三方 submission 失败不回滚已成功 provisioning 的 key/vhost。probe 的 HTTP 202 只在同一次 Go 调用中复用相同 key 与完全相同的一 URL payload，最多 3 次、backoff 1 秒与 2 秒；不重新 provisioning，不重试 transport 或其他 HTTP semantic failure，耗尽仍 non-zero。bulk HTTP 202 也不自动重试。明确失败后人工重跑仍复用同一 key。成功后不周期性重复全站 bootstrap。不要把 key 写入 Git、production identity 或 evidence。
+首次运行会在仓库外的 `${XDG_DATA_HOME:-$HOME/.local/share}/go-tour-indexnow/<locale>/` 生成 locale-specific key；store 和 locale directory 为 `0700`，`<key>.txt` 为 `0600`。生成的 key 是 64 个 lowercase hex 字符，符合 8–128 个 `[A-Za-z0-9-]` 字符、仅可选一个末尾 LF/CRLF 的正式 contract。重跑自动复用该目录中唯一的有效 key；多个 candidate、symlink、非 regular file、非法 key 或其他造成 identity 不明确的条目都会 fail closed，绝不生成替代 key。若维护者已有受保护 key，可显式使用 `--key-file /secure/path/<key>.txt`；此时不会访问或生成默认 store key。closeout 仅从唯一 production identity 取得 Aliyun origin、目标 data root、Nginx vhost 与正式 Nginx test/reload command，部署 root verification key、配置精确 Nginx location 并执行 test/reload。配置 test 或 reload 明确失败时会恢复本轮 vhost/key 变更；已存在完全一致 location 时幂等，不一致则 fail closed。本流程不声称 vhost 写入具备 crash-safe atomic transaction 语义。provision 之前先消费 current sealed release、shared-assets freshness 和 deployed public exact sitemap/HTTP contract；随后 Go primitive再次运行现有machine verifier，验证公网HTTPS key与currentexactcoverage后才提交。没有实际 failure evidence 时，它不建立 zgocloud/SOCKS tunnel；若将来需要稳定境外公网 runner，应复用既有 first-production / verify-production 的 direct-runner 基线，而不是为 IndexNow 新建代理栈。第三方 submission 失败不回滚已成功 provisioning 的 key/vhost。probe 的 HTTP 202 只在同一次 Go 调用中复用相同 key 与完全相同的一 URL payload，最多 3 次、backoff 1 秒与 2 秒；不重新 provisioning，不重试 transport 或其他 HTTP semantic failure，耗尽仍 non-zero。bulk HTTP 202 也不自动重试。明确失败后人工重跑仍复用同一 key。成功后不周期性重复全站 bootstrap。不要把 key 写入 Git、production identity 或 evidence。
 
-底层 submission primitive 仍为下列 Go 命令；closeout 自动调用它，维护者不应为新增 locale 手工部署 key 或修改 vhost。该命令会验证公网 root key、正式 HTTPS `/sitemap.xml`、hostname、无重复 URL，以及动态 sitemap URL 数量必须在 `1..10000`（IndexNow 单请求上限）内；固定 probe URL 为正式 production origin（homepage），它先单独提交以验证 key。probe 返回 HTTP `202` 时按上述 bounded policy 重试，期间绝不 bulk；probe 返回 `200` 后，命令从 sitemap URL 集合排除 probe，再 bulk 提交剩余 `N-1` 个 URL。只有 bulk 最终 HTTP `200` 才输出动态 URL 数量的 PASS，其中 `submitted_urls=N` 包含已成功提交的 homepage probe；若 sitemap 仅含 homepage，则 probe 的 HTTP `200` 即为最终成功且 `submitted_urls=1`：
+底层 submission primitive 仍为下列 Go 命令；closeout 自动调用它，维护者不应为新增 locale 手工部署 key 或修改 vhost。该命令会验证公网 root key、正式 HTTPS `/sitemap.xml`、hostname、无重复 URL，以及动态 sitemap URL 数量必须在 `1..10000`（IndexNow 单请求上限）内；先以已部署 sealed current coverage/sitemap 的 exact set 对照公网 sitemap，再选择其中一个 complete local URL 单独提交以验证 key；未完成 Homepage 时不得提交 root。probe 返回 HTTP `202` 时按上述 bounded policy 重试，期间绝不 bulk；probe 返回 `200` 后，命令从 sitemap URL 集合排除 probe，再 bulk 提交剩余 `N-1` 个 URL。只有 bulk 最终 HTTP `200` 才输出动态 URL 数量的 PASS，其中 `submitted_urls=N` 包含已成功提交的 covered URL probe；若 sitemap 仅含一个 covered URL，则 probe 的 HTTP `200` 即为最终成功且 `submitted_urls=1`：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n indexnow bootstrap \
-  --locale <locale> \
+  --locale <locale> --release-dir <current-release-dir> \
   --key-file /secure/path/<key>.txt
 ```
 
@@ -343,3 +348,7 @@ go run -mod=readonly ./cmd/tour-i18n indexnow bootstrap \
 此 closeout 不属于 production availability/security gate、Locale Surface Review A、rendered surface acceptance 或广告 gate；它不阻止 first-production finalize，也不阻止 `production_state` 从 `first-production` 转为 `live`。提交后 Google/Bing/Naver/IndexNow 的异步 indexing、coverage 或收录状态不要求在首次上线当天成功，不能等待其完成才认定 production live。
 
 如需保留执行痕迹，可在现有 locale Surface Review evidence 或项目状态记录中轻量记录 `submitted`、日期和平台；不新增 receipt、schema 或 machine gate，也不把第三方异步状态维护为必须 current 的证据。
+
+## Language policy initialization 前置条件
+
+首次 Generation（包括 glossary generation）之前，维护者必须准备并审定完整 versioned language policy JSON，再用 `locale init` 的必填 `--language-policy <repository-relative JSON>` 写入既有 locale metadata。它不是从 locale 名字推导的默认值；不同 script/locale 使用相同 schema 的显式数据。缺 policy 不允许 status init、Generation export 或 current validation。输入字段、path、no-overwrite/rollback 与新旧 locale adoption 边界以 [language policy canonical contract](LANGUAGE_DEFECT_EXHAUSTION.md#正式接入合同首次真实使用前仍须-command-contract-gate) 为准。历史语言结果不改写。新 locale 继续使用 `locale init --language-policy`；existing locale 若缺 policy，审定数据后走独立的 `locale language-policy-adopt` readonly preflight / explicit CAS apply，完整 flags、SHA/result、no-op 与 recovery 见 [existing-locale adoption canonical contract](LANGUAGE_DEFECT_EXHAUSTION.md#existing-locale-policy-adoption)。已有不同 policy 必须 fail closed，本 command 不实现 policy successor/update；不能通过 init、手工编辑或 validator 自动补全覆盖。新 command 第一次真实使用前须另过 first-real-use gate。

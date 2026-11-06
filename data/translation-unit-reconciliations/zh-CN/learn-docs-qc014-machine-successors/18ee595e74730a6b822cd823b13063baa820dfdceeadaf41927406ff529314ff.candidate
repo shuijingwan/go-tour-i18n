@@ -1,0 +1,59 @@
+---
+title: Go 威胁模型
+layout: article
+breadcrumb: true
+---
+
+## 概述
+
+本文定义 Go 工具链和标准
+库的一般威胁模型。如果某个包的文档没有定义威胁模型，
+则应假定本文所述模型适用于标准库中的所有
+包。
+
+### 威胁模型
+
+#### 构建安全
+
+我们假定构建 Go 代码是安全的，不应产生
+意外执行等副作用。
+
+#### 运行时执行
+
+通常，我们不认为执行恶意代码本身属于相关的
+安全问题。我们假定熟悉 Go 的用户了解自己正在
+执行什么。
+
+#### 内存安全
+
+我们假定，在未使用 `unsafe` 包的情况下，内存
+安全由运行时保证。
+
+#### 信任边界
+
+对于可以合理预期会接收任意用户输入的 API，
+应当对 panic 和任意资源消耗进行加固。
+
+向某个 API 传入无效数据而得到意外输出，不视为
+安全问题。
+
+#### 环境控制
+
+我们假定本地系统是安全的。依赖 OS 已经
+被攻陷才能成立的攻击不在考虑范围内。例如，我们的模型不包括
+攻击者控制文件系统、PATH 等环境变量，或
+获得内存访问或控制能力的情况。
+
+### 具有自身威胁模型的包
+
+* [encoding/json](/pkg/encoding/json/#hdr-Security_Considerations)
+* [encoding/json/v2](/pkg/encoding/json/v2/#hdr-Security_Considerations)
+* [encoding/json/jsontext](/pkg/encoding/json/jsontext/#hdr-Security_Considerations)
+* [encoding/gob](/pkg/encoding/gob/#hdr-Security)
+* [html/template](/pkg/html/template/#hdr-Security_Model)
+* [image](/pkg/image/#hdr-Security_Considerations)
+* [debug/pe](/pkg/debug/pe/#hdr-Security)
+* [debug/macho](/pkg/debug/macho/#hdr-Security)
+* [debug/dwarf](/pkg/debug/dwarf/#hdr-Security)
+* [debug/plan9obj](/pkg/debug/plan9obj/#hdr-Security)
+* [debug/elf](/pkg/debug/elf/#hdr-Security)

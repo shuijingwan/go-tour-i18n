@@ -1,5 +1,9 @@
 # Retranslation 执行手册
 
+Learn/Docs current `learn-docs-v1` = 51 Page；initial Generation与 initial QC均为30+21两次独立 invocation。`docs-entry-v1`仅作历史读取，不是新 locale的第二阶段。旧49+2 finalized历史无需重新 Generation/QC；先执行 readonly [package composition preflight](LEARN_DOCS_MEMBERSHIP.md)，之后另行授权统一 closure。历史命令示例中的原 Snapshot/Unit identity不可改写。
+
+全项目执行共同遵守[共享翻译单元生命周期与五角色协作](SHARED_TRANSLATION_UNIT_LIFECYCLE.md)：所有内容表面复用同一生命周期；页面差异限于适配器；传输安全与逐单元机器校验分层；先恢复、先复用，中文说明，交接只给一个执行者、动作和停止条件。本文中 Tour 的 present / Example 细节属于 Tour 适配边界，不另建 Learn/Docs 状态机。Learn/Docs 两批生成和机器校验全部完成后才初审，两批初审全部完成后集中修订。角色与工具分工不替代任何正式 machine authority 或语言质量 gate。
+
 ## 1. 当前正式生产流程
 
 当前正式 TranslationUnit 翻译流程支持两个语言生成执行环境：普通 ChatGPT 使用 GPT-5.6 Sol + High；Codex 新启动的正式 Generation 默认使用 GPT-5.6 Sol + High（`gpt-5.6-sol-high`）。每个 locale 在开始正式 generation 前依 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 选择并原则上持续使用其中一个 Generation provider；两者共用同一 TranslationUnit workflow 与全部质量 gate：
@@ -82,7 +86,7 @@ Automatic validation 只负责结构、保护 token、代码、链接、source i
 
 历史 manifest 没有 `artifact_eof` 字段时，流程仍按历史字节进行兼容验证；不得为追加新字段或消除历史 warning 而改写已提交的 batch artifact。该兼容边界不是新 batch 的 whitespace 例外；新 batch 必须满足上述 EOF 契约并通过 `git diff --check`。
 
-## 4. Revalidate：validator 变更后重验同一 candidate
+## 4. Revalidate：validator 修复后重验或恢复同一 attempt
 
 当已处理 Unit 的 restore 已成功、candidate 已存在，而旧 `validation_failed` 已确认来自 validator 规则错误或规则更新时，使用：
 
@@ -97,7 +101,11 @@ go run -mod=readonly ./cmd/tour-i18n retranslation revalidate \
 
 每次更新前，旧 validation evidence 按原始字节归档到 `revalidation-history/<flattened-unit-id>/revalidation-NNN-validation.json`。这个连续编号只表示 validator revalidation 次数，不是 translation attempt。随后命令原子更新当前 `validation/<unit>.json` 和 `result.json`。默认 human summary 显示 attempt、revalidation 序号、前后状态和 history/current evidence path；`--json` 输出完整 revalidation result。
 
-Candidate Snapshot 仍读取当前 `validation/` evidence，并绑定其 SHA-256；revalidation 后的 evidence 是最终 evidence，但 attempt 仍由未变的 raw-response provenance 决定。Restore 失败或 candidate 不存在的 Unit 不允许 revalidate，仍须按 Retry 流程产生真实的新 translation attempt。
+对于已确认的 adapter/validator 误报，`restore_failed` 且尚无 candidate 的 Unit 也使用上述共享命令恢复。原 manifest、source、protected input、完整 glossary、原 invocation context 与 raw response 必须仍 current；原 imported Generation Bundle archive 与 import provenance 必须精确绑定同一 Unit、raw bytes、provider/model 和 attempt（历史正式表示沿用已有 GenerationOrigin verifier）。仅允许 validator authority 代码变化，不重新执行语言 Generation，也不增加 attempt。pending import、stale input/glossary/provenance、现存不明 candidate 或再次 restore failure 均在 mutation 前停止。
+
+恢复时从同一 raw response重新 restore，以既有 EOF 契约写 candidate，并执行当前 canonical validation。旧 validation **原始字节**保存在既有 `revalidation-history/<flattened-unit-id>/revalidation-NNN-validation.json`；旧 `result.json` 原始字节同时保存在同目录的 `revalidation-NNN-result.json`。candidate 与 current validation/result 使用既有 file-update transaction 一起落盘，历史 require-missing，不覆盖旧 evidence。真实 candidate defect 保留为新的 `validation_failed` evidence，CLI 在输出 evidence 后返回 non-zero，停止并决定 exact retry；不自动修改语言。
+
+Candidate Snapshot 仍读取当前 `validation/` evidence，并绑定其 SHA-256；revalidation 后的 evidence 是最终 evidence，但 attempt 仍由未变的 raw-response provenance 决定。非 `restore_failed` Unit 缺 candidate 仍禁止恢复；真正需要新译文时使用 Retry，而不是借 revalidate 伪造 Generation。
 
 ## 5. Retry：只处理 restore/validation failure
 
@@ -130,13 +138,52 @@ go run -mod=readonly ./cmd/tour-i18n retranslation retry \
 
 ## 6. Candidate Snapshot
 
-完整 locale workflow 的所有 TranslationUnit 都有通过 automatic validation 的最终 candidate 后，生成本轮审核的 Candidate Snapshot：
+Candidate Snapshot 的 scope 必须由下述显式 contract 确定，不从 Snapshot ID、batch 名称或命令经验推导。省略 `--content-package` 的正式 CLI 固定选择 native Tour workflow（当前 103 Page + 19 eligible Example）；`site-v2-shell-*` 这样的 Snapshot ID **不会**选择 shell package。完整所选 scope 的所有 TranslationUnit 都有通过 automatic validation 的最终 candidate 后，才能生成 Snapshot。
+
+Tour legacy/default 命令保持：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n quality-check snapshot \
   --locale <locale> \
   --snapshot-id <snapshot-id>
 ```
+
+non-Tour 必须显式选择完整 registered package，先 readonly preflight：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check snapshot \
+  --locale <locale> --snapshot-id <new-unused-id> \
+  --content-package <registered-package> --preflight
+```
+
+`site-v2-shell` 选择当前 package authority 的完整 physical Page scope，Homepage 始终是一个 Page TU；protected slots 不是多个 Unit。preflight stdout 的 `manifest.content_package` 给出 `id`、`authority_sha256`、`scope_identity_sha256`、完整 ordered `unit_ids` 与当前 source/representation authority references；顶层 `recorded=false, mutation=none`。它不创建 Snapshot、QC result、finalization 或 authorization，也不预留 ID。
+
+只有维护者另行授权后，才用同一 scope/new ID **去掉 `--preflight`** 创建；不是增加 `--apply`/`--record`。创建会重新计算全部当前 proof，不信任先前的 preflight stdout。package omission 不能继承 hidden caller scope；Snapshot 自己解析/传递 `QualityCheckSnapshotOptions.ContentPackage`，不会让 generic dispatcher 静默吞掉选择。原内部 API 的显式 catalog-scoped legacy callers 保持兼容，但不作为 formal CLI contract。
+
+### Candidate Snapshot command contract
+
+修改后的 CLI 第一次真实使用前，必须按 [Formal Command Contract v3](WORKFLOW_HANDOFF.md#formal-command-contract-v3) 在实现完成后顺序核对 current canonical docs、implementation、direct CLI tests；不沿用旧 contract verification。
+
+| 字段 | Contract |
+| --- | --- |
+| COMMAND | `quality-check snapshot` |
+| OPERATION | 默认 `create`；`--preflight` 为 readonly selection/currentness |
+| INPUT_KIND | 当前 native Tour 或显式完整 registered package 的 validated workflow candidate set；不消费 plan/receipt 文件 |
+| INPUT_PATH_CONTRACT | none；`--locale`/`--snapshot-id`/`--content-package` 是 identifiers，不是 paths；路径型 Snapshot ID 如 `../x` 拒绝 |
+| REQUIRED_FLAGS | `--locale`、新的 `--snapshot-id`；non-Tour 必须有单个非空 `--content-package` |
+| FORBIDDEN_FLAGS | `--id`、`--unit-id`、`--unit-kind`、`--start-index`、`--limit`、`--apply`、`--record`；不支持 partial/mixed scope、重复 package flag 或 positional args |
+| STDOUT | create 保留原 path/count 文本，显式 package 另打印 package/authority/scope identity；preflight 为 `{manifest,recorded:false,mutation:"none"}` JSON |
+| MUTATION_EXPECTATION | create=known，仅新建 manifest；preflight=none |
+| IDEMPOTENCE | write-once，不覆盖、不把重复 ID 当 success/no-op；已有 ID（包括空目录）preflight/create 均拒绝 |
+| CURRENTNESS_CHECK | registry/package authority与完整ordered scope、source/adapter/representation authority、当前glossary review、latest candidate/input/raw/validation SHA及active validation；提交前重读selected evidence、source/context与mode，不复用旧PASS |
+| PRIOR_OR_CAS | 无 predecessor 参数；preflight 不授权 CAS。destination 必须 absent，提交沿用 no-replace directory publication（当前 Linux amd64；不支持的平台 fail closed） |
+| SUCCESS_STOP | preflight 后停止审阅scope；create后停止核对manifest，不自动执行QC |
+| FAILURE_STOP | unknown/unregistered/missing-authority package、scope/identity/source/validation drift、existing ID或I/O失败立即停止，不回退Tour、不缩减范围、不覆盖 |
+| RECOVERY / REPLAY | 保留既有manifest/evidence。create失败先只读核对是否已发布或存在staging；不盲重试、不复用已存在ID、不自动delete/repair。新的scope需新unused ID |
+
+新 explicit package manifest 在 schema v1 中增加 optional `content_package`；旧 Tour 与无此字段的旧 package Snapshot 保持原 reader。新字段必须与当前/显式历史 registered descriptor、完整 Unit/source membership 对齐；current QC reader 还验证 current authority refs。后续 package 的 `quality-check scope` / Reviewer / record / finalize 仍须显式选同一 `--content-package`，不能让 package Snapshot 在默认 Tour catalog 下继续。历史 projection 只解析 exact bound package identity，不用路径相似性冒充 current authority。
+
+错误 scope invocation 已创建的 Snapshot 也是 immutable artifact。例如 `site-v2-shell-qc-003` 实际保存 Tour scope，必须保留，不能删除/重写/复用该 ID；修复 contract 后需另用未使用的新 ID（如经核对未占用的 `site-v2-shell-qc-004`）。Snapshot 名称不能反向改变它已冻结的 scope。
 
 Snapshot 命令本身只创建：
 
@@ -207,6 +254,18 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 Exporter 验证 Snapshot、Unit、result 与当前 source/candidate/validation/attempt identity；Quality Check A、缺失或 identity 不匹配均不能创建新 revision。manifest 固化 `previous_snapshot_id`、`revision_feedback_source=quality_check`、`previous_rating` 与 `previous_finding`。历史 `revision_feedback_source=final_review` 字段及 parser 仅为已有 manifest/provenance 解释保留，不能创建新 batch。每批默认且最多 60 个，Page / Example 不混合，也不得为凑满批次扩大 revision scope；Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
 
+### Integrated Surface historical predecessor revision export
+
+已记录的 Integrated Surface exact TU reopen 使用同一个 `retranslation export`，增加 `--surface-reopen-id <reopen-id>`，并显式传 `--content-package <current-registered-package>`、`--previous-snapshot-id <reviewed-finalized-predecessor-id>`、`--allow-reexport` 和完整 exact `--id` 集合；需要固定 batch 时传 `--batch-id <provider-locale-number>`。Snapshot/reopen/batch 参数都是 stable identity，不是 JSON 或目录路径。Page/Example 不混合，最多60，subset/superset/duplicate、structured finding 与错误 predecessor 均拒绝。
+
+对[正式 membership composition](LEARN_DOCS_MEMBERSHIP.md) 的 package，current Catalog 仍是完整 current membership。先经 shared reopen reader 完整重验 FAILED Surface receipt/current scope、原 closure/membership composition、所有 sibling predecessor 的 current authorization、current glossary/full Unified Review、source/protector/validator、exact candidate/validation/attempt 和 latest selection。随后仅以指定 predecessor 的正式 historical descriptor/effective original A 验证本次 feedback，不能要求单个 historical Snapshot 等于 current package 全集。该历史 scope 只用于 predecessor evidence evaluation，不替换 current scheduling Catalog，也不授权 sibling Units；缺失/错误/tampered membership、closure、sibling finalization 或任一 affected/stale/unknown 都停止。普通 `AssessCurrentTranslation` 的 single-complete-scope invariant 不放宽。
+
+合法 sibling predecessor 的历史 package ID 可以与显式 current owner 不同。该关系只从已验证的 current Surface closure/composition 与完整 historical scope 的 exact current-membership 子集取得；current Surface context 必须绑定该显式 owner 的 canonical closure，不能按名称、route 或 hash 猜 package。各 predecessor 使用自己的 Snapshot/reopen，A 的 export-only batch 不使不相交 B 的 reopen/export 失效。
+
+export Unit 集必须 exact-match reopen receipt；manifest 保留原 `previous_snapshot_id`，并逐 Unit 固化 `revision_feedback_source=surface_review`、`revision_authorization_id=<reopen-id>`、`previous_rating=A`、原 exact finding 和 immutable Surface evidence。其余 predecessor Units 与 sibling Units 不导出；不会合成 Snapshot/QC、产生新 A 或修改已有 reopen/Surface/closure。已存在的 successor export（即使尚无 processed result）表示该 Unit 的 reopen 已消费或存在冲突，必须继续既有 lifecycle，不能换 batch ID 再次导出。
+
+成功只通过现有 staging + absence guard/rename 发布一个新 batch 的 manifest 与 exact protected inputs，human summary/`--json` 输出沿用原 contract。已有 batch ID 拒绝，不覆盖、不视为 no-op；所有 validation 在 publication 前完成，失败不发布 batch。I/O 或并发导致终态未知时先只读核对，不删除、不重放。此命令不执行 Generation/import/process/QC；历史 A/finalization、reopen 和 Surface receipt 保持 byte-identical。
+
 ### Glossary-induced protected-input stale recovery
 
 candidate 已生成后若 glossary 合法变化，修改前先按 [Glossary Compatibility](GLOSSARY_COMPATIBILITY.md) 保存原 glossary bytes，再对完整当前 glossary 重新取得独立 Review CURRENT PASS。旧 Snapshot 不修改；没有逐 Unit compatibility proof 时 glossary mismatch 仍 stale。不得把 glossary 变化伪造成 Quality Check B/C/D、Surface Review finding、retry 或 revalidation。
@@ -267,10 +326,226 @@ go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale> --s
 
 ## 9. 阶段边界
 
+### Zero-review incremental finalization
+
+新 Snapshot 的 preflight/scope 若为 100% predecessor A carry-forward、0 Reviewer Unit、零 pending，可直接显式绑定 finalized predecessor 完成 finalization，不创建新 QC response：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check scope --locale zh-CN --snapshot-id qc-008 --previous-snapshot-id qc-007
+go run -mod=readonly ./cmd/tour-i18n quality-check finalize --locale zh-CN --snapshot-id qc-008 --previous-snapshot-id qc-007
+go run -mod=readonly ./cmd/tour-i18n quality-check authorization --locale zh-CN --snapshot-id qc-007
+go run -mod=readonly ./cmd/tour-i18n site-content campaign-plan --locale zh-CN
+```
+
+只有 scope 为 complete A-only 且当前完整 Review、source/candidate/validation、逐 TU compatibility 与 predecessor finalization 全部合法时才保存新 finalization。`source_snapshot_id` 继续指向真实历史 Reviewer 来源，optional `previous_snapshot_id` 固定零 response 路径，输入只绑定真实历史 result 文件。已有 current result 与显式 predecessor 不一致必须停止，不能手改 results。历史 promotion/recovery 按原 glossary context 验证；当前语言授权另由 current compatibility + 新 finalized Snapshot 建立。遇到下一真实 derived-consumer stale 时停止，不重跑 promotion/recovery，不生成新的 Reviewer A。
+
+### Native receipt 与缺失历史 receipt 的恢复
+
+未来正式 apply 保存 `go-learning/native-promotion-receipt/v1`：完整 finalized A-only/source/glossary/selected-candidate/validation preflight → exclusive mkdir `.promotion-staging-transaction` → staged candidates/status/完整 receipt → 复核 old inputs/targets/status → 备份并安装 canonical/status → 复核 exact installed outputs、inputs 与 sealed receipt → exclusive link 发布 immutable receipt → 清理本次 staging。receipt 发布是 commit point，staging JSON 不是原始 apply success artifact。安装或发布失败时用 recoverable rename 恢复原 candidates/status；rollback 失败保留所有 backups/staging、报告 `mutation=unknown`，禁止盲目重放。mutation 开始后 panic/进程崩溃也保留 staging；任何 `.promotion-staging-*` 残留都会使 current authorization/campaign-plan/下一写操作 fail closed，必须先检查并恢复该事务。这是现有两处路径的 fail-safe 两阶段流程，不宣称跨路径 crash-atomic 或文件系统断电 durability。
+
+receipt 内 `resulting_status_bytes` 与 SHA 绑定成功安装时的完整 status，exact membership/source/candidate/attempt/promotion note 校验仍保留。后续合法 `status.tsv` 更新不影响 TU successor authority，verifier 不再拿它的当前 SHA 与 receipt 永久比较；current canonical 仍必须 exact 等于 finalized selected candidate 的正式 promotion 输出。status 自身及其他消费者的 currentness 独立验证。
+
+已存在 native receipt 的 Snapshot 不得再次 apply，也不得改用 historical recovery 重造事件。commit 后 staging cleanup 失败会显式报告 `mutation=known; committed=true` 并保留 guard，先检查/收口事务，不盲目重放已完成的 promotion。
+
+旧实现未保存原始 receipt 时不得补造 apply event。`historical-promotion-recovery` 以稳定 reason `missing-original-promotion-receipt`，由 immutable closure-bound old bytes → finalized A-only Snapshot/carry-forward → selected batch/candidate → source/glossary/validation → exact current promotion output 构成历史 successor authority。Page output 沿用正式 EOF normalization，其原始 selected SHA 与输出 SHA 均绑定。完整 membership preflight，只记录 changed transitions，不给 unchanged Unit 编造事件。旧 closure、compatibility、QC/finalization 一律不改写。
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n retranslation recover-promotion --locale zh-CN --snapshot-id qc-007
+# 只有维护者显式授权并确认上述 preflight 后执行：
+go run -mod=readonly ./cmd/tour-i18n retranslation recover-promotion --locale zh-CN --snapshot-id qc-007 --apply
+go run -mod=readonly ./cmd/tour-i18n quality-check authorization --locale zh-CN --snapshot-id qc-007
+go run -mod=readonly ./cmd/tour-i18n site-content campaign-plan --locale zh-CN
+```
+
+Recovery 默认只读，apply 只新增 content-addressed artifact、重复 apply 拒绝覆盖；不是重跑 promotion，也不是重审核。`quality-check authorization` 的历史 A 数量与 current canonical authorization 分开报告。即使 TU current，Course SEO / Surface 等 derived consumer 仍可 stale；下一个真实 blocker 暴露后停止，不用 successor 绕过其独立 gate。
+
 阶段成功、FAILED、stale、额度耗尽或 mutation-unknown 的最终交接必须遵守 [正式阶段交接合同](WORKFLOW_HANDOFF.md)，包含真实数量/evidence、唯一下一步、执行者、停止条件，以及已验证附件或未执行的完整导出命令。
 
-首次 bulk TranslationUnit Generation 仍以 Generation ZIP handoff 为输入阶段边界，不自动越过到语言审核。具备本地访问能力时，initial / revision / retry 结果均默认通过隐藏 staging 目录 import；进入 Generation / Reviewer 闭环后，export、bundle、目录 import（跨环境时 Result ZIP landing/import）、process / validation、Snapshot / scope / reviewer-bundle，以及 Reviewer 结论的 current-check / record / finalize，默认由具备仓库终端能力的当前 AI execution environment 连续完成；正式 Quality Check 仍必须使用独立于本轮生成的 ChatGPT conversation/session，所有 A-only 与 identity gate 保持不变。`promote` 是闭环收口后的维护者 Local terminal 操作，不由 AI 自动执行。UI catalog 翻译是独立流程，不属于本手册。
+首次 bulk TranslationUnit Generation 仍以 Generation ZIP handoff 为输入阶段边界，不自动越过到语言审核。具备本地访问能力时，initial / revision / retry 结果均默认通过隐藏 staging 目录 import；进入 Generation / Reviewer 闭环后，export、bundle、目录 import（跨环境时 Result ZIP landing/import）、process / validation、Snapshot / scope / reviewer-bundle，以及 Reviewer 结论的 current-check / record / finalize，默认均由维护者 Local terminal 执行；AI 按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)提供完整可复制命令并消费合法 terminal evidence，不以任务 duration 授权 remote call；正式 Quality Check 仍必须使用独立于本轮生成的 ChatGPT conversation/session，所有 A-only 与 identity gate 保持不变。`promote` 是闭环收口后的维护者 Local terminal 操作，不由 AI 自动执行。UI catalog 翻译是独立流程，不属于本手册。
 
 ## 10. QC lineage 与 Surface finding revision
 
 普通 QC B/C/D revision 继续使用 `--previous-snapshot-id`。已 finalization 的 A 若由正式 Surface Review finding 定向纠错，必须使用 [Translation Quality Review](TRANSLATION_QUALITY_REVIEW.md) 定义的 `quality-check surface-reopen` + `retranslation export --surface-reopen-id`，不得伪造 B/C/D、修改旧结果或丢弃其余旧 A。新 QC lineage、第一次 record 和完整重新审核先运行 `quality-check preflight`；完整重审必须显式 `--full-rereview`。
+
+同一个 FAILED Integrated Surface receipt 的多个独立 TU-language exact finding，可通过 repeatable `--finding` 建立一个 aggregate reopen，再用同一 reopen ID 一次导出集中 revision / Generation Bundle。条件为同 finalized predecessor、同 UnitKind、最多60、显式 UnitIDs exact-match 所选 findings 的 artifact union；逐 Unit 保留自己的 exact finding，不继承 initial partition。具体兼容表示与全部 fail-closed 校验见上述质量规范。
+
+### QC B/C/D representation reconciliation → successor exact revision export
+
+旧 protected representation 无法合法表达正式 B/C/D finding 时，先按 [Page replacement 合同](TRANSLATION_UNIT_REPLACEMENT.md#qc-bcd-的-representation-successor-authority)建立 `authority_source=quality-check` 的 immutable successor reopen。receipt 必须绑定原 Snapshot/results、原 candidate/validation/input、原 rating/finding、完整 frozen representations 和必要性 engineering proof。`surface-reopen` 是共享 receipt transport 名称；此分支不需要 Surface finding 或 finalized A，也不新增一次 initial language QC。
+
+receipt 建立后，维护者 Local terminal 使用以下完整 export 模板。六个变量分别替换 locale、package、原 Snapshot、reconciliation/reopen ID、current successor Unit ID 和新 batch ID；generator 沿用该 locale 已选 provider（下例为 `chatgpt`）。不得传旧 Unit ID，不得改写旧 batch。多 Unit scope 必须显式重复 `--id`，exact-match receipt 全集，Page / Example 不混合且最多60。
+
+```sh
+(
+  REVISION_LOCALE='<locale>'
+  REVISION_PACKAGE='<package>'
+  REVISION_SNAPSHOT='<predecessor-snapshot>'
+  REVISION_REOPEN='<reconciliation-receipt-id>'
+  REVISION_UNIT='<current-successor-unit-id>'
+  REVISION_BATCH='<new-batch-id>'
+  go run -mod=readonly ./cmd/tour-i18n retranslation export \
+    --locale "$REVISION_LOCALE" --content-package "$REVISION_PACKAGE" \
+    --generator chatgpt --batch-id "$REVISION_BATCH" --unit-kind page \
+    --previous-snapshot-id "$REVISION_SNAPSHOT" \
+    --surface-reopen-id "$REVISION_REOPEN" --allow-reexport \
+    --id "$REVISION_UNIT"
+)
+```
+
+`--surface-reopen-id`、`--previous-snapshot-id`、`--allow-reexport` 必须同时提供；`--content-package` 显式保留完整 package QC scope，`--id` 只限定此次 revision working set。共享 reader 对未指定 package 的 inventory 也会从已验证 replacement package 恢复完整 historical scope，不修改调用者、不扩大输出集，不覆盖显式 partial/wrong scope。随后仍执行完整初审覆盖检查，包含正确 package namespace 下已有 sealed A carry-forward；缺少初审的 ordinary Unit 仍被 gate 拦截。
+
+export 成功后继续既有 Generation Bundle → exact finding revision → import/process/validation → 新 Snapshot → independent re-QC。successor 不继承旧 B/C/D 或 A 为新语言结论。若 export 失败，先只读检查目标 batch 目录；任何已落盘 artifact 均不得删除、覆盖或重放以掩盖失败。本模板不授权自动执行后续步骤。
+
+qc-014 的 `chatgpt-zh-CN-046` 永久保留 immutable、0 output，不重放。已建立的 `learn-docs-qc014-representation-successor` receipt 消费同一个 qc-014 B finding；当前047已由维护者完成 import、restore PASS、validation PASS，不再执行047 export/Generation。本模板保持通用合同，实际下一步受下节 UNKNOWN 与独立 glossary gate 约束。
+
+### Current-validation machine finding 的 shared reopen
+
+current re-attestation 的 canonical `current_validation_failed` 使用独立 authority source `current-validation`；不是 Surface/Preview、原 QC B/C/D 或 representation change。它复用同一个 `data/quality-check-reopens` receipt 和现有 revision exporter，默认只读：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check current-validation-reopen \
+  --content-package '<package>' --locale '<locale>' \
+  --reopen-id '<stable-id>' \
+  --previous-snapshot-id '<finalized-predecessor>' \
+  --previous-snapshot-sha256 '<exact-manifest-sha256>' \
+  --current-reattestation '<complete-assessment.json>' \
+  --current-reattestation-sha256 '<exact-evidence-sha256>' \
+  --current-reattestation-identity '<identity_sha256>'
+```
+
+`--content-package` 必填且只能提供一次：显式 `tour-v1` 选择 canonical Tour-native default complete scope（不是 registered descriptor），其它 package 必须选择完整 registered scope。Tour selector 要求原 Catalog 没有 explicit `TranslationScope`，保留完整 native Page + eligible Example ordered inventory；不得清空已有 partial/different scope 后隐式 widening，也不伪造 Tour registration。registered packages 继续通过 `UseTranslationPackage()` exact 选择，已有 explicit scope 必须一致；未知 package fail closed。完整 selector contract 见 [Current Translation Authorization](CURRENT_TRANSLATION_AUTHORIZATION.md#current-validation-的-affected-only-reopen-authority)。
+
+所选 package 必须与 frozen assessment 的 `package` 及 predecessor Snapshot 的完整 ordered Unit set 一致，partial/wrong package fail closed。输出 `recorded=false / mutation=none`、planned receipt/path/identity 和精确逐 Unit machine finding。完整 assessment 必须由 current source/candidate、原 A、glossary/full Review 和当前 validator/adapter/policy 在同一 package scope 重算匹配；stale/unknown、非 validation 的 affected、缺失/冲突 successor、wrong predecessor、hash/identity/scope drift 均 fail closed。Unit scope 自动取完整 affected set；可重复的 `--unit-id` 只作 exact-set/order 约束，不提供额外 authority。同 kind、最多60，不复制 initial batching，也不 whole-package invalidation。
+
+只有 Coordinator 另行明确授权后，维护者才可在同一命令增加 `--record`；重复 ID 拒绝。它冻结原 evidence bytes，不改旧 A、Snapshot、finalization、authorization 或 target。之后仍用上文现有 `retranslation export --content-package <package> --previous-snapshot-id ... --surface-reopen-id ... --allow-reexport --id ... --unit-kind page`，exact-match receipt 全集。此 current-validation export 的正式调用须显式、只提供一次 package：`tour-v1` 保留 canonical Tour-native default complete Catalog，不伪造 registration；registered packages 仍取完整 descriptor，任何已有 partial/different explicit scope 都不可 widening。shared lifecycle dispatcher 消费 `--content-package`，`parseRetranslationExportOptions` 不拥有此 flag；选择后仍由原 current receipt reader 验证 package/predecessor/完整 affected set 与当前 authority。后续 Generation Bundle export/current-check 使用同一 complete selector，且是独立 invocation；详见 [Generation Bundle transport](TRANSLATION_TASK_SPEC.md#deterministic-generation-bundle-transport)。
+
+manifest 的 `revision_feedback_source=current_validation` 保留 machine finding 语义；Generation 只修该 Unit 的 exact affected comment bodies/其他列明失败和局部必要上下文，禁止整页重译。active validation、独立 re-QC、A-only 和 successor gates 保持不变。完整历史/current reader 边界见 [Current Translation Authorization](CURRENT_TRANSLATION_AUTHORIZATION.md#current-validation-的-affected-only-reopen-authority)。
+
+对于 exact teaching-comment carry，Generation Bundle 在核验历史 raw/candidate 后生成 finding-authorized、candidate-specific transport 投影，令授权 body 在 `formal/protected-candidates` 中可编辑；其它区域仍 protected，原 raw 另存 `formal/historical-protected-candidates`，mapping 位于 `formal/comment-revision-transport`。import/process/retry 和后续 candidate evidence reader 共用同一 response decoder，source/input/Unit ID/reopen/batch manifest 不变；active validator 与独立 re-QC 不省略。若旧 ZIP 无法表达 finding 且没有正式 output，保留旧 ZIP、修复 transport contract 后重导同 batch，不重新 reopen/export revision、不新建 batch；见 [Generation Bundle contract](TRANSLATION_TASK_SPEC.md#deterministic-generation-bundle-transport)。
+
+### reviewed A 的 representation-only successor reconciliation
+
+这一路径消费旧正式 QC A，复用同一 replacement resolver、source/input identity、frozen-origin/attempt、current validator、Candidate selector 和 QC lineage。它不是 language revision、retry、Surface reopen 或 glossary-stale recovery。显式 package 必须是完整 registered scope；formal impact 只提供工程 mapping eligibility，不能单独授权 A 或绕过其它 gate。
+
+维护者先执行只读 preflight；下例为 qc-014 的完整参数合同（不同 locale 替换 locale/package/ID/path/SHA，不改变 flags）：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check representation-reconcile \
+  --content-package learn-docs-v1 --locale zh-CN \
+  --reconciliation-id learn-docs-qc014-machine-successors \
+  --previous-snapshot-id learn-docs-v1-qc-014 \
+  --previous-snapshot-sha256 234a37330a348590ab3b46e30d720ad42718dc798cb3002e212b86ce47acb619 \
+  --formal-impact docs/PROTECTED_REPRESENTATION_FORMAL_IMPACT.json \
+  --formal-impact-sha256 8fb332e4ba2b8be55de91c057a3f174ac4bb922536c90e9d4e927e21e6b74e0e \
+  --historical-documents docs/protected-representation-evidence/qc014-historical-representations.json \
+  --historical-documents-sha256 e119897a3822d9abc42360c46889ac08c850c870f00ad51f250e3b71e91162e4
+```
+
+默认无写入，输出逐 Unit `ready / excluded-current-passed / blocked` 与完整 planned receipt。CLI 在 blocked 非零时退出失败；plan 不是正式 receipt，也不授予新 candidate。命令不接受手选 `--id` 来绕过 package exact-set。已有 current passed successor 自动排除；已有 failed/stale/current export 则拒绝覆盖。非 representation impact 的 Unit 不进入集合；尚未 revision 的 language defect 拒绝。`unknown=true` 只有在 adapter 重算唯一、字节不变的机器 proof 后才可在新证据中标记 resolved，原 impact 文件不被改写。缺失 literal、额外重复 literal、source/provenance/URL/binding drift、glossary affected/unknown 一律拒绝。
+
+仅在全部 pending proof PASS、无 unresolved UNKNOWN、scope 已确认且维护者授权时，同一命令才可启用 `--apply`。apply 原子发布 `data/translation-unit-reconciliations/<locale>/<id>/receipt.json` 及其 bound raw/candidate/machine-validation；不写 `retranslation-runs`，不新增 batch、model provenance 或 translation attempt，不覆盖已有目录。Snapshot 中逐 Unit 增加显式 `representation_reconciliation` path/SHA，并保留真正旧 batch/attempt；selector 不按路径猜 candidate，有任何 current processed result 时优先保留它，包括失败结果，禁止退回机器副本。
+
+current reader 重算 old/current protected input、原 raw restore、原 attempt/provenance、逐字节相同的 target、当前结构/机器 identities 与 glossary validation。QC 使用 receipt 绑定的原 Snapshot、old/current ID mapping 和真实独立 A 来源 carry-forward；不写新语言 A。已有真实 B/C/D revision successor 仍需 independent re-QC。后续 Snapshot 仍走既有 `quality-check snapshot --content-package <package> --locale <locale> --snapshot-id <new-id>`；新的 machine evidence 不能豁免未参与本 scope 的 glossary-stale Unit。
+
+Shell Page 使用同一流程与 receipt schema。`--historical-documents` 也可直接绑定现有 `go-learning/shell-source-successor/v1` foundation 的 path/SHA；reader 必须验证 exact current adoption，并从该 immutable authority 读取完整 old Page，而非手工生成旧表示。`ShellPageAdapter` 保留 frozen slot encoding 与自己的 restore/结构校验，复用当前 source-owned slot/inline binding reader；原 raw 与 current raw 必须还原为逐字节相同的 reviewed candidate，且经过当前 glossary/validator。任何 source、binding、package/adoption 或历史 A/provenance 不匹配仍拒绝。
+
+当前 qc-014 preflight 为44 impact：047排除1、ready41、blocked2；43 pending 中 UNKNOWN 只关闭 `managing-dependencies` 的唯一 `404` literal，json 与 vuln/database 仍 unresolved。**当前不提供 bulk apply 命令，不创建 qc-015，不启动 glossary-stale recovery。** 下一步先取得 json 的正式语言 authority 决定，并关闭 vuln/database 的唯一 binding proof 缺口，再重跑同一只读 preflight。完整 disposition 和 targeted proof 见 [replacement 合同](TRANSLATION_UNIT_REPLACEMENT.md#representation-only-machine-successor-contract)。
+
+### representation reconciliation 的 Independent Reviewer semantic transport
+
+仅在确定性 proof 不足且能绑定一个完整旧 prose 区间时使用；不复用普通 QC rating，也不启动 Generation。机器已能唯一证明的 mapping 不送语言审核；重复 target-site 的任意选择仍 fail closed。详细 authority / receipt 边界见 [replacement 合同](TRANSLATION_UNIT_REPLACEMENT.md#unknown确定性机器证据或独立语义-authority)。
+
+以下为真实 json 问题已执行的完整 Bundle export 合同。其它 locale 只替换 identity/path/SHA 值；flags 不变。`--output` 必须是不存在的文件，禁止覆盖旧 transport。**当前该 ZIP 已存在，不重放此 export。**
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check representation-review-bundle \
+  --content-package learn-docs-v1 --locale zh-CN \
+  --reconciliation-id learn-docs-qc014-machine-successors \
+  --previous-snapshot-id learn-docs-v1-qc-014 \
+  --previous-snapshot-sha256 234a37330a348590ab3b46e30d720ad42718dc798cb3002e212b86ce47acb619 \
+  --formal-impact docs/PROTECTED_REPRESENTATION_FORMAL_IMPACT.json \
+  --formal-impact-sha256 8fb332e4ba2b8be55de91c057a3f174ac4bb922536c90e9d4e927e21e6b74e0e \
+  --historical-documents docs/protected-representation-evidence/qc014-historical-representations.json \
+  --historical-documents-sha256 e119897a3822d9abc42360c46889ac08c850c870f00ad51f250e3b71e91162e4 \
+  --id b49d8e873a0f66f6803077eb534583a155d2bd209a032d7c00fba8fea856da5c \
+  --review-id 20261016-zh-CN-learn-docs-json-reconciliation-001 \
+  --output /tmp/zh-CN-learn-docs-qc014-json-representation-review-v2.zip
+
+go run -mod=readonly ./cmd/tour-i18n quality-check representation-review-current-check \
+  --content-package learn-docs-v1 \
+  --bundle /tmp/zh-CN-learn-docs-qc014-json-representation-review-v2.zip
+```
+
+把该 ZIP、命令输出的 identity 与 SHA 交给独立普通 ChatGPT Reviewer（GPT-5.6 Sol + High）。Reviewer 仅凭 Bundle 的 `REVIEWER.md` / `question.json` / 全部 inventory inputs 判断。json 唯一问题是：旧 reviewed `自定义编组与解组` 能否在当前 source 的 Marshal / Unmarshal 实际上下文中保持可信对应、全部字节不变；不得混同 API identity 与普通概念。输出 `decision-template.json` 对应的严格 JSON：从 manifest 复制 Bundle identity、从 terminal handoff 复制 ZIP SHA，填写真实 session、独立性声明、唯一决定与 exact finding/reason。不得输出译文或 A/B/C/D。
+
+**本次停止在 Reviewer invocation 前。** 以下是获得真实独立决定后、维护者另行执行的记录模板，当前禁止执行：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check representation-review-record \
+  --content-package '<package>' \
+  --bundle '<current-checked-reviewer-bundle.zip>' \
+  --evidence '<exact-independent-reviewer-response.json>'
+```
+
+record 只写独立语义 authority，不做 reconciliation apply；重复 record 拒绝。随后在本节前面的完整 `representation-reconcile` **只读** 命令中增加 `--language-authority-review-id '<review-id>'`，显式消费 exact immutable receipt。批准仅解除 json 的 unknown，不代表其它 blocked Unit 已关闭，更不绕过 glossary compatibility。要求 revision 则继续阻塞 machine apply，保留 exact finding，后续另行走正式 revision authority，不把它改写为 B/C/D。vuln/database 尚无唯一 machine mapping，当前无 bulk apply 命令；module-conclusion 的独立 glossary-stale 仍不属于本 scope。
+
+### representation-unbindable 的 machine-authorized exact revision
+
+前节记录的是 transport 初次交接。当前 json semantic authority 已真实记录，不重放其 review/record，不修改 receipt。最新完整 preflight 为 **42 ready / 1 excluded / 1 blocked**；唯一 blocked vuln/database 的重复 A/B 不符合 semantic Reviewer 例外。其不同 binding 虽然 restore 字节一致，但尚不能证明固定 target sites 的 protection / source-role assignment 与后续 exact revision locality 完全等价；保持 `unknown=true`，不进行任意 canonical selection。
+
+对于这类“旧 A 无语言错误结论、current representation 无法唯一绑定”的情况，以下命令**默认只读**，在同一 replacement/reopen 生命周期重算 exact machine revision authority。所有 locale 替换相同 identity/path/SHA 参数，不新建另一种 batch 或 language rating。
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check representation-revision \
+  --content-package learn-docs-v1 --locale zh-CN \
+  --reconciliation-id learn-docs-qc014-machine-successors \
+  --previous-snapshot-id learn-docs-v1-qc-014 \
+  --previous-snapshot-sha256 234a37330a348590ab3b46e30d720ad42718dc798cb3002e212b86ce47acb619 \
+  --formal-impact docs/PROTECTED_REPRESENTATION_FORMAL_IMPACT.json \
+  --formal-impact-sha256 8fb332e4ba2b8be55de91c057a3f174ac4bb922536c90e9d4e927e21e6b74e0e \
+  --historical-documents docs/protected-representation-evidence/qc014-historical-representations.json \
+  --historical-documents-sha256 e119897a3822d9abc42360c46889ac08c850c870f00ad51f250e3b71e91162e4 \
+  --id a69694fb9c89d47440249dfd760d315586297f634d199b13532ac95cbced201f \
+  --reopen-id learn-docs-qc014-vuln-database-representation-revision
+```
+
+输出 `recorded=false / mutation=none`，含 exact old/current replacement、Snapshot/A lineage、raw/validation/provenance/hash、machine finding、scope 与 source-only scaffold SHA；没有 candidate/model output 或新语言判断。该命令不消费 json 的 semantic receipt 来授权 vuln/database，也不接受 `--apply`、Surface/Preview/semantic finding 或自填 rating。
+
+**当前停止在 formal revision 前。** 未来只有维护者确认这份 inspection 并明确授权时，才在同一命令末尾增加 `--record`。它仅写 `data/quality-check-reopens/<locale>/<reopen-id>.json`，`authority_source=representation-machine`；重复记录、缺 proof/hash drift、wrong Unit/source/Snapshot/A 或已有 successor result 均拒绝。随后使用上文同一个 successor exact revision export 模板：`--previous-snapshot-id`、`--surface-reopen-id`、`--allow-reexport`、exact current `--id`、`--unit-kind page` 和新的未使用 batch ID。不得编造 QC B/C/D，不插入 initial language QC；原 A 是 predecessor lineage，不是新语言结论。
+
+新的 Generation Bundle 明确把 `formal/protected-candidates` 标记为 **INCOMPLETE revision scaffold**：只有 exact ambiguity interval 使用 verbatim source，区间外保留旧译文。真实旧 reviewed candidate / raw 独立冻结供对照；Generation 必须在 finding locality 内保留完整原意并消除绑定歧义，使用 normal current tokens 输出。scaffold 没有 Generation provenance 或 accepted candidate 资格，不能用机械复制冒充完成结果，也不得由工程端补中文。之后仍需真实 Generation provenance、restore、current validation、independent re-QC；新增候选不继承旧 A。细节与 fixture 见 [replacement 合同](TRANSLATION_UNIT_REPLACEMENT.md#representation-unbindable-的机器-finding-与-exact-revision)。
+
+vuln/database 完成该正式 revision 后，bulk machine reconciliation 将因其已有 current passed candidate 自动排除它；其它42 ready Unit仍未 apply，json authority继续保留，module-conclusion glossary-stale依然走独立流程。当前不创建 qc-015、不执行以上 record/export/Generation 或 bulk apply。
+
+本轮已测试的只读命令也保存为 `bash docs/protected-representation-evidence/vuln-database-next-canonical-command.sh`。真实 inspection、exact authority 与冻结历史 observation 的关联见 [engineering report](protected-representation-evidence/vuln-database-revision-closure.json)；该报告及 planned receipt 不能作为已 record 的 authority。
+
+## Same-unit restricted transport → ordinary QC bridge
+
+支持两种 exact predecessor：既有 restricted current-validation comment response，以及合法 imported/passed Surface-bounded response。后者只借用 immutable representation mapping，新的普通 QC B/C/D 与独立 Reviewer evidence 才授权 revision；不扩大旧 Surface regions。机器构造独立 ordinary template 并证明 exact reviewed candidate restore，完整合同见 [Surface→QC bridge](TRANSLATION_UNIT_REPLACEMENT.md#surface-bounded-predecessor--independent-ordinary-qc-bridge)。缺 capability 的既有零输出 batch 不变；bridge record 后使用新 batch，不能 retrofit/replay。此次 currentness/construction semantics 扩展使旧 first-real-use verification 失效；下一次真实 preflight 前须核对 current docs、implementation、direct CLI/contract tests，preflight PASS 不自动授权 record。
+
+formal Unit/source/input 均未变化时，不使用 replacement reconciliation。先由 Maintainer Local terminal 执行默认 readonly preflight，explicit package 必须与 predecessor 完整 registered scope 一致；`--unit-id` 列出同 kind、最多60的 exact B/C/D affected scope，不按 route 选择，不合并逐 Unit finding：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check representation-bridge \
+  --content-package <registered-package> --locale <locale> \
+  --bridge-id <immutable-bridge-id> \
+  --previous-snapshot-id <reviewed-snapshot> \
+  --previous-snapshot-sha256 <exact-manifest-sha256> \
+  --reviewer-evidence <repository-review-evidence-path> \
+  --reviewer-evidence-sha256 <exact-evidence-sha256> \
+  --unit-id <same-formal-unit-id> [--unit-id <another-id> ...]
+```
+
+输出 `recorded=false, mutation=none`，包含 planned receipt path/SHA、完整 source scope、逐 Unit old/new representation identity、同一 candidate/validation/attempt 和 exact rating/finding。preflight 不创建 receipt/batch/candidate，不授权自动 record 或继续 Generation。preflight PASS 后，只有单独明确授权才使用**同一组参数追加 `--record`**；实现重新证明全部 authority，write-once 保存到既有 quality-check-reopens，重复 ID 拒绝，无 `--apply` 或隐式覆盖。
+
+record 以后新 ordinary revision 的原 export 模板额外增加 `--representation-bridge-id <bridge-id>`；仍须 `--allow-reexport --previous-snapshot-id <same-snapshot>`、完整 package 和 receipt 全集的显式 `--id`，不能混用 `--surface-reopen-id` 或 `--glossary-stale`。batch ID 由届时正式 authority 确定；不改写失败的旧零输出 batch。feedback source 仍为 `quality_check`。后续普通 Bundle/current-check → Generation → import/process → 新 Snapshot/独立 re-QC 不变；retry 继续冻结相同 bridge authority/template/history。完整 invariant 与不支持场景见[bridge contract](TRANSLATION_UNIT_REPLACEMENT.md#同一-formal-unit-的受限-transport-bridge)。
+
+### Current-validation predecessor representation readiness
+
+独立 [`generation-bundle legacy-provenance` authority](LEGACY_GENERATION_PROVENANCE_AUTHORITY_DESIGN.md#正式-implementation-command-contract) 已实现；维护者已完成 json exact authority 的 first-real-use、inspection 和 write-once record，正式 path/SHA/identity 见 [approved-interval contract v2](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#已记录-authority-与当前-case)。直接消费该交接，不重复 record，也不把下一阶段退回 legacy first-real-use。正常 lifecycle 执行者仍为 Maintainer Local terminal；`.pending` 或 `mutation=unknown` 继续 preserve/diagnose，禁止盲重放。
+
+下一独立 authority 是 approved-interval representation transport，当前仅 [contract v2 待审定](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#derived-transport-command-contract-v2待审定未实现)：historical provenance 按 `NORMAL_ARCHIVE > EXPLICIT_RECORDED_LEGACY_PROVENANCE`；缺 archive 才可显式提供 exact recorded path/SHA、调用正式 verifier 并传 exact requested options，不扫描 latest 或按 Unit 自动发现。只消费 `historical-response/v1` allowlist；需要 explicit unknown facts 时停止。archive 后来出现必须 fresh compare covered facts，冲突 fail closed、匹配优先 normal，不删除 legacy receipt。legacy PASS 不授权 opaque parent、editable regions 或 response codec。
+
+拟将显式 selection、legacy refs 与 approved-interval proof 全部冻结在 derived Bundle graph，不修改064 manifest；因此 `SAME_BATCH_064_REFRESH_POSSIBLE=yes` 仅是 architecture possibility，本合同本身不要求 successor。真实 export 仍须先完成独立 authority 实现、完整32/32 readiness 和新/modified CLI first-real-use gate。whole parent 不可编辑、不拆 target atoms，typed finding nonoverlap、active validation/current glossary、独立 re-QC/A-only 均保留。当前唯一下一阶段为 `current-validation-approved-interval-migration-contract-review-v2`；真实 json/064 仍 blocked，不提供 export/Generation 命令。
+
+已 record 的 current-validation revision batch 遇到 predecessor raw restore failure 时，先按完整 batch stable order 做只读 representation readiness diagnosis；impact report 的 labels 只是工程 evidence，不是 recovery authority。普通 restore PASS 不需新 authority；sealed Surface/inherited bridge 可按 [predecessor transport](TRANSLATION_UNIT_REPLACEMENT.md#current-validation-predecessor-representation-transport) 派生 Bundle-only representation capability，保留原 reopen/A/finding 与 batch bytes，不建立 QC bridge 或另一 lifecycle。exact raw/attempt/import/codec、current formal input/source/Unit 或 candidate 无法证明时停止；不得从 target prose 猜新增 token。新 transport acceptance/currentness semantics 的第一次真实使用必须重新经过 docs → implementation → direct contract tests；本工程阶段不授权真实 export/current-check/Generation，也不自动 record recovery。

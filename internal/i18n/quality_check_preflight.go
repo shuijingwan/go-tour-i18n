@@ -50,7 +50,7 @@ func BuildQualityCheckPreflight(root string, catalog *Catalog, options QualityCh
 	if options.FullRereview && results != nil {
 		return nil, fmt.Errorf("full_rereview may only be selected before results start")
 	}
-	finalized, err := qualityCheckFinalizedSnapshotIDs(root, options.Locale)
+	finalized, err := qualityCheckFinalizedSnapshotIDs(root, options.Locale, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func BuildQualityCheckPreflight(root string, catalog *Catalog, options QualityCh
 	return report, nil
 }
 
-func qualityCheckFinalizedSnapshotIDs(root, locale string) ([]string, error) {
+func qualityCheckFinalizedSnapshotIDs(root, locale string, catalogs ...*Catalog) ([]string, error) {
 	directory := filepath.Join(root, "data", "quality-check-snapshots", locale)
 	entries, err := os.ReadDir(directory)
 	if os.IsNotExist(err) {
@@ -116,6 +116,18 @@ func qualityCheckFinalizedSnapshotIDs(root, locale string) ([]string, error) {
 			return nil, fmt.Errorf("quality-check finalization %s has incompatible identity", entry.Name())
 		}
 		ids = append(ids, entry.Name())
+		if len(catalogs) > 0 && len(catalogs[0].TranslationScope) > 0 {
+			if len(finalization.Units) != len(catalogs[0].TranslationScope) {
+				ids = ids[:len(ids)-1]
+				continue
+			}
+			for _, u := range finalization.Units {
+				if !catalogs[0].inTranslationScope(u.UnitID) {
+					ids = ids[:len(ids)-1]
+					break
+				}
+			}
+		}
 	}
 	sort.Strings(ids)
 	return ids, nil

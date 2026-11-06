@@ -16,6 +16,15 @@ func routeFamilies(pkg string) []string {
 	return []string{"/learn/**", "/doc/tutorial/**", "/doc/database/**", "/doc/modules/**", "/doc/security/**"}
 }
 
+func packageRouteFamilies(p Package) []string {
+	if packageWorkflow(p.ID) {
+		return routeFamilies(p.ID)
+	}
+	// Future descriptors carry only their explicit registered canonical routes;
+	// never inherit Learn/Docs' historical wildcard families by default.
+	return append([]string{}, p.Routes...)
+}
+
 func packageCompletion(root string, g *Global, ref Reference) (Completion, error) {
 	f, _, err := CheckPackageClosure(root, ref)
 	if err != nil {
@@ -33,27 +42,35 @@ func packageCompletion(root string, g *Global, ref Reference) (Completion, error
 		return Completion{}, err
 	}
 	refs := []Reference{ref, gate}
-	return Completion{Package: p.ID, State: "complete", PackageIdentity: p.Identity, SourceIdentity: p.SourceIdentity, Surfaces: p.Surfaces, Routes: p.Routes, RouteFamilies: routeFamilies(p.ID), EvidenceKind: PackageCompletionKind, Evidence: refs, EvidenceIdentity: identity(refs), ContextIdentity: f.Identity}, nil
+	return Completion{Package: p.ID, State: "complete", PackageIdentity: p.Identity, SourceIdentity: p.SourceIdentity, Surfaces: p.Surfaces, Routes: p.Routes, RouteFamilies: packageRouteFamilies(p), EvidenceKind: PackageCompletionKind, Evidence: refs, EvidenceIdentity: identity(refs), ContextIdentity: f.Identity}, nil
 }
 func checkPackageCompletion(root string, g *Global, locale string, c Completion) error {
+	v := newClosureValidation(root)
+	if err := v.checkPackageCompletion(root, g, locale, c); err != nil {
+		return err
+	}
+	return v.verify()
+}
+
+func (v *closureValidation) checkPackageCompletion(root string, g *Global, locale string, c Completion) error {
 	if len(c.Evidence) != 2 {
 		return fmt.Errorf("closure + integrated Surface evidence required")
 	}
-	f, _, err := CheckPackageClosure(root, c.Evidence[0])
+	f, _, err := v.checkedPackageClosure(root, c.Evidence[0])
 	if err != nil {
 		return err
 	}
 	if f.Locale != locale {
 		return fmt.Errorf("closure locale mismatch")
 	}
-	if err := validateHistoricalIntegratedSurface(root, locale, c.Evidence[1], c.Evidence[0]); err != nil {
+	if err := v.validateHistoricalIntegratedSurface(root, locale, c.Evidence[1], c.Evidence[0]); err != nil {
 		return err
 	}
 	p, err := packageByID(g, c.Package)
 	if err != nil {
 		return err
 	}
-	want := Completion{Package: p.ID, State: "complete", PackageIdentity: p.Identity, SourceIdentity: p.SourceIdentity, Surfaces: p.Surfaces, Routes: p.Routes, RouteFamilies: routeFamilies(p.ID), EvidenceKind: PackageCompletionKind, Evidence: c.Evidence, EvidenceIdentity: identity(c.Evidence), ContextIdentity: f.Identity}
+	want := Completion{Package: p.ID, State: "complete", PackageIdentity: p.Identity, SourceIdentity: p.SourceIdentity, Surfaces: p.Surfaces, Routes: p.Routes, RouteFamilies: packageRouteFamilies(p), EvidenceKind: PackageCompletionKind, Evidence: c.Evidence, EvidenceIdentity: identity(c.Evidence), ContextIdentity: f.Identity}
 	if !reflect.DeepEqual(c, want) {
 		return fmt.Errorf("package completion identity mismatch")
 	}
@@ -80,11 +97,14 @@ func ActivationPreflight(root string, ref Reference) (*ActivationPlan, error) {
 	if err != nil {
 		return nil, err
 	}
-	l, err := CheckLocale(root, g, f.Locale)
+	// The current integrated gate validates every prospective closure and all
+	// retained coverage. Superseded completions are exact historical baselines;
+	// CheckLocale would incorrectly ask them for current language eligibility.
+	c, err := packageCompletion(root, g, ref)
 	if err != nil {
 		return nil, err
 	}
-	c, err := packageCompletion(root, g, ref)
+	l, err := readLocaleAuthority(root, g, f.Locale)
 	if err != nil {
 		return nil, err
 	}
@@ -92,14 +112,23 @@ func ActivationPreflight(root string, ref Reference) (*ActivationPlan, error) {
 	if err != nil && !os.IsNotExist(err) {
 		return nil, err
 	}
+	if err := checkActivationPreflightState(l, old, os.IsNotExist(err)); err != nil {
+		return nil, err
+	}
 	plan := &ActivationPlan{Locale: f.Locale, Package: f.Package, PriorSHA: digest(old), Completion: c}
 	if os.IsNotExist(err) {
 		plan.PriorSHA = ""
 	}
-	for _, existing := range l.Packages {
+	replaced := false
+	for i, existing := range l.Packages {
 		if existing.Package == f.Package {
 			if !reflect.DeepEqual(existing, c) {
-				return nil, fmt.Errorf("existing different completion cannot be overwritten")
+				if err := checkReviewedPredecessorCompletion(root, g, f.Locale, *f, existing); err != nil {
+					return nil, err
+				}
+				l.Packages[i] = c
+				replaced = true
+				break
 			}
 			plan.AlreadyActive = true
 			plan.result = old
@@ -107,7 +136,9 @@ func ActivationPreflight(root string, ref Reference) (*ActivationPlan, error) {
 			return plan, nil
 		}
 	}
-	l.Packages = append(l.Packages, c)
+	if !replaced {
+		l.Packages = append(l.Packages, c)
+	}
 	if err := ValidateLocale(g, *l); err != nil {
 		return nil, err
 	}

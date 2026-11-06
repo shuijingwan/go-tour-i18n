@@ -34,7 +34,7 @@ Glossary 只回答正式术语选择，不能证明完整译文忠实、准确�
 
 生成或修改 UI、首页、list、article metadata、runtime message 与其他 SEO 文案前，必须完整读取该资产的正式 source/context 和目标 locale 的完整 glossary，并执行 `mandatory`、`preferred`、`forbidden`、`keep` 的全部决定；不得抽样或只凭相邻 Page/module 推断当前 source 没有的上下文。目标必须是自然的目标语言，同时精确保留 Go、Go Playground、TranslationUnit、Page、Example 等项目/技术 identity，以及 `official`、`unofficial`、`affiliated`、`authorized`、`endorsed` 等身份边界。
 
-普通 ChatGPT 可以生成这些 locale-level 语言资产，但正式 Locale Surface Review 必须由与该 locale Generation session 独立的 Reviewer session 执行；生成 session 不得审核并批准自己的本轮输出。Locale Surface Review 不必与 Glossary Review 或 TranslationUnit Quality Check 使用不同 reviewer session：同一个从未参与该 locale glossary、UI / metadata、TranslationUnit 或 Course SEO language generation 的 Reviewer session，可以先做 Glossary Review、TranslationUnit Quality Check 与 revision re-QC，再继续做 Locale Surface Review。若 reviewer 发现缺陷，必须把 finding 回流到 Generation session；reviewer 不得自行生成 replacement language content 后再正式批准。Generation session 修订、当前 AI execution environment 自动完成闭环内短机械步骤、维护者 Local terminal 完成所需 build，再由 AI 重新导出审核材料后，只要原 Reviewer session 没参与 replacement generation，它可以继续 re-review。具体职责与执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
+普通 ChatGPT 可以生成这些 locale-level 语言资产，但正式 Locale Surface Review 必须由与该 locale Generation session 独立的 Reviewer session 执行；生成 session 不得审核并批准自己的本轮输出。Locale Surface Review 不必与 Glossary Review 或 TranslationUnit Quality Check 使用不同 reviewer session：同一个从未参与该 locale glossary、UI / metadata、TranslationUnit 或 Course SEO language generation 的 Reviewer session，可以先做 Glossary Review、TranslationUnit Quality Check 与 revision re-QC，再继续做 Locale Surface Review。若 reviewer 发现缺陷，必须把 finding 回流到 Generation session；reviewer 不得自行生成 replacement language content 后再正式批准。Generation session 修订后，维护者 Local terminal 默认完成既有 deterministic 落盘、validation、build 与审核材料重新导出；AI 按[Call-Zero-First](WORKFLOW_HANDOFF.md#call-zero-first-交接合同)提供完整命令并消费合法终态。材料 current 后，只要原 Reviewer session 没参与 replacement generation，它可以继续 re-review。具体职责与执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
 
 不得添加 source 未提供的背景、教程、解释、结论、保证或处方；必须保留原有逻辑、条件和顺序：possibility 不等于 requirement，hint 不等于 prescription。尤其 `Congrats` 等页面不得仅按模块主题自行补写内容。课程页 schema v2 description 的生成边界单独以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准：canonical English 阶段完整读取 Page source 做一次 semantic extraction；locale 阶段以该 canonical description 作为唯一 semantic-scope authority，并可利用当前 Page 完整 source/ready target、完整 locale glossary、locale identity 与 v2 contract 核对技术语义、正文术语与自然度，但不得重新选择摘要重点或增删 canonical description 的语义。最终 Surface Review 仍使用完整 source + canonical description + target + glossary + localized description 上下文，并由独立 session 完成。
 
@@ -44,7 +44,7 @@ Glossary 只回答正式术语选择，不能证明完整译文忠实、准确�
 
 ### Deterministic 审核包导出
 
-在 A 审核前默认由当前 AI execution environment 从 current working tree 生成完整、自包含审核包：
+在 A 审核前默认由维护者 Local terminal 从 current working tree 生成完整、自包含审核包：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review export \
@@ -55,7 +55,7 @@ go run -mod=readonly ./cmd/tour-i18n surface-review export \
 
 ### Reviewer 上传 ZIP（推荐传输方式）
 
-普通 ChatGPT Reviewer 不需要把 Remote Desktop Commander 当作大体量只读传输通道。当前 AI execution environment 默认从同一 current working tree 直接生成 deterministic Reviewer ZIP：
+普通 ChatGPT Reviewer 不需要把 Remote Desktop Commander 当作大体量只读传输通道。维护者 Local terminal 默认从同一 current working tree 直接生成 deterministic Reviewer ZIP：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review reviewer-bundle \
@@ -75,7 +75,7 @@ go run -mod=readonly ./cmd/tour-i18n surface-review reviewer-bundle \
 
 同一 working-tree 输入必须产生 byte-stable ZIP；ZIP entry 使用固定顺序、固定 metadata 与未压缩 payload，便于直接比较 SHA-256。bundle 不包含 secret、EnvironmentFile、IndexNow key、Cloudflare credential 或其他 Production secret。
 
-产品界面需要人工附件上传时，维护者只负责把 ZIP handoff 给独立 Reviewer session。Reviewer 必须先读取 `manifest.json`，再完整读取 bundle 内 authority 与 `surface-review.json`；当 bundle 完整且 current-check 确认正式输入未变化时，不再通过 Remote Desktop Commander 重复搜索、读取或重建已经封装的仓库材料。附件不可读、hash 不一致、authority 缺失或正式输入已变化时 fail closed，由当前 AI execution environment 重新生成新 bundle，不以聊天记忆或旧附件补齐。
+维护者完成上述 Local terminal 导出与 current-check 后，把 ZIP handoff 给独立 Reviewer session。Reviewer 必须先读取 `manifest.json`，再完整读取 bundle 内 authority 与 `surface-review.json`；当 bundle 完整且 current-check 确认正式输入未变化时，不再通过 Remote Desktop Commander 重复搜索、读取或重建已经封装的仓库材料。附件不可读、hash 不一致、authority 缺失或正式输入已变化时 fail closed，默认由维护者 Local terminal 重新生成新 bundle，不以聊天记忆或旧附件补齐。
 
 Surface、Glossary、Quality Check 与 Generation ZIP 共用同一个 deterministic ZIP/path/inventory primitive；现有 Surface bundle schema 与 CLI 保持兼容，历史 evidence 不迁移。所有 bundle 都只是 transport container，不是 semantic authority、receipt 或质量 gate。
 
@@ -265,8 +265,8 @@ Surface Review 只使用 `passed` 或 `failed`，不采用 TranslationUnit 的 A
 
 - TranslationUnit candidate 缺陷：回到 revision batch，完成全套 A-only 链后重新 projection 和 Surface Review。
 - glossary 决策缺失或冲突：先归档原 bytes，Generation session 更新完整 glossary，独立 Reviewer 重新完整 Review PASS。按 [Glossary Compatibility](GLOSSARY_COMPATIBILITY.md) 判定 exact scope；旧 TU A 只经 verified lineage 继承，受影响表层必须修订并取得必要独立审核。
-- Course SEO localized description 语言质量缺陷：它不属于 TranslationUnit 缺陷；identity stale 时按 Course SEO workflow 由 Generation session 产生 refresh 所需的新 description，identity current 时由 Generation session 产生明确 revise subset；具备仓库终端能力的当前 AI execution environment 默认把 strict result 落盘并运行 `course-metadata refresh` / `revise`，机械更新所选 description 与真实 provenance，最后回到未参与 replacement generation 的 Reviewer session 重审。
-- UI、首页、list、metadata 或其他 SEO 缺陷：由 Generation session 产生修订语言内容，当前 AI execution environment 默认完成闭环内的资产落盘、validator / current-check 与重新导出，再由未参与 replacement generation 的 Reviewer session 重审受影响范围。
+- Course SEO localized description 语言质量缺陷：它不属于 TranslationUnit 缺陷；identity stale 时按 Course SEO workflow 由 Generation session 产生 refresh 所需的新 description，identity current 时由 Generation session 产生明确 revise subset；维护者 Local terminal 默认把 strict result 落盘并运行 `course-metadata refresh` / `revise`，机械更新所选 description 与真实 provenance，最后回到未参与 replacement generation 的 Reviewer session 重审。
+- UI、首页、list、metadata 或其他 SEO 缺陷：由 Generation session 产生修订语言内容，维护者 Local terminal 默认完成资产落盘、validator / current-check 与重新导出，再由未参与 replacement generation 的 Reviewer session 重审受影响范围。
 
 Surface finding 回流可用 provider-neutral transport，避免 Generation session 重新扫描仓库：
 
@@ -278,7 +278,7 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-check \
   --bundle /tmp/<locale>-surface-replacement-<review-id>.zip
 ```
 
-它绑定指定 evidence 与 current full Surface package，只用于生成 replacement；不允许 Generation session 批准 finding，bundle 本身也不自动修改任何正式 asset。Generation 产生 replacement 后，由当前 AI execution environment 按正式 validator/lifecycle 自动落盘；维护者 Local terminal 完成所需 build 后，AI 自动重新导出 Reviewer bundle，再由原独立 Reviewer re-review。promotion、build、preview / publish / Production 与最终 Git commit / push 均保持为维护者 Local terminal 的成组操作。
+它绑定指定 evidence 与 current full Surface package，只用于生成 replacement；不允许 Generation session 批准 finding，bundle 本身也不自动修改任何正式 asset。Generation 产生 replacement 后，维护者 Local terminal 默认按正式 validator/lifecycle 落盘、完成所需 build 并重新导出 Reviewer bundle；AI 提供完整命令并消费合法 terminal evidence，再由原独立 Reviewer re-review。promotion、build、preview / publish / Production 与最终 Git commit / push 均保持为维护者 Local terminal 的成组操作。
 - production-only 的 CDN、TLS、Origin、缓存或响应问题：按 [生产运维手册](PRODUCTION_RUNBOOK.md) 修复并在公网复核，不改写 TranslationUnit 审核结果。
 
 只有 A 阶段与 preview acceptance 均通过时，首次 release 才能进入 publish / production；只有 production 复核也通过、最终 evidence 为 `decision = passed` 时，才能宣告 locale 正式上线。
@@ -300,3 +300,7 @@ go run -mod=readonly ./cmd/tour-i18n surface-review registry-baseline \
 ```
 
 该命令只接受仍按旧语义 exact-current 且 registry/Production identity 严格兼容的 schema v2 gate；schema v1/v3、已 stale gate、目标 projection 或全量结构 baseline 不完整、registry/profile 集合不闭合或第二次写入均 fail closed。未来检查还会重新验证 baseline 与 gate bytes、当前 projection 及 registry compatibility。Reviewer Bundle 继续包含完整 `languages.go` 和全部正式 Stage A 上下文；新 locale 自身仍须完整 Stage A、Preview 与 Production gate。
+
+## Tour language attention v2
+
+Tour Surface review-package / Reviewer Bundle 的当前 `schema_version=2` 增加完整 eligible Example source/target 与 language attention；UI、article headers、course descriptions、Page/Example 都使用同一 [formal locale policy](LANGUAGE_DEFECT_EXHAUSTION.md#正式接入合同首次真实使用前仍须-command-contract-gate)。Bundle 的 `language_attention` file Reference 指向 `machine/language-review-candidates.json`，独立于 authority 文件列表。候选不改变 Stage A 或 QC；必须完整审阅 source/target，不能只看 snippet。历史 v1 transport 保持历史事实，不能用作当前 v2 input。

@@ -3,9 +3,7 @@ package i18n
 import (
 	"bufio"
 	"bytes"
-	"crypto/sha256"
 	"encoding/csv"
-	"encoding/hex"
 	"fmt"
 	"io"
 	"os"
@@ -13,6 +11,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/shuijingwan/go-tour-i18n/internal/contentidentity"
 )
 
 var ArticleOrder = []string{
@@ -47,9 +47,21 @@ type ConditionalPage struct {
 }
 
 type Catalog struct {
-	Pages       []Page
-	Conditional []ConditionalPage
-	Examples    []Example
+	BridgeResolver            SameUnitBridgeResolver             `json:"-"`
+	BridgeConstructionContext SameUnitBridgeConstructionContext  `json:"-"`
+	PreviewFailureReader      PreviewFailureReader               `json:"-"`
+	ReplacementResolver       TranslationUnitReplacementResolver `json:"-"`
+	// Reads independent Surface evidence only; never selects lifecycle policy.
+	SurfaceAuthorityReader  SurfaceAuthorityReader  `json:"-"`
+	HistoricalContextReader HistoricalContextReader `json:"-"`
+	TranslationPackages     []TranslationPackageDescriptor
+	// Historical descriptors authorize immutable readers only, never scheduling.
+	HistoricalTranslationPackages []TranslationPackageDescriptor `json:"-"`
+	Adapted                       []AdaptedTranslationUnit
+	TranslationScope              []string
+	Pages                         []Page
+	Conditional                   []ConditionalPage
+	Examples                      []Example
 }
 
 type publishedSection struct {
@@ -66,7 +78,7 @@ func BuildCatalog(root string) (*Catalog, error) {
 // persistent IDs where the project has explicitly frozen them; reconciliation
 // remains responsible for preserving IDs across later upstream changes.
 func BuildSourceCatalog(root string) (*Catalog, error) {
-	return buildCatalog(root, false, true)
+	return observedSourceCatalog(root, false, true, deriveSourceCatalog)
 }
 
 // BuildLegacySourceCatalog builds the former unprojected standalone view solely
@@ -76,10 +88,21 @@ func BuildLegacySourceCatalog(root string) (*Catalog, error) {
 }
 
 func buildCatalog(root string, fixedShape, projectStandalone bool) (*Catalog, error) {
+	return buildCatalogWith(ArticleOrder, fixedShape, projectStandalone,
+		func(article string) ([]byte, error) {
+			return os.ReadFile(filepath.Join(root, "_content", "tour", article))
+		},
+		func(article string, b []byte) error { return parseSinglePage(root, article, b) },
+		func(pages []Page) ([]Example, error) { return discoverExamples(root, pages) })
+}
+
+// The complete source graph calculation consumes explicit readers. The eager
+// path above retains its original I/O and diagnostics; the observed path supplies
+// immutable bytes and never accesses the repository while deriving the graph.
+func buildCatalogWith(articles []string, fixedShape, projectStandalone bool, readArticle func(string) ([]byte, error), parsePage func(string, []byte) error, examplesFrom func([]Page) ([]Example, error)) (*Catalog, error) {
 	var catalog Catalog
-	for _, article := range ArticleOrder {
-		path := filepath.Join(root, "_content", "tour", article)
-		data, err := os.ReadFile(path)
+	for _, article := range articles {
+		data, err := readArticle(article)
 		if err != nil {
 			return nil, fmt.Errorf("read %s: %w", article, err)
 		}
@@ -111,7 +134,7 @@ func buildCatalog(root string, fixedShape, projectStandalone bool) (*Catalog, er
 		name := strings.TrimSuffix(article, ".article")
 		for i, section := range published {
 			source := section.Source
-			if err := parseSinglePage(root, article, source); err != nil {
+			if err := parsePage(article, source); err != nil {
 				return nil, fmt.Errorf("%s/%d: %w", name, i+1, err)
 			}
 			catalog.Pages = append(catalog.Pages, Page{
@@ -127,7 +150,7 @@ func buildCatalog(root string, fixedShape, projectStandalone bool) (*Catalog, er
 			})
 		}
 		for i, source := range conditional {
-			if err := parseSinglePage(root, article, source); err != nil {
+			if err := parsePage(article, source); err != nil {
 				return nil, fmt.Errorf("%s appengine/%d: %w", name, i+1, err)
 			}
 			catalog.Conditional = append(catalog.Conditional, ConditionalPage{
@@ -140,7 +163,7 @@ func buildCatalog(root string, fixedShape, projectStandalone bool) (*Catalog, er
 			})
 		}
 	}
-	examples, err := discoverExamples(root, catalog.Pages)
+	examples, err := examplesFrom(catalog.Pages)
 	if err != nil {
 		return nil, err
 	}
@@ -368,8 +391,7 @@ func countDirective(source []byte, directive string) int {
 }
 
 func sum(source []byte) string {
-	h := sha256.Sum256(source)
-	return hex.EncodeToString(h[:])
+	return contentidentity.SHA256Hex(source)
 }
 
 func validateCatalog(c *Catalog, fixedShape bool) error {

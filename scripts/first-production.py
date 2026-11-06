@@ -32,7 +32,9 @@ IDENTITY_SPEC = importlib.util.spec_from_file_location(
 )
 IDENTITY = importlib.util.module_from_spec(IDENTITY_SPEC)
 IDENTITY_SPEC.loader.exec_module(IDENTITY)
-RECEIPT_SCHEMA = "go-tour-i18n/first-production-receipt/v1"
+CONTRACT_SPEC=importlib.util.spec_from_file_location("first_release_contract",ROOT/"scripts/release_contract.py")
+CONTRACT=importlib.util.module_from_spec(CONTRACT_SPEC);CONTRACT_SPEC.loader.exec_module(CONTRACT)
+RECEIPT_SCHEMA = "go-learning/first-production-execution/v2"
 INVOCATION_CONTROL_PERSIST = "yes"
 ALIYUN_ONEINSTACK_NGINX = "/usr/local/nginx/sbin/nginx"
 ZGOCLOUD_ONEINSTACK_NGINX = "/usr/local/nginx/sbin/nginx"
@@ -238,7 +240,8 @@ class Orchestrator:
             raise FirstProductionError("preflight", "real release directory", str(release_dir), "重新执行 production publish")
         self.release_dir = release_dir.resolve()
         self.release_name = safe_release_name(self.release_dir)
-        self.locale = release_locale(self.release_dir)
+        self.info = CONTRACT.load(self.release_dir,current=True)
+        self.locale = self.info["locale"]
         self.identity = IDENTITY.load_identity(ROOT / "production" / "identity.json")
         profiles = [p for p in self.identity["locales"] if p["locale"] == self.locale]
         if len(profiles) != 1:
@@ -254,7 +257,8 @@ class Orchestrator:
         if self.profile["cdn"] != "cloudflare":
             raise FirstProductionError("preflight", "Cloudflare first-production profile", self.profile["cdn"], "现有非 Cloudflare 站点继续使用日常发布流程")
         self.run_id = f"{dt.datetime.now(dt.timezone.utc):%Y%m%dT%H%M%SZ}-{os.getpid()}"
-        self.receipt_path = self.release_dir.parent / f"{self.release_dir.name}.first-production-receipt.json"
+        self.receipt_path = self.release_dir.parent / f"{self.release_dir.name}.first-production-state.json"
+        self.result_path = pathlib.Path(str(self.release_dir)+".first-production-result-"+self.info["input_identity"]+".json")
         self.receipt = self._load_or_new_receipt()
         self.temp = pathlib.Path(tempfile.mkdtemp(prefix="go-tour-first-production-"))
         self.control = {
@@ -306,9 +310,14 @@ class Orchestrator:
             "completed_at": None,
             "result": "running",
             "stages": {},
+            "INPUT_IDENTITY": self.info["input_identity"],
+            "CONTENT_IDENTITY": self.info["content"]["identity"],
+            "SHARED_ASSETS_IDENTITY": self.info["content"]["shared_assets_identity"],
+            "MUTATION_STATUS": "NONE",
         }
         if not self.receipt_path.exists():
             return base
+        if self.receipt_path.is_symlink(): raise CONTRACT.ContractError("first-production state cannot be symlink")
         try:
             previous = json.loads(self.receipt_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
@@ -317,6 +326,10 @@ class Orchestrator:
         expected = (RECEIPT_SCHEMA, self.locale, self.profile["production_hostname"], self.release_name)
         if identity != expected:
             raise FirstProductionError("preflight", repr(expected), repr(identity), "不要复用其他 release 或 hostname 的 receipt")
+        if any(previous.get(k)!=base[k] for k in ("INPUT_IDENTITY","CONTENT_IDENTITY","SHARED_ASSETS_IDENTITY")):
+            raise CONTRACT.ContractError("stale first-production execution input")
+        if previous.get("MUTATION_STATUS") in ("ATTEMPTED","UNKNOWN"):
+            raise CONTRACT.ContractError("first-production mutation unknown; preserve evidence, do not replay")
         previous_result = previous.get("result")
         if previous_result == "passed":
             raise FirstProductionError(
@@ -328,6 +341,11 @@ class Orchestrator:
         print(f"[首次生产] resume receipt 已识别，将重新验证所有关键 identity：{self.receipt_path}")
         base["started_at"] = previous.get("started_at") or base["started_at"]
         base["stages"] = previous.get("stages") if type(previous.get("stages")) is dict else {}
+        base["MUTATION_STATUS"]=previous.get("MUTATION_STATUS","NONE")
+        base["PRIOR_STATE"]=previous.get("PRIOR_STATE")
+        for value in base["stages"].values():
+            if value.get("input_identity")!=self.info["input_identity"] or value.get("result")!="PASS":
+                raise CONTRACT.ContractError("first-production stage is not bound to current input")
         return base
 
     def write_receipt(self, result=None):
@@ -339,18 +357,26 @@ class Orchestrator:
         temporary.write_text(json.dumps(self.receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n", encoding="utf-8")
         os.chmod(temporary, 0o644)
         os.replace(temporary, self.receipt_path)
+        if result=="passed":
+            with self.result_path.open("x") as output:
+                output.write(json.dumps(self.receipt,ensure_ascii=False,sort_keys=True,separators=(",", ":"))+"\n")
 
     def record(self, stage, result="PASS"):
-        self.receipt["stages"][stage] = {"completed_at": utc_now(), "result": result}
+        self.receipt["stages"][stage] = {"completed_at": utc_now(), "result": result,"input_identity":self.info["input_identity"]}
+        self.receipt["MUTATION_STATUS"]="KNOWN"
         self.write_receipt()
         elapsed = time.monotonic() - self.stage_started.get(stage, time.monotonic())
         print(f"[首次生产] {STAGE_LABELS.get(stage, stage)}：{result}（{elapsed:.1f}s）")
 
     def timed_stage(self, stage, action):
         self.stage_started[stage] = time.monotonic()
+        if stage in ("infrastructure","playground-origin","deploy","cloudflare-dns"):
+            self.receipt["MUTATION_STATUS"]="ATTEMPTED";self.write_receipt()
         try:
             return action()
         except Exception:
+            if self.receipt["MUTATION_STATUS"]=="ATTEMPTED":
+                self.receipt["MUTATION_STATUS"]="UNKNOWN";self.write_receipt()
             elapsed = time.monotonic() - self.stage_started[stage]
             print(f"[首次生产] {STAGE_LABELS.get(stage, stage)}：FAILED（{elapsed:.1f}s）", file=sys.stderr)
             raise
@@ -575,7 +601,7 @@ printf 'zone_id=%s\n' "$zone_id"
         return self.ssh(s["aliyun_ssh_alias"], script, (
             p["data_root"], p["releases_root"], p["current"], p["deployment_lock"],
             p["systemd_service"], p["service_user"], str(p["loopback_port"]),
-            p["localhost_health_url"], p["environment_file"], p["nginx_vhost_path"],
+            p["localhost_health_url"].rstrip("/")+self.info["content"]["canonical_routes"][0], p["environment_file"], p["nginx_vhost_path"],
             p["tls_certificate_path"], p["tls_key_path"], p["production_hostname"],
             s["cloudflare_secret_file"], s["cloudflare_zone_name"], p["origin_ip"],
             expected_remote, resume_deployed, expected_unit_sha, expected_vhost_sha,
@@ -609,24 +635,10 @@ PY
         ), capture=True, stage="preflight")
 
     def shared_assets_freshness(self):
-        if self.profile["shared_assets_policy"] != "shared-cloudflare":
-            return
-        export = self.temp / "shared-assets"
-        self.run(["go", "run", "-mod=readonly", "./cmd/tour-i18n", "assets", "export", "--output", export], stage="preflight", timeout=300)
-        self.run(["go", "run", "-mod=readonly", "./cmd/tour-i18n", "assets", "validate", "--input", export], stage="preflight", timeout=300)
-        origin = self.shared["shared_assets_origin_root"]
-        script = r'''set -Eeuo pipefail
-root=$1
-[[ -d $root && ! -L $root ]]
-cd "$root"
-sha256sum -c --strict SHA256SUMS >/dev/null
-sha256sum SHA256SUMS
-'''
-        remote = self.ssh(self.shared["aliyun_ssh_alias"], script, (origin,), capture=True, stage="preflight")
-        local_manifest_sha = hashlib.sha256((export / "SHA256SUMS").read_bytes()).hexdigest()
-        if remote.split()[0] != local_manifest_sha:
-            raise FirstProductionError("preflight", "shared-assets origin matches current export", remote.split()[0], "先完成 deploy-shared-assets 与正式公网验证")
-        self.run([ROOT / "scripts" / "verify-shared-assets-public.sh", export], stage="preflight", timeout=300)
+        current=CONTRACT.load(self.release_dir,current=True)
+        if current["input_identity"]!=self.info["input_identity"]:
+            raise CONTRACT.ContractError("first/repeat current content identity differs")
+        self.receipt["SHARED_ASSETS_PROOF"]=CONTRACT.shared_freshness(self.info,self.shared)
 
     def preflight(self):
         self.evidence_preflight()
@@ -637,6 +649,8 @@ sha256sum SHA256SUMS
         zgocloud = self.zgocloud_preflight()
         self.receipt["cloudflare_zone_id"] = aliyun.removeprefix("zone_id=")
         self.receipt["preflight_playground_identity"] = zgocloud
+        prior=CONTRACT.prior_state(self.profile,self.info)
+        if self.receipt.get("PRIOR_STATE") is None: self.receipt["PRIOR_STATE"]=prior
         self.record("preflight")
 
     def bootstrap_infrastructure(self):
@@ -772,34 +786,7 @@ check 200 -X POST -H "Origin: $origin" --data-urlencode $'body=package main\nfun
         self.record("deploy")
 
     def direct_origin(self):
-        p, s = self.profile, self.shared
-        script = r'''set -Eeuo pipefail
-host=$1; ip=$2; locale=$3; shared_policy=$4; shared_assets=$5
-temporary=$(mktemp -d); trap 'rm -rf "$temporary"' EXIT
-request() { path=$1; expected=$2; code=$(curl -sS --resolve "$host:443:$ip" --connect-timeout 5 --max-time 20 -o "$temporary/body" -D "$temporary/headers" -w '%{http_code}' "https://$host$path" || true); [[ $code == "$expected" ]] || { printf '%s expected %s got %s\n' "$path" "$expected" "${code:-000}" >&2; exit 1; }; }
-for path in / /tour/ /tour/list /tour/welcome/1 /tour/static/js/app.js; do request "$path" 200; done
-request /socket 404
-request / 200
-python3 - "$temporary/body" "$locale" "https://$host/" <<'PY'
-from html.parser import HTMLParser
-import pathlib,sys
-class P(HTMLParser):
-  def __init__(self): super().__init__(); self.lang=[]; self.canonical=[]
-  def handle_starttag(self,tag,attrs):
-    a=dict(attrs)
-    if tag=='html': self.lang.append(a.get('lang'))
-    if tag=='link' and 'canonical' in a.get('rel','').split(): self.canonical.append(a.get('href'))
-p=P(); p.feed(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
-assert p.lang == [sys.argv[2]] and p.canonical == [sys.argv[3]]
-PY
-if [[ $shared_policy == shared-cloudflare ]]; then grep -F "$shared_assets/" "$temporary/body" >/dev/null; fi
-code=$(curl -sS --resolve "$host:80:$ip" --connect-timeout 5 --max-time 20 -o /dev/null -D "$temporary/http" -w '%{http_code}' "http://$host/tour/" || true)
-[[ $code == 301 || $code == 308 ]]; grep -Eiq "^location: https://$host/tour/" "$temporary/http"
-'''
-        self.ssh(s["zgocloud_ssh_alias"], script, (
-            p["production_hostname"], p["origin_ip"], p["locale"], p["shared_assets_policy"],
-            s["shared_assets_public_origin"],
-        ), stage="direct-origin", timeout=300)
+        self.run([ROOT/"scripts/verify-production.sh",self.release_dir,"--direct-origin"],stage="direct-origin",timeout=1800)
         self.record("direct-origin")
 
     def cloudflare_dns(self):
@@ -881,7 +868,7 @@ fail 'Cloudflare DNS mutation attempts exhausted without an exact identity'
     def public_machine(self):
         p, s = self.profile, self.shared
         script = r'''set -Eeuo pipefail
-host=$1; locale=$2
+host=$1; locale=$2; primary=$3; secondary=$4
 temporary=$(mktemp -d); trap 'rm -rf "$temporary"' EXIT
 readonly CURL_CONNECT_TIMEOUT=5
 readonly CURL_MAX_TIME=25
@@ -920,8 +907,8 @@ representative() {
 for readiness_attempt in $(seq 1 30); do
   ready=1
   for readiness_round in 1 2 3; do
-    representative / "$temporary/home" "$temporary/home.headers" || { ready=0; break; }
-    representative /tour/welcome/1 "$temporary/welcome" "$temporary/welcome.headers" || { ready=0; break; }
+    representative "$primary" "$temporary/home" "$temporary/home.headers" || { ready=0; break; }
+    representative "$secondary" "$temporary/welcome" "$temporary/welcome.headers" || { ready=0; break; }
   done
   (( ready )) && break
   [[ $readiness_attempt != 30 ]] || exit 1
@@ -929,7 +916,7 @@ for readiness_attempt in $(seq 1 30); do
 done
 '''
         self.ssh(s["zgocloud_ssh_alias"], script, (
-            p["production_hostname"], p["locale"],
+            p["production_hostname"], p["locale"], self.info["content"]["canonical_routes"][0],self.info["content"]["canonical_routes"][-1],
         ), stage="public-machine", timeout=1200)
         self.run([ROOT / "scripts" / "verify-production.sh", self.release_dir], stage="public-machine", timeout=1200)
         self.record("public-machine")
@@ -955,6 +942,7 @@ done
         self.run([
             ROOT / "scripts" / "verify-production-browser.py", self.profile["production_public_url"], self.locale,
             "--proxy-server", proxy_server,
+            "--release-dir", self.release_dir,
         ], stage="browser", timeout=600)
         self.record("browser")
 
@@ -968,13 +956,18 @@ done
             run_stage("infrastructure", self.bootstrap_infrastructure)
         else:
             print("[首次生产] 基础设施：RESUME（0.0s；预检已重新验证）")
-        run_stage("playground-origin", self.configure_playground)
+        if not self.stage_passed("playground-origin"):
+            run_stage("playground-origin", self.configure_playground)
         if not self.stage_passed("deploy"):
             run_stage("deploy", self.deploy)
         else:
+            prior=CONTRACT.prior_state(self.profile,self.info)
+            if prior.get("input_identity")!=self.info["input_identity"]:
+                raise CONTRACT.ContractError("first-production resumed deploy is not exact current runtime")
             print("[首次生产] 首次部署：RESUME（0.0s；current/source health 已重新验证）")
         run_stage("direct-origin", self.direct_origin)
-        run_stage("cloudflare-dns", self.cloudflare_dns)
+        if not self.stage_passed("cloudflare-dns"):
+            run_stage("cloudflare-dns", self.cloudflare_dns)
         run_stage("public-machine", self.public_machine)
         run_stage("browser", self.browser)
         self.write_receipt("passed")
@@ -999,7 +992,7 @@ def main():
         orchestrator = Orchestrator(pathlib.Path(sys.argv[1]))
         orchestrator.execute()
         return 0
-    except (FirstProductionError, IDENTITY.IdentityError) as exc:
+    except (FirstProductionError, IDENTITY.IdentityError,CONTRACT.ContractError) as exc:
         if orchestrator is not None:
             orchestrator.receipt["failure"] = {
                 "stage": getattr(exc, "stage", "identity"),

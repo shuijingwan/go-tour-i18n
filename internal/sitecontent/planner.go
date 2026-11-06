@@ -142,9 +142,49 @@ func GenerationPlan(root, locale, pkg, task string, finding *Reference) (*BatchP
 	if _, err := i18n.CurrentParsedGlossaryReview(root, locale, digest(glossary)); err != nil {
 		return nil, err
 	}
-	ids, err := generationEligible(root, locale, pkg, task, finding, glossary, docs)
-	if err != nil {
-		return nil, err
+	var ids []string
+	if task != "initial" {
+		ids, err = generationEligible(root, locale, pkg, task, finding, glossary, docs)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if task == "initial" {
+		catalog, err := i18n.ReadCatalog(root)
+		if err != nil {
+			return nil, err
+		}
+		current, err := i18n.BuildSourceCatalog(root)
+		if err != nil {
+			return nil, err
+		}
+		if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
+			return nil, err
+		}
+		all, err := AttachPageTranslationUnits(root, catalog)
+		if err != nil {
+			return nil, err
+		}
+		if err := catalog.UseTranslationUnitScope(all); err != nil {
+			return nil, err
+		}
+		progress, err := i18n.BuildTranslationUnitProgress(root, catalog, locale)
+		if err != nil {
+			return nil, err
+		}
+		if progress.RestoreFailed+progress.ValidationFailed+progress.Stale > 0 {
+			return nil, fmt.Errorf("先恢复精确失败/过期单元，不启动下一批生成")
+		}
+		ids = []string{}
+		for _, u := range progress.Units {
+			if u.Status == "missing" {
+				ids = append(ids, u.UnitID)
+			}
+		}
+		sort.Strings(ids)
+		if len(ids) == 0 {
+			return &BatchPlan{Schema: "go-learning/fixed-page-plan/v1", Contract: PageContract, Sets: []WorkingSet{}}, nil
+		}
 	}
 	return PlanPageWorkingSets(docs, raw, ids, nil)
 }

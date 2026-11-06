@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_finalization",
+  "locale": "zh-CN",
+  "snapshot_id": "docs-entry-v1-qc-002",
+  "previous_snapshot_id": "docs-entry-v1-qc-001",
+  "snapshot_manifest_path": "data/quality-check-snapshots/zh-CN/docs-entry-v1-qc-002/manifest.json",
+  "snapshot_manifest_sha256": "6fac5fd67ae7135c6ce39b22cf5409855989d9746400ba018b6ebf92f91e012f",
+  "glossary_path": "locales/zh-CN/glossary.yaml",
+  "glossary_sha256": "70be302647a76f00de9f9802001e9f106b24cae666906c3a6dbef7f5c57bdb39",
+  "rubric": "translation-quality/v1",
+  "quality_check_results": [
+    {
+      "snapshot_id": "docs-entry-v1-qc-001",
+      "path": "data/quality-check-snapshots/zh-CN/docs-entry-v1-qc-001/quality-check-results.json",
+      "sha256": "c7d1e57fadf6026c9d9833fdc4f728a0f58edc44cd546961dc643989169d1ad6"
+    },
+    {
+      "snapshot_id": "docs-entry-v1-qc-002",
+      "path": "data/quality-check-snapshots/zh-CN/docs-entry-v1-qc-002/quality-check-results.json",
+      "sha256": "ce4726f0c9ced13400b2902803a2fc781e1c87fbf66b1334acf9f0d6050a45a1"
+    }
+  ],
+  "units": [
+    {
+      "index": 1,
+      "unit_id": "00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866",
+      "source_snapshot_id": "docs-entry-v1-qc-002",
+      "rating": "A",
+      "snapshot": {
+        "index": 1,
+        "unit_id": "00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-058",
+        "source_path": "_content/doc/index.html",
+        "source_sha256": "1e1ec2ae02d56739bc7491c64cc3d1d3e269423f22566d2a822b06c35c9470e3",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-058/candidates/00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866.article",
+        "candidate_sha256": "05edf840eb4b1bb1d468166fa20ba22fed422065c1ff93e2c4222c1671ac933c",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-058/validation/00a849ced4775e5dc75d72ecbdc81549135697ba84c51d26d05ac84d4989b866.json",
+        "validation_sha256": "029b9e66e06438bf99ccba580aff1c43feddf1b83bf00a4b92ea74f554175e4e",
+        "attempt": 1
+      }
+    },
+    {
+      "index": 2,
+      "unit_id": "4b6d5c2294accb01dad0184b82adbf114a8a74186199fff44f115c880b2d96c7",
+      "source_snapshot_id": "docs-entry-v1-qc-001",
+      "rating": "A",
+      "snapshot": {
+        "index": 2,
+        "unit_id": "4b6d5c2294accb01dad0184b82adbf114a8a74186199fff44f115c880b2d96c7",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-zh-CN-056",
+        "source_path": "_content/doc/install.html",
+        "source_sha256": "bbebc94da105910fb6f002a31a97f859c47202417cba4a0a60d6b1093e731c5c",
+        "candidate_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-056/candidates/4b6d5c2294accb01dad0184b82adbf114a8a74186199fff44f115c880b2d96c7.article",
+        "candidate_sha256": "e72a98e48d8129290f57cdee1f948b42378e9e2e449e714285479ed9e7d903fb",
+        "validation_path": "data/retranslation-runs/zh-CN/chatgpt-zh-CN-056/validation/4b6d5c2294accb01dad0184b82adbf114a8a74186199fff44f115c880b2d96c7.json",
+        "validation_sha256": "84262879f7de7f4d500592f5f74bf92a05f0119343bbe467fe115bcc96c62e04",
+        "attempt": 1
+      }
+    }
+  ],
+  "finalized_at": "2026-10-22T12:29:23.164109652Z"
+}

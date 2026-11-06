@@ -1,0 +1,621 @@
+{
+  "schema": "go-learning/structured-source-content-successor/v1",
+  "proposal": {
+    "path": "data/structured-source-successors/proposals/project-release-source.json",
+    "sha256": "85d7e46ef77b3ec23249cd7677efd9eeaffcaedc3001ecd471d4309ec70a437c"
+  },
+  "predecessor_scope_identity_sha256": "ca2e0fe1b0ec652f0c7e8c257edb77dd0ab88c9aaba4986aad6bee8fa69693e4",
+  "package": "site-v2-shell",
+  "previous_source": {
+    "path": "data/site-shell/translation.html",
+    "sha256": "04ab70b5086539b36c55c504ee5cf302037b95c3abf4904824b079a8c316be6c"
+  },
+  "successor_body": {
+    "path": "data/site-shell/content/translation-release-source.html",
+    "sha256": "fd8c65155b7663ce1c4a59d4996c578d9c901140aaafd1bb8cd336260dce2263"
+  },
+  "insert_at": 1409,
+  "previous_document": {
+    "contract": "go-learning/content-units/v2",
+    "path": "data/site-shell/translation.html",
+    "kind": "page",
+    "route": "/translation/",
+    "source_sha256": "04ab70b5086539b36c55c504ee5cf302037b95c3abf4904824b079a8c316be6c",
+    "structure_sha256": "73931a029a7c1a1a46ff1522d5635bb9ce3e537f648e92fa2d49a07cceb5d2f1",
+    "dependencies": [],
+    "units": [
+      {
+        "id": "fc14df339791f48997d0078eb0bdcfac64bdd6857c1712e922c4013891150c68",
+        "locator": "data/site-shell/translation.html#html/h1:c121caab0d975d5d10921a153b682cb67d0aa0b213b980820517e97e422ca401:1",
+        "source": "Go Learning ⟦P0⟧ Documentation Translations",
+        "source_sha256": "c121caab0d975d5d10921a153b682cb67d0aa0b213b980820517e97e422ca401",
+        "start": 13,
+        "end": 57,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "\u0026amp;",
+            "role": "atom"
+          }
+        ]
+      },
+      {
+        "id": "37d22fae8c419c9eb9739d0296e7f2a8ef1d170bcde4dc1c783827f7cce98f89",
+        "locator": "data/site-shell/translation.html#html/p:78a7742141f6f2a08eaa6b2c0e175f11b11732c643c6212a61f13e3746630e4e:1",
+        "source": "This community project translates the Tour, Learn, and Go documentation. Future formal surfaces follow the same source, glossary, and independent review rules.",
+        "source_sha256": "78a7742141f6f2a08eaa6b2c0e175f11b11732c643c6212a61f13e3746630e4e",
+        "start": 68,
+        "end": 227,
+        "protected": []
+      },
+      {
+        "id": "4fccae29455ea4ebafd755a9f14c97ef151b5fb5a72a1e1a9962aee657c311a8",
+        "locator": "data/site-shell/translation.html#html/p:03af11bd651f79f5cc7e43ae5e62bafbb95149781c1c942acb45ed3a41c415c9:1",
+        "source": "The official English source is the frozen ⟦P0⟧ baseline recorded in this repository. Local translations are activated only after generation, independent language review, and machine validation have passed for a complete package.",
+        "source_sha256": "03af11bd651f79f5cc7e43ae5e62bafbb95149781c1c942acb45ed3a41c415c9",
+        "start": 237,
+        "end": 475,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "golang/website",
+            "role": "atom"
+          }
+        ]
+      },
+      {
+        "id": "54a10927230c12c235c9e33bf2d47abe88bee169016bdb54ff87c126c56a2a37",
+        "locator": "data/site-shell/translation.html#html/p:58bdd2a6c952b20ce7cdd8b73ca0e725ac37104a4c1399f0b6dadeb4478dd2b2:1",
+        "source": "Each language uses one glossary across all surfaces. Source changes and reviewed glossary changes reopen only the affected content, with verified evidence for reuse of unaffected work.",
+        "source_sha256": "58bdd2a6c952b20ce7cdd8b73ca0e725ac37104a4c1399f0b6dadeb4478dd2b2",
+        "start": 485,
+        "end": 669,
+        "protected": []
+      },
+      {
+        "id": "75dd1eaa56d13eb593d6e9de3a2a23b6d34d0bfd9dd2267b5737a089f1bc5e33",
+        "locator": "data/site-shell/translation.html#html/p:31b1694649bcb584d88d50acdebce802a9c24c619a0539b7972f7f0f9fd43dcb:1",
+        "source": "The project homepage and this page have no advertising. Tour advertising follows the locale publication agreement; documentation advertising follows the explicit site policy.",
+        "source_sha256": "31b1694649bcb584d88d50acdebce802a9c24c619a0539b7972f7f0f9fd43dcb",
+        "start": 679,
+        "end": 853,
+        "protected": []
+      },
+      {
+        "id": "fbc16ef9104c121d83638b371f7af02af63d9fc5d5c4ba53a9de77d71c603444",
+        "locator": "data/site-shell/translation.html#html/p:9373f931cd702dfa7362025a94e06a42f5cf5249957096a8a41032af84a6bbad:1",
+        "source": "Translations may differ from the latest official English website. Unavailable local pages link directly to the official source; direct requests to missing local pages return a real not-found response.",
+        "source_sha256": "9373f931cd702dfa7362025a94e06a42f5cf5249957096a8a41032af84a6bbad",
+        "start": 863,
+        "end": 1063,
+        "protected": []
+      },
+      {
+        "id": "9a671862aecf4f923a27c83fed9cf29c95db34789855641469c45ebe33a2c312",
+        "locator": "data/site-shell/translation.html#html/attribute/aria-label:b53dedd84cdc6af5cac20e1c65a10e810a6802c7692f15eb33738277333b69eb:1",
+        "source": "Project links",
+        "source_sha256": "b53dedd84cdc6af5cac20e1c65a10e810a6802c7692f15eb33738277333b69eb",
+        "start": 1087,
+        "end": 1100,
+        "protected": []
+      },
+      {
+        "id": "efdaaf7da1a52f53035373c2d8929f089d258d3e5f629cc94ad0d870ed01e8a7",
+        "locator": "data/site-shell/translation.html#html/text-block:416a8b95035104edeb5cb58e3e8d31e765d4df873269557a2d344a6ea0b8b665:1",
+        "source": "⟦P0⟧Source and development history⟦P1⟧⟦P2⟧⟦P3⟧Feedback and corrections⟦P4⟧⟦P5⟧⟦P6⟧Official Go website⟦P7⟧⟦P8⟧⟦P9⟧Learning and documentation homepage⟦P10⟧",
+        "source_sha256": "416a8b95035104edeb5cb58e3e8d31e765d4df873269557a2d344a6ea0b8b665",
+        "start": 1107,
+        "end": 1399,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "\u003ca href=\"https://github.com/shuijingwan/go-tour-i18n\"\u003e",
+            "role": "open",
+            "pair": "binding-0"
+          },
+          {
+            "token": "⟦P1⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-0"
+          },
+          {
+            "token": "⟦P2⟧",
+            "raw": "\n    ",
+            "role": "atom"
+          },
+          {
+            "token": "⟦P3⟧",
+            "raw": "\u003ca href=\"https://github.com/shuijingwan/go-tour-i18n/issues\"\u003e",
+            "role": "open",
+            "pair": "binding-3"
+          },
+          {
+            "token": "⟦P4⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-3"
+          },
+          {
+            "token": "⟦P5⟧",
+            "raw": "\n    ",
+            "role": "atom"
+          },
+          {
+            "token": "⟦P6⟧",
+            "raw": "\u003ca href=\"https://go.dev/\"\u003e",
+            "role": "open",
+            "pair": "binding-6"
+          },
+          {
+            "token": "⟦P7⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-6"
+          },
+          {
+            "token": "⟦P8⟧",
+            "raw": "\n    ",
+            "role": "atom"
+          },
+          {
+            "token": "⟦P9⟧",
+            "raw": "\u003ca href=\"/\"\u003e",
+            "role": "open",
+            "pair": "binding-9"
+          },
+          {
+            "token": "⟦P10⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-9"
+          }
+        ]
+      }
+    ]
+  },
+  "current_document": {
+    "contract": "go-learning/content-units/v2",
+    "path": "data/site-shell/translation.html",
+    "kind": "page",
+    "route": "/translation/",
+    "source_sha256": "fd8c65155b7663ce1c4a59d4996c578d9c901140aaafd1bb8cd336260dce2263",
+    "structure_sha256": "58bd35cb4ed5735830b95864998d27bb85e9edf20543517bcf8a4feed5383b49",
+    "dependencies": [],
+    "units": [
+      {
+        "id": "fc14df339791f48997d0078eb0bdcfac64bdd6857c1712e922c4013891150c68",
+        "locator": "data/site-shell/translation.html#html/h1:c121caab0d975d5d10921a153b682cb67d0aa0b213b980820517e97e422ca401:1",
+        "source": "Go Learning ⟦P0⟧ Documentation Translations",
+        "source_sha256": "c121caab0d975d5d10921a153b682cb67d0aa0b213b980820517e97e422ca401",
+        "start": 13,
+        "end": 57,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "\u0026amp;",
+            "role": "atom"
+          }
+        ]
+      },
+      {
+        "id": "37d22fae8c419c9eb9739d0296e7f2a8ef1d170bcde4dc1c783827f7cce98f89",
+        "locator": "data/site-shell/translation.html#html/p:78a7742141f6f2a08eaa6b2c0e175f11b11732c643c6212a61f13e3746630e4e:1",
+        "source": "This community project translates the Tour, Learn, and Go documentation. Future formal surfaces follow the same source, glossary, and independent review rules.",
+        "source_sha256": "78a7742141f6f2a08eaa6b2c0e175f11b11732c643c6212a61f13e3746630e4e",
+        "start": 68,
+        "end": 227,
+        "protected": []
+      },
+      {
+        "id": "4fccae29455ea4ebafd755a9f14c97ef151b5fb5a72a1e1a9962aee657c311a8",
+        "locator": "data/site-shell/translation.html#html/p:03af11bd651f79f5cc7e43ae5e62bafbb95149781c1c942acb45ed3a41c415c9:1",
+        "source": "The official English source is the frozen ⟦P0⟧ baseline recorded in this repository. Local translations are activated only after generation, independent language review, and machine validation have passed for a complete package.",
+        "source_sha256": "03af11bd651f79f5cc7e43ae5e62bafbb95149781c1c942acb45ed3a41c415c9",
+        "start": 237,
+        "end": 475,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "golang/website",
+            "role": "atom"
+          }
+        ]
+      },
+      {
+        "id": "54a10927230c12c235c9e33bf2d47abe88bee169016bdb54ff87c126c56a2a37",
+        "locator": "data/site-shell/translation.html#html/p:58bdd2a6c952b20ce7cdd8b73ca0e725ac37104a4c1399f0b6dadeb4478dd2b2:1",
+        "source": "Each language uses one glossary across all surfaces. Source changes and reviewed glossary changes reopen only the affected content, with verified evidence for reuse of unaffected work.",
+        "source_sha256": "58bdd2a6c952b20ce7cdd8b73ca0e725ac37104a4c1399f0b6dadeb4478dd2b2",
+        "start": 485,
+        "end": 669,
+        "protected": []
+      },
+      {
+        "id": "75dd1eaa56d13eb593d6e9de3a2a23b6d34d0bfd9dd2267b5737a089f1bc5e33",
+        "locator": "data/site-shell/translation.html#html/p:31b1694649bcb584d88d50acdebce802a9c24c619a0539b7972f7f0f9fd43dcb:1",
+        "source": "The project homepage and this page have no advertising. Tour advertising follows the locale publication agreement; documentation advertising follows the explicit site policy.",
+        "source_sha256": "31b1694649bcb584d88d50acdebce802a9c24c619a0539b7972f7f0f9fd43dcb",
+        "start": 679,
+        "end": 853,
+        "protected": []
+      },
+      {
+        "id": "fbc16ef9104c121d83638b371f7af02af63d9fc5d5c4ba53a9de77d71c603444",
+        "locator": "data/site-shell/translation.html#html/p:9373f931cd702dfa7362025a94e06a42f5cf5249957096a8a41032af84a6bbad:1",
+        "source": "Translations may differ from the latest official English website. Unavailable local pages link directly to the official source; direct requests to missing local pages return a real not-found response.",
+        "source_sha256": "9373f931cd702dfa7362025a94e06a42f5cf5249957096a8a41032af84a6bbad",
+        "start": 863,
+        "end": 1063,
+        "protected": []
+      },
+      {
+        "id": "9a671862aecf4f923a27c83fed9cf29c95db34789855641469c45ebe33a2c312",
+        "locator": "data/site-shell/translation.html#html/attribute/aria-label:b53dedd84cdc6af5cac20e1c65a10e810a6802c7692f15eb33738277333b69eb:1",
+        "source": "Project links",
+        "source_sha256": "b53dedd84cdc6af5cac20e1c65a10e810a6802c7692f15eb33738277333b69eb",
+        "start": 1087,
+        "end": 1100,
+        "protected": []
+      },
+      {
+        "id": "efdaaf7da1a52f53035373c2d8929f089d258d3e5f629cc94ad0d870ed01e8a7",
+        "locator": "data/site-shell/translation.html#html/text-block:416a8b95035104edeb5cb58e3e8d31e765d4df873269557a2d344a6ea0b8b665:1",
+        "source": "⟦P0⟧Source and development history⟦P1⟧⟦P2⟧⟦P3⟧Feedback and corrections⟦P4⟧⟦P5⟧⟦P6⟧Official Go website⟦P7⟧⟦P8⟧⟦P9⟧Learning and documentation homepage⟦P10⟧",
+        "source_sha256": "416a8b95035104edeb5cb58e3e8d31e765d4df873269557a2d344a6ea0b8b665",
+        "start": 1107,
+        "end": 1399,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "\u003ca href=\"https://github.com/shuijingwan/go-tour-i18n\"\u003e",
+            "role": "open",
+            "pair": "binding-0"
+          },
+          {
+            "token": "⟦P1⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-0"
+          },
+          {
+            "token": "⟦P2⟧",
+            "raw": "\n    ",
+            "role": "atom"
+          },
+          {
+            "token": "⟦P3⟧",
+            "raw": "\u003ca href=\"https://github.com/shuijingwan/go-tour-i18n/issues\"\u003e",
+            "role": "open",
+            "pair": "binding-3"
+          },
+          {
+            "token": "⟦P4⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-3"
+          },
+          {
+            "token": "⟦P5⟧",
+            "raw": "\n    ",
+            "role": "atom"
+          },
+          {
+            "token": "⟦P6⟧",
+            "raw": "\u003ca href=\"https://go.dev/\"\u003e",
+            "role": "open",
+            "pair": "binding-6"
+          },
+          {
+            "token": "⟦P7⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-6"
+          },
+          {
+            "token": "⟦P8⟧",
+            "raw": "\n    ",
+            "role": "atom"
+          },
+          {
+            "token": "⟦P9⟧",
+            "raw": "\u003ca href=\"/\"\u003e",
+            "role": "open",
+            "pair": "binding-9"
+          },
+          {
+            "token": "⟦P10⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-9"
+          }
+        ]
+      },
+      {
+        "id": "804d81fa51795e7cfb3b5da0a34661226425a64d7c1397904c90a3a9cb19b451",
+        "locator": "data/site-shell/translation.html#html/h2:f46ba02aca1d512a9b7997807a557cd4fa85c7a8c805ae3d0a9d14a9b613c907:1",
+        "source": "Source and baseline",
+        "source_sha256": "f46ba02aca1d512a9b7997807a557cd4fa85c7a8c805ae3d0a9d14a9b613c907",
+        "start": 1450,
+        "end": 1469,
+        "protected": []
+      },
+      {
+        "id": "5903e4f8297609a57be1d25cb2f243c8f9822d0d386bb54ec3fa1b5680459d32",
+        "locator": "data/site-shell/translation.html#html/p:4f727f7838a4ebc35119b28fe65f4959d6497e23ead1a5fbfcf863b63ac1d712:1",
+        "source": "The repository records the frozen English source baseline and its file identities. Translation work uses that baseline rather than silently importing changes from the live Go website.",
+        "source_sha256": "4f727f7838a4ebc35119b28fe65f4959d6497e23ead1a5fbfcf863b63ac1d712",
+        "start": 1482,
+        "end": 1665,
+        "protected": []
+      },
+      {
+        "id": "60d0a663622e9e2d3a8b661f2be88046df7170a45e7b202a52971da806fd3c14",
+        "locator": "data/site-shell/translation.html#html/h2:2adecd2652ae10ae98872540e34d47fcfeb22f466c77aa67e9de775c500eb29f:1",
+        "source": "Languages and regions",
+        "source_sha256": "2adecd2652ae10ae98872540e34d47fcfeb22f466c77aa67e9de775c500eb29f",
+        "start": 1730,
+        "end": 1751,
+        "protected": []
+      },
+      {
+        "id": "0e0c6f66349f5f7b1ebb1062574f610154dff74a44f66c8132bb0652585a2532",
+        "locator": "data/site-shell/translation.html#html/p:4fc6d282381bad722579f96db28a4bd97e4cd6a5ad005baf2bfe9b0b77e1ea94:1",
+        "source": "The frozen Tour source lists community translation references. These references are separate from this site's validated local package coverage and do not establish a current submission or approval status.",
+        "source_sha256": "4fc6d282381bad722579f96db28a4bd97e4cd6a5ad005baf2bfe9b0b77e1ea94",
+        "start": 1764,
+        "end": 1968,
+        "protected": []
+      },
+      {
+        "id": "9bd7e6b12a28a3d2db7d436dbd7e0814fbf8073801ee2cb092e90a8cb16e1e1c",
+        "locator": "data/site-shell/translation.html#html/h3:5ece53344102957b9ff648896a2dc8bae023d446acf3651a15946249df71bb29:1",
+        "source": "East Asia",
+        "source_sha256": "5ece53344102957b9ff648896a2dc8bae023d446acf3651a15946249df71bb29",
+        "start": 1981,
+        "end": 1990,
+        "protected": []
+      },
+      {
+        "id": "afd6d60498e36070114d00883be25a100c11e9d9a7b80e3e50cfc2559cb29589",
+        "locator": "data/site-shell/translation.html#html/li:73890aa8d4eba96a40660a8eaf06255ded723c939a60136478058826cd2db776:1",
+        "source": "⟦P0⟧Simplified Chinese Tour reference⟦P1⟧",
+        "source_sha256": "73890aa8d4eba96a40660a8eaf06255ded723c939a60136478058826cd2db776",
+        "start": 2015,
+        "end": 2100,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "\u003ca href=\"https://go-dev.shuijingwanwq.com/tour\"\u003e",
+            "role": "open",
+            "pair": "binding-0"
+          },
+          {
+            "token": "⟦P1⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-0"
+          }
+        ]
+      },
+      {
+        "id": "bb19d8d17debe40fec1fb7f93d0ab2f73eee830f5158aef5354e3ae9cf0304ce",
+        "locator": "data/site-shell/translation.html#html/li:b0d3b8138ee159e7b5d8ef5f94f19d54d307eceeb0638f024de002c234f7a38e:1",
+        "source": "⟦P0⟧Korean Tour reference⟦P1⟧",
+        "source_sha256": "b0d3b8138ee159e7b5d8ef5f94f19d54d307eceeb0638f024de002c234f7a38e",
+        "start": 2116,
+        "end": 2192,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "\u003ca href=\"https://ko-go-dev.shuijingwanwq.com/tour\"\u003e",
+            "role": "open",
+            "pair": "binding-0"
+          },
+          {
+            "token": "⟦P1⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-0"
+          }
+        ]
+      },
+      {
+        "id": "de7557244663ad05e04ec0c654cdbb32447f53e01256cba7747aa22bf20dad1e",
+        "locator": "data/site-shell/translation.html#html/h3:516f5890107bf9a28c3cd027fd048d172d5c9fd0c97132d3fdc40d2cf64c9880:1",
+        "source": "Europe",
+        "source_sha256": "516f5890107bf9a28c3cd027fd048d172d5c9fd0c97132d3fdc40d2cf64c9880",
+        "start": 2216,
+        "end": 2222,
+        "protected": []
+      },
+      {
+        "id": "93d578d26adb61bc766b1157257579e0acadde93eab5f82f7d55bbf54ecb4339",
+        "locator": "data/site-shell/translation.html#html/li:c06b35dbb93b0da1a611f810f92d3c93c190cfb40a71708723f31e796bf78f84:1",
+        "source": "⟦P0⟧French Tour reference⟦P1⟧",
+        "source_sha256": "c06b35dbb93b0da1a611f810f92d3c93c190cfb40a71708723f31e796bf78f84",
+        "start": 2247,
+        "end": 2323,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "\u003ca href=\"https://fr-go-dev.shuijingwanwq.com/tour\"\u003e",
+            "role": "open",
+            "pair": "binding-0"
+          },
+          {
+            "token": "⟦P1⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-0"
+          }
+        ]
+      },
+      {
+        "id": "acfb4d661136a323d8664c301a117d8e7f5514890870d280b19ff5e3d8d84b7c",
+        "locator": "data/site-shell/translation.html#html/li:abc8be1bebe122e91c94a252c1843376ebc2b7091e9fa2ceba289a38d8656804:1",
+        "source": "⟦P0⟧German Tour reference⟦P1⟧",
+        "source_sha256": "abc8be1bebe122e91c94a252c1843376ebc2b7091e9fa2ceba289a38d8656804",
+        "start": 2339,
+        "end": 2415,
+        "protected": [
+          {
+            "token": "⟦P0⟧",
+            "raw": "\u003ca href=\"https://de-go-dev.shuijingwanwq.com/tour\"\u003e",
+            "role": "open",
+            "pair": "binding-0"
+          },
+          {
+            "token": "⟦P1⟧",
+            "raw": "\u003c/a\u003e",
+            "role": "close",
+            "pair": "binding-0"
+          }
+        ]
+      },
+      {
+        "id": "6e34d1528e70fb9144f76f0f5875d3b014f2fc87e697bc667fbe9ffe3e5d0f99",
+        "locator": "data/site-shell/translation.html#html/h2:35c8fb3d6cc96ecf26661c793d092d73bd86b504265fb9e88d6478df06132ae2:1",
+        "source": "Local coverage",
+        "source_sha256": "35c8fb3d6cc96ecf26661c793d092d73bd86b504265fb9e88d6478df06132ae2",
+        "start": 2478,
+        "end": 2492,
+        "protected": []
+      },
+      {
+        "id": "25a74374e54d3b9d5130b4286427077a16c448451df92b6dd22efd11c1372c75",
+        "locator": "data/site-shell/translation.html#html/p:f7e2f8222ad4339b751409e47bd25faba194e21e423431485644b2d350aa1b58:1",
+        "source": "A language can have different completion states for the Tour, documentation, and shared site content. The site's language directory uses validated local coverage; a language name alone does not promise that every page is available locally.",
+        "source_sha256": "f7e2f8222ad4339b751409e47bd25faba194e21e423431485644b2d350aa1b58",
+        "start": 2505,
+        "end": 2744,
+        "protected": []
+      },
+      {
+        "id": "bd9fd4f1ced71104a36072bab3119e11cdd0bc797bd42da2d0c2fd6fdfadce68",
+        "locator": "data/site-shell/translation.html#html/h2:fcb40e6dc253be52beaad2349e54fe352696a2bdb187ca617acb9ceb5419b9fc:1",
+        "source": "Feedback and contributions",
+        "source_sha256": "fcb40e6dc253be52beaad2349e54fe352696a2bdb187ca617acb9ceb5419b9fc",
+        "start": 2800,
+        "end": 2826,
+        "protected": []
+      },
+      {
+        "id": "6a7957a18bd75f9b68b6720dc5add96d30bb3b8fa540aa6ab14e2a057e164113",
+        "locator": "data/site-shell/translation.html#html/p:d231f5d7c555c2152294a6d2b5cbe2461c9337ff1ef816aa8c43b5c6c7122dd6:1",
+        "source": "Use the project issue tracker to report a translation problem or discuss a contribution. Include the language, page, and relevant text so the problem can be located. A community reference link is not evidence that a formal upstream application has been submitted.",
+        "source_sha256": "d231f5d7c555c2152294a6d2b5cbe2461c9337ff1ef816aa8c43b5c6c7122dd6",
+        "start": 2839,
+        "end": 3102,
+        "protected": []
+      },
+      {
+        "id": "dd0825060cdff66126231cbf75ae9233436323d5aa02819b2feb0b97adf40832",
+        "locator": "data/site-shell/translation.html#html/h2:7710371105064eb9fd2bb58b097978481b65ba018fb0dda0b1098023f4f97ec5:1",
+        "source": "Generation and independent review",
+        "source_sha256": "7710371105064eb9fd2bb58b097978481b65ba018fb0dda0b1098023f4f97ec5",
+        "start": 3162,
+        "end": 3195,
+        "protected": []
+      },
+      {
+        "id": "584a85d2b4a73393c0d9e2100d7f6896e3d57ed93d85c80ad6783a649303bca0",
+        "locator": "data/site-shell/translation.html#html/p:af300ee53c4f8eef3c00c6aaba861bdcda4e735bdbc28639e86433f4ca52d024:1",
+        "source": "Generation uses the canonical source and the language's reviewed glossary. Machine validation checks protected identities and structure. An independent Reviewer judges the language; the Generation session does not approve its own output.",
+        "source_sha256": "af300ee53c4f8eef3c00c6aaba861bdcda4e735bdbc28639e86433f4ca52d024",
+        "start": 3208,
+        "end": 3445,
+        "protected": []
+      },
+      {
+        "id": "9773a11f051266ed2e8bdcbfa67f67adca12e1ed4c82f5b82c1d1f3a69cffec4",
+        "locator": "data/site-shell/translation.html#html/p:5a4363637403dbbb4489da175208ab21f70824560185a7cf5c2018fb14fdc6c7:1",
+        "source": "Reviewer findings return to Generation for a focused revision. A successor review checks that each finding category has been closed within its authorized scope. A content package can be finalized only when all of its formal translation units have an A rating.",
+        "source_sha256": "5a4363637403dbbb4489da175208ab21f70824560185a7cf5c2018fb14fdc6c7",
+        "start": 3457,
+        "end": 3716,
+        "protected": []
+      },
+      {
+        "id": "e3366bf360d625385ae0886c86387a84d283e87db7b96ec7b8924bef1ef42407",
+        "locator": "data/site-shell/translation.html#html/h2:3147a6bf6c2826f1fcedccef8041d62066632cb4f72215fc39a518c45eca4d7d:1",
+        "source": "From completed content to release",
+        "source_sha256": "3147a6bf6c2826f1fcedccef8041d62066632cb4f72215fc39a518c45eca4d7d",
+        "start": 3775,
+        "end": 3808,
+        "protected": []
+      },
+      {
+        "id": "be07c7cf2b074dbe25187b2546dc62b6f655d1f211ad1bf5e086546cb613e4cc",
+        "locator": "data/site-shell/translation.html#html/p:91bc08d64361c05cd95b455423f5c714a85310afd1fc202758188011529432fd:1",
+        "source": "Package closure binds the finalized translations and required shared language assets. Integrated Surface review checks their combination. Locale activation selects validated coverage; it does not replace language review.",
+        "source_sha256": "91bc08d64361c05cd95b455423f5c714a85310afd1fc202758188011529432fd",
+        "start": 3821,
+        "end": 4041,
+        "protected": []
+      },
+      {
+        "id": "fedfc8fa24812ff420e58b0f9c444b339ee53b001ece5fb920d23c679f05ea16",
+        "locator": "data/site-shell/translation.html#html/p:93d37c54249a0ccf4cc7896d89eb7607be4ac45fb566919fd7a16ecfee71464b:1",
+        "source": "A fresh Preview and automated acceptance checks are followed by the maintainer's human check. Production publication is a separate step and does not turn unfinished or unreviewed content into completed translations.",
+        "source_sha256": "93d37c54249a0ccf4cc7896d89eb7607be4ac45fb566919fd7a16ecfee71464b",
+        "start": 4053,
+        "end": 4268,
+        "protected": []
+      },
+      {
+        "id": "ddce630e15e00ee0a84d14c5832555a216f104476e429e006d464175e7dc4f1a",
+        "locator": "data/site-shell/translation.html#html/h2:7a4735d52fff1773c255f4b85923108403102c7351daf298202c7db55163b144:1",
+        "source": "Ongoing maintenance",
+        "source_sha256": "7a4735d52fff1773c255f4b85923108403102c7351daf298202c7db55163b144",
+        "start": 4323,
+        "end": 4342,
+        "protected": []
+      },
+      {
+        "id": "6c30ce6903babf958991564bf83ed7c030023cb816972ad6b3f4099708c0831b",
+        "locator": "data/site-shell/translation.html#html/p:b0aea0652665c9661c4712e4cbc3a7fd611d08ec7e64ceaca83a9838ae55eb05:1",
+        "source": "Source and glossary changes are tracked through explicit identities and affected scopes. Verified unchanged work can be carried forward; affected work returns through validation and independent review. Historical generation and review evidence is preserved rather than rewritten.",
+        "source_sha256": "b0aea0652665c9661c4712e4cbc3a7fd611d08ec7e64ceaca83a9838ae55eb05",
+        "start": 4355,
+        "end": 4634,
+        "protected": []
+      }
+    ]
+  },
+  "carry_slot_ids": [
+    "fc14df339791f48997d0078eb0bdcfac64bdd6857c1712e922c4013891150c68",
+    "37d22fae8c419c9eb9739d0296e7f2a8ef1d170bcde4dc1c783827f7cce98f89",
+    "4fccae29455ea4ebafd755a9f14c97ef151b5fb5a72a1e1a9962aee657c311a8",
+    "54a10927230c12c235c9e33bf2d47abe88bee169016bdb54ff87c126c56a2a37",
+    "75dd1eaa56d13eb593d6e9de3a2a23b6d34d0bfd9dd2267b5737a089f1bc5e33",
+    "fbc16ef9104c121d83638b371f7af02af63d9fc5d5c4ba53a9de77d71c603444",
+    "9a671862aecf4f923a27c83fed9cf29c95db34789855641469c45ebe33a2c312",
+    "efdaaf7da1a52f53035373c2d8929f089d258d3e5f629cc94ad0d870ed01e8a7"
+  ],
+  "added_slot_ids": [
+    "804d81fa51795e7cfb3b5da0a34661226425a64d7c1397904c90a3a9cb19b451",
+    "5903e4f8297609a57be1d25cb2f243c8f9822d0d386bb54ec3fa1b5680459d32",
+    "60d0a663622e9e2d3a8b661f2be88046df7170a45e7b202a52971da806fd3c14",
+    "0e0c6f66349f5f7b1ebb1062574f610154dff74a44f66c8132bb0652585a2532",
+    "9bd7e6b12a28a3d2db7d436dbd7e0814fbf8073801ee2cb092e90a8cb16e1e1c",
+    "afd6d60498e36070114d00883be25a100c11e9d9a7b80e3e50cfc2559cb29589",
+    "bb19d8d17debe40fec1fb7f93d0ab2f73eee830f5158aef5354e3ae9cf0304ce",
+    "de7557244663ad05e04ec0c654cdbb32447f53e01256cba7747aa22bf20dad1e",
+    "93d578d26adb61bc766b1157257579e0acadde93eab5f82f7d55bbf54ecb4339",
+    "acfb4d661136a323d8664c301a117d8e7f5514890870d280b19ff5e3d8d84b7c",
+    "6e34d1528e70fb9144f76f0f5875d3b014f2fc87e697bc667fbe9ffe3e5d0f99",
+    "25a74374e54d3b9d5130b4286427077a16c448451df92b6dd22efd11c1372c75",
+    "bd9fd4f1ced71104a36072bab3119e11cdd0bc797bd42da2d0c2fd6fdfadce68",
+    "6a7957a18bd75f9b68b6720dc5add96d30bb3b8fa540aa6ab14e2a057e164113",
+    "dd0825060cdff66126231cbf75ae9233436323d5aa02819b2feb0b97adf40832",
+    "584a85d2b4a73393c0d9e2100d7f6896e3d57ed93d85c80ad6783a649303bca0",
+    "9773a11f051266ed2e8bdcbfa67f67adca12e1ed4c82f5b82c1d1f3a69cffec4",
+    "e3366bf360d625385ae0886c86387a84d283e87db7b96ec7b8924bef1ef42407",
+    "be07c7cf2b074dbe25187b2546dc62b6f655d1f211ad1bf5e086546cb613e4cc",
+    "fedfc8fa24812ff420e58b0f9c444b339ee53b001ece5fb920d23c679f05ea16",
+    "ddce630e15e00ee0a84d14c5832555a216f104476e429e006d464175e7dc4f1a",
+    "6c30ce6903babf958991564bf83ed7c030023cb816972ad6b3f4099708c0831b"
+  ],
+  "identity_sha256": "85585423f669cdcd0e4d8644fa4acf051ab622e4f8e7441771459bd3c53853de"
+}

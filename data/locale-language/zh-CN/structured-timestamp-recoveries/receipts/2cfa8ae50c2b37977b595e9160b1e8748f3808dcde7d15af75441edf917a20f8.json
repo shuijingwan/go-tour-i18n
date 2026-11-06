@@ -1,0 +1,79 @@
+{
+  "currentness_bridge": {
+    "current_bundle": {
+      "path": "data/locale-language/zh-CN/structured-bundles/4c54b644812c10648347e81a9e08ff561fedcc88664153d7bbef77ba1693386c.zip",
+      "sha256": "4c54b644812c10648347e81a9e08ff561fedcc88664153d7bbef77ba1693386c"
+    },
+    "current_bundle_identity_sha256": "c1322529d946af97721cb1a8169bdfc032bb7b57c73a8da03a9644a0856ab880",
+    "reattestation_lineage": [
+      {
+        "representation_successor": {
+          "path": "data/site-shell/shared-representation-successors/receipts/758c4e4888a3bb1d7fdbc324ea3cfd0c7ced531c6514deab75520bed0db27fa3.json",
+          "sha256": "0167896bdcab112a6eb7b6810aa70c341be8e411554a116b37e2a3ea9fca0da6"
+        },
+        "representation_identity_sha256": "0637431c872c52228c272542d5c20fe0f367ea4d9d7300179e7ecd60688c2579",
+        "old_reattestation": {
+          "path": "data/site-shell/shared-representation-reattestations/receipts/718aad2d47c74ae248422cf178864e6d8be29011fac0abeb7163d4e1de48473a.json",
+          "sha256": "3d629d79588e4f77d6d9ca662f99cb6888a4d03c8fc1ba1afff09d4e05e98009"
+        },
+        "current_reattestation": {
+          "path": "data/site-shell/shared-representation-reattestations/receipts/89cb5021053c0dc9ab8092cd467bdb2ccb607cb0710bc1fc6e320ce6a83c713c.json",
+          "sha256": "a120d36e26a67ac68dbbcc22005629a94c241e0d67045c99702759a9a3811594"
+        },
+        "current_to_origin": [
+          {
+            "path": "data/site-shell/shared-representation-reattestations/receipts/89cb5021053c0dc9ab8092cd467bdb2ccb607cb0710bc1fc6e320ce6a83c713c.json",
+            "sha256": "a120d36e26a67ac68dbbcc22005629a94c241e0d67045c99702759a9a3811594"
+          },
+          {
+            "path": "data/site-shell/shared-representation-reattestations/receipts/718aad2d47c74ae248422cf178864e6d8be29011fac0abeb7163d4e1de48473a.json",
+            "sha256": "3d629d79588e4f77d6d9ca662f99cb6888a4d03c8fc1ba1afff09d4e05e98009"
+          },
+          {
+            "path": "data/site-shell/shared-representation-reattestations/receipts/4a85573f41957442729cdbc6e645db4c0814690180d6f82e59d0197dd8509b09.json",
+            "sha256": "ac536845cbfa75ba52718d431e6d832312fe9f862ba2b7cd0d2990524de1d9ed"
+          }
+        ]
+      }
+    ]
+  },
+  "schema": "go-learning/structured-generation-timestamp-recovery/v1",
+  "locale": "zh-CN",
+  "request": {
+    "path": "data/locale-language/zh-CN/structured-timestamp-recoveries/requests/6171787b06821a05a3158965ba7e923dbec1c32cde6f633c437ab2703afce310.json",
+    "sha256": "6171787b06821a05a3158965ba7e923dbec1c32cde6f633c437ab2703afce310"
+  },
+  "bundle": {
+    "path": "data/locale-language/zh-CN/structured-bundles/5b5cbfeaf40e569a5397a12cb616db4d2951747c76034ecebbefeab7eff53907.zip",
+    "sha256": "5b5cbfeaf40e569a5397a12cb616db4d2951747c76034ecebbefeab7eff53907"
+  },
+  "original_output": {
+    "path": "data/locale-language/zh-CN/structured-outputs/34e4e71bee84e6249e6cca9b7c815818897b0989704e89e05927116ccfdea15b.json",
+    "sha256": "34e4e71bee84e6249e6cca9b7c815818897b0989704e89e05927116ccfdea15b"
+  },
+  "original_output_zip": {
+    "path": "data/locale-language/zh-CN/structured-timestamp-recoveries/output-zips/f23738d38fd8a5789ee63b6b9f3cdd2c36e6b360a7a17571865a6a3678690e50.zip",
+    "sha256": "f23738d38fd8a5789ee63b6b9f3cdd2c36e6b360a7a17571865a6a3678690e50"
+  },
+  "generation_session_evidence": {
+    "path": "data/locale-language/zh-CN/structured-timestamp-recoveries/evidence/fe5d95376562ac844772cbada6c7b67e19319aaab7b1a601ec2a9251e4038a82.json",
+    "sha256": "fe5d95376562ac844772cbada6c7b67e19319aaab7b1a601ec2a9251e4038a82"
+  },
+  "statement": {
+    "schema": "go-learning/structured-generation-timestamp-recovery/v1/generation-evidence",
+    "original_generated_at_status": "unavailable",
+    "generation": {
+      "provider": "chatgpt",
+      "model": "gpt-5.6-sol-high",
+      "session": "chatgpt-zh-CN-generation",
+      "generated_at": ""
+    },
+    "bundle_sha256": "5b5cbfeaf40e569a5397a12cb616db4d2951747c76034ecebbefeab7eff53907",
+    "bundle_identity_sha256": "def751e21141250b3832f755464b64b3ed2701b50fc4602c614b8e7d75f4dfbb",
+    "output_sha256": "34e4e71bee84e6249e6cca9b7c815818897b0989704e89e05927116ccfdea15b",
+    "output_zip_sha256": "f23738d38fd8a5789ee63b6b9f3cdd2c36e6b360a7a17571865a6a3678690e50",
+    "declaration": "original generated_at was never recorded and cannot be recovered from trusted evidence"
+  },
+  "attested_by": "maintainer-local",
+  "identity_sha256": "2cfa8ae50c2b37977b595e9160b1e8748f3808dcde7d15af75441edf917a20f8"
+}
