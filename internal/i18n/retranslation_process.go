@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/shuijingwan/go-tour-i18n/internal/contentidentity"
 )
 
 const (
@@ -100,7 +102,8 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 	if err := ValidateLocaleName(options.Locale); err != nil {
 		return nil, err
 	}
-	if len(catalog.TranslationScope) > 0 {
+	scopedAtEntry := len(catalog.TranslationScope) > 0
+	if scopedAtEntry {
 		if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
 			return nil, err
 		}
@@ -120,6 +123,15 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 	manifest, err := readRetranslationProcessManifest(batchDir, options.Locale, batchID)
 	if err != nil {
 		return nil, err
+	}
+	catalog, err = reconstructImportedApprovedIntervalPackage(root, catalog, manifest)
+	if err != nil {
+		return nil, err
+	}
+	if !scopedAtEntry && len(catalog.TranslationScope) > 0 {
+		if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
+			return nil, err
+		}
 	}
 	if _, err := os.Stat(filepath.Join(batchDir, "result.json")); err == nil {
 		return nil, fmt.Errorf("retranslation batch %q is already processed", batchID)
@@ -295,6 +307,11 @@ func validateRetranslationManifestReexportProvenance(manifest *RetranslationBatc
 			}
 		}
 		switch unit.ReexportReason {
+		case transportRecoveryReason:
+			if manifest.TransportRecovery == nil || seenOrdinary || (mode != "" && mode != transportRecoveryReason) || unit.RevisionFeedbackSource != CurrentValidationRevisionFeedback || unit.PreviousSnapshotID == "" || unit.RevisionAuthorizationID == "" || unit.PreviousBatchID == "" || unit.PreviousBatchID == manifest.BatchID || unit.PreviousInputSHA256 != unit.InputSHA256 || unit.PreviousInputPath != unit.InputPath || unit.PreviousProtectedTokens != unit.ProtectedTokenCount {
+				return fmt.Errorf("%s: incomplete transport recovery revision lineage", unit.UnitID)
+			}
+			mode = transportRecoveryReason
 		case "":
 			seenOrdinary = true
 			if unit.PreviousBatchID != "" || unit.PreviousInputPath != "" || unit.PreviousInputSHA256 != "" || unit.PreviousProtectedTokens != 0 {
@@ -325,6 +342,9 @@ func validateRetranslationManifestReexportProvenance(manifest *RetranslationBatc
 			return errors.New("batch mixes glossary-stale recovery and ordinary exports")
 		}
 	}
+	if (manifest.TransportRecovery != nil) != (mode == transportRecoveryReason) {
+		return fmt.Errorf("transport recovery ref requires exclusive full batch recovery lineage")
+	}
 	return nil
 }
 
@@ -353,6 +373,13 @@ func decodeRetranslationManifest(data []byte) (*RetranslationBatchManifest, erro
 		return nil, err
 	}
 	if current.SchemaVersion == 2 {
+		if current.TransportRecovery != nil {
+			var strict RetranslationBatchManifest
+			if err := contentidentity.StrictJSON(data, &strict); err != nil {
+				return nil, err
+			}
+			current = strict
+		}
 		return &current, nil
 	}
 	var legacy legacyRetranslationManifest

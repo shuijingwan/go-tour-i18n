@@ -35,7 +35,7 @@ func prepareProcessOutputContext(batchDir string, c *Catalog, g *Glossary, m *Re
 	}
 
 	projections := map[string]protectedTranslation{}
-	inputs, err := revisionGenerationResponseInputs(root, c, m.Locale, m.Units, projections)
+	inputs, err := approvedResponseInputs(root, c, m, projections)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -122,7 +122,7 @@ func prepareProcessOutputContext(batchDir string, c *Catalog, g *Glossary, m *Re
 		if err := RequireNewLanguageGlossaryReview(root, m.Locale); err != nil {
 			return err
 		}
-		fresh, err := revisionGenerationResponseInputs(root, c, m.Locale, m.Units)
+		fresh, err := approvedResponseInputs(root, c, m)
 		if err != nil {
 			return err
 		}

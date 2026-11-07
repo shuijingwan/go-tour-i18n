@@ -249,6 +249,12 @@ func projectPackageMembershipCatalog(root string, c *i18n.Catalog, m *PackageMem
 		}
 	}
 	c.TranslationPackages = append(kept, merged)
+	// Historical readers project one predecessor into TranslationPackages.
+	// Retain the formally derived result in the historical registry too, so nested
+	// readers can still resolve its exact authority without widening that scope.
+	historical := merged
+	historical.Units = append([]i18n.AdaptedTranslationUnit(nil), merged.Units...)
+	c.HistoricalTranslationPackages = append(c.HistoricalTranslationPackages, historical)
 	memberIDs := map[string]bool{}
 	for _, u := range merged.Units {
 		memberIDs[u.Unit.ID] = true

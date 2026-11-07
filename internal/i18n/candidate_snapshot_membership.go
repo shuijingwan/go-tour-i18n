@@ -88,6 +88,19 @@ func snapshotEvidenceCatalog(scopes map[string]*Catalog, current *Catalog, id st
 	return current
 }
 
+// Current-validation revisions retain the complete package of their frozen
+// Snapshot. A membership child is authority for historical candidate evidence,
+// not a substitute scope for that revision's decoder or invocation validation.
+func snapshotRevisionEvidenceCatalog(root string, current *Catalog, locale string, choice selectedRetranslationUnit, fallback *Catalog) (*Catalog, error) {
+	if choice.machine != nil || choice.manifest.RevisionFeedbackSource != CurrentValidationRevisionFeedback {
+		return fallback, nil
+	}
+	inventory := *current
+	inventory.TranslationScope = nil
+	frozen, _, err := selectSnapshotTranslationPackage(root, &inventory, locale, choice.manifest.PreviousSnapshotID)
+	return frozen, err
+}
+
 // Reuse sealed shared current authorization only for its exact accepted
 // machine candidate. New revision candidates receive no rating or A carry.
 func snapshotMembershipAssessments(root, locale string, members map[string]*Catalog, latest *latestRetranslationUnits, required ...map[*Catalog]string) (map[*Catalog]*CurrentTranslationAuthorization, func() error, error) {
@@ -223,7 +236,11 @@ func validateSnapshotMembershipCandidate(root string, current *Catalog, locale s
 			return &validatedRetranslationCandidate{candidatePath: choice.result.CandidatePath, validationPath: choice.result.ValidationPath, candidate: candidate, validationData: vb, attempt: old.Attempt}, nil
 		}
 	}
-	v, err := validateSelectedRetranslationCandidateWithOutput(root, c, locale, g, u, choice, output, compatibility)
+	evidenceCatalog, err := snapshotRevisionEvidenceCatalog(root, current, locale, choice, c)
+	if err != nil {
+		return nil, err
+	}
+	v, err := validateSelectedRetranslationCandidateWithOutput(root, evidenceCatalog, locale, g, u, choice, output, compatibility)
 	if err != nil {
 		return nil, err
 	}

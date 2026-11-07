@@ -73,7 +73,7 @@ func canonicalRetryBundleWithOriginalResult(root string, catalog *Catalog, origi
 	if err != nil {
 		return nil, err
 	}
-	return WriteDeterministicTransportBundle(append(manifest, '\n'), entries)
+	return writeTranslationUnitGenerationBundle(append(manifest, '\n'), entries)
 }
 
 // A historical summary must be a complete canonical result backed by actual

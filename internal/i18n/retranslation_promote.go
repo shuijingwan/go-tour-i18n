@@ -354,7 +354,7 @@ func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, u
 			if manifest.RepresentationBridge != nil {
 				protected, err = frozenBridgeOutput(root, catalog, glossary, locale, manifest)
 			} else {
-				protected, err = prepareInvocationRetranslationOutput(root, catalog, glossary, locale, batch.Units, manifest)
+				protected, err = prepareInvocationRetranslationOutput(root, catalog, glossary, locale, batch.Units, manifest, validation.BatchID)
 			}
 			if err != nil {
 				return 0, err

@@ -32,10 +32,22 @@ func TestRetryHandoffDeduplicationOriginalIdentityAndSiblingCurrentness(t *testi
 		}
 	}
 	total := 0
+	logicalStoreTotal := 0
 	for _, b := range bundles {
 		total += len(b)
+		m, f, err := readGenerationBundle(b)
+		if err != nil {
+			t.Fatal(err)
+		}
+		store, err := WriteDeterministicTransportBundle(f["manifest.json"], generationCompressionEntries(m, f))
+		if err != nil {
+			t.Fatal(err)
+		}
+		logicalStoreTotal += len(store)
 	}
-	if len(handoff) >= total {
+	// Handoff retains Store. Compare dedup savings in the same encoding;
+	// independent Deflate constituents can be smaller than a Store handoff.
+	if len(handoff) >= logicalStoreTotal {
 		t.Fatal("no transport deduplication")
 	}
 	_, originals, err := ReadRetryHandoff(handoff)
@@ -82,6 +94,37 @@ func TestRetryHandoffDeduplicationOriginalIdentityAndSiblingCurrentness(t *testi
 		}
 	}
 	t.Logf("3 canonical ZIPs=%d bytes; one deduplicated handoff=%d bytes", total, len(handoff))
+}
+
+func TestRetryHandoffStoreDeflateExactRecovery(t *testing.T) {
+	root, c, _, bundles, _ := siblingRetryFixture(t)
+	m, files, err := readGenerationBundle(bundles[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy, err := WriteDeterministicTransportBundle(files["manifest.json"], generationCompressionEntries(m, files))
+	if err != nil {
+		t.Fatal(err)
+	}
+	// A historical mixed handoff is readable, preserving each original SHA.
+	// The Store constituent is deliberately not current under the new writer.
+	originals := [][]byte{legacy, bundles[1], bundles[2]}
+	handoff, h, err := packRetryHandoff(originals)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, restored, err := ReadRetryHandoff(handoff)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i, b := range restored {
+		if !bytes.Equal(b, originals[i]) || sum(b) != h.Members[i].BundleSHA256 {
+			t.Fatal("historical transport rebound to a different encoding", i)
+		}
+	}
+	if _, err := VerifyCurrentRetryHandoff(root, c, handoff); err == nil {
+		t.Fatal("readable Store constituent incorrectly declared CURRENT")
+	}
 }
 
 func TestRetryHandoffRejectsTamperingStaleDuplicateAndMixedScope(t *testing.T) {

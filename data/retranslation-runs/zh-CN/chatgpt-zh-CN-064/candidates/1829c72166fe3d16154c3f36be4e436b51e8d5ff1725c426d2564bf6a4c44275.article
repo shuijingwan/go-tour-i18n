@@ -1,0 +1,278 @@
+<!--{
+  "Title": "教程：使用 govulncheck 查找并修复有漏洞的依赖项",
+  "HideTOC": true,
+  "Breadcrumb": true
+}-->
+
+Govulncheck 是一个低噪声工具，可帮助你查找并修复 Go 项目中有漏洞的
+依赖项。它会扫描项目的
+依赖项以查找已知漏洞，然后识别代码中对这些漏洞位置的直接或
+间接调用。
+
+在本教程中，你将学习如何使用 govulncheck 扫描一个简单
+程序中的漏洞。你还将学习如何确定漏洞的优先级并
+评估漏洞，以便优先修复最重要的
+问题。
+
+要进一步了解 govulncheck，请参阅
+[govulncheck 文档](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)，
+以及这篇关于 Go 漏洞管理的[博客文章](/blog/vuln)。
+我们也非常欢迎你[提供反馈](/s/govulncheck-feedback)。
+
+## 先决条件
+
+- **Go。** 建议使用最新版 Go 学习本教程。
+  有关安装说明，请参阅 [安装 Go](/doc/install)。
+- **代码编辑器。** 任意编辑器都可以。
+- **命令行终端。** Go 可以在 Linux 和 Mac 上的任意终端中良好运行，在 Windows 上则可以使用 PowerShell 或 cmd。
+
+本教程将带你完成以下步骤：
+
+1. 创建一个带有漏洞依赖项的示例 Go 模块
+2. 安装并运行 govulncheck
+3. 评估漏洞
+4. 升级有漏洞的依赖项
+
+## 创建一个带有漏洞依赖项的示例 Go 模块
+
+**第 1 步。** 首先，新建一个名为 `vuln-tutorial` 的文件夹并初始化 Go 模块。
+（如果你刚接触 Go 模块，请参阅 [go.dev/doc/tutorial/create-module](/doc/tutorial/create-module)。
+
+例如，在主目录中运行以下命令：
+
+```
+$ mkdir vuln-tutorial
+$ cd vuln-tutorial
+$ go mod init vuln.tutorial
+```
+
+**第 2 步。** 在 `vuln-tutorial` 文件夹中创建名为 `main.go` 的文件，并将
+以下代码复制进去：
+
+```
+package main
+
+import (
+        "fmt"
+        "os"
+
+        "golang.org/x/text/language"
+)
+
+func main() {
+        for _, arg := range os.Args[1:] {
+                tag, err := language.Parse(arg)
+                if err != nil {
+                        fmt.Printf("%s: error: %v\n", arg, err)
+                } else if tag == language.Und {
+                        fmt.Printf("%s: undefined\n", arg)
+                } else {
+                        fmt.Printf("%s: tag %s\n", arg, tag)
+                }
+        }
+}
+```
+
+这个示例程序将语言标签列表作为命令行参数，
+并为每个标签打印一条消息，说明解析是否成功、
+标签是否未定义，或者解析标签时是否发生错误。
+
+**第 3 步。** 运行 `go mod tidy`，它会根据上一步添加到 `main.go` 中的代码，将所有所需依赖项写入 `go.mod`
+文件。
+
+在 `vuln-tutorial` 文件夹中运行：
+
+```
+$ go mod tidy
+```
+
+你应该会看到以下输出：
+
+```
+go: finding module for package golang.org/x/text/language
+go: downloading golang.org/x/text v0.9.0
+go: found golang.org/x/text/language in golang.org/x/text v0.9.0
+```
+
+**第 4 步。** 打开 `go.mod` 文件，确认内容如下：
+
+```
+module vuln.tutorial
+
+go 1.20
+
+require golang.org/x/text v0.9.0
+```
+
+**第 5 步。** 将 `golang.org/x/text` 的版本降级到 v0.3.5；该版本包含已知
+漏洞。运行：
+
+```
+$ go get golang.org/x/text@v0.3.5
+```
+
+你应该会看到以下输出：
+
+```
+go: downgraded golang.org/x/text v0.9.0 => v0.3.5
+```
+
+现在 `go.mod` 文件的内容应为：
+
+```
+module vuln.tutorial
+
+go 1.20
+
+require golang.org/x/text v0.3.5
+```
+
+接下来看看 govulncheck 的实际效果。
+
+
+## 安装并运行 govulncheck
+
+**第 6 步。** 使用 `go install` 命令安装 govulncheck：
+
+```
+$ go install golang.org/x/vuln/cmd/govulncheck@latest
+```
+
+**第 7 步。** 在要分析的文件夹中（本例为 `vuln-tutorial`）运行：
+
+```
+$ govulncheck ./...
+```
+
+你应该会看到以下输出：
+
+```
+govulncheck is an experimental tool. Share feedback at https://go.dev/s/govulncheck-feedback.
+
+Using go1.20.3 and govulncheck@v0.0.0 with
+vulnerability data from https://vuln.go.dev (last modified 2023-04-18 21:32:26 +0000 UTC).
+
+Scanning your code and 46 packages across 1 dependent module for known vulnerabilities...
+Your code is affected by 1 vulnerability from 1 module.
+
+Vulnerability #1: GO-2021-0113
+  Due to improper index calculation, an incorrectly formatted
+  language tag can cause Parse to panic via an out of bounds read.
+  If Parse is used to process untrusted user inputs, this may be
+  used as a vector for a denial of service attack.
+
+  More info: https://pkg.go.dev/vuln/GO-2021-0113
+
+  Module: golang.org/x/text
+    Found in: golang.org/x/text@v0.3.5
+    Fixed in: golang.org/x/text@v0.3.7
+
+    Call stacks in your code:
+      main.go:12:29: vuln.tutorial.main calls golang.org/x/text/language.Parse
+
+=== Informational ===
+
+Found 1 vulnerability in packages that you import, but there are no call
+stacks leading to the use of this vulnerability. You may not need to
+take any action. See https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck
+for details.
+
+Vulnerability #1: GO-2022-1059
+  An attacker may cause a denial of service by crafting an
+  Accept-Language header which ParseAcceptLanguage will take
+  significant time to parse.
+  More info: https://pkg.go.dev/vuln/GO-2022-1059
+  Found in: golang.org/x/text@v0.3.5
+  Fixed in: golang.org/x/text@v0.3.8
+
+```
+
+### 解读输出
+
+<font size="2">  *注意：如果没有使用最新版 Go，
+你可能还会看到标准库中的其他漏洞。</font>
+
+我们的代码受到一个漏洞影响，
+[GO-2021-0113](https://pkg.go.dev/vuln/GO-2021-0113)，因为它直接调用了
+存在漏洞版本（v0.3.5）的 `golang.org/x/text/language` 中的 `Parse` 函数
+。
+
+另一个漏洞 [GO-2022-1059](https://pkg.go.dev/vuln/GO-2022-1059)
+存在于版本为 v0.3.5 的 `golang.org/x/text` 模块中。不过，它被报告为
+“Informational”，因为我们的代码从未直接或间接调用其中任何
+有漏洞的函数。
+
+现在评估这些漏洞并决定采取什么措施。
+
+### 评估漏洞
+
+a. 评估漏洞。
+
+首先阅读漏洞描述，判断它是否确实
+适用于你的代码和使用场景。如果需要更多信息，请访问
+“More info”链接。
+
+根据描述，当使用 
+`Parse` 处理不可信的用户输入时，漏洞 GO-2021-0113 可能导致 panic。假设我们希望
+程序能够承受不可信输入，并且担心拒绝服务
+问题，那么这个漏洞很可能适用。
+
+GO-2022-1059 很可能不会影响我们的代码，因为代码没有调用
+该报告中的任何有漏洞函数。
+
+b. 决定采取的措施。
+
+要缓解 GO-2021-0113，有以下几个选择：
+- **方案 1：升级到已修复的版本。** 如果已有修复，
+  可以把模块升级到已修复版本，从而移除有漏洞的依赖项。
+- **方案 2：停止使用有漏洞的符号。** 可以选择
+  删除代码中对有漏洞函数的所有调用。
+  这时需要寻找替代方案，或者自行实现相应功能。
+
+在本例中，已有可用的修复，而且 `Parse` 函数是程序的核心部分。
+因此我们把依赖项升级到“fixed in”版本 v0.3.7。
+
+我们决定暂时降低信息性漏洞
+GO-2022-1059 的修复优先级，但由于它与 GO-2021-0113 位于同一个模块中，而且其修复版本是 v0.3.8，
+因此只需升级到 v0.3.8，就能同时移除两个漏洞。
+
+## 升级有漏洞的依赖项
+
+幸运的是，升级有漏洞的依赖项非常简单。
+
+**第 8 步。** 将 `golang.org/x/text` 升级到 v0.3.8：
+
+```
+$ go get golang.org/x/text@v0.3.8
+```
+
+你应该会看到以下输出：
+
+```
+go: upgraded golang.org/x/text v0.3.5 => v0.3.8
+```
+
+（注意，也可以选择升级到 `latest`，或 v0.3.8 之后的任何其他版本）。
+
+**第 9 步。** 再次运行 govulncheck：
+
+```
+$ govulncheck ./...
+```
+
+现在会看到以下输出：
+
+```
+govulncheck is an experimental tool. Share feedback at https://go.dev/s/govulncheck-feedback.
+
+Using go1.20.3 and govulncheck@v0.0.0 with
+vulnerability data from https://vuln.go.dev (last modified 2023-04-06 19:19:26 +0000 UTC).
+
+Scanning your code and 46 packages across 1 dependent module for known vulnerabilities...
+No vulnerabilities found.
+```
+
+最后，govulncheck 确认没有发现漏洞。
+
+定期使用 govulncheck 命令扫描依赖项，可以通过识别、确定优先级并处理
+漏洞来保护代码库。

@@ -47,7 +47,7 @@ func requireCurrentValidationBundlePackage(data []byte, contentPackage string) e
 	if contentPackage != "" {
 		return nil
 	}
-	files, err := i18n.ReadTransportBundle(data, 512, 64<<20)
+	files, err := i18n.ReadTransportBundle(data, i18n.TranslationUnitGenerationBundleMaxFiles, i18n.TranslationUnitGenerationBundleMaxBytes)
 	if err != nil {
 		return err
 	}
@@ -93,13 +93,26 @@ func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []st
 	batchID := fs.String("batch-id", "", "retranslation batch id")
 	unitID := fs.String("unit-id", "", "retry TranslationUnit id; omit for initial/revision batch")
 	output := fs.String("output", "", "generation ZIP output")
+	selection := fs.String("approved-interval-selection", "", "explicit repository-relative approved interval selection JSON (export only)")
+	selectionFlags := 0
+	for _, arg := range args {
+		if arg == "--approved-interval-selection" || strings.HasPrefix(arg, "--approved-interval-selection=") || arg == "-approved-interval-selection" || strings.HasPrefix(arg, "-approved-interval-selection=") {
+			selectionFlags++
+		}
+	}
+	if selectionFlags > 1 {
+		return fmt.Errorf("approved interval selection flag must appear once")
+	}
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
 	if *locale == "" || *batchID == "" || *output == "" || fs.NArg() != 0 {
 		return fmt.Errorf("usage: generation-bundle export --locale <locale> --batch-id <batch-id> [--unit-id <retry-unit-id>] --output <output.zip>")
 	}
-	data, manifest, err := i18n.ExportTranslationUnitGenerationBundle(root, catalog, i18n.GenerationBundleOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID})
+	if selectionFlags > 0 && (*selection == "" || contentPackage == "") {
+		return fmt.Errorf("approved interval selection requires a path and explicit --content-package")
+	}
+	data, manifest, err := i18n.ExportTranslationUnitGenerationBundle(root, catalog, i18n.GenerationBundleOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID, ApprovedIntervalSelection: *selection})
 	if err != nil {
 		return err
 	}
@@ -279,12 +292,28 @@ func recoverGenerationBundleCommand(root string, catalog *i18n.Catalog, args []s
 
 func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, args []string) error {
 	fs := flag.NewFlagSet("generation-bundle import", flag.ContinueOnError)
+	executionPath := fs.String("generation-execution", "", "exact new model execution object for recovery")
+	executionSHA := fs.String("generation-execution-sha256", "", "exact execution object SHA")
 	bundlePath := fs.String("bundle", "", "original generation ZIP")
 	resultPath := fs.String("result", "", "generation result ZIP (transport fallback)")
 	inputDir := fs.String("input-dir", "", "local directory containing the exact generated output file set")
 	provider := fs.String("provider", "", "actual generation provider for --input-dir: chatgpt or codex")
 	model := fs.String("model", "", "actual formal generation model for --input-dir")
-	if err := fs.Parse(args); err != nil {
+	hasExecution := false
+	for _, arg := range args {
+		if arg == "--generation-execution" || arg == "--generation-execution-sha256" || strings.HasPrefix(arg, "--generation-execution=") || strings.HasPrefix(arg, "--generation-execution-sha256=") {
+			hasExecution = true
+		}
+	}
+	if hasExecution {
+		seen, err := parseUniqueRecoveryFlags(fs, args)
+		if err != nil {
+			return err
+		}
+		if !seen["generation-execution"] || !seen["generation-execution-sha256"] {
+			return fmt.Errorf("execution path/SHA flags must occur together")
+		}
+	} else if err := fs.Parse(args); err != nil {
 		return err
 	}
 	if *bundlePath == "" || fs.NArg() != 0 || (*resultPath == "") == (*inputDir == "") {
@@ -299,14 +328,29 @@ func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, arg
 		if *provider == "" || *model == "" {
 			return fmt.Errorf("--provider and --model are required with --input-dir")
 		}
-		imported, err = i18n.ImportGenerationOutputDirectory(root, catalog, bundle, *provider, *model, *inputDir)
+		catalog, err = approvedIntervalImportCatalog(catalog, bundle)
+		if err != nil {
+			return err
+		}
+		if hasExecution {
+			imported, err = i18n.ImportTransportRecoveryOutputDirectory(root, catalog, bundle, *provider, *model, *inputDir, *executionPath, *executionSHA)
+		} else {
+			imported, err = i18n.ImportGenerationOutputDirectory(root, catalog, bundle, *provider, *model, *inputDir)
+		}
 	} else {
+		if hasExecution {
+			return fmt.Errorf("recovery execution only supports directory import")
+		}
 		if *provider != "" || *model != "" {
 			return fmt.Errorf("--provider and --model are only valid with --input-dir")
 		}
 		result, readErr := readRegularBundleFile(*resultPath)
 		if readErr != nil {
 			return readErr
+		}
+		catalog, err = approvedIntervalImportCatalog(catalog, bundle)
+		if err != nil {
+			return err
 		}
 		imported, err = i18n.ImportGenerationResultBundle(root, catalog, bundle, result)
 	}
@@ -315,10 +359,43 @@ func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, arg
 	}
 	fmt.Printf("Generation result imported: locale=%s batch=%s task=%s attempt=%d provider=%s model=%s outputs=%d identity=%s generation_bundle_sha256=%s\n",
 		imported.Locale, imported.BatchID, imported.TaskKind, imported.Attempt, imported.Provider, imported.Model, len(imported.InstalledPaths), imported.InputIdentitySHA256, imported.GenerationBundleSHA256)
+	if imported.RecoveryIdentity != "" {
+		fmt.Printf("recovery_identity=%s generation_execution_identity=%s\n", imported.RecoveryIdentity, imported.GenerationExecutionIdentity)
+	}
 	for _, path := range imported.InstalledPaths {
 		fmt.Printf("installed: %s\n", path)
 	}
 	return nil
+}
+
+// Import has no external package selector. A frozen approved request supplies
+// its explicit package; this only selects a complete registered scope on a copy.
+// The domain importer still freshly reconstructs and verifies the entire graph
+// before installing any output. Ordinary imports keep their existing Catalog.
+func approvedIntervalImportCatalog(c *i18n.Catalog, bundle []byte) (*i18n.Catalog, error) {
+	files, err := i18n.ReadTransportBundle(bundle, i18n.TranslationUnitGenerationBundleMaxFiles, i18n.TranslationUnitGenerationBundleMaxBytes)
+	if err != nil {
+		return nil, err
+	}
+	request, present := files["formal/approved-interval-selection.json"]
+	if !present {
+		return c, nil
+	}
+	var manifest i18n.GenerationBundleManifest
+	if err := sitecontent.StrictJSON(files["manifest.json"], &manifest); err != nil {
+		return nil, err
+	}
+	if err := i18n.ValidateTransportBundleInventory(files, manifest.Files, true); err != nil {
+		return nil, err
+	}
+	var selection i18n.ApprovedIntervalSelection
+	if err := sitecontent.StrictJSON(request, &selection); err != nil {
+		return nil, err
+	}
+	if selection.Schema != i18n.ApprovedIntervalSelectionSchema || selection.Locale != manifest.Locale || selection.BatchID != manifest.BatchID {
+		return nil, fmt.Errorf("approved interval import selection identity mismatch")
+	}
+	return i18n.SelectCurrentValidationReopenPackage(c, selection.ContentPackage)
 }
 
 func readRegularBundleFile(path string) ([]byte, error) {

@@ -69,24 +69,27 @@ type RetranslationBatchUnit struct {
 }
 
 type RetranslationBatchManifest struct {
-	SchemaVersion  int                      `json:"schema_version"`
-	BatchID        string                   `json:"batch_id"`
-	Locale         string                   `json:"locale"`
-	ProtectionMode string                   `json:"protection_mode"`
-	ArtifactEOF    string                   `json:"artifact_eof,omitempty"`
-	UnitKind       UnitKind                 `json:"unit_kind"`
-	UnitCount      int                      `json:"unit_count"`
-	Units          []RetranslationBatchUnit `json:"units"`
+	TransportRecovery *TransportRecoveryReference `json:"transport_recovery,omitempty"`
+	SchemaVersion     int                         `json:"schema_version"`
+	BatchID           string                      `json:"batch_id"`
+	Locale            string                      `json:"locale"`
+	ProtectionMode    string                      `json:"protection_mode"`
+	ArtifactEOF       string                      `json:"artifact_eof,omitempty"`
+	UnitKind          UnitKind                    `json:"unit_kind"`
+	UnitCount         int                         `json:"unit_count"`
+	Units             []RetranslationBatchUnit    `json:"units"`
 }
 
 type RetranslationExportResult struct {
-	Locale      string   `json:"locale"`
-	BatchID     string   `json:"batch_id,omitempty"`
-	BatchPath   string   `json:"batch_path,omitempty"`
-	UnitKind    UnitKind `json:"unit_kind,omitempty"`
-	UnitCount   int      `json:"unit_count"`
-	UnitIDs     []string `json:"unit_ids,omitempty"`
-	AllExported bool     `json:"all_exported"`
+	TransportRecovery  *TransportRecoveryReference `json:"transport_recovery,omitempty"`
+	PredecessorBatchID string                      `json:"predecessor_batch,omitempty"`
+	Locale             string                      `json:"locale"`
+	BatchID            string                      `json:"batch_id,omitempty"`
+	BatchPath          string                      `json:"batch_path,omitempty"`
+	UnitKind           UnitKind                    `json:"unit_kind,omitempty"`
+	UnitCount          int                         `json:"unit_count"`
+	UnitIDs            []string                    `json:"unit_ids,omitempty"`
+	AllExported        bool                        `json:"all_exported"`
 }
 
 type preparedRetranslationInput struct {
@@ -196,6 +199,11 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 
 	base := filepath.Join(root, "data", "retranslation-runs", options.Locale)
+	unlock, err := lockRetranslationBatchNamespace(root)
+	if err != nil {
+		return nil, err
+	}
+	defer unlock()
 	exported, nextNumber, err := scanRetranslationBatches(base, options.Locale, catalog)
 	if err != nil {
 		return nil, err

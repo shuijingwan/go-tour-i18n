@@ -544,8 +544,22 @@ record 以后新 ordinary revision 的原 export 模板额外增加 `--represent
 
 独立 [`generation-bundle legacy-provenance` authority](LEGACY_GENERATION_PROVENANCE_AUTHORITY_DESIGN.md#正式-implementation-command-contract) 已实现；维护者已完成 json exact authority 的 first-real-use、inspection 和 write-once record，正式 path/SHA/identity 见 [approved-interval contract v2](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#已记录-authority-与当前-case)。直接消费该交接，不重复 record，也不把下一阶段退回 legacy first-real-use。正常 lifecycle 执行者仍为 Maintainer Local terminal；`.pending` 或 `mutation=unknown` 继续 preserve/diagnose，禁止盲重放。
 
-下一独立 authority 是 approved-interval representation transport，当前仅 [contract v2 待审定](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#derived-transport-command-contract-v2待审定未实现)：historical provenance 按 `NORMAL_ARCHIVE > EXPLICIT_RECORDED_LEGACY_PROVENANCE`；缺 archive 才可显式提供 exact recorded path/SHA、调用正式 verifier 并传 exact requested options，不扫描 latest 或按 Unit 自动发现。只消费 `historical-response/v1` allowlist；需要 explicit unknown facts 时停止。archive 后来出现必须 fresh compare covered facts，冲突 fail closed、匹配优先 normal，不删除 legacy receipt。legacy PASS 不授权 opaque parent、editable regions 或 response codec。
+approved-interval representation transport 的 [contract v2 已实现](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#derived-transport-command-contract-v2已实现真实使用待-gate)，真实使用仍待独立 gate：historical provenance 按 `NORMAL_ARCHIVE > EXPLICIT_RECORDED_LEGACY_PROVENANCE`；缺 archive 才可显式提供 exact recorded path/SHA、调用正式 verifier 并传 exact requested options，不扫描 latest 或按 Unit 自动发现。只消费 `historical-response/v1` allowlist；需要 explicit unknown facts 时停止。archive 后来出现必须 fresh compare covered facts，冲突 fail closed、匹配优先 normal，不删除 legacy receipt。legacy PASS 不授权 opaque parent、editable regions 或 response codec。
 
-拟将显式 selection、legacy refs 与 approved-interval proof 全部冻结在 derived Bundle graph，不修改064 manifest；因此 `SAME_BATCH_064_REFRESH_POSSIBLE=yes` 仅是 architecture possibility，本合同本身不要求 successor。真实 export 仍须先完成独立 authority 实现、完整32/32 readiness 和新/modified CLI first-real-use gate。whole parent 不可编辑、不拆 target atoms，typed finding nonoverlap、active validation/current glossary、独立 re-QC/A-only 均保留。当前唯一下一阶段为 `current-validation-approved-interval-migration-contract-review-v2`；真实 json/064 仍 blocked，不提供 export/Generation 命令。
+显式 selection、legacy refs 与 approved-interval proof 全部冻结在 derived Bundle graph，不修改064 manifest；`SAME_BATCH_064_REFRESH_POSSIBLE=yes` 是安装前的架构可能性，仍不代表 lifecycle authorization。whole parent 不可编辑、不拆 target atoms，typed finding nonoverlap、active validation/current glossary、独立 re-QC/A-only 均保留。原 migration 在 `current-validation-approved-interval-first-real-use-gate` 前不授权真实 selection、064 export/current-check 或 Generation；不因此重做后来已经完成的 invocation。current-check 不依赖 external selection 文件继续存在；后续 process/retry/Snapshot 沿真实 initial import archive 的 frozen request 重构 proof。retry 必须继承同一 request，不允许换 authority 或省略 opaque protection。
+
+上述same-batch可能性只覆盖尚未installed的transport刷新。installed approved proof出现
+implementation/dependency drift时，历史PASS不提供当前Snapshot eligibility；现有re-export、
+retry、revalidate和换reopen ID的拒绝边界不变。后续工程遵循
+[Installed derived-transport stale recovery设计v1](INSTALLED_DERIVED_TRANSPORT_STALE_RECOVERY_DESIGN.md)：
+恢复整个原batch decoder context，重新进行该完整scope的Generation，不carry其中未直接
+drift的candidate；batch外仍走普通currentness/A-carry。实现的synthetic verification不能据此授权
+真实record/export、创建successor或重放import；必须先独立first-real-use gate。
+
+找到 exact historical implementation 副本不等于恢复资格已成立。外部 bytes 的未来正式采用
+以 [Historical construction bytes formalization](HISTORICAL_CONSTRUCTION_BYTES_FORMALIZATION_DESIGN.md)
+为独立合同：先 implementation/first-real-use，再 preflight/record/check supplemental evidence；
+当前不得直接从 `/tmp` fallback。采用只解决 byte availability，后续 transport recovery 仍须
+独立 fresh preflight；不得改旧 archive/receipt/proof 或据此创建 Snapshot。
 
 已 record 的 current-validation revision batch 遇到 predecessor raw restore failure 时，先按完整 batch stable order 做只读 representation readiness diagnosis；impact report 的 labels 只是工程 evidence，不是 recovery authority。普通 restore PASS 不需新 authority；sealed Surface/inherited bridge 可按 [predecessor transport](TRANSLATION_UNIT_REPLACEMENT.md#current-validation-predecessor-representation-transport) 派生 Bundle-only representation capability，保留原 reopen/A/finding 与 batch bytes，不建立 QC bridge 或另一 lifecycle。exact raw/attempt/import/codec、current formal input/source/Unit 或 candidate 无法证明时停止；不得从 target prose 猜新增 token。新 transport acceptance/currentness semantics 的第一次真实使用必须重新经过 docs → implementation → direct contract tests；本工程阶段不授权真实 export/current-check/Generation，也不自动 record recovery。

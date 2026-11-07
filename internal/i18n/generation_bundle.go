@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"archive/zip"
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -19,6 +20,15 @@ const (
 	FormalGenerationModel               = "gpt-5.6-sol-high"
 	FormalChatGPTGenerationModel        = "gpt-5.6-sol-high"
 	PreviousCodexGenerationModel        = "gpt-6-luna-high"
+)
+
+// TranslationUnitGenerationBundleMaxFiles includes manifest.json. A batch is
+// limited to 60 Units, but its source/representation/provenance closure can
+// contain many more files. Export and every constituent reader share this
+// finite transport budget; it does not change any semantic validation.
+const (
+	TranslationUnitGenerationBundleMaxFiles       = 8192
+	TranslationUnitGenerationBundleMaxBytes int64 = 128 << 20
 )
 
 func DefaultGenerationModelForProvider(provider string) (string, error) {
@@ -56,9 +66,11 @@ var translationUnitGenerationAuthorityPaths = []string{
 }
 
 type GenerationBundleOptions struct {
-	Locale  string
-	BatchID string
-	UnitID  string
+	Locale                    string
+	BatchID                   string
+	UnitID                    string
+	ApprovedIntervalSelection string
+	approvedIntervalSelection []byte // Only canonical reconstruction consumes frozen ZIP bytes.
 }
 
 type GenerationBundleExpectedOutput struct {
@@ -81,30 +93,33 @@ type GenerationBundleManifest struct {
 }
 
 type GenerationResultBundleManifest struct {
-	SchemaVersion          int                   `json:"schema_version"`
-	Kind                   string                `json:"kind"`
-	TaskKind               string                `json:"task_kind"`
-	Locale                 string                `json:"locale"`
-	BatchID                string                `json:"batch_id"`
-	Attempt                int                   `json:"attempt"`
-	GenerationBundleSHA256 string                `json:"generation_bundle_sha256"`
-	InputIdentitySHA256    string                `json:"input_identity_sha256"`
-	Provider               string                `json:"provider"`
-	Model                  string                `json:"model"`
-	GenerationManifest     TransportBundleFile   `json:"generation_manifest"`
-	Outputs                []TransportBundleFile `json:"outputs"`
+	RecoveryExecution      *RecoveryExecutionReceipt `json:"recovery_generation_execution,omitempty"`
+	SchemaVersion          int                       `json:"schema_version"`
+	Kind                   string                    `json:"kind"`
+	TaskKind               string                    `json:"task_kind"`
+	Locale                 string                    `json:"locale"`
+	BatchID                string                    `json:"batch_id"`
+	Attempt                int                       `json:"attempt"`
+	GenerationBundleSHA256 string                    `json:"generation_bundle_sha256"`
+	InputIdentitySHA256    string                    `json:"input_identity_sha256"`
+	Provider               string                    `json:"provider"`
+	Model                  string                    `json:"model"`
+	GenerationManifest     TransportBundleFile       `json:"generation_manifest"`
+	Outputs                []TransportBundleFile     `json:"outputs"`
 }
 
 type GenerationImportResult struct {
-	Locale                 string   `json:"locale"`
-	BatchID                string   `json:"batch_id"`
-	TaskKind               string   `json:"task_kind"`
-	Attempt                int      `json:"attempt"`
-	Provider               string   `json:"provider"`
-	Model                  string   `json:"model"`
-	InstalledPaths         []string `json:"installed_paths"`
-	InputIdentitySHA256    string   `json:"input_identity_sha256"`
-	GenerationBundleSHA256 string   `json:"generation_bundle_sha256"`
+	RecoveryIdentity            string   `json:"recovery_identity,omitempty"`
+	GenerationExecutionIdentity string   `json:"generation_execution_identity,omitempty"`
+	Locale                      string   `json:"locale"`
+	BatchID                     string   `json:"batch_id"`
+	TaskKind                    string   `json:"task_kind"`
+	Attempt                     int      `json:"attempt"`
+	Provider                    string   `json:"provider"`
+	Model                       string   `json:"model"`
+	InstalledPaths              []string `json:"installed_paths"`
+	InputIdentitySHA256         string   `json:"input_identity_sha256"`
+	GenerationBundleSHA256      string   `json:"generation_bundle_sha256"`
 }
 
 type generationContext struct {
@@ -139,6 +154,10 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	}
 	batchDir := filepath.Join(root, "data", "retranslation-runs", options.Locale, options.BatchID)
 	manifest, err := readRetranslationProcessManifest(batchDir, options.Locale, options.BatchID)
+	if err != nil {
+		return nil, GenerationBundleManifest{}, err
+	}
+	selection, err := generationApprovedIntervalSelection(root, catalog, manifest, options)
 	if err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
@@ -202,6 +221,10 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 		}
 	}
 	originTaskKind := taskKind // Machine retry retains the original semantic task.
+	if manifest.TransportRecovery != nil {
+		taskKind = TransportRecoveryTaskKind
+		originTaskKind = "translation-unit-revision"
+	}
 	attempt := 1
 	selected := manifest.Units
 	var retryEvidence []struct {
@@ -284,7 +307,7 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	type entry = generationBundleInput
 	entries := []entry{{"formal/manifest.json", manifestRepo, manifestData}}
 	if originTaskKind == "translation-unit-revision" {
-		revisionInputs, err := revisionGenerationInputs(root, catalog, options.Locale, manifest.Units)
+		revisionInputs, err := revisionGenerationInputsCore(root, catalog, options.Locale, manifest.Units, nil, true, selection)
 		if err != nil {
 			return nil, GenerationBundleManifest{}, err
 		}
@@ -292,6 +315,15 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 			return nil, GenerationBundleManifest{}, err
 		}
 		entries = append(entries, revisionInputs...)
+	}
+	if manifest.TransportRecovery != nil {
+		entries, err = recoveryGenerationInputs(root, catalog, manifest, entries)
+		if err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+	}
+	if selection != nil && originTaskKind != "translation-unit-revision" {
+		return nil, GenerationBundleManifest{}, fmt.Errorf("approved interval selection requires current-validation revision")
 	}
 	unitIDs := make([]string, 0, len(selected))
 	expected := make([]GenerationBundleExpectedOutput, 0, len(selected))
@@ -331,6 +363,9 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 		TaskKind: taskKind, Locale: options.Locale, BatchID: options.BatchID, UnitKind: manifest.UnitKind,
 		Attempt: attempt, UnitIDs: unitIDs,
 		Instruction: "Generate only the exact expected output files. Preserve protected tokens exactly and uniquely; add no explanation or Markdown fence; every output must be UTF-8 and end with exactly one LF.",
+	}
+	if selection != nil {
+		context.Instruction += " Approved-interval mode: formal/approved-interval-selection.json explicitly selects opaque whole approved intervals. Use ONLY the supplied formal/protected-candidates projection and its distinct GTI18N_AI1 tokens, exact/unique and in order. Preserve the entire opaque parent. Source children inventory does not grant target leaf mapping. Never translate or reconstruct opaque bytes or ordinary P tokens. Active canonical validation and independent re-QC remain mandatory."
 	}
 	if originTaskKind == "translation-unit-revision" {
 		for _, r := range manifest.Units {
@@ -403,6 +438,10 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 			}
 		}
 	}
+	entries, err = freezeApprovedConstructionDependencies(root, entries)
+	if err != nil {
+		return nil, GenerationBundleManifest{}, err
+	}
 	sort.Slice(entries, func(i, j int) bool { return entries[i].path < entries[j].path })
 	files := make([]TransportBundleFile, 0, len(entries))
 	zipEntries := make([]TransportBundleEntry, 0, len(entries))
@@ -423,7 +462,20 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 		return nil, GenerationBundleManifest{}, err
 	}
 	manifestOutData = append(manifestOutData, '\n')
-	bundle, err := WriteDeterministicTransportBundle(manifestOutData, zipEntries)
+	if len(zipEntries)+1 > TranslationUnitGenerationBundleMaxFiles {
+		return nil, GenerationBundleManifest{}, fmt.Errorf("generation bundle file count %d exceeds %d", len(zipEntries)+1, TranslationUnitGenerationBundleMaxFiles)
+	}
+	remaining := TranslationUnitGenerationBundleMaxBytes - int64(len(manifestOutData))
+	if remaining < 0 {
+		return nil, GenerationBundleManifest{}, fmt.Errorf("generation bundle exceeds %d bytes", TranslationUnitGenerationBundleMaxBytes)
+	}
+	for _, item := range zipEntries {
+		if int64(len(item.Data)) > remaining {
+			return nil, GenerationBundleManifest{}, fmt.Errorf("generation bundle exceeds %d bytes", TranslationUnitGenerationBundleMaxBytes)
+		}
+		remaining -= int64(len(item.Data))
+	}
+	bundle, err := writeTranslationUnitGenerationBundle(manifestOutData, zipEntries)
 	if err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
@@ -438,11 +490,24 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 			checkedSurface[r.RevisionAuthorizationID] = true
 		}
 	}
+	if err := checkApprovedIntervalInputs(root, entries); err != nil {
+		return nil, GenerationBundleManifest{}, err
+	}
+	if options.ApprovedIntervalSelection != "" {
+		b, err := readCompatibilityFile(root, options.ApprovedIntervalSelection)
+		if err != nil || !bytes.Equal(b, selection.bytes) {
+			return nil, GenerationBundleManifest{}, fmt.Errorf("approved interval selection changed during export")
+		}
+	}
 	return bundle, manifestOut, nil
 }
 
+func writeTranslationUnitGenerationBundle(manifest []byte, entries []TransportBundleEntry) ([]byte, error) {
+	return writeDeterministicTransportBundle(manifest, entries, zip.Deflate)
+}
+
 func decodeGenerationBundle(data []byte) (GenerationBundleManifest, map[string][]byte, error) {
-	files, err := ReadTransportBundle(data, 512, 64<<20)
+	files, err := ReadTransportBundle(data, TranslationUnitGenerationBundleMaxFiles, TranslationUnitGenerationBundleMaxBytes)
 	if err != nil {
 		return GenerationBundleManifest{}, nil, err
 	}
@@ -483,6 +548,9 @@ func PackGenerationResultBundle(root string, catalog *Catalog, generationBundleD
 	var batch RetranslationBatchManifest
 	if err := decodeStrictBundleJSON(files["formal/manifest.json"], &batch); err != nil {
 		return nil, GenerationResultBundleManifest{}, err
+	}
+	if batch.TransportRecovery != nil {
+		return nil, GenerationResultBundleManifest{}, fmt.Errorf("recovery only supports directory import with Generation execution evidence")
 	}
 	info, err := os.Lstat(inputDir)
 	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
@@ -613,7 +681,7 @@ func currentGenerationBundle(root string, catalog *Catalog, generationBundleData
 	if err != nil {
 		return manifest, nil, err
 	}
-	current, _, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: manifest.Locale, BatchID: manifest.BatchID, UnitID: retryUnitID(manifest)})
+	current, _, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: manifest.Locale, BatchID: manifest.BatchID, UnitID: retryUnitID(manifest), approvedIntervalSelection: files[approvedIntervalSelectionMember]})
 	if err != nil {
 		return manifest, nil, fmt.Errorf("generation bundle is stale: %w", err)
 	}
@@ -745,7 +813,28 @@ func validateGenerationInstallPath(path string) error {
 	return nil
 }
 
-func installGenerationOutputs(root string, manifest GenerationBundleManifest, generationBundleData, generationManifestData []byte, provider, model string, outputs map[string][]byte) (*GenerationImportResult, error) {
+func installGenerationOutputs(root string, manifest GenerationBundleManifest, generationBundleData, generationManifestData []byte, provider, model string, outputs map[string][]byte, executions ...*recoveryExecutionInstall) (*GenerationImportResult, error) {
+	_, frozen, err := readGenerationBundle(generationBundleData)
+	if err != nil {
+		return nil, err
+	}
+	batch, err := decodeRetranslationManifest(frozen["formal/manifest.json"])
+	if err != nil {
+		return nil, err
+	}
+	if (manifest.TaskKind == TransportRecoveryTaskKind && batch.TransportRecovery == nil) || (batch.TransportRecovery != nil && manifest.TaskKind != TransportRecoveryTaskKind && manifest.TaskKind != "translation-unit-retry") {
+		return nil, fmt.Errorf("recovery task/authority mismatch")
+	}
+	var execution *recoveryExecutionInstall
+	if len(executions) == 1 {
+		execution = executions[0]
+	}
+	if execution != nil && execution.Check == nil {
+		return nil, fmt.Errorf("recovery import requires publication CAS guard")
+	}
+	if (batch.TransportRecovery != nil) != (execution != nil) || len(executions) > 1 {
+		return nil, fmt.Errorf("recovery import requires exact new Generation execution provenance")
+	}
 	batchDir := filepath.Join(root, "data", "retranslation-runs", manifest.Locale, manifest.BatchID)
 	if err := ensureNoGenerationImportPending(batchDir); err != nil {
 		return nil, err
@@ -785,6 +874,14 @@ func installGenerationOutputs(root string, manifest GenerationBundleManifest, ge
 		Provider: provider, Model: model,
 		GenerationManifest: NewTransportBundleFile("generation-manifest.json", "", generationManifestData),
 	}
+	if execution != nil {
+		receipt.RecoveryExecution = &execution.Receipt
+		for path := range execution.Members {
+			if err := recoveryRequireAbsent(root, path); err != nil {
+				return nil, err
+			}
+		}
+	}
 	for _, expected := range manifest.ExpectedOutputs {
 		receipt.Outputs = append(receipt.Outputs, NewTransportBundleFile(expected.BundlePath, "", outputs[expected.BundlePath]))
 	}
@@ -818,6 +915,25 @@ func installGenerationOutputs(root string, manifest GenerationBundleManifest, ge
 			_ = os.Remove(pendingPath)
 		}
 	}()
+	if execution != nil {
+		// This evidence and the outputs share the existing pending marker. Until
+		// the final receipt commits, no process/retry consumer may observe a
+		// successful import; an interrupted install is retained for diagnosis.
+		keepPending = true
+		var paths []string
+		for path := range execution.Members {
+			paths = append(paths, path)
+		}
+		sort.Strings(paths)
+		for _, path := range paths {
+			if err := publishRecoverySealedFile(root, path, execution.Members[path], false); err != nil {
+				return nil, err
+			}
+		}
+		if err := execution.Check(); err != nil {
+			return nil, fmt.Errorf("mutation=unknown: recovery import CAS failed; pending=%s: %w", pendingPath, err)
+		}
+	}
 	rollback := func() error {
 		if manifest.TaskKind != "translation-unit-retry" {
 			finalDir := filepath.Join(batchDir, "raw-responses")
@@ -909,6 +1025,11 @@ func installGenerationOutputs(root string, manifest GenerationBundleManifest, ge
 			installed = append(installed, expected.InstallPath)
 		}
 	}
+	if execution != nil {
+		if err := execution.Check(); err != nil {
+			return nil, fmt.Errorf("mutation=unknown: recovery import CAS failed; pending=%s: %w", pendingPath, err)
+		}
+	}
 	if err := writeNewGenerationFile(receiptPath, receiptData); err != nil {
 		if rollbackErr := rollback(); rollbackErr != nil {
 			keepPending = true
@@ -926,10 +1047,15 @@ func installGenerationOutputs(root string, manifest GenerationBundleManifest, ge
 		installedPaths = append(installedPaths, filepath.ToSlash(filepath.Join("data", "retranslation-runs", manifest.Locale, manifest.BatchID, path)))
 	}
 	sort.Strings(installedPaths)
-	return &GenerationImportResult{
+	imported := &GenerationImportResult{
 		Locale: manifest.Locale, BatchID: manifest.BatchID, TaskKind: manifest.TaskKind, Attempt: manifest.Attempt,
 		Provider: provider, Model: model, InstalledPaths: installedPaths, InputIdentitySHA256: manifest.InputIdentitySHA256, GenerationBundleSHA256: sum(generationBundleData),
-	}, nil
+	}
+	if execution != nil {
+		imported.RecoveryIdentity = batch.TransportRecovery.Identity
+		imported.GenerationExecutionIdentity = execution.Receipt.Identity
+	}
+	return imported, nil
 }
 
 func ensureNoGenerationImportPending(batchDir string) error {
@@ -1089,7 +1215,7 @@ func validateTranslationUnitGenerationOutput(root string, catalog *Catalog, glos
 	if record == nil {
 		return fmt.Errorf("output Unit absent from batch")
 	}
-	protected, err := prepareInvocationRetranslationOutput(root, catalog, glossary, locale, batchManifest.Units, *record)
+	protected, err := prepareInvocationRetranslationOutput(root, catalog, glossary, locale, batchManifest.Units, *record, batchID)
 	if err != nil {
 		return err
 	}

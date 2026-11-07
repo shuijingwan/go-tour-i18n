@@ -140,7 +140,7 @@ initial working-set membership 仅是调度元数据，不是永久 TU identity 
 
 ### Deterministic Generation Bundle transport
 
-缺失历史 Generation archive 的 narrowly scoped provenance 已有独立的 [`generation-bundle legacy-provenance` 正式 authority](LEGACY_GENERATION_PROVENANCE_AUTHORITY_DESIGN.md#正式-implementation-command-contract)；zh-CN json 的 exact authority 已完成 first-real-use 与 write-once record，其 path/SHA/identity 见 [approved-interval contract v2](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#已记录-authority-与当前-case)。它只证明指定 per-Unit historical response 的 surviving provenance，不恢复原 Bundle、不证明旧 Bundle CURRENT、不授权原 invocation replay/import 或语言质量。当前 executable consumers **尚未接入**该 authority，仍执行既有 archive/codec gate；v2 仅设计未来 consumer 的 `NORMAL_ARCHIVE > EXPLICIT_RECORDED_LEGACY_PROVENANCE` 优先级：archive 缺失才可显式绑定 path/SHA 并调用 `VerifyLegacyGenerationProvenance`、传 exact requested options，不扫描 latest/按 Unit 自动发现。只消费 `historical-response/v1` allowlist，不补齐六项 unknown facts；archive 重现必须比 covered facts，冲突停止、匹配走 normal。
+缺失历史 Generation archive 的 narrowly scoped provenance 已有独立的 [`generation-bundle legacy-provenance` 正式 authority](LEGACY_GENERATION_PROVENANCE_AUTHORITY_DESIGN.md#正式-implementation-command-contract)；zh-CN json 的 exact authority 已完成 first-real-use 与 write-once record，其 path/SHA/identity 见 [approved-interval contract v2](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#已记录-authority-与当前-case)。它只证明指定 per-Unit historical response 的 surviving provenance，不恢复原 Bundle、不证明旧 Bundle CURRENT、不授权原 invocation replay/import 或语言质量。approved-interval consumer 已接入该 authority；普通无 selection 的 consumers 继续执行既有 archive/codec gate。优先级固定为 `NORMAL_ARCHIVE > EXPLICIT_RECORDED_LEGACY_PROVENANCE`：archive 缺失才可显式绑定 path/SHA 并调用 `VerifyLegacyGenerationProvenance`、传 exact requested options，不扫描 latest/按 Unit 自动发现。只消费 `historical-response/v1` allowlist，不补齐六项 unknown facts；archive 重现必须比 covered facts，冲突停止、匹配走 normal。
 
 Surface revision 还必须满足独立的 [revision transport capability](SURFACE_REVISION_TRANSPORT.md) 合同；CURRENT inputs 与可表达 persisted finding 是两个不同 gate。没有 exact recorded capability authority 的新 Surface Bundle 在 handoff 前 fail closed，不能仅凭 historical raw restore PASS 或过去 CURRENT 推断可编辑。
 
@@ -153,6 +153,10 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
 ```
 
 `--batch-id` 是已存在正式 batch 的 identity，不是 manifest 文件路径；`--output` 是新的 ZIP transport 路径，支持绝对路径或相对当前工作目录的路径。export 重新验证完整 current authority 后只发布该 ZIP，不改 batch、Snapshot、reopen 或语言 evidence；同一输入重建相同 bytes，但已存在的 output 路径一律拒绝覆盖。准备失败不发布 transport，发布时以新路径不可覆盖为边界；失败后保留原 batch/evidence，不自动 recovery 或创建新 batch。
+
+TranslationUnit Generation Bundle 的 canonical ZIP 使用 **Deflate、显式 level 5**；固定 member 顺序、1980-01-01 UTC 时间与0644 mode，在同一 Go compressor 实现下 exact inputs 重建相同 bytes，不承诺不同 Go/compressor 版本输出相同压缩字节。只对此 family opt-in；Result、Reviewer、locale、retry handoff 等其它 family 的 canonical writer 保持 Store。reader 兼容历史 Store 与新 Deflate，仍核验 CRC、path、exact inventory/hash；上限为8192个成员（含 manifest）与134217728 bytes **总解包 payload**，不按压缩后的大小放宽。member names/逻辑 bytes/semantic authority graph 不因压缩变化；ZIP SHA 仍绑定真实物理 bytes。
+
+**READABLE 不等于 CURRENT**：历史 Store archive 继续可读，current-check 仍只比较当前 canonical exporter 的完整 ZIP bytes，不以双格式 comparison 维持旧 Store 的 CURRENT。archive observation 对 Deflate bounded decode 后核验逻辑 hash，不把 compressed span 当作逻辑 bytes；Store 保留已验证原始 span 的复用。retry handoff 只按已记录 SHA 精确恢复原 Store 或 Deflate-5 constituent，不替换 invocation identity。旧 ZIP、import/model provenance、历史 replay evidence 不重打包或回写。本次 canonical encoding/reader/currentness 修改使旧 first-real-use verification 失效；真实使用前须重新 gate，工程实现不授权真实064 re-export 或 Generation。
 
 retry 仅对当前 `restore_failed` / `validation_failed` Unit 增加 `--unit-id <unit-id>`；bundle 自动绑定下一连续 attempt、当前 validation/result 和完整原 batch 输入。`manifest.json` 声明 schema、task kind、locale、batch、Unit kind、attempt、exact expected outputs、全部成员 inventory/hash 与聚合 input identity。ZIP 内仍包含原始 batch manifest、manifest 列出的全部 inputs、完整 glossary 和当前 authority；ZIP 不替代这些 semantic authority。ChatGPT 与 Codex 都读取同一 contract，不因 provider 改变内容边界。
 
@@ -177,6 +181,17 @@ Generation 从 protected predecessor baseline 做 finding-anchored、locally com
 execution `task_kind=translation-unit-retry` 不改变原 batch 的 semantic task。由 manifest `RevisionFeedbackSource` / `PreviousSnapshotID` 等确定 revision origin；revision-origin retry 保留完整原 batch protected inputs、两种 predecessor candidate、Snapshot/validation、finding authorization、glossary/authority，并附当前失败 Unit 的 retry validation/result。context 指明 attempt N 与原 exact revision/finding closure 语义，ExpectedOutputs 仍仅为该失败 Unit。QC 和 Surface reopen 共用此机制；initial retry 与 glossary-stale retry 不套用不存在的 revision predecessor/finding 合同。
 
 若旧 Bundle 缺项或 authority 更新，但原 revision batch 的 manifest/authorization 未变且没有正式 raw responses/import，可以为**同一 batch**重新执行 Generation Bundle export；无需新建 revision batch。current-check 按当前完整合同重建 canonical Bundle，使旧 ZIP 自然 stale/non-canonical，不手工补 ZIP、删除旧证据或覆盖正式输出。
+
+已经installed的approved derived proof后来stale，不适用上述同批刷新。
+[Installed derived-transport recovery设计v1](INSTALLED_DERIVED_TRANSPORT_STALE_RECOVERY_DESIGN.md)
+规定新的窄authority、原batch完整decoder-context closure及全范围successor invocation；
+要求真实新Language Generation，不把旧raw作为新output，不修改旧proof比较或同batch历史。
+实现仍须独立first-real-use gate后才可真实使用；synthetic PASS不授权真实恢复、单Unit裁剪或新reopen。
+
+历史 construction dependency 的 exact bytes 若仅存在于外部历史副本，仍不能直接作为
+formal reader 输入。[Historical bytes formalization 合同](HISTORICAL_CONSTRUCTION_BYTES_FORMALIZATION_DESIGN.md)
+另行设计 supplemental byte authority、content-addressed repository publication 与 acquisition
+audit；尚未实现或授权采用，不修改旧 archive/receipt/proof，也不授予 Generation/QC/recovery 权限。
 
 上述同批刷新不适用于 formal Page protected representation 已产生 replacement UnitID 的情况：旧 batch 不改写，须通过[正式 Page replacement lineage](TRANSLATION_UNIT_REPLACEMENT.md)建立显式 reconciliation successor reopen 与新 revision batch，再精确复用 unchanged 输出。
 
@@ -355,6 +370,6 @@ Surface-bounded predecessor 也可通过独立记录的 ordinary QC bridge 提�
 
 ### Current-validation predecessor codec recovery
 
-whole approved interval 的新 consumer 边界以 [contract v2](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#derived-transport-command-contract-v2待审定未实现) 为设计入口：legacy provenance 与 approved-interval representation authority 独立，whole parent immutable/opaque，不建立 target atom mapping。必须以 typed machine coordinates 证明全部 editable finding regions 与 parent 无交集，重建 exact restores，并保留 current glossary/representation、active validation、独立 re-QC/A-only。拟新增 export-only `--approved-interval-selection` 与 Bundle-only proof metadata，current-check 从冻结 selection/refs 独立重建；尚未实现或授权真实调用。引用和 proof 均不回写064 manifest，因此可保留同批刷新的架构可能，实际仍等待 implementation、32/32 readiness 与新的 first-real-use gate。
+whole approved interval consumer 以 [contract v2](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#derived-transport-command-contract-v2已实现真实使用待-gate) 为入口：legacy provenance 与 approved-interval representation authority 独立，whole parent immutable/opaque，不建立 target atom mapping。必须以 typed machine coordinates 证明全部 editable finding regions 与 parent 无交集，重建 exact restores，并保留 current glossary/representation、active validation、独立 re-QC/A-only。export-only `--approved-interval-selection <repository-relative JSON>` 只能出现一次，要求同一显式完整 `--content-package`；current-check 不接受 selector/override，只从 `formal/approved-interval-selection.json` 的 frozen exact bytes 独立重建。proof schema 为 `go-learning/approved-interval-transport/v1`，member 为 `formal/approved-interval-transport/<current-unit-id>.json`；unknown schema/mode、missing/extra/tampered proof 均 fail closed。process/retry/Snapshot 从真实 initial imported Bundle 重建同一 decoder/provenance，不回退普通 Page restore；retry 继承相同 selection/proof，真实新 import 的 provider/model 与 historical legacy authority 分离。引用和 proof 均不回写064 manifest。实现不授权真实调用，仍须独立 first-real-use gate。
 
 current-validation predecessor 的 protected raw 可能属于 sealed Surface/inherited bridge 表示，不能拿普通 current Page decoder 假定其可编辑。普通 restore 失败后，仅按 [representation-only transport contract](TRANSLATION_UNIT_REPLACEMENT.md#current-validation-predecessor-representation-transport) 确定性组合既有 source-owned codec；不能借 QC-only exclusive bridge 改写本轮 authority。Bundle 的 `formal/current-validation-predecessor-transport` 冻结 exact bindings，`formal/historical-protected-candidates` 保留历史 raw；Generation 只编辑 supplied `formal/protected-candidates`，不重建 mapping。comment-revision transport 仍仅开放原 reopen 授权的 slots。当前 source/formal input/Unit delta 非零、missing import/codec 或未知新 protection 都拒绝；没有可以从 engineering impact 的 `unknown=false` 推导的 PASS。export/current-check 与 import/process/后续 Snapshot 使用同一 response decoder reconstruction，仍须独立 validation/re-QC/A-only。无 formal metadata delta 的 pending batch 可保留；任何未关闭 Unit 继续阻止整批 Bundle，不自动补 receipt 或输出。

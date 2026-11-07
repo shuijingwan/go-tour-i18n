@@ -30,7 +30,8 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if err := ValidateLocaleName(options.Locale); err != nil {
 		return nil, err
 	}
-	if len(catalog.TranslationScope) > 0 {
+	scopedAtEntry := len(catalog.TranslationScope) > 0
+	if scopedAtEntry {
 		if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
 			return nil, err
 		}
@@ -45,6 +46,15 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	manifest, err := readRetranslationProcessManifest(batchDir, options.Locale, options.BatchID)
 	if err != nil {
 		return nil, err
+	}
+	catalog, err = reconstructImportedApprovedIntervalPackage(root, catalog, manifest)
+	if err != nil {
+		return nil, err
+	}
+	if !scopedAtEntry && len(catalog.TranslationScope) > 0 {
+		if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
+			return nil, err
+		}
 	}
 	resultPath := filepath.Join(batchDir, "result.json")
 	resultData, err := os.ReadFile(resultPath)
@@ -130,6 +140,10 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if err := validateRetryAttemptSequenceForExtension(filepath.Join(batchDir, filepath.FromSlash(retryDirRelative)), currentAttempt, nextAttempt, extension); err != nil {
 		return nil, err
 	}
+	retryImportIdentity, err := importedApprovedIntervalRetryIdentity(root, catalog, manifest, item.manifest, nextAttempt, retryRawRelative, retryRaw)
+	if err != nil {
+		return nil, err
+	}
 	historyRelative := filepath.ToSlash(filepath.Join(retryDirRelative, fmt.Sprintf("attempt-%03d-validation.json", currentAttempt)))
 	historyPath := filepath.Join(batchDir, filepath.FromSlash(historyRelative))
 	if _, err := os.Stat(historyPath); err == nil {
@@ -191,6 +205,13 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		retranslationFileUpdate{target: validationPath, data: newValidation},
 		retranslationFileUpdate{target: resultPath, data: newResult},
 	)
+	freshImportIdentity, err := importedApprovedIntervalRetryIdentity(root, catalog, manifest, item.manifest, nextAttempt, retryRawRelative, retryRaw)
+	if err != nil {
+		return nil, err
+	}
+	if freshImportIdentity != retryImportIdentity {
+		return nil, fmt.Errorf("approved retry imported invocation changed during validation")
+	}
 	if err := checkPreparedRetranslationContext(prepared); err != nil {
 		return nil, err
 	}

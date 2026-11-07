@@ -55,17 +55,35 @@ func verifyImportedRevisionInvocation(root string, c *Catalog, locale string, ch
 	if err != nil {
 		return nil, err
 	}
+	if m.TransportRecovery != nil {
+		if err := verifyRecoveryInstalledExecution(root, c, m); err != nil {
+			return nil, err
+		}
+	}
 	// Existing authorization algorithm checks exact source, predecessor
 	// candidate, independent B/C/D or Surface finding and protected baseline.
-	inputs, err := revisionGenerationInputs(root, c, locale, m.Units)
+	selection, _, err := importedApprovedIntervalSelection(root, c, m)
 	if err != nil {
 		return nil, err
+	}
+	inputs, err := revisionGenerationInputsCore(root, c, locale, m.Units, nil, true, selection)
+	if err != nil {
+		return nil, err
+	}
+	if m.TransportRecovery != nil {
+		inputs, err = recoveryGenerationInputs(root, c, m, inputs)
+		if err != nil {
+			return nil, err
+		}
 	}
 	for _, attempt := range []int{1, v.attempt} {
 		if attempt == 1 && v.attempt == 1 && len(refs) > 0 {
 			continue
 		}
 		gm := GenerationBundleManifest{TaskKind: "translation-unit-revision", Attempt: 1}
+		if m.TransportRecovery != nil {
+			gm.TaskKind = TransportRecoveryTaskKind
+		}
 		if attempt > 1 {
 			gm.TaskKind = "translation-unit-retry"
 			gm.Attempt = attempt

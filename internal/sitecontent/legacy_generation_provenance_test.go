@@ -11,9 +11,9 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
-func legacyProvenanceFixture(t *testing.T) (string, *i18n.Catalog, i18n.LegacyGenerationProvenanceOptions, []byte) {
+func legacyProvenanceFixture(t *testing.T, outputTransforms ...func([]byte) []byte) (string, *i18n.Catalog, i18n.LegacyGenerationProvenanceOptions, []byte) {
 	t.Helper()
-	root, c, o := semanticReviewFixture(t)
+	root, c, o := semanticReviewFixture(t, outputTransforms...)
 	b, m, err := i18n.ExportRepresentationReviewBundle(root, c, o)
 	if err != nil {
 		t.Fatal(err)

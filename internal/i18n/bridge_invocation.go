@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"fmt"
+	"path/filepath"
 	"reflect"
 )
 
@@ -146,7 +147,40 @@ func bridgeOutputForInvocation(root string, c *Catalog, g *Glossary, locale stri
 	}
 	return protectedTranslation{}, fmt.Errorf("bridge per-Unit QC feedback mismatch")
 }
-func prepareInvocationRetranslationOutput(root string, c *Catalog, g *Glossary, locale string, selected []RetranslationBatchUnit, record RetranslationBatchUnit) (protectedTranslation, error) {
+func prepareInvocationRetranslationOutput(root string, c *Catalog, g *Glossary, locale string, selected []RetranslationBatchUnit, record RetranslationBatchUnit, batches ...string) (protectedTranslation, error) {
+	if len(batches) > 0 && record.RevisionFeedbackSource == CurrentValidationRevisionFeedback {
+		m, err := readRetranslationProcessManifest(filepath.Join(root, "data/retranslation-runs", locale, batches[0]), locale, batches[0])
+		if err != nil {
+			return protectedTranslation{}, err
+		}
+		if !reflect.DeepEqual(m.Units, selected) {
+			return protectedTranslation{}, fmt.Errorf("approved interval invocation scope mismatch")
+		}
+		s, _, err := importedApprovedIntervalSelection(root, c, m)
+		if err != nil {
+			return protectedTranslation{}, err
+		}
+		if s != nil {
+			outputs := map[string]protectedTranslation{}
+			if _, err = approvedResponseInputs(root, c, m, outputs); err != nil {
+				return protectedTranslation{}, err
+			}
+			if p, ok := outputs[record.UnitID]; ok {
+				return p, nil
+			}
+			if s.entry(record.UnitID) != nil {
+				return protectedTranslation{}, fmt.Errorf("approved interval decoder missing")
+			}
+			// The complete imported context has already reconstructed every
+			// derived variant. A sibling without a projection keeps its ordinary
+			// decoder; do not rebuild the batch with an empty approved selection.
+			u, err := c.Unit(record.UnitID)
+			if err != nil {
+				return protectedTranslation{}, err
+			}
+			return prepareTranslationUnitInput(u, g)
+		}
+	}
 	if p, lineage, err := surfaceTransportOutput(root, c, locale, record); err != nil || lineage != nil {
 		return p, err
 	}

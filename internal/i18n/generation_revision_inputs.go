@@ -19,8 +19,15 @@ func revisionGenerationInputs(root string, catalog *Catalog, locale string, sele
 	return revisionGenerationInputsCore(root, catalog, locale, selected, transports, true)
 }
 
-func revisionGenerationInputsCore(root string, catalog *Catalog, locale string, selected []RetranslationBatchUnit, transports []map[string]protectedTranslation, surfaceCapability bool) ([]generationBundleInput, error) {
+func revisionGenerationInputsCore(root string, catalog *Catalog, locale string, selected []RetranslationBatchUnit, transports []map[string]protectedTranslation, surfaceCapability bool, selections ...*ApprovedIntervalSelection) ([]generationBundleInput, error) {
 	var inputs []generationBundleInput
+	var approvedSelection *ApprovedIntervalSelection
+	if len(selections) > 0 {
+		approvedSelection = selections[0]
+	}
+	if approvedSelection != nil {
+		inputs = append(inputs, generationBundleInput{approvedIntervalSelectionMember, "", approvedSelection.bytes})
+	}
 	evaluation := newQualityCheckEvaluation(root, locale, catalog)
 	type predecessorScope struct {
 		catalog  *Catalog
@@ -368,6 +375,14 @@ func revisionGenerationInputsCore(root string, catalog *Catalog, locale string, 
 				inputs = append(inputs, generationBundleInput{"formal/representation-lineage/" + record.UnitID + ".json", "", mustJSON(lineage)})
 			}
 		}
+		var approvedProof *ApprovedIntervalTransport
+		if approvedSelection.entry(record.UnitID) != nil {
+			approvedProof, err = buildApprovedIntervalTransport(root, catalog, glossary, locale, record, successor, *predecessor, evidence, approvedSelection)
+			if err != nil {
+				return nil, err
+			}
+			candidate, failures = evidence.candidate, nil
+		}
 		var recovery *CurrentValidationPredecessor
 		if (len(failures) != 0 || !bytes.Equal(candidate, evidence.candidate)) && successor != nil && successor.AuthoritySource == CurrentValidationAuthority {
 			proof, err := inspectCurrentValidationPredecessor(root, catalog, predecessorCatalog, glossary, locale, selected, record, successor, *predecessor, evidence)
@@ -526,6 +541,13 @@ func revisionGenerationInputsCore(root string, catalog *Catalog, locale string, 
 			}
 
 		}
+		if approvedProof != nil {
+			baseline, baselineRepositoryPath = []byte(approvedProof.Projection.Text), ""
+			inputs = append(inputs, generationBundleInput{approvedIntervalProofMember(record.UnitID), "", mustJSON(approvedProof)}, generationBundleInput{"formal/historical-protected-candidates/" + filepath.Base(record.InputPath), rawPath, raw})
+			if len(transports) > 0 {
+				transports[0][record.UnitID] = approvedProof.output
+			}
+		}
 		validation, err := readSnapshotReferencedFile(root, predecessor.ValidationPath)
 		if err != nil || sum(validation) != predecessor.ValidationSHA256 {
 			return nil, fmt.Errorf("%s: predecessor validation identity mismatch", record.UnitID)
@@ -611,6 +633,9 @@ func revisionGenerationInputsCore(root string, catalog *Catalog, locale string, 
 		if err := verifyCurrentValidationReopen(root, scope.catalog, scope.receipt, false); err != nil {
 			return nil, err
 		}
+	}
+	if err := checkApprovedIntervalInputs(root, inputs); err != nil {
+		return nil, err
 	}
 	return inputs, nil
 }

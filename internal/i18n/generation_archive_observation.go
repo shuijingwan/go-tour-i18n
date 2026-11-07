@@ -12,6 +12,8 @@ import (
 type generationArchiveMember struct {
 	Name         string
 	Offset, Size int64
+	Method       uint16
+	SHA256       string
 }
 
 type generationArchiveIndex struct {
@@ -19,14 +21,14 @@ type generationArchiveIndex struct {
 	Members  []generationArchiveMember
 }
 
-const generationArchiveIndexOperation = "generation-bundle/store-index/v1"
+const generationArchiveIndexOperation = "generation-bundle/member-index/v2"
 
 func generationArchiveObservationKey(data []byte) []byte {
 	return mustJSON(struct {
 		Contract string
 		SHA256   string
 		Bytes    int
-	}{"generation-bundle/store-index/v1;schema=1;max-files=512;max-total-bytes=67108864", sum(data), len(data)})
+	}{fmt.Sprintf("%s;schema=%d;methods=store,deflate;max-files=%d;max-total-bytes=%d", generationArchiveIndexOperation, GenerationBundleSchemaVersion, TranslationUnitGenerationBundleMaxFiles, TranslationUnitGenerationBundleMaxBytes), sum(data), len(data)})
 }
 
 // Callers still freshly read their archive and verify its expected import,
@@ -50,12 +52,44 @@ func readGenerationBundle(data []byte) (GenerationBundleManifest, map[string][]b
 		return decodeGenerationBundle(data)
 	}
 	files := make(map[string][]byte, len(index.Members))
-	for _, m := range index.Members {
-		if m.Offset < 0 || m.Size < 0 || m.Offset > int64(len(data))-m.Size {
+	var reader *zip.Reader
+	remaining := TranslationUnitGenerationBundleMaxBytes
+	for i, m := range index.Members {
+		if m.Size < 0 || m.Size > remaining {
 			return decodeGenerationBundle(data)
 		}
-		// Return private buffers: downstream consumers may mutate their copy.
-		files[m.Name] = bytes.Clone(data[m.Offset : m.Offset+m.Size])
+		switch m.Method {
+		case zip.Store:
+			if m.Offset < 0 || m.Offset > int64(len(data))-m.Size {
+				return decodeGenerationBundle(data)
+			}
+			// Exact stored spans were independently verified when indexing.
+			files[m.Name] = bytes.Clone(data[m.Offset : m.Offset+m.Size])
+		case zip.Deflate:
+			if reader == nil {
+				reader, err = zip.NewReader(bytes.NewReader(data), int64(len(data)))
+				if err != nil || len(reader.File) != len(index.Members) {
+					return decodeGenerationBundle(data)
+				}
+			}
+			f := reader.File[i]
+			if f.Name != m.Name || f.Method != m.Method || f.UncompressedSize64 != uint64(m.Size) {
+				return decodeGenerationBundle(data)
+			}
+			// ZIP offsets locate compressed data, never a logical payload span.
+			// Decode with the same bound and CRC checks, then prove logical hash.
+			payload, err := readTransportBundleFile(f, remaining)
+			if err != nil {
+				return GenerationBundleManifest{}, nil, err
+			}
+			if int64(len(payload)) != m.Size || sum(payload) != m.SHA256 {
+				return GenerationBundleManifest{}, nil, fmt.Errorf("Generation archive logical member identity mismatch: %s", m.Name)
+			}
+			files[m.Name] = payload
+		default:
+			return decodeGenerationBundle(data)
+		}
+		remaining -= m.Size
 	}
 	return index.Manifest, files, nil
 }
@@ -77,13 +111,13 @@ func indexGenerationArchive(data []byte) ([]byte, error) {
 		}
 		payload := files[f.Name]
 		size := int64(len(payload))
-		// The canonical reader already checked regular files, STORE, paths,
+		// The canonical reader already checked regular files, methods, paths,
 		// duplicates, CRC, exact inventory and expected outputs. Bind this index
 		// to those exact decoded payloads; never derive it from an unchecked ZIP.
-		if offset < 0 || offset > int64(len(data))-size || !bytes.Equal(payload, data[offset:offset+size]) {
+		if f.Method == zip.Store && (offset < 0 || offset > int64(len(data))-size || !bytes.Equal(payload, data[offset:offset+size])) {
 			return nil, fmt.Errorf("Generation archive member is not exact stored bytes")
 		}
-		index.Members = append(index.Members, generationArchiveMember{f.Name, offset, size})
+		index.Members = append(index.Members, generationArchiveMember{Name: f.Name, Offset: offset, Size: size, Method: f.Method, SHA256: sum(payload)})
 	}
 	return json.Marshal(index)
 }

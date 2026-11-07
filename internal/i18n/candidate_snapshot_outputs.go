@@ -130,6 +130,10 @@ func prepareSnapshotRevisionOutputs(root string, c *Catalog, locale string, g *G
 		if err != nil {
 			return nil, nil, err
 		}
+		evidenceCatalog, err = snapshotRevisionEvidenceCatalog(root, c, locale, choice, evidenceCatalog)
+		if err != nil {
+			return nil, nil, err
+		}
 		if choice.manifest.RepresentationBridge != nil {
 			for _, record := range m.Units {
 				selected, ok := latest.selectedByID[record.UnitID]
@@ -184,6 +188,19 @@ func prepareSnapshotRevisionOutputs(root string, c *Catalog, locale string, g *G
 				return nil, nil, fmt.Errorf("Snapshot revision manifest changed during selection")
 			}
 			if p := projections[record.UnitID]; p.Adapter != nil {
+				outputs[record.UnitID] = p
+			} else if m.TransportRecovery != nil {
+				// R includes ordinary siblings. Their decoder is ordinary, while
+				// the verified context remains the complete imported approved
+				// invocation; do not rebuild that context without its selection.
+				u, err := evidenceCatalog.Unit(record.UnitID)
+				if err != nil {
+					return nil, nil, err
+				}
+				p, err := prepareTranslationUnitInput(u, g)
+				if err != nil {
+					return nil, nil, err
+				}
 				outputs[record.UnitID] = p
 			}
 		}

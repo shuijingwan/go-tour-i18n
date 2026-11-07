@@ -47,10 +47,11 @@ type ConditionalPage struct {
 }
 
 type Catalog struct {
-	BridgeResolver            SameUnitBridgeResolver             `json:"-"`
-	BridgeConstructionContext SameUnitBridgeConstructionContext  `json:"-"`
-	PreviewFailureReader      PreviewFailureReader               `json:"-"`
-	ReplacementResolver       TranslationUnitReplacementResolver `json:"-"`
+	DerivedTransportCodecReader DerivedTransportCodecReader        `json:"-"`
+	BridgeResolver              SameUnitBridgeResolver             `json:"-"`
+	BridgeConstructionContext   SameUnitBridgeConstructionContext  `json:"-"`
+	PreviewFailureReader        PreviewFailureReader               `json:"-"`
+	ReplacementResolver         TranslationUnitReplacementResolver `json:"-"`
 	// Reads independent Surface evidence only; never selects lifecycle policy.
 	SurfaceAuthorityReader  SurfaceAuthorityReader  `json:"-"`
 	HistoricalContextReader HistoricalContextReader `json:"-"`

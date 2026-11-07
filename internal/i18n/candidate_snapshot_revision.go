@@ -274,9 +274,22 @@ func checkMixedSnapshot(root string, c *Catalog, s *QualityCheckSnapshotManifest
 		}
 		latest.selectedByID[u.UnitID] = selectedRetranslationUnit{batchID: u.SelectedBatchID, batchDir: e.batchDir, manifest: e.record, result: e.result}
 	}
-	want, units, err := buildSnapshotRevision(root, c, s.Locale, base, latest)
+	g, err := LoadGlossary(root, s.Locale)
 	if err != nil {
 		return err
+	}
+	outputs, checks, err := prepareSnapshotRevisionOutputs(root, c, s.Locale, g, latest)
+	if err != nil {
+		return err
+	}
+	want, units, err := buildSnapshotRevision(root, c, s.Locale, base, latest, outputs)
+	if err != nil {
+		return err
+	}
+	for _, check := range checks {
+		if err := check(); err != nil {
+			return err
+		}
 	}
 	if !reflect.DeepEqual(want, p) || !reflect.DeepEqual(units, s.Units) {
 		return fmt.Errorf("mixed Snapshot baseline + delta projection mismatch")

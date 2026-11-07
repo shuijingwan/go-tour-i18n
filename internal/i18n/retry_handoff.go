@@ -148,12 +148,12 @@ func ReadRetryHandoff(data []byte) (RetryHandoff, [][]byte, error) {
 		if err := decodeStrictBundleJSON(manifestBytes, &m); err != nil {
 			return h, nil, err
 		}
-		if len(m.Files) > 511 {
+		if len(m.Files)+1 > TranslationUnitGenerationBundleMaxFiles {
 			return h, nil, fmt.Errorf("retry constituent has too many files")
 		}
 		size := int64(len(manifestBytes))
 		for _, f := range m.Files {
-			if f.Size < 0 || f.Size > 64<<20-size {
+			if f.Size < 0 || f.Size > TranslationUnitGenerationBundleMaxBytes-size {
 				return h, nil, fmt.Errorf("retry constituent exceeds transport limit")
 			}
 			size += f.Size
@@ -174,7 +174,15 @@ func ReadRetryHandoff(data []byte) (RetryHandoff, [][]byte, error) {
 			return h, nil, err
 		}
 		if sum(b) != member.BundleSHA256 {
-			return h, nil, fmt.Errorf("canonical retry ZIP SHA mismatch")
+			// Historical handoffs have no encoding field. Restore only the exact
+			// recorded Store or Deflate-5 ZIP, never substitute a new invocation.
+			b, err = writeTranslationUnitGenerationBundle(manifestBytes, entries)
+			if err != nil {
+				return h, nil, err
+			}
+			if sum(b) != member.BundleSHA256 {
+				return h, nil, fmt.Errorf("canonical retry ZIP SHA mismatch")
+			}
 		}
 		total += int64(len(b))
 		if total > 64<<20 {

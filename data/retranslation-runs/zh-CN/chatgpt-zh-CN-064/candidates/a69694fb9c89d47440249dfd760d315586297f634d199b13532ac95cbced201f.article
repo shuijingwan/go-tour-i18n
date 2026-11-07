@@ -1,0 +1,288 @@
+---
+title: Go 漏洞数据库
+layout: article
+---
+
+[返回 Go 漏洞管理](/security/vuln)
+
+## 概述
+
+Go 漏洞数据库（[https://vuln.go.dev](https://vuln.go.dev)）
+使用
+[Open Source Vulnerability（OSV）schema](https://ossf.github.io/osv-schema/) 提供 Go 漏洞信息。
+
+你也可以在 [pkg.go.dev/vuln](https://pkg.go.dev/vuln) 浏览数据库中的漏洞。
+
+**不要**依赖 x/vulndb Git 仓库中的内容。该仓库中的 YAML 文件
+使用内部格式维护，该格式可能在不事先通知的情况下
+发生变化。
+
+## 贡献
+
+我们非常欢迎所有 Go 包维护者[贡献](/s/vulndb-report-new)
+自己项目中公开漏洞的信息，
+并[更新](/s/vulndb-report-feedback)其 Go 包中已有的漏洞
+信息。
+
+我们的目标是让报告流程尽量顺畅，
+因此欢迎[向我们提出建议](/s/vuln-feedback)。
+
+请**不要**使用上面的表单报告 Go
+标准库或子仓库中的漏洞。
+对于 Go 项目中的漏洞，请改为按照 [go.dev/security/policy](/security/policy)
+ 所述流程处理。
+
+## API
+
+Go 的规范漏洞数据库 [https://vuln.go.dev](https://vuln.go.dev)
+是一个 HTTP 服务器，可响应下面所列端点的 GET 请求。
+
+这些端点没有查询参数，也不要求任何特定请求头。
+因此，即使网站只从固定文件系统提供内容（包括 `file://` URL），
+也可以实现这个 API。
+
+每个端点都会返回 JSON 编码的响应，可以是不压缩形式
+（请求为 `.json` 时），也可以是 gzip 压缩形式（请求为 `.json.gz` 时）。
+
+端点如下：
+
+- `/index/db.json[.gz]`
+
+  返回数据库的元数据：
+
+  ```json
+  {
+    // 数据库应被视为已修改的最晚时间，
+    // 以 RFC3339 格式的 UTC 时间戳表示，
+    // 并以 "Z" 结尾。
+    "modified": string
+  }
+  ```
+
+  请注意，修改时间*不应*与实际时钟时间进行比较；
+  例如，不能据此判断缓存是否失效，因为数据库修改正式上线可能存在延迟。
+  
+
+  可查看 [/index/db.json](https://vuln.go.dev/index/db.json) 的在线示例。
+
+- `/index/modules.json[.gz]`
+
+  返回一个列表，其中包含数据库中每个模块的元数据：
+
+  ```json
+  [ {
+    // 模块路径。
+    "path": string,
+    // 影响此模块的漏洞。
+    "vulns":
+      [ {
+        // 漏洞 ID。
+        "id": string,
+        // 漏洞应被视为已修改的最晚时间，
+        // 以 RFC3339 格式的 UTC 时间戳表示，
+        // 并以 "Z" 结尾。
+        "modified": string,
+        // （可选）采用 SemVer 2.0.0 格式的模块版本，
+        // 其中包含该漏洞的最新修复。
+        // 如果未知或不可用，则应省略此字段。
+        "fixed": string,
+      } ]
+  } ]
+  ```
+
+  可查看 [/index/modules.json](https://vuln.go.dev/index/modules.json) 的在线示例。
+
+- `/index/vulns.json[.gz]`
+
+  返回一个列表，其中包含数据库中每个漏洞的元数据：
+
+  ```json
+   [ {
+       // 漏洞 ID。
+       "id": string,
+       // 漏洞应被视为已修改的最晚时间，
+       // 以 RFC3339 格式的 UTC 时间戳表示，
+       // 并以 "Z" 结尾。
+       "modified": string,
+       // 其他数据库中同一漏洞的 ID 列表。
+       "aliases": [ string ]
+   } ]
+  ```
+
+  可查看 [/index/vulns.json](https://vuln.go.dev/index/vulns.json) 的在线示例。
+
+- `/ID/$id.json[.gz]`
+
+  返回 ID 为 `$id` 的漏洞的单独报告，
+  格式为 OSV（见下文的 [Schema](#schema)）。
+
+  可查看以下在线示例：[/ID/GO-2022-0191.json](https://vuln.go.dev/ID/GO-2022-0191.json)
+  
+
+### 批量下载
+
+为了更方便地下载整个 Go 漏洞数据库，
+提供了一个包含所有索引文件和 OSV 文件的 ZIP，地址为
+[vuln.go.dev/vulndb.zip](https://vuln.go.dev/vulndb.zip)。
+
+### 在 `govulncheck` 中使用
+
+`govulncheck` 默认使用位于 [vuln.go.dev](https://vuln.go.dev) 的规范 Go 漏洞数据库。
+
+可以使用 `-db` 标志配置该命令访问其他漏洞数据库；该标志接受漏洞数据库的 URL，协议可以是 `http://`、`https://` 或 `file://`。
+
+为了与 `govulncheck` 正确配合，指定的漏洞数据库必须实现上文所述的 API。`govulncheck` 命令从 http(s) 来源读取时使用压缩的“.json.gz”端点，从文件来源读取时则使用“.json”端点。
+
+### 旧版 API
+
+规范数据库包含一些属于旧版 API 的附加端点。
+我们计划很快移除对这些端点的支持。如果你仍依赖旧版 API
+且需要更多迁移时间，[请告诉我们](/s/govulncheck-feedback)。
+
+## Schema
+
+报告使用
+[Open Source Vulnerability（OSV）schema](https://ossf.github.io/osv-schema/)。
+Go 漏洞数据库对各字段作如下定义：
+
+### id
+
+id 字段是漏洞条目的唯一标识符。它是一个
+格式为 GO-\<YEAR>-\<ENTRYID> 的字符串。
+
+### affected
+
+[affected](https://ossf.github.io/osv-schema/#affected-fields) 字段是一个
+JSON 数组；其中每个对象用于描述包含该漏洞的模块版本。
+
+
+#### affected[].package
+
+
+[affected[].package](https://ossf.github.io/osv-schema/#affectedpackage-field)
+字段是一个 JSON 对象，用来标识受影响的 _模块_。该对象有两个
+必填字段：
+
+- **ecosystem**：其值始终为“Go”
+- **name**：Go 模块路径
+  - 标准库中可导入的包名称为 _stdlib_。
+  - go 命令的名称为 _toolchain_。
+
+#### affected[].ecosystem_specific
+
+
+[affected[].ecosystem_specific](https://ossf.github.io/osv-schema/#affectedecosystem_specific-field)
+字段是一个 JSON 对象，其中包含漏洞的额外信息，
+供 Go 的漏洞检测工具使用。
+
+目前，生态系统特定信息始终是一个只包含一个字段的对象，
+即 `imports`。
+
+##### affected[].ecosystem_specific.imports
+
+`affected[].ecosystem_specific.imports` 字段是一个 JSON 数组，其中包含
+受漏洞影响的包和符号。数组中的每个对象
+都有以下两个字段：
+
+- **path：**字符串，表示包含漏洞的包的导入路径
+- **symbols：**字符串数组，表示包含漏洞的符号（函数或方法）的名称
+- **goos**：字符串数组，若已知，表示这些符号出现的执行操作系统
+- **goarch**：字符串数组，若已知，表示这些符号出现的架构
+
+### database_specific
+
+`database_specific` 字段包含 Go 漏洞数据库专用的自定义字段。
+
+#### database_specific.url
+
+`database_specific.url` 字段是一个字符串，表示 Go 漏洞报告的完全限定
+URL；例如，可写作“https://pkg.go.dev/vuln/GO-2023-1621”。
+
+#### database_specific.review_status
+
+`database_specific.review_status` 字段是一个字符串，表示漏洞报告的审核
+状态。如果不存在该字段，则报告应视为 
+`REVIEWED`。可能的值包括：
+
+- `UNREVIEWED`：报告根据其他来源（例如
+CVE 或 GHSA）自动生成。其数据可能有限，而且尚未经 Go 团队验证。
+- `REVIEWED`：报告由 Go 团队创建，或根据外部来源生成。
+Go 团队成员已经审核该报告，并在适当情况下补充了额外数据。
+
+有关 schema 中其他字段的信息，请参阅 [OSV 规范](https://ossf.github.io/osv-schema)。
+
+## 关于版本的说明
+
+我们的工具会尝试把
+来源公告中的模块和版本自动映射为规范的 Go 模块和版本，并遵循
+标准的 [Go 模块版本号](/doc/modules/version-numbers)。像 
+`govulncheck` 这样的工具会依赖这些标准版本来判断
+某个 Go 项目是否受依赖项漏洞影响。
+
+在某些情况下，例如 Go 项目使用自己的版本方案时，
+映射到标准 Go 版本可能失败。发生这种情况时，Go
+漏洞数据库报告可能会保守地把所有 Go 版本列为
+受影响。这样可以确保 `govulncheck` 等工具不会因为无法识别版本范围而漏报
+漏洞（假阴性）。
+不过，保守地将所有版本列为受影响也可能导致工具
+错误地把某个已经修复的模块版本报告为仍包含漏洞
+（假阳性）。
+
+如果你认为 `govulncheck` 错误地报告了（或漏报了）某个
+漏洞，请
+[建议修改](https://github.com/golang/vulndb/issues/new?assignees=&labels=Needs+Triage%2CSuggested+Edit&template=suggest_edit.yaml&title=x%2Fvulndb%3A+suggestion+regarding+GO-2024-2965&report=GO-XXXX-YYYY)
+该漏洞报告，我们会进行审核。
+
+## 示例
+
+Go 漏洞数据库中的所有漏洞都使用上文所述的 OSV schema。
+
+
+下面的链接给出了不同 Go 漏洞的示例：
+
+- **Go 标准库漏洞**（GO-2022-0191）：
+  [JSON](https://vuln.go.dev/ID/GO-2022-0191.json)、
+  [HTML](https://pkg.go.dev/vuln/GO-2022-0191)
+- **Go 工具链漏洞**（GO-2022-0189）：
+  [JSON](https://vuln.go.dev/ID/GO-2022-0189.json)、
+  [HTML](https://pkg.go.dev/vuln/GO-2022-0189)
+- **Go 模块中的漏洞**（GO-2020-0015）：
+  [JSON](https://vuln.go.dev/ID/GO-2020-0015.json)、
+  [HTML](https://pkg.go.dev/vuln/GO-2020-0015)
+
+## 排除的报告
+
+Go 漏洞数据库中的报告来自不同
+来源，并由 Go 安全团队整理。我们可能会遇到某份漏洞公告
+（例如 CVE 或 GHSA），并出于多种原因选择将其排除。
+在这种情况下，会在 x/vulndb 仓库中创建一份最小报告，
+位于
+[x/vulndb/data/excluded](https://github.com/golang/vulndb/tree/master/data/excluded) 下。
+
+报告可能因以下原因被排除：
+
+- `NOT_GO_CODE`：该漏洞不在 Go 包中，
+  但其他来源把它标记为 Go 生态系统的安全公告。
+  该漏洞不会影响任何
+  Go 包（例如，某个 C++ 库中的漏洞）。
+- `NOT_IMPORTABLE`：漏洞出现在 `main` 包、某个 `internal/`
+  包（且该包仅由 `main` 包导入），或其他
+  永远无法被其他模块导入的位置。
+- `EFFECTIVELY_PRIVATE`：虽然漏洞出现在一个可由其他模块
+  导入的 Go 包中，但该包并非供外部
+  使用，而且几乎不可能在定义它的模块之外被
+  导入。
+- `DEPENDENT_VULNERABILITY`：该漏洞是数据库中另一个
+  漏洞的子集。例如，如果包 A 包含一个
+  漏洞，包 B 依赖包 A，而且包 A 和 B 分别有不同的 CVE ID，
+  那么我们可能会把 B 的报告标记为依赖型
+  漏洞，因为它已完全被 A 的报告覆盖。
+- `NOT_A_VULNERABILITY`：虽然已经分配了 CVE ID 或 GHSA，但并没有
+  已知漏洞与之对应。
+- `WITHDRAWN`：漏洞已被其来源撤回。
+
+目前，排除的报告不会通过
+[vuln.go.dev](https://vuln.go.dev) API 提供。不过，如果你有
+具体用例，并且希望通过 
+API 访问这些信息，
+[请告诉我们](/s/govulncheck-feedback)。

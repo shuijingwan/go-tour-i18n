@@ -1,0 +1,167 @@
+<!--{
+  "Title": "管理模块源代码"
+}-->
+
+当你开发模块并准备发布给其他人使用时，遵循本主题介绍的
+代码仓库约定，可以让其他开发者更容易使用
+你的模块。
+
+本主题介绍管理模块
+代码仓库时可能需要执行的操作。有关在
+不同版本之间修订时应遵循的工作流步骤顺序，请参阅[模块发布与版本控制
+工作流](release-workflow)。
+
+这里介绍的某些约定是模块必须遵守的要求，另一些则是
+最佳实践。本文假设你已经熟悉
+[管理依赖项](/doc/modules/managing-dependencies)中介绍的模块基本使用方法。
+
+Go 支持使用以下代码仓库发布模块：Git、Subversion、
+Mercurial、Bazaar 和 Fossil。
+
+有关模块开发的概览，请参阅[开发和发布
+模块](developing)。
+
+## Go 工具如何找到你发布的模块 {#tools}
+
+在 Go 用于发布模块并获取其代码的去中心化体系中，
+你可以直接把模块代码保留在自己的代码仓库中进行发布。Go 工具
+依赖一套命名规则：代码仓库路径和仓库标签共同指明
+模块名称与版本号。当代码仓库遵循这些
+要求后，Go 工具就能从该仓库下载模块代码，
+例如使用 [`go get`
+命令](/ref/mod#go-get)。
+
+当开发者使用 `go get` 命令获取其代码所导入包的源代码时，
+该命令会执行以下操作：
+
+1. 根据 Go 源代码中的 `import` 语句，`go get` 从包路径中识别模块
+  路径。
+1. 使用从模块路径派生的 URL，该命令可以在模块代理服务器上
+  或直接在模块代码仓库中找到模块源代码。
+1. 通过将模块的版本号与代码仓库标签进行匹配，找到要下载的模块版本
+  所对应的源代码。
+  如果尚不知道要使用哪个版本号，`go get` 会找到最新的
+  发布版本。
+1. 获取模块源代码并将其下载到开发者的本地模块缓存中。
+
+## 在代码仓库中组织代码 {#repository}
+
+遵循这里介绍的约定，可以简化维护工作，并改善其他开发者使用你的
+模块时的体验。通常，将模块代码放入
+代码仓库和处理其他代码一样简单。
+
+下图展示了一个包含
+两个包的简单模块的源代码层级结构。
+
+<img src="images/source-hierarchy.png"
+     alt="模块源代码层级结构示意图"
+     style="width: 250px;" />
+
+首次提交应包含下表列出的文件：
+
+<table id="module-files" class="DocTable">
+  <thead>
+    <tr class="DocTable-head">
+      <th class="DocTable-cell" width="20%">文件</td>
+      <th class="DocTable-cell">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell">LICENSE</td>
+      <td class="DocTable-cell">模块的许可证。</td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell">go.mod</td>
+      <td class="DocTable-cell"><p>描述模块，其中包括模块
+        路径（实际上就是模块名称）以及模块的依赖项。有关更多信息，请参阅
+        <a href="gomod-ref">go.mod 参考资料</a>。</p>
+      <p>模块路径会在 module 指令中给出，例如：</p>
+      <pre>module example.com/mymodule</pre>
+      <p>有关如何选择模块路径的更多信息，请参阅
+          <a href="/doc/modules/managing-dependencies#naming_module">管理
+          依赖项</a>。</p>
+      <p>虽然你可以直接编辑 go.mod 文件，但通常通过
+          <code>go</code> 命令进行修改会更加可靠。</p>
+      </td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell">go.sum</td>
+      <td class="DocTable-cell"><p>包含表示
+        模块依赖项的密码学哈希。Go 工具利用这些哈希对
+        下载的模块进行认证，尝试确认下载的模块确实
+        来自可信来源。如果无法完成确认，Go 会显示安全错误。<p>
+      <p>如果没有依赖项，该文件将为空，或者根本不存在。
+        除非使用 <code>go mod tidy</code>
+        命令删除不需要的条目，否则不应编辑此文件。</p>
+      </td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell">包目录和 .go 源文件。</td>
+      <td class="DocTable-cell">构成模块内 Go
+      包和源代码的目录及 .go 文件。</td>
+    </tr>
+  </tbody>
+</table>
+
+在命令行中，你可以创建一个空代码仓库，添加将包含在
+首次提交中的文件，然后带提交消息进行提交。下面是一个
+使用 git 的示例：
+
+
+```
+$ git init
+$ git add --all
+$ git commit -m "mycode: initial commit"
+$ git push
+```
+
+## 选择代码仓库范围 {#repository-scope}
+
+当某些代码应当独立于其他模块中的代码进行版本控制时，就应把这些代码发布在一个模块中。
+
+
+将代码仓库设计为只在根目录托管一个模块，
+有助于简化维护，尤其是在日后发布新的
+次版本和补丁版本、为新的主版本创建分支等情况下。不过，如果
+实际需求如此，也可以在一个代码仓库中维护多个模块的
+集合。
+
+### 每个代码仓库保存一个模块的源代码 {#one-module-source}
+
+你可以维护一个只包含单个模块源代码的代码仓库。在这种
+模式下，把 go.mod 文件放在代码仓库根目录，并在其下使用包含 Go 源代码的包
+子目录。
+
+这是最简单的方式，通常也会让模块在长期维护时更容易
+管理。它可以避免在模块版本号前
+加上目录路径。
+
+<img src="images/single-module.png"
+     alt="单个模块的源代码在其代码仓库中的结构示意图"
+     style="width: 425px;" />
+
+### 在一个代码仓库中保存多个模块的源代码 {#multiple-module-source}
+
+你可以从同一个代码仓库发布多个模块。例如，
+一个代码仓库中的代码可能构成多个模块，但你希望
+分别对这些模块进行版本控制。
+
+每个作为模块根目录的子目录都必须有自己的 go.mod 文件。
+
+把模块代码放在子目录中，会改变发布模块时
+必须使用的版本标签形式。必须在标签的版本号部分前
+加上作为模块根目录的子目录名称。有关
+版本号的更多信息，请参阅[模块版本编号](/doc/modules/version-numbers)。
+
+例如，对于下面的模块 `example.com/mymodules/module1`，
+版本 v1.2.3 可以采用如下形式：
+
+*   模块路径：`example.com/mymodules/module1`
+*   版本标签：`module1/v1.2.3`
+*   用户导入的包路径：`example.com/mymodules/module1/package1`
+*   用户 require 指令中指定的模块路径和版本：`example.com/mymodules/module1 v1.2.3`
+
+<img src="images/multiple-modules.png"
+     alt="单个代码仓库中包含两个模块的结构示意图"
+     style="width: 480px;" />

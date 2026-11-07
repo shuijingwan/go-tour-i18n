@@ -229,6 +229,9 @@ func (p *CommentRevisionTransport) Restore(output string) ([]byte, error) {
 // Inputs retain their immutable source representation. Only the response
 // decoder is selected by the existing exact revision authority.
 func prepareRetranslationOutput(root string, c *Catalog, g *Glossary, locale string, selected []RetranslationBatchUnit, record RetranslationBatchUnit) (protectedTranslation, error) {
+	if record.ReexportReason == transportRecoveryReason {
+		return recoveryResponseOutput(root, c, g, locale, selected, record)
+	}
 	u, err := c.Unit(record.UnitID)
 	if err != nil {
 		return protectedTranslation{}, err

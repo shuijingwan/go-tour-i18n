@@ -39,6 +39,12 @@ func (values *repeatedStrings) Set(value string) error {
 }
 
 func parseTranslationContentPackageArgs(args []string) (string, []string, error) {
+	if len(args) >= 2 && args[0] == "generation-bundle" && args[1] == "historical-construction-bytes" {
+		return "", args, nil
+	}
+	if len(args) >= 2 && args[0] == "retranslation" && args[1] == "transport-recovery" {
+		return "", args, nil
+	}
 	if len(args) >= 2 && args[0] == "generation-bundle" && args[1] == "legacy-provenance" {
 		return "", args, nil // This authority owns and requires its explicit selector.
 	}
@@ -149,22 +155,22 @@ func run(args []string) error {
 	batchPublish := args[0] == "publish-batch"
 	current, err := i18n.BuildSourceCatalog(root)
 	if err != nil {
-		return err
+		return historicalConstructionHydrationError(root, args, err)
 	}
 	catalog, err := i18n.ReadCatalog(root)
 	if err != nil {
-		return err
+		return historicalConstructionHydrationError(root, args, err)
 	}
 	// catalog write intentionally reconciles compatible source changes below;
 	// every other command requires the committed source lock to match first.
 	if args[0] != "catalog" || args[1] != "write" {
 		if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
-			return err
+			return historicalConstructionHydrationError(root, args, err)
 		}
 	}
 	if args[0] == "retranslation" || args[0] == "generation-bundle" || args[0] == "quality-check" {
 		if err := attachCommandTranslationPackages(root, catalog, args); err != nil {
-			return err
+			return historicalConstructionHydrationError(root, args, err)
 		}
 		sitecontent.AttachIntegratedSurfaceAuthority(catalog)
 		site.AttachPreviewFailureAuthority(catalog)
@@ -230,6 +236,8 @@ func run(args []string) error {
 		return generationBundleLifecycleCommand(root, catalog, originalArgs)
 	case "generation-bundle legacy-provenance":
 		return legacyGenerationProvenanceCommand(root, catalog, args[2:])
+	case "generation-bundle historical-construction-bytes":
+		return historicalConstructionBytesCommand(root, catalog, args[2:])
 	case "generation-bundle archive-imported":
 		fs := flag.NewFlagSet("generation-bundle archive-imported", flag.ContinueOnError)
 		path := fs.String("bundle", "", "original already imported Generation ZIP")
@@ -260,6 +268,9 @@ func run(args []string) error {
 	case "generation-bundle recover":
 		return recoverGenerationBundleCommand(root, catalog, args[2:])
 	case "generation-bundle import":
+		if contentPackage != "" {
+			return fmt.Errorf("generation-bundle import does not accept --content-package; approved scope comes from the frozen Bundle")
+		}
 		return importGenerationResultBundleCommand(root, catalog, args[2:])
 	case "course-metadata assemble":
 		return assembleCourseMetadata(root, catalog, args[2:])
@@ -432,6 +443,8 @@ func run(args []string) error {
 		return nil
 	case "retranslation export":
 		return retranslationExportLifecycleCommand(root, catalog, originalArgs)
+	case "retranslation transport-recovery":
+		return transportRecoveryCommand(root, catalog, args[2:])
 	case "retranslation process":
 		fs := flag.NewFlagSet("retranslation process", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -1018,6 +1031,9 @@ func retranslationExportLifecycleCommand(root string, catalog *i18n.Catalog, arg
 	}
 	if len(remaining) < 2 || remaining[0] != "retranslation" || remaining[1] != "export" {
 		return fmt.Errorf("retranslation export lifecycle command required")
+	}
+	if hasRecoveryExportFlag(remaining[2:]) {
+		return transportRecoveryExportCommand(root, catalog, contentPackage, remaining[2:])
 	}
 	if contentPackage != "" {
 		// Reuse the complete native/registered selector. Never clear an explicit

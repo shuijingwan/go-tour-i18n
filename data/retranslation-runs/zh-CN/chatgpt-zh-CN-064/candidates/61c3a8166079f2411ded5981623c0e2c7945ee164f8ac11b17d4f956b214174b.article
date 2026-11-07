@@ -1,0 +1,727 @@
+<!--{
+  "Title": "go.mod 文件参考"
+}-->
+
+每个 Go 模块都由一个 go.mod 文件定义，该文件描述模块的
+属性，包括它对其他模块和 Go 版本的依赖。
+
+这些属性包括：
+
+* 当前模块的**模块路径**。它应当是 Go 工具可以下载该模块的位置，
+例如模块代码所在的
+仓库位置。模块路径与模块版本号结合后可作为唯一标识符，
+同时也是模块中所有包的包路径前缀。
+有关 Go 如何定位模块的更多信息，请参阅
+<a href="/ref/mod#vcs-find">Go 模块参考</a>。
+* 当前模块所需的最低 **Go 版本**。
+* 当前模块所需的其他**模块最低版本**列表。
+* 可选的指令，用于将所需模块**替换**为另一个
+  模块版本或本地目录、**排除**所需模块的某个特定版本，或者在匹配包模式时
+  **忽略**模块内的特定目录
+  。
+
+运行 [`go mod init`
+命令](/ref/mod#go-mod-init)时，Go 会生成 go.mod 文件。下面的示例会创建一个 go.mod 文件，
+并将模块路径设置为 example/mymodule：
+
+```
+$ go mod init example/mymodule
+```
+
+使用 `go` 命令管理依赖项。这些命令可确保 go.mod 文件中描述的要求保持一致，并确保
+你的 go.mod 文件内容有效。
+这些命令包括 [`go get`](/ref/mod#go-get)
+、[`go mod tidy`](/ref/mod#go-mod-tidy) 和 [`go mod edit`](/ref/mod#go-mod-edit)
+。
+
+有关 `go` 命令的参考信息，请参阅 [go 命令](/cmd/go/)。
+你也可以在命令行输入 `go help` _command-name_ 获取帮助，
+例如 `go help mod tidy`。
+
+**另请参阅**
+
+* 使用 Go 工具管理依赖项时，它们会修改你的 go.mod 文件。
+  更多信息请参阅 [管理依赖项](/doc/modules/managing-dependencies)。
+* 有关 go.mod 文件的更多细节和约束，请参阅 [Go 模块
+  参考](/ref/mod#go-mod-file)。
+
+## 示例 {#example}
+
+一个 go.mod 文件包含如下示例所示的指令。
+这些指令将在本主题的其他部分介绍。
+
+```
+module example.com/mymodule
+
+go 1.14
+
+require (
+    example.com/othermodule v1.2.3
+    example.com/thismodule v1.2.3
+    example.com/thatmodule v1.2.3
+)
+
+replace example.com/thatmodule => ../thatmodule
+exclude example.com/thismodule v1.3.0
+```
+
+## module {#module}
+
+声明模块的模块路径；模块路径与模块版本号结合后构成模块的唯一标识符。
+模块路径还会成为该模块所包含所有包的
+导入路径前缀。
+
+更多信息请参阅 [Go 模块参考中的 `module` 指令](/ref/mod#go-mod-file-module)。
+
+
+### 语法 {#module-syntax}
+
+<pre>module <var>module-path</var></pre>
+
+<dl>
+    <dt>module-path</dt>
+    <dd>模块的模块路径，通常是 Go 工具可以下载该模块的仓库位置。
+      对于 v2 及更高版本的模块，
+      该值必须以主版本号结尾，例如
+      <code>/v2</code>。</dd>
+</dl>
+
+### 示例 {#module-examples}
+
+下面的示例用 `example.com` 代替可用于下载模块的仓库域名。
+
+
+* v0 或 v1 模块的模块声明：
+  ```
+  module example.com/mymodule
+  ```
+* v2 模块的模块路径：
+  ```
+  module example.com/mymodule/v2
+  ```
+
+### 说明 {#module-notes}
+
+模块路径必须能够唯一标识你的模块。对于大多数模块，
+该路径是一个 URL，`go` 命令可在此找到代码（或指向代码的重定向）。
+对于永远不会被直接下载的模块，模块路径
+可以只是你控制的某个名称，只要能确保唯一性即可。前缀
+`example/` 也保留用于这类示例。
+
+更多细节请参阅 [管理依赖项](/doc/modules/managing-dependencies#naming_module)。
+
+实际使用中，模块路径通常由模块源码所在的仓库域名
+以及仓库内模块代码的路径组成。`go` 命令
+在下载模块版本以代表模块使用者解析依赖项时，会依赖这种形式。
+
+
+即使你起初并不打算让其他代码使用你的模块，也最好采用仓库路径；
+这样如果日后发布模块，就不必再为模块改名。
+
+
+如果一开始还不知道模块最终会放在哪个仓库，可以
+暂时使用安全的替代值，例如你拥有的域名，或
+你控制的名称（如公司名称），并在其后接上
+模块名称或源码目录对应的路径。更多信息请参阅
+[管理依赖项](/doc/modules/managing-dependencies#naming_module)。
+
+例如，如果你正在 `stringtools` 目录中开发，临时
+模块路径可以是 `<company-name>/stringtools`，如下例所示；
+其中 _company-name_ 表示你的公司名称：
+
+```
+go mod init <company-name>/stringtools
+```
+
+## go {#go}
+
+表示该模块是以此指令指定的 Go 版本语义为前提编写的。
+
+
+更多信息请参阅 [Go 模块参考中的 `go` 指令](/ref/mod#go-mod-file-go)。
+
+
+### 语法 {#go-syntax}
+
+<pre>go <var>minimum-go-version</var></pre>
+
+<dl>
+    <dt>minimum-go-version</dt>
+    <dd>编译此模块中各包所需的最低 Go 版本。</dd>
+</dl>
+
+### 示例 {#go-examples}
+
+* 模块必须在 Go 1.14 或更高版本上运行：
+  ```
+  go 1.14
+  ```
+
+### 说明 {#go-notes}
+
+`go` 指令设置使用此模块所需的最低 Go 版本。
+在 Go 1.21 之前，该指令只是建议；现在它是强制要求：
+Go 工具链会拒绝使用声明了更高 Go 版本的模块。
+
+`go` 指令也是选择要运行哪个 Go 工具链的输入之一。
+详情请参阅“[Go 工具链](/doc/toolchain)”。
+
+`go` 指令还会影响新语言特性的使用：
+
+* 对于模块内的包，如果使用了
+  晚于 `go` 指令所指定版本才引入的语言特性，编译器会拒绝编译。例如，
+  如果模块包含指令 `go 1.12`，其中的包就不能使用
+  像 `1_000_000` 这样的数值字面量，因为它是在 Go 1.13 中引入的。
+* 如果较旧的 Go 版本构建该模块的某个包并遇到
+  编译错误，错误信息会指出该模块是为较新的 Go
+  版本编写的。例如，假设模块包含 `go 1.13`，而某个包使用
+  数值字面量 `1_000_000`。如果用 Go 1.12 构建该包，
+  编译器会指出代码是为 Go 1.13 编写的。
+
+`go` 指令还会影响 `go` 命令的行为：
+
+* 在 `go 1.14` 或更高版本中，可能会启用自动[ vendor 机制](/ref/mod#vendoring)。
+  如果 `vendor/modules.txt` 文件存在且与
+   `go.mod` 一致，就无需显式使用 `-mod=vendor` 标志。
+* 在 `go 1.16` 或更高版本中，`all` 包模式仅匹配
+  由[主
+  模块](/ref/mod#glos-main-module)中的包和测试传递导入的包。这与模块机制引入以来
+  由 [`go mod vendor`](/ref/mod#go-mod-vendor) 保留的包集合相同。
+  在更低版本中，`all` 还包括主模块中的包所导入包的测试、
+  这些包的测试，以此类推。
+* 在 `go 1.17` 或更高版本中：
+   * `go.mod` 文件会为每个提供了主模块中某个包或测试传递导入的包的模块，加入显式的 [`require`
+     指令](/ref/mod#go-mod-file-require)。
+     （在
+     `go 1.16` 及更低版本中，只有当[最小
+     版本选择](/ref/mod#minimal-version-selection)原本会选择不同版本时，才会包含间接依赖项。）
+     这些额外信息支持[模块图
+     修剪](/ref/mod#graph-pruning)和[延迟模块
+     加载](/ref/mod#lazy-loading)。
+   * 由于 `// indirect` 依赖项可能比旧版
+     `go` 多得多，因此间接依赖项会记录在
+      `go.mod` 文件中的单独块内。
+   * `go mod vendor` 会从已 vendor 的依赖项中省略 `go.mod` 和 `go.sum` 文件。
+     （这样，在
+      `vendor` 的子目录中调用 `go` 命令时，就能识别正确的主模块。）
+   * `go mod vendor` 会把每个依赖项的 `go.mod`
+     文件中声明的 `go` 版本记录到 `vendor/modules.txt` 中。
+* 在 `go 1.21` 或更高版本中：
+   * `go` 行声明使用该模块所需的最低 Go 版本。
+   * `go` 行必须大于或等于所有依赖项的 `go` 行。
+   * `go` 命令不再尝试保持与上一个较旧 Go 版本的兼容性。
+   * `go` 命令会更谨慎地在 `go.sum` 文件中保留 `go.mod` 文件的校验和。
+<!-- If you update this list, also update /ref/mod#go-mod-file-go. -->
+
+一个 `go.mod` 文件最多只能包含一个 `go` 指令。大多数命令在文件中缺少该指令时，
+会加入使用当前 Go 版本的 `go` 指令。
+
+## toolchain {#toolchain}
+
+声明建议与此模块一起使用的 Go 工具链。
+只有当该模块是主模块，且默认工具链早于建议的工具链时，
+该指令才会生效。
+
+更多信息请参阅“[Go 工具链](/doc/toolchain)”以及 
+Go 模块参考中的 [`toolchain` 指令](/ref/mod/#go-mod-file-toolchain)。
+
+
+### 语法 {#toolchain-syntax}
+
+<pre>toolchain <var>toolchain-name</var></pre>
+
+<dl>
+    <dt>toolchain-name</dt>
+    <dd>建议使用的 Go 工具链名称。标准工具链名称的形式为
+      <code>go<i>V</i></code>，其中 Go 版本为 <i>V</i>，例如
+      <code>go1.21.0</code> 和 <code>go1.18rc1</code>。
+      特殊值 <code>default</code> 会禁用自动工具链切换。</dd>
+</dl>
+
+### 示例 {#toolchain-examples}
+
+* 建议使用 Go 1.21.0 或更高版本：
+    ```
+    toolchain go1.21.0
+    ```
+
+### 说明 {#toolchain-notes}
+
+有关 `toolchain` 行如何影响 Go 工具链选择的详情，请参阅“[Go 工具链](/doc/toolchain)”。
+
+
+## godebug {#godebug}
+
+表示应用于该模块主包的默认 [GODEBUG](/doc/godebug) 设置。
+这些设置会覆盖工具链默认值，而主包中显式的 `//go:debug` 行又会覆盖这些设置。
+
+### 语法 {#godebug-syntax}
+
+<pre>godebug <var>debug-key</var>=<var>debug-value</var></pre>
+
+<dl>
+    <dt>debug-key</dt>
+    <dd>要应用的设置名称。
+      设置列表及其引入版本可在 
+      <a href="/doc/godebug#history">GODEBUG 历史记录</a>中查看。
+    </dd>
+    <dt>debug-value</dt>
+    <dd>提供给该设置的值。
+      如果没有另行说明，使用 <code>0</code> 禁用、使用 <code>1</code> 启用相应行为。</dd>
+</dl>
+
+### 示例 {#godebug-examples}
+
+* 使用新的 1.23 `asynctimerchan=0` 行为：
+  ```
+  godebug asynctimerchan=0
+  ```
+* 使用 Go 1.21 的默认 GODEBUG，但使用旧的 `panicnil=1` 行为：
+  ```
+  godebug (
+      default=go1.21
+      panicnil=1
+  )
+  ```
+
+### 说明 {#godebug-notes}
+
+GODEBUG 设置仅适用于当前模块中主包和测试二进制文件的构建。
+当模块作为依赖项使用时，这些设置不起作用。
+
+有关向后兼容性的详情，请参阅“[Go、向后兼容性与 GODEBUG](/doc/godebug)”。
+
+## require {#require}
+
+将一个模块声明为当前模块的依赖项，并指定
+所需的最低模块版本。
+
+更多信息请参阅 [Go 模块参考中的 `require` 指令](/ref/mod#go-mod-file-require)。
+
+
+### 语法 {#require-syntax}
+
+<pre>require <var>module-path</var> <var>module-version</var></pre>
+
+<dl>
+    <dt>module-path</dt>
+    <dd>模块的模块路径，通常由模块源码所在的
+      仓库域名与模块名称拼接而成。对于 v2 及更高版本的模块，
+      该值必须以主版本号结尾，例如 <code>/v2</code>。</dd>
+    <dt>module-version</dt>
+    <dd>模块版本。它可以是发布版本号，
+      例如 v1.2.3，也可以是 Go 生成的伪版本号，例如
+      v0.0.0-20200921210052-fa0125251cc4。</dd>
+</dl>
+
+### 示例 {#require-examples}
+
+* 要求使用已发布版本 v1.2.3：
+    ```
+    require example.com/othermodule v1.2.3
+    ```
+* 对于仓库中尚未打标签的版本，可以要求使用 Go 工具生成的伪版本号：
+  
+    ```
+    require example.com/othermodule v0.0.0-20200921210052-fa0125251cc4
+    ```
+
+### 说明 {#require-notes}
+
+运行 `go` 命令（例如 `go get`）时，Go 会为每个包含已导入包的模块插入 `require` 指令。
+如果模块在仓库中尚未打标签，
+Go 会在运行该命令时生成并分配一个伪版本号。
+
+
+你可以通过
+使用 [`replace` 指令](#replace)，让 Go 从仓库之外的位置使用所需模块。
+
+有关版本号的更多信息，请参阅 [模块版本编号](/doc/modules/version-numbers)。
+
+有关管理依赖项的更多信息，请参阅：
+
+* [添加依赖项](/doc/modules/managing-dependencies#adding_dependency)
+* [获取特定依赖项版本](/doc/modules/managing-dependencies#getting_version)
+* [发现可用更新](/doc/modules/managing-dependencies#discovering_updates)
+* [升级或降级依赖项](/doc/modules/managing-dependencies#upgrading)
+* [同步代码的依赖项](/doc/modules/managing-dependencies#synchronizing)
+
+## tool {#tool}
+
+将一个包添加为当前模块的依赖项；当当前工作目录位于该模块内时，还可以使用 `go tool` 运行它。
+
+### 语法 {#tool-syntax}
+
+<pre>tool <var>package-path</var></pre>
+
+<dl>
+    <dt>package-path</dt>
+    <dd>工具的包路径，由包含
+        该工具的模块路径与模块内实现该工具的包路径（可以为空）
+        拼接而成。</dd>
+</dl>
+
+### 示例 {#tool-examples}
+
+* 声明当前模块中实现的工具：
+    ```
+    module example.com/mymodule
+
+    tool example.com/mymodule/cmd/mytool
+    ```
+* 声明另一个模块中实现的工具：
+    ```
+    module example.com/mymodule
+
+    tool example.com/atool/cmd/atool
+
+    require example.com/atool v1.2.3
+    ```
+
+### 说明 {#tool-notes}
+
+你可以使用 `go tool`，通过完整包路径运行模块中声明的工具；
+如果不存在歧义，也可以使用最后一个路径段。在上面的第一个示例中，
+可以运行 `go tool mytool` 或 `go tool example.com/mymodule/cmd/mytool`。
+
+在工作区模式下，可以使用 `go tool` 运行任意工作区模块中声明的工具。
+
+工具使用与模块本身相同的模块图进行构建。需要 [`require`
+指令](#require)来选择实现该工具的模块版本。
+任何 [`replace` 指令](#replace)或 [`exclude`
+指令](#exclude)也同样适用于该工具及其依赖项。
+
+更多信息请参阅 [工具依赖项](/doc/modules/managing-dependencies#tools)。
+
+## replace {#replace}
+
+将某个特定版本（或所有版本）的模块内容替换为
+另一个模块版本或本地目录。Go 工具在解析依赖项时会使用
+替换路径。
+
+更多信息请参阅 [Go 模块参考中的 `replace` 指令](/ref/mod#go-mod-file-replace)。
+
+
+### 语法 {#replace-syntax}
+
+<pre>replace <var>module-path</var> <var>[module-version]</var> => <var>replacement-path</var> <var>[replacement-version]</var></pre>
+
+<dl>
+    <dt>module-path</dt>
+    <dd>要替换的模块的模块路径。</dd>
+    <dt>module-version</dt>
+    <dd>可选。要替换的特定版本。如果省略此版本号，
+      则该模块的所有版本都会被箭头右侧的内容替换。
+      </dd>
+    <dt>replacement-path</dt>
+    <dd>Go 查找所需模块时应使用的路径。它可以是
+      模块路径，也可以是替换模块本地文件系统中的目录路径。
+      如果它是模块路径，则必须指定
+       <em>replacement-version</em> 值。如果它是本地路径，则不能使用
+       <em>replacement-version</em> 值。</dd>
+    <dt>replacement-version</dt>
+    <dd>替换模块的版本。仅当
+      <em>replacement-path</em> 是模块路径（而不是本地目录）时，才能指定替换版本。</dd>
+</dl>
+
+### 示例 {#replace-examples}
+
+* 替换为模块仓库的分叉版本
+
+  在下面的示例中，example.com/othermodule 的任何版本都会替换为
+  指定的代码分叉。
+
+  ```
+  require example.com/othermodule v1.2.3
+
+  replace example.com/othermodule => example.com/myfork/othermodule v1.2.3-fixed
+  ```
+
+  使用一个模块路径替换另一个模块路径时，不要修改
+  被替换模块中各包的 import 语句。
+
+  有关使用模块代码分叉副本的更多信息，请参阅[从自己的仓库分叉中使用外部模块
+  代码](/doc/modules/managing-dependencies#external_fork)。
+
+* 替换为不同的版本号
+
+  下面的示例指定应使用版本 v1.2.3，而不是
+  该模块的任何其他版本。
+
+  ```
+  require example.com/othermodule v1.2.2
+
+  replace example.com/othermodule => example.com/othermodule v1.2.3
+  ```
+
+  下面的示例将模块版本 v1.2.5 替换为同一模块的版本 v1.2.3。
+  
+
+  ```
+  replace example.com/othermodule v1.2.5 => example.com/othermodule v1.2.3
+  ```
+
+* 替换为本地代码
+
+  下面的示例指定使用本地目录替换
+  该模块的所有版本。
+
+  ```
+  require example.com/othermodule v1.2.3
+
+  replace example.com/othermodule => ../othermodule
+  ```
+
+  下面的示例指定仅使用本地目录替换 
+  v1.2.5。
+
+  ```
+  require example.com/othermodule v1.2.5
+
+  replace example.com/othermodule v1.2.5 => ../othermodule
+  ```
+
+  有关使用模块代码本地副本的更多信息，请参阅[使用本地目录中的
+  模块代码](/doc/modules/managing-dependencies#local_directory)。
+
+### 说明 {#replace-notes}
+
+当你希望 Go 使用另一个路径查找模块源码时，可以使用 `replace` 指令
+临时把某个模块路径值替换为另一个值。
+这相当于把 Go 对该模块的查找重定向到替换位置。
+使用替换路径时无需修改包的 import 路径。
+
+
+使用 `exclude` 和 `replace` 指令可以控制构建当前模块时的依赖项解析。
+依赖当前模块的其他模块会忽略这些指令。
+
+
+`replace` 指令可用于以下场景：
+
+* 你正在开发一个代码尚未进入仓库的新模块，
+  并希望让客户端使用本地版本进行测试。
+* 你发现依赖项存在问题，已克隆该依赖项的
+  仓库，并正在使用本地仓库测试修复。
+
+请注意，仅有 `replace` 指令并不会把模块加入
+[模块图](/ref/mod#glos-module-graph)。还需要一个引用被替换模块版本的 [`require` 指令](#require)，
+它可以位于主模块的 
+`go.mod` 文件或某个依赖项的 `go.mod` 文件中。如果没有要替换的
+具体版本，可以像下面的示例一样使用虚假版本。请注意，这会破坏依赖你的模块的其他模块，因为
+
+`replace` 指令只应用于主模块。
+
+```
+require example.com/mod v0.0.0-replace
+
+replace example.com/mod v0.0.0-replace => ./mod
+```
+
+有关替换所需模块（包括使用 Go 工具完成更改）的更多信息，请参阅：
+
+
+* [从自己的仓库分叉中使用外部模块
+代码](/doc/modules/managing-dependencies#external_fork)
+* [使用本地
+目录中的模块代码](/doc/modules/managing-dependencies#local_directory)
+
+有关版本号的更多信息，请参阅 [模块版本
+编号](/doc/modules/version-numbers)。
+
+## exclude {#exclude}
+
+指定要从当前模块的依赖图中排除的模块或模块版本。
+
+
+更多信息请参阅 [Go 模块参考中的 `exclude` 指令](/ref/mod#go-mod-file-exclude)。
+
+
+### 语法 {#exclude-syntax}
+
+<pre>exclude <var>module-path</var> <var>module-version</var></pre>
+
+<dl>
+    <dt>module-path</dt>
+    <dd>要排除的模块的模块路径。</dd>
+    <dt>module-version</dt>
+    <dd>要排除的特定版本。</dd>
+</dl>
+
+### 示例 {#exclude-example}
+
+* 排除 example.com/theirmodule 的版本 v1.3.0
+
+  ```
+  exclude example.com/theirmodule v1.3.0
+  ```
+
+### 说明 {#exclude-notes}
+
+可以使用 `exclude` 指令排除某个间接需要、但因某种原因无法加载的特定模块版本。
+例如，可以用它排除校验和无效的模块版本。
+
+
+构建当前模块（即正在构建的主模块）时，可以使用 `exclude` 和 `replace` 指令控制构建期依赖项解析。
+依赖当前模块的其他模块会忽略这些指令。
+
+
+你可以使用 [`go mod edit`](/ref/mod#go-mod-edit) 命令
+排除模块，如下面的示例所示。
+
+```
+go mod edit -exclude=example.com/theirmodule@v1.3.0
+```
+
+有关版本号的更多信息，请参阅
+[模块版本编号](/doc/modules/version-numbers)。
+
+## retract {#retract}
+
+表示不应依赖由 `go.mod`
+定义的模块的某个版本或版本范围。当某个版本过早发布，或在版本发布后
+发现严重问题时，`retract` 指令会很有用。
+
+
+更多信息请参阅 [Go 模块参考中的 `retract` 指令](/ref/mod#go-mod-file-retract)。
+
+
+### 语法 {#retract-syntax}
+
+<pre>
+retract <var>version</var> // <var>rationale</var>
+retract [<var>version-low</var>,<var>version-high</var>] // <var>rationale</var>
+</pre>
+
+<dl>
+  <dt>version</dt>
+  <dd>要撤回的单个版本。</dd>
+  <dt>version-low</dt>
+  <dd>要撤回版本范围的下界。</dd>
+  <dt>version-high</dt>
+  <dd>
+    要撤回版本范围的上界。<var>version-low</var>
+     与 <var>version-high</var> 都包含在该范围内。
+  </dd>
+  <dt>rationale</dt>
+  <dd>
+    可选。说明撤回原因的注释，可能会显示在
+    给用户的消息中。
+  </dd>
+</dl>
+
+### 示例 {#retract-example}
+
+* 撤回单个版本
+
+  ```
+  retract v1.1.0 // Published accidentally.
+  ```
+
+* 撤回一个版本范围
+
+  ```
+  retract [v1.0.0,v1.0.5] // Build broken on some platforms.
+  ```
+
+### 说明 {#retract-notes}
+
+使用 `retract` 指令表示模块之前的某个版本不应再使用。
+用户通过 `go get`、`go mod tidy` 或其他命令不会自动升级到已撤回的版本。
+用户使用 `go list -m -u` 时，也不会把已撤回版本视为可用更新。
+
+
+已撤回的版本应继续保持可用，以便已经依赖它们的用户
+仍能构建自己的包。即使已撤回版本从源码仓库中删除，
+它仍可能保留在诸如
+[proxy.golang.org](https://proxy.golang.org) 之类的镜像中。依赖已撤回版本的用户
+在对相关模块运行 `go get` 或 `go list -m -u` 时可能会收到通知。
+
+
+`go` 命令通过读取模块最新版本的 `go.mod` 文件中的 `retract` 指令
+来发现已撤回的版本。模块的最新版本按以下优先级确定：
+
+
+1. 最高的发布版本（如果有）
+2. 最高的预发布版本（如果有）
+3. 仓库默认分支顶端对应的伪版本。
+
+添加版本撤回时，几乎总是还需要为一个更高的新版本打标签，
+这样命令才能在模块的最新版本中看到该撤回信息。
+
+你可以发布一个唯一目的就是声明版本撤回的版本。
+在这种情况下，新版本也可以撤回自身。
+
+例如，如果误打了 `v1.0.0` 标签，可以为 `v1.0.1` 打标签并使用
+以下指令：
+
+```
+retract v1.0.0 // Published accidentally.
+retract v1.0.1 // Contains retraction only.
+```
+
+遗憾的是，版本一旦发布就不能更改。如果之后
+在另一个提交上为 `v1.0.0` 打标签，`go` 命令可能会在 
+`go.sum` 或[校验和
+数据库](/ref/mod#checksum-database)中检测到校验和不匹配。
+
+模块的已撤回版本通常不会出现在
+`go list -m -versions` 的输出中，但可以使用 `-retracted` 显示它们。
+更多信息请参阅 Go 模块参考中的 [`go list -m`](/ref/mod#go-list-m)。
+
+## ignore {#ignore}
+
+指定模块内的目录路径，使 `go` 命令在匹配包模式时
+忽略这些路径。
+
+更多信息请参阅 [Go 模块参考中的 `ignore` 指令](/ref/mod#go-mod-file-ignore)。
+
+
+### 语法 {#ignore-syntax}
+
+<pre>
+ignore <var>path</var>
+</pre>
+
+<dl>
+  <dt>path</dt>
+  <dd>
+    要忽略的、以斜杠分隔的路径。如果路径以 <code>./</code> 开头，
+    则相对于模块根目录解释；否则，模块内任意深度
+    具有该名称的目录都会被忽略。
+  </dd>
+</dl>
+
+### 示例 {#ignore-examples}
+
+* 忽略相对于模块根目录的本地目录
+
+  ```
+  ignore ./node_modules
+  ```
+
+* 忽略模块中任意位置所有名为 `generated` 的目录
+
+  ```
+  ignore generated
+  ```
+
+* 使用块忽略多个路径
+
+  ```
+  ignore (
+      static
+      content/html
+      ./third_party/javascript
+  )
+  ```
+
+### 说明 {#ignore-notes}
+
+使用 `ignore` 指令可以防止 `go` 命令在使用
+诸如 
+`./...` 这样的通配符模式时，匹配生成目录或非 Go 目录中的包。
+被忽略的目录及其内容会从包模式中排除，但仍保留在模块
+文件树中。
+
+`ignore` 指令仅适用于主模块的 `go.mod` 文件。
+它对依赖项的 `go.mod` 文件没有影响。

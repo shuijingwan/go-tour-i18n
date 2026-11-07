@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"archive/zip"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -68,10 +69,14 @@ func TestGenerationArchiveObservationExistingCapacity(t *testing.T) {
 }
 
 func observedArchiveFixture(t *testing.T, payload []byte) []byte {
+	return observedArchiveFixtureWithMethod(t, payload, zip.Store)
+}
+
+func observedArchiveFixtureWithMethod(t *testing.T, payload []byte, method uint16) []byte {
 	t.Helper()
 	m := GenerationBundleManifest{SchemaVersion: 1, Kind: "go-tour-i18n/generation-bundle", Locale: "xx", BatchID: "synthetic-archive", ExpectedOutputs: []GenerationBundleExpectedOutput{{BundlePath: "outputs/unit.article", InstallPath: "raw-responses/unit.article", UnitID: "unit"}}}
 	m.Files = []TransportBundleFile{NewTransportBundleFile("formal/input", "", payload)}
-	b, err := WriteDeterministicTransportBundle(mustJSON(m), []TransportBundleEntry{{Path: "formal/input", Data: payload}})
+	b, err := writeDeterministicTransportBundle(mustJSON(m), []TransportBundleEntry{{Path: "formal/input", Data: payload}}, method)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -79,8 +84,14 @@ func observedArchiveFixture(t *testing.T, payload []byte) []byte {
 }
 
 func TestGenerationArchiveObservedDecode(t *testing.T) {
+	for _, method := range []uint16{zip.Store, zip.Deflate} {
+		t.Run(fmt.Sprint(method), func(t *testing.T) { testGenerationArchiveObservedDecode(t, method) })
+	}
+}
+
+func testGenerationArchiveObservedDecode(t *testing.T, method uint16) {
 	t.Setenv("XDG_CACHE_HOME", t.TempDir())
-	archive := observedArchiveFixture(t, bytes.Repeat([]byte("exact source-owned protected input\n"), 8192))
+	archive := observedArchiveFixtureWithMethod(t, bytes.Repeat([]byte("exact source-owned protected input\n"), 8192), method)
 	want, files, err := decodeGenerationBundle(archive)
 	if err != nil {
 		t.Fatal(err)
@@ -103,11 +114,19 @@ func TestGenerationArchiveObservedDecode(t *testing.T) {
 	// Fresh second-build bytes cannot reuse a prior structural verdict for a
 	// different archive. CRC/inventory validation still rejects the mutation.
 	tampered := bytes.Clone(archive)
-	at := bytes.Index(tampered, files["formal/input"])
-	if at < 0 {
-		t.Fatal("fixture payload not stored")
+	z, err := zip.NewReader(bytes.NewReader(archive), int64(len(archive)))
+	if err != nil {
+		t.Fatal(err)
 	}
-	tampered[at] ^= 1
+	for _, f := range z.File {
+		if f.Name == "formal/input" {
+			at, err := f.DataOffset()
+			if err != nil {
+				t.Fatal(err)
+			}
+			tampered[at+int64(f.CompressedSize64)/2] ^= 1
+		}
+	}
 	for i := 0; i < 2; i++ {
 		if _, _, err := readGenerationBundle(tampered); err == nil {
 			t.Fatal("changed bytes or failed parse reused an old index")

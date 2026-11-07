@@ -12,7 +12,7 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
-func semanticReviewFixture(t *testing.T) (string, *i18n.Catalog, i18n.RepresentationReviewOptions) {
+func semanticReviewFixture(t *testing.T, outputTransforms ...func([]byte) []byte) (string, *i18n.Catalog, i18n.RepresentationReviewOptions) {
 	t.Helper()
 	root, _, current, frozen := replacementPageFixtureSize(t, 4, 2, func(i int, b []byte) []byte {
 		if i == 3 {
@@ -20,6 +20,11 @@ func semanticReviewFixture(t *testing.T) (string, *i18n.Catalog, i18n.Representa
 		}
 		return b
 	})
+	if len(outputTransforms) > 0 {
+		// This opt-in fixture needs a historical policy before introducing its
+		// synthetic current-validation defect, independent of the live locale.
+		seedSiteLanguagePolicyFixture(t, root, "zh-CN", "Latin")
+	}
 	// Freeze a historical parser in which this prose identifier was editable.
 	before := frozen.Documents[2]
 	before.Slots = append([]Unit(nil), before.Slots...)
@@ -74,6 +79,9 @@ func semanticReviewFixture(t *testing.T) (string, *i18n.Catalog, i18n.Representa
 	outputs := map[string][]byte{}
 	for _, o := range m.ExpectedOutputs {
 		outputs[o.UnitID] = bytes.ReplaceAll(files["formal/inputs/"+filepath.Base(o.BundlePath)], []byte("Custom Marshal and Unmarshal"), []byte("自定义编组与解组"))
+		for _, transform := range outputTransforms {
+			outputs[o.UnitID] = transform(outputs[o.UnitID])
+		}
 	}
 	surfaceImport(t, root, old, b, outputs)
 	if p, err := i18n.ProcessRetranslationBatch(root, old, i18n.RetranslationProcessOptions{Locale: "zh-CN", BatchID: e.BatchID}); err != nil || p.ValidationPassed != 4 {

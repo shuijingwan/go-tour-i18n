@@ -3,6 +3,7 @@ package i18n
 import (
 	"archive/zip"
 	"bytes"
+	"compress/flate"
 	"fmt"
 	"io"
 	"path"
@@ -43,6 +44,16 @@ func validateTransportBundlePath(name string) error {
 // WriteDeterministicTransportBundle writes byte-stable, uncompressed ZIP
 // bytes. manifest.json is always first; all other entries are path-sorted.
 func WriteDeterministicTransportBundle(manifest []byte, entries []TransportBundleEntry) ([]byte, error) {
+	return writeDeterministicTransportBundle(manifest, entries, zip.Store)
+}
+
+const deterministicTransportDeflateLevel = 5
+
+// Compression is opt-in. Existing artifact families retain their Store bytes.
+func writeDeterministicTransportBundle(manifest []byte, entries []TransportBundleEntry, method uint16) ([]byte, error) {
+	if method != zip.Store && method != zip.Deflate {
+		return nil, fmt.Errorf("unsupported transport compression method %d", method)
+	}
 	all := make([]TransportBundleEntry, 0, len(entries)+1)
 	all = append(all, TransportBundleEntry{Path: "manifest.json", Data: manifest})
 	all = append(all, entries...)
@@ -60,8 +71,13 @@ func WriteDeterministicTransportBundle(manifest []byte, entries []TransportBundl
 
 	var buffer bytes.Buffer
 	writer := zip.NewWriter(&buffer)
+	if method == zip.Deflate {
+		writer.RegisterCompressor(zip.Deflate, func(dst io.Writer) (io.WriteCloser, error) {
+			return flate.NewWriter(dst, deterministicTransportDeflateLevel)
+		})
+	}
 	for _, entry := range all {
-		header := &zip.FileHeader{Name: entry.Path, Method: zip.Store}
+		header := &zip.FileHeader{Name: entry.Path, Method: method}
 		header.SetMode(0644)
 		header.Modified = time.Date(1980, time.January, 1, 0, 0, 0, 0, time.UTC)
 		file, err := writer.CreateHeader(header)
@@ -82,6 +98,9 @@ func WriteDeterministicTransportBundle(manifest []byte, entries []TransportBundl
 // duplicate/unexpected ZIP metadata, and oversized members before returning
 // the exact regular-file map.
 func ReadTransportBundle(data []byte, maxFiles int, maxTotalBytes int64) (map[string][]byte, error) {
+	if maxTotalBytes < 0 {
+		return nil, fmt.Errorf("invalid transport byte limit")
+	}
 	reader, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
 	if err != nil {
 		return nil, fmt.Errorf("open transport bundle: %w", err)
@@ -98,37 +117,50 @@ func ReadTransportBundle(data []byte, maxFiles int, maxTotalBytes int64) (map[st
 		if file.FileInfo().IsDir() || !file.Mode().IsRegular() {
 			return nil, fmt.Errorf("bundle entry %q is not a regular file", file.Name)
 		}
-		if file.Method != zip.Store {
+		if file.Method != zip.Store && file.Method != zip.Deflate {
 			return nil, fmt.Errorf("bundle entry %q uses unsupported compression method", file.Name)
 		}
 		if _, exists := files[file.Name]; exists {
 			return nil, fmt.Errorf("duplicate bundle entry %q", file.Name)
 		}
-		if int64(file.UncompressedSize64) > maxTotalBytes-total {
+		if file.UncompressedSize64 > uint64(maxTotalBytes-total) {
 			return nil, fmt.Errorf("transport bundle exceeds %d bytes", maxTotalBytes)
 		}
-		stream, err := file.Open()
+		payload, err := readTransportBundleFile(file, maxTotalBytes-total)
 		if err != nil {
 			return nil, err
 		}
-		payload, readErr := io.ReadAll(io.LimitReader(stream, maxTotalBytes-total+1))
-		closeErr := stream.Close()
-		if readErr != nil {
-			return nil, readErr
-		}
-		if closeErr != nil {
-			return nil, closeErr
-		}
 		total += int64(len(payload))
-		if total > maxTotalBytes {
-			return nil, fmt.Errorf("transport bundle exceeds %d bytes", maxTotalBytes)
-		}
 		files[file.Name] = payload
 	}
 	if _, ok := files["manifest.json"]; !ok {
 		return nil, fmt.Errorf("transport bundle is missing manifest.json")
 	}
 	return files, nil
+}
+
+// The limit applies to logical bytes, independently of compressed ZIP size.
+// archive/zip verifies each member's actual size and CRC while reading to EOF.
+func readTransportBundleFile(file *zip.File, remaining int64) ([]byte, error) {
+	if remaining < 0 || file.UncompressedSize64 > uint64(remaining) {
+		return nil, fmt.Errorf("transport member exceeds remaining byte limit")
+	}
+	stream, err := file.Open()
+	if err != nil {
+		return nil, err
+	}
+	payload, readErr := io.ReadAll(io.LimitReader(stream, remaining+1))
+	closeErr := stream.Close()
+	if readErr != nil {
+		return nil, readErr
+	}
+	if closeErr != nil {
+		return nil, closeErr
+	}
+	if int64(len(payload)) > remaining {
+		return nil, fmt.Errorf("transport member exceeds remaining byte limit")
+	}
+	return payload, nil
 }
 
 func ValidateTransportBundleInventory(files map[string][]byte, inventory []TransportBundleFile, allowManifest bool) error {

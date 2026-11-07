@@ -53,6 +53,7 @@ func (a PageAdapter) GlossaryVisiblePair(candidate []byte) (string, string, erro
 var translationPackageLoaders = []func(string, *i18n.Catalog, ...*structuredSuccessorValidation) ([]string, error){AttachPageTranslationUnits, AttachShellPageTranslationUnits, AttachAdoptedPageTranslationUnits}
 
 func AttachRegisteredTranslationPackages(root string, catalog *i18n.Catalog, contexts ...*structuredSuccessorValidation) error {
+	catalog.DerivedTransportCodecReader = derivedApprovedCodec
 	if len(contexts) != 0 && contexts[0] != nil && contexts[0].readonlyOwner {
 		v := contexts[0]
 		if root != v.guard.root {
