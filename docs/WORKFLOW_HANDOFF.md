@@ -44,15 +44,29 @@ REMOTE_CALL_REASON=<missing-machine-fact|failure-diagnosis|canonical-doc-read|ma
 
 ## Historical PASS First 与 Recovery Decision Order
 
-本节收紧既有恢复、复用和工程投入原则，不新增 lifecycle、schema、authority、receipt 或运行权限。
+本节收紧既有恢复、复用和工程投入原则，不新增 lifecycle、schema、authority family、receipt、CLI、persistent state、recovery subsystem、generalized reconstruction 或 orchestration framework，也不新增运行权限。不得修改已有合法 historical evidence；fail-closed、tamper/corruption detection、exact identity/hash、source semantic invalidation、current validator、current authorization、Independent QC、A-only、Surface、activation/Production gates 与 mutation=unknown 停止线均保持不变。本节不授权忽略机器失败或把未通过的 current gate 报告为 PASS。
 
 ### Historical PASS First
 
-合法、完整且 identity / SHA / counts / stage / stop 与正式合同一致的 historical `FINAL=PASS` 默认可信，直接复用已确认 evidence。历史 invocation 的合法性与下一 consumer 的 current eligibility 分开判断；新阶段不能继承未获得的 QC/A 或跳过它必须消费的 gate。
+**Historical Evidence / Current Eligibility Separation：历史负责证明“过去发生过什么”；当前系统负责决定“现在能不能继续 lifecycle / 上线”。两者不得默认互相绑定。** Historical evidence 与 current eligibility 是两个独立问题。
+
+合法、完整且 identity / SHA / counts / stage / stop / provenance 与正式合同一致的 historical `FINAL=PASS` 默认可信，证明当时的 Generation、validation、Reviewer、finalization 或 lifecycle 成果真实存在且未被篡改，直接复用已确认 evidence。Current eligibility 优先依据当前 canonical source semantic state、current candidate、current scope/membership、current validator、必要的 current language authority 与 current Production gates。历史 invocation 的合法性不等于下一 consumer 的 current eligibility；当前不再 eligible 也不自动否定过去的合法成果。新阶段不能继承未获得的 QC/A 或跳过它必须消费的 gate。
 
 只有明确证据才可否定对应历史 evidence 的完整性，或阻断其在当前 scope 的继续使用：source semantic change；candidate/hash/provenance tamper；membership/scope mismatch；active validator 对当前候选真实失败且该 failure 是当前 lifecycle 必须消费的 gate；conflicting formal successor；formal artifact corruption；或明确的 post-checkpoint semantic invalidation。结论必须绑定实际受影响的 Unit、artifact 和 consumer，不把 ancestor 仅作为 immutable historical evidence 的读取等同于重新选择它为 current candidate。
 
-current implementation 无法重建旧 bytes、exporter/decoder/producer implementation SHA 改变、current code path 与 historical invocation 不同，均不得自动撤销 historical PASS：**implementation drift ≠ historical semantic invalidation**。不得因此重做已可信的 Generation、改写旧 evidence，或直接启动 historical reconstruction。若既有 checker 因仅 reproduction drift 阻断，应先确认 consumer 合同并寻找最小合法修正；不得 force/ignore 机器失败，也不得把历史事实误报为 current-authorized。Formal Command Contract v3 的 first-real-use verification 仍独立适用于新/修改 command contract，其失效不等于旧内容 PASS 被撤销。
+**History 是 cold path。** Historical reconstruction / replay 默认属于 cold path，不是正常 current lifecycle 的 hot path。只有下列情形才默认允许进入 historical path，且读取/重建范围必须限于当前判断不可缺少的历史事实：
+
+- explicit source semantic invalidation；
+- candidate/hash/provenance tamper；
+- formal corruption；
+- membership/scope mismatch；
+- conflicting formal successor；
+- recovery 必需的历史事实缺失；
+- 当前 safety/correctness gate 明确存在不可替代的 historical dependency。
+
+以下变化本身不得否定 trusted historical PASS，也不得自动触发 historical reconstruction：current implementation 无法重建 historical intermediate bytes；exporter/decoder/producer implementation SHA 改变；current code path 与 historical invocation 不同；mutable current pointer 合法推进；storage representation/storage form 改变；filesystem checkout mode、umask 或 local permission environment 改变且 semantic bytes 未变；以及其它 current implementation drift。**implementation drift ≠ semantic invalidation**。环境变化若触发现行 safety gate，仍须按该 gate 停止并诊断，不能由 bytes 未变推导为当前安全。
+
+不得仅因这些变化重做已可信的 Generation、改写旧 evidence，或直接启动 historical reconstruction。若既有 checker 因仅 reproduction drift 阻断，应先确认 consumer 合同、是否确为 Production 必需以及是否有最小合法路径；发现真实 bug 不自动授权继续修复。不得 force/ignore 机器失败，也不得把历史事实误报为 current-authorized。Formal Command Contract v3 的 first-real-use verification 仍独立适用于新/修改 command contract，其失效不等于旧内容 PASS 被撤销。
 
 ### Recovery Decision Order
 
@@ -91,6 +105,11 @@ current implementation 无法重建旧 bytes、exporter/decoder/producer impleme
 - 需要 historical implementation reconstruction。
 - synthetic fixture 本身开始要求新的 production capability。
 - 实际 translation/lifecycle progression 长时间停滞，而 infrastructure 工作持续增长。
+- 修复一个 gate 的直接结果只是暴露另一个独立 historical/recovery/infrastructure gate，业务 lifecycle 未至少推进一个正式阶段。
+
+**Gate-chasing stop-line：**出现 `trusted checkpoint → historical decoder blocker → historical pointer blocker → storage-form blocker → historical corpus blocker → another recovery blocker` 这类链条时，立即停止并执行 Complexity Reassessment，不能解释成“继续逐个修复即可”。一个真实 bug 存在不等于它必须在当前 Production 前修复：明确区分 `BUG_EXISTS` 与 `PRODUCTION_BLOCKER_REQUIRES_FIX`，只有后者才能继续占用上线前工程预算，且仍须满足当前任务授权与 Infrastructure Admission Gate。当前 gate 未通过时仍停止该 consumer；停止继续工程不代表 gate 已通过。
+
+非绑定案例：近期一个 trusted validated checkpoint 进入 Candidate Snapshot 时，连续暴露 historical decoder、filesystem mode、Shell representation、storage form、historical mutable pointer 等 gate，未发生 translation/source semantic invalidation。该经历说明 gate-chasing 必须触发复杂度停止；它不是新的 formal lifecycle，不为任何具体 candidate 或 command 授予 eligibility，也不绑定特定 locale、SHA 或路径。
 
 重评估必须回到最近 trusted checkpoint、明确 semantic invalidation、现有 capability、最小合法路径和 admission gate；不能继续沿 blocker 链自动扩张。已经投入的时间、代码量、测试量、Codex quota 都不是继续 subsystem 的理由。当前最短合法路径已不再需要它时，允许保留现场并停止，不为证明旧投入值得而补完。可信成果保留；任何回退仍须遵守 exact own-hunk 与 formal artifact 不可改写边界，不能广泛清理 worktree。
 
@@ -104,9 +123,15 @@ Codex 优先用于 correctness bug、reusable workflow blocker、activation/Prod
 
 ### Translation Throughput / Production Priority
 
-项目主要目标是完成 content lifecycle 并上线 Production。若 translation/lifecycle progression 少于 infrastructure 工作，视为 warning，必须检查基础设施投入是否仍服务最短合法路径。
+本项目首先是 translation/localization workflow，主要目标是完成 **canonical source → Generation → validation → Independent QC → finalization → Integrated Surface → activation → preview → Production**，各阶段仍消费原有必要前置条件。若 translation/lifecycle progression 少于 infrastructure 工作，视为 warning，必须检查基础设施投入是否仍服务最短合法路径。
+
+项目目标不包括要求 current implementation 完整重放所有 historical implementation states。完整 historical replayability 不是 translation quality 或 Production correctness 的默认必要条件。历史机制主要服务 audit、recovery、tamper/corruption detection、trusted output reuse 和 avoid duplicate work；不得让 historical machinery 本身成为正常 current workflow 持续前进的默认前置条件。当前 safety/correctness gate 的不可替代 historical dependency 仍按上述 cold-path 条件处理。
 
 当前 zh-CN Site v2 优先完成：**Candidate Snapshot → Independent QC → finalization → package closure → Integrated Surface → activation → preview → Production**。按既有 canonical 前置关系和全部 gate 推进；不把建设能解释所有历史 implementation 状态的通用翻译平台作为上线前置目标。本节不授权立即执行其中任何真实 workflow。
+
+### Workflow operability warning
+
+Maintainer 或 Coordinator 在一次正常 FAILED 后，若需要连续多轮 exploratory commands 才能确定唯一下一步，应视为 workflow complexity warning，先重新评估当前路径。不能默认通过更多 command、wrapper、receipt 或 proof 解决 operability 问题。尤其多 locale workflow 必须尽量保持 machine-decidable、bounded、single-next-step；本原则不授权新增 orchestrator、schema、registry 或 framework。
 
 ## Formal Command Contract v3
 
