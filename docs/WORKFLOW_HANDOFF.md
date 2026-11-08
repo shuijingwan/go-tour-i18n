@@ -8,7 +8,7 @@
 
 multi-locale campaign 中 remote tool calls 是有限、共享且会随 locale 数量线性放大的资源。项目采用长期 **Call-Zero-First**：默认 **RDC / repository remote calls = 0** 是成本/风险默认值，**不是 zero-call KPI，不机械追求 0**。先复用 current conversation、current Bundle 与 sufficient terminal evidence；已有信息足够时不调用。需要只读 discovery 时，以总人工成本和风险选择路径，不因 RDC 可用就调用，也不按某个月额度或任务 duration 决定执行者。
 
-标准 deterministic repository / shell workflow 与 lifecycle mutation 默认由 **Maintainer Local terminal** 执行，与预计耗时无关：export、current-check、hash、import、process、validation、Snapshot、scope、Reviewer Bundle、evidence save/check、QC record、finalize、authorization、package closure、activation、build、preview、browser verifier、publish、Production verifier 与 Git 均如此；repository engineering writes 仍交获授权的本地 Codex，按正式 workflow 执行。AI 提供完整可复制命令，包含已确认路径、ID、前置 gate、依赖顺序、结果检查和停止点。Coordinator / engineering 的 targeted readonly discovery 按下列规则选择；不把“Local terminal 也能读”作为强制转交手工 discovery 的理由。
+标准 deterministic repository / shell workflow、正常 workflow 的 readonly inspection / currentness reassessment / contract verification、formal command execution 与 Git checkpoint/push 默认由 **Maintainer Local terminal** 执行，**Codex=0**，与预计耗时无关：export、current-check、hash、import、process、validation、Snapshot、scope、Reviewer Bundle、evidence save/check、QC record、finalize、authorization、package closure、activation、build、preview、browser verifier、publish、Production verifier 均如此；repository engineering writes 仍交获授权的本地 Codex，按正式 workflow 执行。已授权工程所必需的局部读取和 targeted tests 保留其任务边界。AI 提供完整可复制命令，包含已确认路径、ID、前置 gate、依赖顺序、结果检查和停止点。Coordinator / engineering 的 targeted readonly discovery 按下列规则选择；不把“Local terminal 也能读”作为强制转交手工 discovery 的理由。
 
 合法 targeted readonly RDC 场景包括：
 
@@ -27,7 +27,7 @@ multi-locale campaign 中 remote tool calls 是有限、共享且会随 locale �
 RESULT=PASS
 ```
 
-除输出矛盾、缺项或之后发生相关 mutation 外，禁止 remote re-verification。这只是消费已执行的正式 machine evidence，不跳过下一阶段规定的 current-check、validation 或其他 gate；下一阶段的必要命令继续默认交 Local terminal 执行。
+除输出矛盾、缺项或之后发生相关 mutation 外，禁止 remote re-verification。相关变化先按下节 Historical PASS First 区分历史完整性与当前 eligibility，不把 implementation bytes drift 自动归为 semantic invalidation。这只是消费已执行的正式 machine evidence，不跳过下一阶段规定的 current-check、validation 或其他 gate；下一阶段的必要命令继续默认交 Local terminal 执行。
 
 普通 workflow step 最多 **一个合并 readonly RDC call**，优先一次读取 canonical docs + relevant implementation/tests，以及必要的 raw/current-state facts，不拆成多轮 `rg/find/cat/sed/jq/stat/hash` discovery。第二 call **仅在第一 call 新暴露具体、阻塞安全推进的未知 fact 时允许**，不是固定预留的结果读取 call；不用 `start_process` + `read_process_output` 轮询可交 Local terminal 的任务。
 
@@ -41,6 +41,72 @@ REMOTE_CALL_REASON=<missing-machine-fact|failure-diagnosis|canonical-doc-read|ma
 ```
 
 本策略不降低 correctness、currentness、exact-set、provenance、machine validation、Independent QC、A-only、Surface、Production 或 HUMAN gate，也不改变 shared lifecycle、角色隔离、正式模型政策、initial batching、Reviewer JIT、exact revision、恢复/复用、current authorization 或 structured lifecycle。
+
+## Historical PASS First 与 Recovery Decision Order
+
+本节收紧既有恢复、复用和工程投入原则，不新增 lifecycle、schema、authority、receipt 或运行权限。
+
+### Historical PASS First
+
+合法、完整且 identity / SHA / counts / stage / stop 与正式合同一致的 historical `FINAL=PASS` 默认可信，直接复用已确认 evidence。历史 invocation 的合法性与下一 consumer 的 current eligibility 分开判断；新阶段不能继承未获得的 QC/A 或跳过它必须消费的 gate。
+
+只有明确证据才可否定对应历史 evidence 的完整性，或阻断其在当前 scope 的继续使用：source semantic change；candidate/hash/provenance tamper；membership/scope mismatch；active validator 对当前候选真实失败且该 failure 是当前 lifecycle 必须消费的 gate；conflicting formal successor；formal artifact corruption；或明确的 post-checkpoint semantic invalidation。结论必须绑定实际受影响的 Unit、artifact 和 consumer，不把 ancestor 仅作为 immutable historical evidence 的读取等同于重新选择它为 current candidate。
+
+current implementation 无法重建旧 bytes、exporter/decoder/producer implementation SHA 改变、current code path 与 historical invocation 不同，均不得自动撤销 historical PASS：**implementation drift ≠ historical semantic invalidation**。不得因此重做已可信的 Generation、改写旧 evidence，或直接启动 historical reconstruction。若既有 checker 因仅 reproduction drift 阻断，应先确认 consumer 合同并寻找最小合法修正；不得 force/ignore 机器失败，也不得把历史事实误报为 current-authorized。Formal Command Contract v3 的 first-real-use verification 仍独立适用于新/修改 command contract，其失效不等于旧内容 PASS 被撤销。
+
+### Recovery Decision Order
+
+任何 recovery/blocker 必须依次处理：
+
+1. 从已有 exact evidence 找最近的合法 trusted checkpoint，保留原 identity、SHA、counts、stage、stop 和 mutation provenance。
+2. 判断 checkpoint 后是否存在明确 semantic invalidation，区分 implementation reproduction failure、historical integrity 与当前 consumer eligibility。
+3. 若无 semantic invalidation，优先从该 checkpoint 继续既有 lifecycle，不重做可信成果。
+4. 若有，只 reopen 既有正式 dependency/context 合同确定的 exact affected scope，不人为扩大或缩小。
+5. 优先使用已有 recovery capability，按现有 currentness、provenance 与 write-once/replay 合同恢复。
+6. 只有前五项均无法合法继续时，才允许考虑新 infrastructure，且仍须通过下述 admission gate。
+
+不能一看到 “current implementation cannot reproduce historical invocation” 就跳到 historical reconstruction。没有合法继续路径时保留现场、报告唯一 blocker 和停止点，不用新 infrastructure 掩盖未知 provenance，也不绕过现有 fail-closed gate。
+
+### Infrastructure Admission Gate 与 One-off Capability Rule
+
+新增 schema、authority family、persistent receipt、recovery subsystem、reconstruction framework、AST/IR/static-analysis framework、global/persistent cache、新 currentness/CAS mechanism、historical producer/emulator 或 generalized decoder/proof framework 前，必须显式重新评估最小合法路径和工程收益。在前述 recovery 顺序已耗尽合法路径的前提下，至少满足以下一项，才值得继续考虑：
+
+- **A：长期复用收益。**明确会跨 locale/content package/多次 workflow 长期复用，累计收益显著；不能仅以“通用设计”推测未来价值。
+- **B：实际安全风险。**不实现将造成实际 data loss、unsafe mutation，或 Production correctness/security 风险。
+- **C：真实上线硬 blocker。**它是当前 Production/activation 的真实硬 blocker，且没有更小的合法路径。
+
+一次性 historical recovery、one-off command 或 synthetic fixture 默认不足以通过 gate。预计只使用一次或极低频使用的 capability，默认限于 readonly diagnosis、invocation-local helper、bounded one-off proof、小型局部 patch；未明确通过 gate，不得增加 persistent framework、generalized schema、authority family、long-lived reconstruction subsystem 或 broad abstraction layer。
+
+评估依据写入既有交接文本即可，不新增 checkpoint/receipt 格式。gate 通过不扩大当前任务授权或取消更窄的停止线；不能把获准局部 patch 自动升级为新 subsystem。
+
+### Mandatory Complexity Reassessment 与 Sunk Cost Rule
+
+满足任一条件，立即停止当前 implementation 并重新评估：
+
+- 单一 local blocker 已累计消耗约一个工作日仍未解决。
+- blocker 产生第二层 infrastructure blocker。
+- 为测试 recovery 又需要新的 recovery capability。
+- 需要新 formal schema/authority。
+- 需要 AST/IR/static analysis。
+- 需要 historical implementation reconstruction。
+- synthetic fixture 本身开始要求新的 production capability。
+- 实际 translation/lifecycle progression 长时间停滞，而 infrastructure 工作持续增长。
+
+重评估必须回到最近 trusted checkpoint、明确 semantic invalidation、现有 capability、最小合法路径和 admission gate；不能继续沿 blocker 链自动扩张。已经投入的时间、代码量、测试量、Codex quota 都不是继续 subsystem 的理由。当前最短合法路径已不再需要它时，允许保留现场并停止，不为证明旧投入值得而补完。可信成果保留；任何回退仍须遵守 exact own-hunk 与 formal artifact 不可改写边界，不能广泛清理 worktree。
+
+### Codex Budget Rule
+
+Codex 是受限工程资源。正常 deterministic workflow、readonly inspection、currentness reassessment、contract verification、formal command execution、Git checkpoint/push 默认交 Maintainer Local terminal，Codex=0；Call-Zero-First 的 bounded readonly discovery 例外和已授权工程的必要局部读取仍按原边界执行。
+
+Codex 优先用于 correctness bug、reusable workflow blocker、activation/Production blocker，以及有明确跨 locale 长期复用价值的工程。禁止顺手重构、unrelated fixture 清债、broad test cleanup 和无上线价值的 architecture perfection。
+
+以周总额度为口径，日常单日消耗目标约 **8%–12%**，单日 **hard cap 15%**，尽量长期保留约 **20% emergency reserve**；同时遵守平台 5h/weekly 实际限额。hard cap 不是 daily target，不为用满目标增加工作。达到 cap 即保存可信现场并停止 Codex 工程，确定性步骤交 Local terminal；额度恢复不是继续已无必要 subsystem 的理由。预算只约束投入和分工，不降低 validator、独立 QC/A-only、currentness、provenance、Production 或 HUMAN gate。
+
+### Translation Throughput / Production Priority
+
+项目主要目标是完成 content lifecycle 并上线 Production。若 translation/lifecycle progression 少于 infrastructure 工作，视为 warning，必须检查基础设施投入是否仍服务最短合法路径。
+
+当前 zh-CN Site v2 优先完成：**Candidate Snapshot → Independent QC → finalization → package closure → Integrated Surface → activation → preview → Production**。按既有 canonical 前置关系和全部 gate 推进；不把建设能解释所有历史 implementation 状态的通用翻译平台作为上线前置目标。本节不授权立即执行其中任何真实 workflow。
 
 ## Formal Command Contract v3
 
