@@ -101,8 +101,9 @@ func snapshotRevisionEvidenceCatalog(root string, current *Catalog, locale strin
 	return frozen, err
 }
 
-// Reuse sealed shared current authorization only for its exact accepted
-// machine candidate. New revision candidates receive no rating or A carry.
+// Assess the complete historical member, then consume eligibility per carried
+// Unit. A replaced historical candidate need not remain current-compatible;
+// its successor receives no rating or A carry from this assessment.
 func snapshotMembershipAssessments(root, locale string, members map[string]*Catalog, latest *latestRetranslationUnits, required ...map[*Catalog]string) (map[*Catalog]*CurrentTranslationAuthorization, func() error, error) {
 	proofs := map[*Catalog]*CurrentTranslationAuthorization{}
 	for _, c := range members {
@@ -142,7 +143,7 @@ func snapshotMembershipAssessments(root, locale string, members map[string]*Cata
 		}
 		proofs[c] = nil
 		if previous != "" {
-			a, err := RequireCurrentTranslationAuthorization(root, c, locale, previous)
+			a, err := AssessCurrentTranslation(root, c, locale, previous)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -159,9 +160,6 @@ func snapshotMembershipAssessments(root, locale string, members map[string]*Cata
 			if err != nil {
 				return nil, nil, err
 			}
-			if a != nil && !a.Ready() {
-				return nil, nil, fmt.Errorf("Snapshot membership predecessor not currently compatible")
-			}
 			proofs[c] = a
 		}
 	}
@@ -170,7 +168,7 @@ func snapshotMembershipAssessments(root, locale string, members map[string]*Cata
 			if a == nil {
 				continue
 			}
-			fresh, err := RequireCurrentTranslationAuthorization(root, c, locale, a.Historical.Finalization.SnapshotID)
+			fresh, err := AssessCurrentTranslation(root, c, locale, a.Historical.Finalization.SnapshotID)
 			if err != nil || !reflect.DeepEqual(fresh, a) {
 				return fmt.Errorf("Snapshot membership current authorization changed: %v", err)
 			}
@@ -186,9 +184,6 @@ func validateSnapshotMembershipCandidate(root string, current *Catalog, locale s
 	}
 	if proofs[c] != nil {
 		a := proofs[c]
-		if !a.Ready() {
-			return nil, fmt.Errorf("Snapshot membership current authorization not Ready")
-		}
 		var old QualityCheckSnapshotUnit
 		if choice.machine != nil {
 			old = choice.machine.snapshot(1)
@@ -202,6 +197,9 @@ func validateSnapshotMembershipCandidate(root string, current *Catalog, locale s
 				match = choiceMatchesSnapshot(locale, choice, accepted.Snapshot) && accepted.Snapshot.UnitID == u.ID
 			}
 			if match {
+				if accepted.Classification != "compatible" || accepted.Validation != "passed" {
+					return nil, fmt.Errorf("Snapshot membership carry ineligible: unit=%s classification=%s validation=%s", u.ID, accepted.Classification, accepted.Validation)
+				}
 				old = accepted.Snapshot
 				reviewerGlossary = accepted.ReviewerGlossarySHA
 				matched = true
@@ -210,6 +208,9 @@ func validateSnapshotMembershipCandidate(root string, current *Catalog, locale s
 		}
 		if !matched && choice.machine != nil {
 			return nil, fmt.Errorf("Snapshot machine candidate differs from membership current authorization")
+		}
+		if !matched && (choice.manifest.PreviousSnapshotID == "" || (choice.manifest.RevisionFeedbackSource != "quality_check" && !isReopenFeedback(choice.manifest.RevisionFeedbackSource))) {
+			return nil, fmt.Errorf("Snapshot membership replacement requires authorized revision lineage")
 		}
 		if matched {
 			if !selectedRetranslationIdentityMatches(u, choice) || (choice.machine == nil && choice.result.Status != "passed") {
@@ -234,6 +235,32 @@ func validateSnapshotMembershipCandidate(root string, current *Catalog, locale s
 				return nil, fmt.Errorf("Snapshot membership accepted validation changed")
 			}
 			return &validatedRetranslationCandidate{candidatePath: choice.result.CandidatePath, validationPath: choice.result.ValidationPath, candidate: candidate, validationData: vb, attempt: old.Attempt}, nil
+		}
+	}
+	if choice.manifest.RevisionFeedbackSource == "surface_review" {
+		// A replaced old candidate need not be Ready, but a Surface successor
+		// must still prove its exact reopen, findings and complete revision scope.
+		// Reuse the verified frozen reopen in the historical member world.
+		// Re-evaluating its old candidate's current QC would reintroduce the
+		// whole-predecessor eligibility requirement this boundary separates.
+		m, err := readRetranslationProcessManifest(choice.batchDir, locale, choice.batchID)
+		if err != nil {
+			return nil, err
+		}
+		_, reopen, err := surfaceRevisionCatalog(root, c, locale, choice.manifest.RevisionAuthorizationID)
+		if err != nil {
+			return nil, err
+		}
+		if reopen.UnitCount != len(m.Units) || len(reopen.Units) != len(m.Units) {
+			return nil, fmt.Errorf("Snapshot membership Surface revision scope mismatch")
+		}
+		ref := reopen.revisionEvidence()
+		for i, record := range m.Units {
+			frozen := reopen.Units[i]
+			old := frozen.Snapshot
+			if record.UnitID != frozen.UnitID || record.UnitKind != old.UnitKind || record.SourcePath != old.SourcePath || record.SourceSHA256 != old.SourceSHA256 || record.PreviousSnapshotID != reopen.PreviousSnapshotID || record.RevisionAuthorizationID != reopen.ReopenID || record.RevisionFeedbackSource != reopen.revisionFeedbackSource() || record.PreviousRating != "A" || record.PreviousFinding != reopen.findingForUnit(record.UnitID) || record.PreviousReviewPath != ref.Path || record.PreviousReviewSHA256 != ref.SHA256 {
+				return nil, fmt.Errorf("Snapshot membership Surface revision frozen lineage mismatch")
+			}
 		}
 	}
 	evidenceCatalog, err := snapshotRevisionEvidenceCatalog(root, current, locale, choice, c)

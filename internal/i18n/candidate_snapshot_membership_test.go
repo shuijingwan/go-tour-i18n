@@ -34,3 +34,77 @@ func TestSnapshotMembershipDoesNotRelaxCompleteReader(t *testing.T) {
 		t.Fatal("uncomposed package acquired membership projection", err)
 	}
 }
+
+func TestSnapshotMembershipCarryAssessmentClassification(t *testing.T) {
+	root, c, ids, snapshot := checkpointFixture(t)
+	assessment, err := AssessCurrentTranslation(root, c, "zh-CN", snapshot)
+	if err != nil || !assessment.Ready() {
+		t.Fatal(assessment, err)
+	}
+	latest, err := selectLatestRetranslationUnits(root, c, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	current := *c
+	u, err := c.Unit(ids[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	members := map[string]*Catalog{ids[0]: c}
+	for _, tc := range []struct {
+		name, class, validation string
+		pass                    bool
+	}{
+		{"compatible", "compatible", "passed", true},
+		{"affected", "affected", "passed", false},
+		{"stale", "stale", "not_run", false},
+		{"unknown", "unknown", "not_run", false},
+		{"validation-failed", "compatible", "failed", false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			local := *assessment
+			local.Units = append([]CurrentTranslationAssessmentUnit(nil), assessment.Units...)
+			local.Units[0].Classification = tc.class
+			local.Units[0].Validation = tc.validation
+			local.Identity = authorizationIdentity(local)
+			_, err := validateSnapshotMembershipCandidate(root, &current, "zh-CN", g, u, latest.selectedByID[u.ID], nil, members, map[*Catalog]*CurrentTranslationAuthorization{c: &local}, nil)
+			if tc.pass && err != nil {
+				t.Fatal(err)
+			}
+			if !tc.pass && (err == nil || !strings.Contains(err.Error(), "carry ineligible")) {
+				t.Fatalf("carry must reject per-Unit assessment: %v", err)
+			}
+		})
+	}
+}
+
+func TestSnapshotMembershipAssessmentCommitRechecksAffected(t *testing.T) {
+	root, c, ids, snapshot := checkpointFixture(t)
+	checkpointGlossary(t, root, "preferred:\n  apple: 苹果\n", "member-affected-review")
+	latest, err := selectLatestRetranslationUnits(root, c, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	members := map[string]*Catalog{}
+	for _, id := range ids {
+		members[id] = c
+	}
+	assessments, check, err := snapshotMembershipAssessments(root, "zh-CN", members, latest, map[*Catalog]string{c: snapshot})
+	if err != nil {
+		t.Fatal("affected predecessor is assessment evidence, not whole authorization", err)
+	}
+	if a := assessments[c]; a == nil || a.Affected != 1 || a.Compatible != 2 || a.Ready() {
+		t.Fatal("expected non-Ready complete assessment", a)
+	}
+	if err := check(); err != nil {
+		t.Fatal("unchanged non-Ready assessment must recheck", err)
+	}
+	checkpointGlossary(t, root, "# changed after preflight\n", "member-commit-review")
+	if err := check(); err == nil {
+		t.Fatal("commit accepted changed current assessment")
+	}
+}
