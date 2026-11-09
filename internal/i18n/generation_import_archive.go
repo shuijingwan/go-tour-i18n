@@ -82,6 +82,13 @@ func verifyImportedRevisionInvocation(root string, c *Catalog, locale string, ch
 // complete installed integrity and exact current semantic equivalence. Ordinary
 // callers above continue to require current invocation reproduction.
 func verifyImportedRevisionInvocationInputs(root string, c *Catalog, locale string, choice selectedRetranslationUnit, v *validatedRetranslationCandidate, m *RetranslationBatchManifest, inputs []generationBundleInput) ([]GlossaryArchiveReference, error) {
+	return verifyImportedRevisionInvocationSnapshotInputs(root, c, locale, choice, v, m, inputs, nil)
+}
+
+// Ordinary callers pass no Snapshot admission and retain exact repository byte
+// equality. Snapshot can use only members already bound by typed equivalence;
+// the immutable archive still binds the original bytes, inventory and identity.
+func verifyImportedRevisionInvocationSnapshotInputs(root string, c *Catalog, locale string, choice selectedRetranslationUnit, v *validatedRetranslationCandidate, m *RetranslationBatchManifest, inputs []generationBundleInput, admission *snapshotApprovedPass) ([]GlossaryArchiveReference, error) {
 	refs := []GlossaryArchiveReference{}
 	for _, attempt := range []int{1, v.attempt} {
 		if attempt == 1 && v.attempt == 1 && len(refs) > 0 {
@@ -138,6 +145,14 @@ func verifyImportedRevisionInvocationInputs(root string, c *Catalog, locale stri
 				continue
 			}
 			b, err := readCompatibilityFile(root, f.RepositoryPath)
+			if admission != nil {
+				if ref, ok := admission.predecessorMembers[f.BundlePath]; ok {
+					if err != nil || f.RepositoryPath != ref.path || sum(b) != ref.currentSHA || sum(files[f.BundlePath]) != ref.historicalSHA {
+						return nil, fmt.Errorf("Snapshot predecessor invocation implementation binding changed: %s", f.BundlePath)
+					}
+					continue
+				}
+			}
 			if err != nil || !bytes.Equal(b, files[f.BundlePath]) {
 				return nil, fmt.Errorf("revision Generation input changed: %s", f.BundlePath)
 			}

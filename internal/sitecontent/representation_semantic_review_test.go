@@ -14,9 +14,17 @@ import (
 
 func semanticReviewFixture(t *testing.T, outputTransforms ...func([]byte) []byte) (string, *i18n.Catalog, i18n.RepresentationReviewOptions) {
 	t.Helper()
+	return semanticReviewFixtureSource(t, nil, outputTransforms...)
+}
+
+func semanticReviewFixtureSource(t *testing.T, customize func(int, []byte) []byte, outputTransforms ...func([]byte) []byte) (string, *i18n.Catalog, i18n.RepresentationReviewOptions) {
+	t.Helper()
 	root, _, current, frozen := replacementPageFixtureSize(t, 4, 2, func(i int, b []byte) []byte {
 		if i == 3 {
 			return []byte("# Custom Marshal and Unmarshal\n\nRead `API` [the manual](https://example.com).\n")
+		}
+		if customize != nil {
+			return customize(i, b)
 		}
 		return b
 	})

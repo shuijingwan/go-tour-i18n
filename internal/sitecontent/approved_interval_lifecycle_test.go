@@ -17,13 +17,20 @@ import (
 func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 	done := contentidentity.BeginMemoization()
 	defer done()
-	root, c, historical, archive := legacyProvenanceFixture(t, func(b []byte) []byte { return bytes.ReplaceAll(b, []byte("Read "), []byte("请阅读")) })
+	sourceRoot, sourceCatalog, semantic := semanticReviewFixtureSource(t, func(i int, b []byte) []byte {
+		if i == 1 {
+			return []byte("# Page\n\nRead `API` and the [`sql.OpenDB function`](https://pkg.go.dev/database/sql#OpenDB) now.\n")
+		}
+		return b
+	}, func(b []byte) []byte { return bytes.ReplaceAll(b, []byte("Read "), []byte("请阅读")) })
+	root, c, historical, archive := legacyProvenanceFromSemanticFixture(t, sourceRoot, sourceCatalog, semantic)
 	if _, err := i18n.RecordQualityCheckResults(root, c, i18n.QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: historical.PreviousSnapshotID, UnitIDs: c.TranslationScope, Rating: "A", ReviewerSession: "synthetic-current-reviewer"}); err != nil {
 		t.Fatal(err)
 	}
 	if _, _, err := i18n.FinalizeQualityCheck(root, c, i18n.QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: historical.PreviousSnapshotID}); err != nil {
 		t.Fatal(err)
 	}
+	historical, sibling := snapshotApprovedPredecessorSibling(t, root, c, historical)
 	data, _ := readRegular(root, "locales/zh-CN/locale.json")
 	var locale i18n.Locale
 	json.Unmarshal(data, &locale)
@@ -33,8 +40,8 @@ func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 	data, _ = json.Marshal(locale)
 	writeFixture(t, root, "locales/zh-CN/locale.json", data)
 	a, err := i18n.AssessCurrentTranslation(root, c, "zh-CN", historical.PreviousSnapshotID)
-	if err != nil || a.Affected != 1 {
-		t.Fatal("synthetic typed finding", a, err)
+	if err != nil || a.Affected != 2 {
+		t.Fatalf("synthetic typed finding: err=%v affected=%d stale=%d unknown=%d", err, a.Affected, a.Stale, a.Unknown)
 	}
 	data, _ = json.Marshal(a)
 	writeFixture(t, root, "engineering/approved-finding.json", data)
@@ -42,7 +49,7 @@ func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 	if _, _, err = i18n.RecordQualityCheckSurfaceReopen(root, c, i18n.QualityCheckSurfaceReopenOptions{AuthoritySource: i18n.CurrentValidationAuthority, Locale: o.Locale, ReopenID: o.ReopenID, PreviousSnapshotID: o.PreviousSnapshotID, CurrentValidation: &o}); err != nil {
 		t.Fatal(err)
 	}
-	r, err := i18n.ExportRetranslationBatch(root, c, i18n.RetranslationExportOptions{Locale: o.Locale, Generator: i18n.RetranslationGeneratorChatGPT, UnitIDs: []string{historical.CurrentUnitID}, UnitKind: i18n.UnitKindPage, PreviousSnapshotID: o.PreviousSnapshotID, SurfaceReopenID: o.ReopenID, AllowReexport: true})
+	r, err := i18n.ExportRetranslationBatch(root, c, i18n.RetranslationExportOptions{Locale: o.Locale, Generator: i18n.RetranslationGeneratorChatGPT, UnitIDs: []string{sibling, historical.CurrentUnitID}, UnitKind: i18n.UnitKindPage, PreviousSnapshotID: o.PreviousSnapshotID, SurfaceReopenID: o.ReopenID, AllowReexport: true})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -79,7 +86,12 @@ func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 		t.Fatal(err)
 	}
 	restored, err := codec.Restore(proof.Projection.Text)
-	name := filepath.Base(bm.ExpectedOutputs[0].BundlePath)
+	name := ""
+	for _, out := range bm.ExpectedOutputs {
+		if out.UnitID == historical.CurrentUnitID {
+			name = filepath.Base(out.BundlePath)
+		}
+	}
 	if err != nil || !bytes.Equal(bridgeEOF(restored), files["formal/candidates/"+name]) {
 		t.Fatal("inverse restore differs from reviewed candidate", err)
 	}
@@ -137,7 +149,13 @@ func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 	}
 	// Exact baseline restores the original candidate and still FAILS active audit.
 	baseline := files["formal/protected-candidates/"+name]
-	surfaceImport(t, root, c, bundle, map[string][]byte{historical.CurrentUnitID: baseline})
+	initialOutputs := map[string][]byte{historical.CurrentUnitID: baseline}
+	for _, out := range bm.ExpectedOutputs {
+		if out.UnitID == sibling {
+			initialOutputs[sibling] = []byte(strings.ReplaceAll(string(files["formal/protected-candidates/"+filepath.Base(out.BundlePath)]), "请阅读", "请阅读 "))
+		}
+	}
+	surfaceImport(t, root, c, bundle, initialOutputs)
 	ib, err := readRegular(root, "data/retranslation-runs/zh-CN/"+r.BatchID+"/generation-imports/initial-manifest.json")
 	if err != nil {
 		t.Fatal(err)
@@ -149,7 +167,7 @@ func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 	startup := *c
 	startup.TranslationScope = nil
 	p, err := i18n.ProcessRetranslationBatch(root, &startup, i18n.RetranslationProcessOptions{Locale: o.Locale, BatchID: r.BatchID})
-	if err != nil || p.RestorePassed != 1 || p.ValidationFailed != 1 {
+	if err != nil || p.RestorePassed != 2 || p.ValidationPassed != 1 || p.ValidationFailed != 1 {
 		t.Fatal("active canonical validation bypassed", p, err)
 	}
 	retryOptions := i18n.GenerationBundleOptions{Locale: o.Locale, BatchID: r.BatchID, UnitID: historical.CurrentUnitID}
@@ -173,7 +191,7 @@ func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 	}
 	surfaceImport(t, root, c, retry, map[string][]byte{historical.CurrentUnitID: repaired})
 	p, err = i18n.ProcessRetranslationRetry(root, &startup, i18n.RetranslationRetryOptions{Locale: o.Locale, BatchID: r.BatchID, UnitID: historical.CurrentUnitID})
-	if err != nil || p.ValidationPassed != 1 {
+	if err != nil || p.ValidationPassed != 2 {
 		t.Fatal("retry decoder", p, err)
 	}
 	if rm.Attempt != 2 {

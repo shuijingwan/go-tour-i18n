@@ -380,9 +380,17 @@ whole approved interval consumer 以 [contract v2](CURRENT_VALIDATION_APPROVED_I
 receipt/archive/inventory/proof、全部最终 attempt/raw/import history，以及 frozen decoder 对
 candidate 的 exact restore。随后独立重建当前 finding/representation 语义，要求完整 typed
 projection/inverse、language/provenance 与非 implementation dependencies exact；仅既有
-code-owned approved implementation dependency refs 与 validator implementation identity 可不同，
-每个最终 candidate 仍须当前 active validator PASS。result、validation 与全部引用的 SHA 在本次
-读取和 commit 前重验；missing/tampered/unknown evidence、semantic/source/membership/候选变化、
+code-owned approved implementation dependency refs 与 validator implementation identity 可不同。
+嵌套 `current-validation-predecessor` transport 同样必须由 current implementation fresh rebuild；
+仅 canonical producer implementation path inventory 内的 SHA、producer identity 与 adapter authority
+identity 可 drift，old/current SHA 均须有效且分别绑定 historical Bundle/current input exact bytes。
+完整 typed semantic body（含三种 representation identity、Template/TemplateSHA256、source、
+Snapshot/reopen/selected scope）及全部非 implementation dependencies 仍须 exact，并重新验证依赖。
+missing/extra/orphan implementation member 或多个 transport 的 binding 冲突均拒绝。全部 typed
+comparison 通过后，仅为 historical invocation identity 比对使用 exact original transport/member
+bytes；不把历史 transport 声明 CURRENT，也不用历史 implementation 执行 current reconstruction。
+frozen inverse 仍须 exact restore candidate，每个最终 candidate 仍须当前 active validator PASS。
+result、validation 与全部引用的 SHA 在本次读取和 commit 前重验；missing/tampered/unknown evidence、semantic/source/membership/候选变化、
 不完整 PASS、冲突 successor 或当前 validation failure 继续拒绝。历史 proof 不被改写或标为
 CURRENT，不把旧 PASS 当作 QC/A，不豁免 source、glossary、membership 或 candidate eligibility。
 此 admission 不授权 retry/revalidate 刷新 proof、同批 re-export 或新的 Generation invocation；

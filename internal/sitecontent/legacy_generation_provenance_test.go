@@ -14,6 +14,11 @@ import (
 func legacyProvenanceFixture(t *testing.T, outputTransforms ...func([]byte) []byte) (string, *i18n.Catalog, i18n.LegacyGenerationProvenanceOptions, []byte) {
 	t.Helper()
 	root, c, o := semanticReviewFixture(t, outputTransforms...)
+	return legacyProvenanceFromSemanticFixture(t, root, c, o)
+}
+
+func legacyProvenanceFromSemanticFixture(t *testing.T, root string, c *i18n.Catalog, o i18n.RepresentationReviewOptions) (string, *i18n.Catalog, i18n.LegacyGenerationProvenanceOptions, []byte) {
+	t.Helper()
 	b, m, err := i18n.ExportRepresentationReviewBundle(root, c, o)
 	if err != nil {
 		t.Fatal(err)

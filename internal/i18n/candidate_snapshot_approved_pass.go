@@ -16,9 +16,211 @@ import (
 // This is invocation-local Snapshot evidence, not a receipt, recovery action,
 // or exemption for process/retry/revalidate. The archive remains immutable.
 type snapshotApprovedPass struct {
-	inputs   []generationBundleInput
-	outputs  map[string]protectedTranslation
-	observed map[string]string
+	inputs             []generationBundleInput
+	outputs            map[string]protectedTranslation
+	observed           map[string]string
+	predecessorMembers map[string]snapshotPredecessorMember
+}
+
+// The producer and adapter authorities may evolve; every semantic/evidence
+// field is explicitly retained. Private runtime decoders are freshly built by
+// revisionGenerationInputsAtPredecessor, never decoded from historical JSON.
+type snapshotPredecessorSemanticBody struct {
+	Schema                         string
+	Locale                         string
+	ContentPackage                 string
+	PackageIdentity                string
+	OrderedScope                   []string
+	SnapshotManifest               GlossaryArchiveReference
+	OldRepresentationIdentity      string
+	ResponseRepresentationIdentity string
+	CurrentRepresentationIdentity  string
+	UnitID                         string
+	CurrentSource                  GlossaryArchiveReference
+	SourcePath                     string
+	Snapshot                       QualityCheckSnapshotUnit
+	Raw                            GlossaryArchiveReference
+	OrdinaryRestore                bool
+	RecoveryClass                  string
+	Blocker                        string
+	Reopen                         GlossaryArchiveReference
+	ReopenIdentity                 string
+	Selected                       []RetranslationBatchUnit
+	OldRecord                      RetranslationBatchUnit
+	CurrentInputSHA256             string
+	Template                       string
+	TemplateSHA256                 string
+	Dependencies                   []GlossaryArchiveReference
+}
+
+func snapshotPredecessorSemantic(p *CurrentValidationPredecessor) snapshotPredecessorSemanticBody {
+	return snapshotPredecessorSemanticBody{
+		Schema:                         p.Schema,
+		Locale:                         p.Locale,
+		ContentPackage:                 p.ContentPackage,
+		PackageIdentity:                p.PackageIdentity,
+		OrderedScope:                   p.OrderedScope,
+		SnapshotManifest:               p.SnapshotManifest,
+		OldRepresentationIdentity:      p.OldRepresentationIdentity,
+		ResponseRepresentationIdentity: p.ResponseRepresentationIdentity,
+		CurrentRepresentationIdentity:  p.CurrentRepresentationIdentity,
+		UnitID:                         p.UnitID,
+		CurrentSource:                  p.CurrentSource,
+		SourcePath:                     p.SourcePath,
+		Snapshot:                       p.Snapshot,
+		Raw:                            p.Raw,
+		OrdinaryRestore:                p.OrdinaryRestore,
+		RecoveryClass:                  p.RecoveryClass,
+		Blocker:                        p.Blocker,
+		Reopen:                         p.Reopen,
+		ReopenIdentity:                 p.ReopenIdentity,
+		Selected:                       p.Selected,
+		OldRecord:                      p.OldRecord,
+		CurrentInputSHA256:             p.CurrentInputSHA256,
+		Template:                       p.Template,
+		TemplateSHA256:                 p.TemplateSHA256,
+		Dependencies:                   p.Dependencies,
+	}
+}
+
+type snapshotPredecessorMember struct {
+	path, historicalSHA, currentSHA string
+}
+
+func snapshotCurrentValidationPredecessorEquivalent(root string, old, current *CurrentValidationPredecessor, historical, fresh map[string][]byte) (map[string]snapshotPredecessorMember, error) {
+	if !bytes.Equal(mustJSON(snapshotPredecessorSemantic(old)), mustJSON(snapshotPredecessorSemantic(current))) {
+		return nil, fmt.Errorf("Snapshot historical predecessor semantic evidence changed")
+	}
+	for _, sha := range []string{old.ImplementationIdentity, current.ImplementationIdentity, old.CurrentAuthority, current.CurrentAuthority} {
+		if !validSHA256(sha) {
+			return nil, fmt.Errorf("Snapshot predecessor invalid producer/adapter identity")
+		}
+	}
+	if len(old.ImplementationInputs) != len(currentValidationPredecessorImplementationPaths) || len(current.ImplementationInputs) != len(currentValidationPredecessorImplementationPaths) {
+		return nil, fmt.Errorf("Snapshot predecessor implementation inventory changed")
+	}
+	members := map[string]snapshotPredecessorMember{}
+	for i, path := range currentValidationPredecessorImplementationPaths {
+		a, b := old.ImplementationInputs[i], current.ImplementationInputs[i]
+		key := "formal/current-validation-predecessor-implementation/" + path
+		if a.Path != path || b.Path != path || !validSHA256(a.SHA256) || !validSHA256(b.SHA256) {
+			return nil, fmt.Errorf("Snapshot predecessor implementation path/hash invalid: %s", path)
+		}
+		ab, aok := historical[key]
+		bb, bok := fresh[key]
+		if !aok || !bok || sum(ab) != a.SHA256 || sum(bb) != b.SHA256 {
+			return nil, fmt.Errorf("Snapshot predecessor implementation member binding changed: %s", path)
+		}
+		disk, err := readSnapshotReferencedFile(root, path)
+		if err != nil || sum(disk) != b.SHA256 {
+			return nil, fmt.Errorf("Snapshot predecessor current implementation changed: %s", path)
+		}
+		members[key] = snapshotPredecessorMember{path, a.SHA256, b.SHA256}
+	}
+	for _, ref := range current.Dependencies {
+		if validateGenerationInstallPath(ref.Path) != nil || !validSHA256(ref.SHA256) {
+			return nil, fmt.Errorf("Snapshot predecessor invalid dependency: %s", ref.Path)
+		}
+		if _, _, err := readHistoricalBridgeReference(root, current.Locale, ref); err != nil {
+			return nil, err
+		}
+	}
+	return members, nil
+}
+
+// Exact-current means both derived transports are exact, not just the
+// approved proof. Producer-only predecessor drift must reach the full
+// historical-PASS admission instead of falling back to an ordinary reader.
+func snapshotPredecessorInputsExact(inputs []generationBundleInput, historical map[string][]byte) bool {
+	relevant := func(path string) bool {
+		return strings.HasPrefix(path, "formal/current-validation-predecessor-transport/") || strings.HasPrefix(path, "formal/current-validation-predecessor-implementation/")
+	}
+	current := map[string][]byte{}
+	for _, in := range inputs {
+		if relevant(in.path) {
+			if _, duplicate := current[in.path]; duplicate {
+				return false
+			}
+			current[in.path] = in.data
+		}
+	}
+	for path, data := range historical {
+		if !relevant(path) {
+			continue
+		}
+		got, ok := current[path]
+		if !ok || !bytes.Equal(got, data) {
+			return false
+		}
+		delete(current, path)
+	}
+	return len(current) == 0
+}
+
+// Reconcile only complete typed-equivalent transports. Nothing is substituted
+// until all transports and both member inventories have been checked.
+func (s *snapshotApprovedPass) reconcilePredecessors(root string, historical map[string][]byte) error {
+	const transport = "formal/current-validation-predecessor-transport/"
+	const implementation = "formal/current-validation-predecessor-implementation/"
+	fresh := map[string][]byte{}
+	for _, in := range s.inputs {
+		if _, exists := fresh[in.path]; exists {
+			return fmt.Errorf("Snapshot duplicate formal input: %s", in.path)
+		}
+		fresh[in.path] = in.data
+	}
+	verified := map[string]bool{}
+	members := map[string]snapshotPredecessorMember{}
+	for path, data := range fresh {
+		if !strings.HasPrefix(path, transport) {
+			continue
+		}
+		oldData, ok := historical[path]
+		if !ok || filepath.Ext(path) != ".json" || filepath.ToSlash(filepath.Dir(path))+"/" != transport {
+			return fmt.Errorf("Snapshot predecessor transport inventory changed: %s", path)
+		}
+		var a, b CurrentValidationPredecessor
+		if err := contentidentity.StrictJSON(oldData, &a); err != nil {
+			return err
+		}
+		if err := contentidentity.StrictJSON(data, &b); err != nil {
+			return err
+		}
+		refs, err := snapshotCurrentValidationPredecessorEquivalent(root, &a, &b, historical, fresh)
+		if err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
+		for key, ref := range refs {
+			if prior, ok := members[key]; ok && prior != ref {
+				return fmt.Errorf("Snapshot conflicting predecessor implementation binding: %s", key)
+			}
+			members[key] = ref
+		}
+		verified[path] = true
+	}
+	for _, inventory := range []map[string][]byte{historical, fresh} {
+		for path := range inventory {
+			if strings.HasPrefix(path, transport) && !verified[path] {
+				return fmt.Errorf("Snapshot extra predecessor transport: %s", path)
+			}
+			if strings.HasPrefix(path, implementation) {
+				if _, ok := members[path]; !ok {
+					return fmt.Errorf("Snapshot orphan predecessor implementation: %s", path)
+				}
+			}
+		}
+	}
+	for i, in := range s.inputs {
+		_, covered := members[in.path]
+		if verified[in.path] || covered {
+			// The current transport/decoder was independently reconstructed and proved
+			// equivalent above. Original bytes here serve historical invocation identity
+			// only: neither the old transport nor its implementation becomes CURRENT.
+			s.inputs[i].data = historical[in.path]
+		}
+	}
+	s.predecessorMembers = members
+	return nil
 }
 
 // CurrentAuthority is deliberately not part of this historical semantic body:
@@ -122,7 +324,7 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 	inputs, strictErr := revisionGenerationInputsCore(root, c, m.Locale, m.Units, []map[string]protectedTranslation{outputs}, false, selection)
 	if strictErr == nil {
 		inputs, strictErr = applySurfaceTransportInWorld(root, c, m.Locale, m.Units, inputs, true)
-		if strictErr == nil && compareInstalledApprovedProofs(inputs, files) == nil {
+		if strictErr == nil && compareInstalledApprovedProofs(inputs, files) == nil && snapshotPredecessorInputsExact(inputs, files) {
 			return nil, nil
 		}
 	}
@@ -318,6 +520,9 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 		if strings.HasPrefix(path, "formal/approved-interval-transport/") && !expected[path] {
 			return nil, fmt.Errorf("Snapshot extra historical approved proof: %s", path)
 		}
+	}
+	if err := state.reconcilePredecessors(root, files); err != nil {
+		return nil, err
 	}
 	for _, in := range state.inputs {
 		if !bytes.Equal(in.data, files[in.path]) {
@@ -522,5 +727,5 @@ func verifySnapshotRevisionInvocation(root string, c *Catalog, locale string, ch
 	if state == nil {
 		return verifyImportedRevisionInvocation(root, c, locale, choice, v)
 	}
-	return verifyImportedRevisionInvocationInputs(root, c, locale, choice, v, m, state.inputs)
+	return verifyImportedRevisionInvocationSnapshotInputs(root, c, locale, choice, v, m, state.inputs, state)
 }

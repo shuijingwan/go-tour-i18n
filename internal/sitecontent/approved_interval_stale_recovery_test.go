@@ -72,7 +72,7 @@ func checkInstalledApprovedProofStaleRecoveryBoundary(t *testing.T, root string,
 	}
 	// A decoder dependency successor changes proof identity even if this tiny
 	// fixture's logical response still happens to restore the same candidate.
-	path := "internal/i18n/candidate_snapshot_outputs.go"
+	path := "internal/i18n/generation_revision_inputs.go"
 	old, err := readRegular(root, path)
 	if err != nil {
 		t.Fatal(err)
@@ -86,6 +86,7 @@ func checkInstalledApprovedProofStaleRecoveryBoundary(t *testing.T, root string,
 		if err != nil {
 			t.Fatal(err)
 		}
+		assertSnapshotPredecessorDrift(t, root, c, batch, files)
 		var installed i18n.ApprovedIntervalTransport
 		if err := json.Unmarshal(files["formal/approved-interval-transport/"+unit+".json"], &installed); err != nil {
 			t.Fatal(err)
@@ -125,6 +126,14 @@ func checkInstalledApprovedProofStaleRecoveryBoundary(t *testing.T, root string,
 		}
 		if !reflect.DeepEqual(before, inventory()) {
 			t.Fatal("historical PASS preflight mutated evidence")
+		}
+	})
+	t.Run("ordinary-current-check-rejects-predecessor-drift", func(t *testing.T) {
+		if _, err := i18n.VerifyCurrentTranslationUnitGenerationBundle(root, c, bundle); err == nil {
+			t.Fatal("ordinary current-check accepted stale installed invocation")
+		}
+		if !reflect.DeepEqual(before, inventory()) {
+			t.Fatal("ordinary current-check changed historical evidence")
 		}
 	})
 	t.Run("pending-overlapping-successor-rejected", func(t *testing.T) {
