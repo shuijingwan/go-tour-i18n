@@ -257,13 +257,29 @@ func validateSnapshotMembershipCandidate(root string, current *Catalog, locale s
 		if reopen.UnitCount != len(m.Units) || len(reopen.Units) != len(m.Units) {
 			return nil, fmt.Errorf("Snapshot membership Surface revision scope mismatch")
 		}
+		// Manifest order is process provenance; reopen order belongs to the
+		// frozen Surface scope. Join their exact sets by identity, not position.
+		frozenByID := make(map[string]QualityCheckSurfaceReopenUnit, len(reopen.Units))
+		for _, frozen := range reopen.Units {
+			if _, duplicate := frozenByID[frozen.UnitID]; duplicate {
+				return nil, fmt.Errorf("Snapshot membership Surface revision duplicate Unit: %s", frozen.UnitID)
+			}
+			frozenByID[frozen.UnitID] = frozen
+		}
 		ref := reopen.revisionEvidence()
-		for i, record := range m.Units {
-			frozen := reopen.Units[i]
+		for _, record := range m.Units {
+			frozen, found := frozenByID[record.UnitID]
+			if !found {
+				return nil, fmt.Errorf("Snapshot membership Surface revision frozen lineage mismatch")
+			}
+			delete(frozenByID, record.UnitID)
 			old := frozen.Snapshot
 			if record.UnitID != frozen.UnitID || record.UnitKind != old.UnitKind || record.SourcePath != old.SourcePath || record.SourceSHA256 != old.SourceSHA256 || record.PreviousSnapshotID != reopen.PreviousSnapshotID || record.RevisionAuthorizationID != reopen.ReopenID || record.RevisionFeedbackSource != reopen.revisionFeedbackSource() || record.PreviousRating != "A" || record.PreviousFinding != reopen.findingForUnit(record.UnitID) || record.PreviousReviewPath != ref.Path || record.PreviousReviewSHA256 != ref.SHA256 {
 				return nil, fmt.Errorf("Snapshot membership Surface revision frozen lineage mismatch")
 			}
+		}
+		if len(frozenByID) != 0 {
+			return nil, fmt.Errorf("Snapshot membership Surface revision scope mismatch")
 		}
 	}
 	evidenceCatalog, err := snapshotRevisionEvidenceCatalog(root, current, locale, choice, c)
