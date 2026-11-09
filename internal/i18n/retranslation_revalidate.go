@@ -87,9 +87,9 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	if err != nil {
 		return nil, err
 	}
-	// An existing current-validation successor is validated as current bytes.
-	// It is not a restore recovery. Keep the old decoder path for all other
-	// feedback kinds and for restore_failed Units without an existing candidate.
+	// An ordinary current-validation successor is validated as current bytes.
+	// Installed approved transport still requires exact decoder/provenance
+	// preflight. Other feedback and restore_failed Units also keep that path.
 	currentOnly := false
 	for _, r := range result.Units {
 		if r.UnitID == options.UnitID && (r.Status == "passed" || r.Status == "validation_failed") && manifest.TransportRecovery == nil {
@@ -97,6 +97,13 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 				currentOnly = currentOnly || (record.UnitID == options.UnitID && record.RevisionFeedbackSource == CurrentValidationRevisionFeedback && record.RepresentationBridge == nil)
 			}
 		}
+	}
+	if currentOnly {
+		approved, err := installedApprovedRevalidationTransport(root, catalog, manifest)
+		if err != nil {
+			return nil, err
+		}
+		currentOnly = !approved
 	}
 	var prepared []preparedRetranslationPage
 	if currentOnly {
@@ -124,6 +131,9 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 				return nil, err
 			}
 			prepared = append(prepared, preparedRetranslationPage{unit: u, manifest: record, checkOutputContext: func() error {
+				if approved, err := installedApprovedRevalidationTransport(root, catalog, manifest); err != nil || approved {
+					return fmt.Errorf("current revalidation installed decoder context changed: %v", err)
+				}
 				fresh, err := currentValidationCandidateLineage(root, catalog, manifest)
 				if err != nil || !reflect.DeepEqual(fresh, refs) {
 					return fmt.Errorf("current revalidation lineage changed: %v", err)
@@ -458,4 +468,26 @@ func nextRevalidationHistory(batchDir, flatID string) (int, string, error) {
 	}
 	next := len(found) + 1
 	return next, filepath.ToSlash(filepath.Join(dirRelative, fmt.Sprintf("revalidation-%03d-validation.json", next))), nil
+}
+
+// Classification only: the existing strict preflight owns approved decoding.
+// Read the installed archive once at preparation and again before publication;
+// malformed/unknown inventory must never acquire current-only eligibility.
+func installedApprovedRevalidationTransport(root string, catalog *Catalog, manifest *RetranslationBatchManifest) (bool, error) {
+	selection, files, err := importedApprovedIntervalSelection(root, catalog, manifest)
+	if err != nil {
+		return false, err
+	}
+	if _, declared := files[approvedIntervalSelectionMember]; declared && selection == nil {
+		return false, fmt.Errorf("installed approved interval selection is empty or invalid")
+	}
+	if selection != nil {
+		return true, nil
+	}
+	for path := range files {
+		if strings.HasPrefix(path, "formal/approved-interval-transport/") {
+			return true, nil
+		}
+	}
+	return false, nil
 }

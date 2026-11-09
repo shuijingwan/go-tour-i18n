@@ -179,6 +179,23 @@ func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 	if rm.Attempt != 2 {
 		t.Fatal("retry attempt identity")
 	}
+	// Model the supported historical v2 writer, before candidate-SHA binding
+	// existed. Freeze these exact passed bytes before creating its Snapshot;
+	// otherwise the new current-candidate path never exercises historical proof
+	// admission. All raw/import/result facts remain the real fixture lifecycle.
+	for _, final := range p.Units {
+		path := "data/retranslation-runs/" + o.Locale + "/" + r.BatchID + "/" + final.ValidationPath
+		var validation i18n.RetranslationValidation
+		if err := json.Unmarshal(mustReadFixture(t, root, path), &validation); err != nil {
+			t.Fatal(err)
+		}
+		validation.CandidateSHA256 = ""
+		bytes, err := json.MarshalIndent(validation, "", "  ")
+		if err != nil {
+			t.Fatal(err)
+		}
+		writeFixture(t, root, path, append(bytes, '\n'))
+	}
 	snapshot, _, err := i18n.CreateQualityCheckCandidateSnapshot(root, c, i18n.QualityCheckSnapshotOptions{Locale: o.Locale, SnapshotID: "approved-after-retry"})
 	if err != nil {
 		t.Fatal("Snapshot lineage", err)

@@ -20,6 +20,14 @@ func revisionGenerationInputs(root string, catalog *Catalog, locale string, sele
 }
 
 func revisionGenerationInputsCore(root string, catalog *Catalog, locale string, selected []RetranslationBatchUnit, transports []map[string]protectedTranslation, surfaceCapability bool, selections ...*ApprovedIntervalSelection) ([]generationBundleInput, error) {
+	return revisionGenerationInputsAtPredecessor(root, catalog, locale, selected, transports, surfaceCapability, prepareProcessOutputContext, selections...)
+}
+
+// The ordinary entry above always supplies the strict process reader. Snapshot
+// owns a separate explicit frozen-decoder reader; this is no caller flag or
+// relaxation of process/retry/export currentness. Both paths build current
+// projections below and verify the predecessor raw/candidate equality.
+func revisionGenerationInputsAtPredecessor(root string, catalog *Catalog, locale string, selected []RetranslationBatchUnit, transports []map[string]protectedTranslation, surfaceCapability bool, predecessorOutput func(string, *Catalog, *Glossary, *RetranslationBatchManifest) (map[string]protectedTranslation, func() error, error), selections ...*ApprovedIntervalSelection) ([]generationBundleInput, error) {
 	var inputs []generationBundleInput
 	var approvedSelection *ApprovedIntervalSelection
 	if len(selections) > 0 {
@@ -341,7 +349,7 @@ func revisionGenerationInputsCore(root string, catalog *Catalog, locale string, 
 			projections, ok := predecessorOutputs[key]
 			if !ok {
 				var check func() error
-				projections, check, err = prepareProcessOutputContext(evidence.batchDir, predecessorCatalog, glossary, batch)
+				projections, check, err = predecessorOutput(evidence.batchDir, predecessorCatalog, glossary, batch)
 				if err != nil {
 					return nil, err
 				}

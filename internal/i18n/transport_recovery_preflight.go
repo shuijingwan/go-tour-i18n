@@ -619,49 +619,29 @@ func approvedConstructionInvariantV1(c *Catalog, u *TranslationUnit, p *Approved
 }
 
 func recoveryHistoricalFinalUnit(root string, c *Catalog, g *Glossary, m *RetranslationBatchManifest, choice selectedRetranslationUnit, initial GenerationBundleManifest, files map[string][]byte, oldAdapter TranslationUnitAdapter, current protectedTranslation, provider, model string) (*RecoveryFinalUnit, error) {
-	u, err := c.Unit(choice.manifest.UnitID)
+	verified, err := verifyHistoricalFinalCandidate(root, c, g, m, choice, oldAdapter, current)
 	if err != nil {
 		return nil, err
 	}
-	v, err := readPromotionValidation(choice.batchDir, m.BatchID, m.Locale, choice.manifest, choice.result)
-	if err != nil {
-		return nil, err
-	}
+	u, attempt := verified.unit, verified.attempt
 	base, err := repositoryRelativePath(root, choice.batchDir)
 	if err != nil {
 		return nil, err
 	}
-	cr, cb, err := recoveryDiskReference(root, base+"/"+choice.result.CandidatePath)
+	cr, cb, err := recoveryDiskReference(root, verified.candidate.path)
 	if err != nil {
 		return nil, err
 	}
-	vr, _, err := recoveryDiskReference(root, base+"/"+choice.result.ValidationPath)
+	vr, vb, err := recoveryDiskReference(root, verified.validationFile.path)
 	if err != nil {
 		return nil, err
 	}
-	rr, rb, err := recoveryDiskReference(root, base+"/"+v.RawResponsePath)
+	rr, rb, err := recoveryDiskReference(root, verified.raw.path)
 	if err != nil {
 		return nil, err
 	}
-	attempt, err := retryValidationAttemptForExtension(v.RawResponsePath, stringsRecoveryInputBase(choice.manifest.InputPath), filepath.Ext(choice.manifest.InputPath))
-	if err != nil {
-		return nil, err
-	}
-	p, err := prepareTranslationUnitInput(u, g)
-	if err != nil {
-		return nil, err
-	}
-	if oldAdapter != nil {
-		p.Adapter = oldAdapter
-	} else if current.Adapter != nil {
-		p = current
-	}
-	restored, failures := p.restore(string(rb))
-	if len(failures) != 0 || !bytes.Equal(canonicalizeRetranslationArtifactEOF([]byte(restored)), cb) || v.Status != "passed" {
-		return nil, fmt.Errorf("historical final inverse/validation mismatch")
-	}
-	if err = validateTranslationUnitWithGlossary(root, c, u, m.Locale, cb, g); err != nil {
-		return nil, err
+	if !bytes.Equal(cb, verified.candidate.data) || !bytes.Equal(vb, verified.validationFile.data) || !bytes.Equal(rb, verified.raw.data) {
+		return nil, fmt.Errorf("historical final candidate changed during verification")
 	}
 	f := &RecoveryFinalUnit{UnitID: u.ID, Attempt: attempt, Raw: rr, Candidate: cr, Validation: vr}
 	if err = verifyRecoveryFinalHistory(root, m, f, choice.manifest); err != nil {

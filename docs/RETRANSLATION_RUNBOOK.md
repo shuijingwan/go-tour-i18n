@@ -97,7 +97,9 @@ go run -mod=readonly ./cmd/tour-i18n retranslation revalidate \
   --unit-id <unit-id>
 ```
 
-该命令重新生成并核对 protected input，确认当前 validation、raw response、restore 结果、candidate、manifest 与 `result.json` 的 identity 一致，然后只用当前 canonical validator 重验现有 candidate。它不生成或修改 raw response/candidate，不增加 translation attempt；当前 validation 的 `attempt` 与 `raw_response_path` 原样保留。
+普通路径重新生成并核对 protected input，确认当前 validation、raw response、restore 结果、candidate、manifest 与 `result.json` 的 identity 一致，然后只用当前 canonical validator 重验现有 candidate。它不生成或修改 raw response/candidate，不增加 translation attempt；当前 validation 的 `attempt` 与 `raw_response_path` 原样保留。
+
+对 `current_validation` feedback 的普通 successor（不含 transport recovery、representation bridge，且不含 installed approved-interval selection/proof），若已有 restore 成功的 candidate，revalidate 使用现有 sealed reopen 验证 exact Unit、source、package/scope、previous Snapshot 与 finding/lineage，核对 manifest/result/validation 和 saved input SHA，然后用当前 canonical validator 重验现有 candidate，不为此重建 historical Generation input 或 decoder。已有 candidate SHA binding 必须先 exact 匹配，不能借 revalidate 接受被替换的已绑定 candidate。旧 evidence 无 binding 时，新重验只证明本次实际验证的 bytes，不补称旧 invocation 曾绑定该 SHA，也不重建或改写旧 archive。`restore_failed` 的恢复及其它 feedback 路径仍执行原严格 restore/provenance 校验。若 initial imported Generation Bundle 含 approved-interval selection/proof，revalidate 仍按 [approved-interval migration contract](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md) 执行原 strict decoder/provenance preflight，不能刷新或绕过 stale installed proof；malformed selection、未选中的 extra proof 或 import/archive 读取错误均 fail closed。
 
 每次更新前，旧 validation evidence 按原始字节归档到 `revalidation-history/<flattened-unit-id>/revalidation-NNN-validation.json`。这个连续编号只表示 validator revalidation 次数，不是 translation attempt。随后命令原子更新当前 `validation/<unit>.json` 和 `result.json`。默认 human summary 显示 attempt、revalidation 序号、前后状态和 history/current evidence path；`--json` 输出完整 revalidation result。
 
@@ -106,6 +108,10 @@ go run -mod=readonly ./cmd/tour-i18n retranslation revalidate \
 恢复时从同一 raw response重新 restore，以既有 EOF 契约写 candidate，并执行当前 canonical validation。旧 validation **原始字节**保存在既有 `revalidation-history/<flattened-unit-id>/revalidation-NNN-validation.json`；旧 `result.json` 原始字节同时保存在同目录的 `revalidation-NNN-result.json`。candidate 与 current validation/result 使用既有 file-update transaction 一起落盘，历史 require-missing，不覆盖旧 evidence。真实 candidate defect 保留为新的 `validation_failed` evidence，CLI 在输出 evidence 后返回 non-zero，停止并决定 exact retry；不自动修改语言。
 
 Candidate Snapshot 仍读取当前 `validation/` evidence，并绑定其 SHA-256；revalidation 后的 evidence 是最终 evidence，但 attempt 仍由未变的 raw-response provenance 决定。非 `restore_failed` Unit 缺 candidate 仍禁止恢复；真正需要新译文时使用 Retry，而不是借 revalidate 伪造 Generation。
+
+Automatic validation schema v2 显式增加可选 `candidate_sha256`：process/retry/revalidate 在当前 validator PASS 后写入实际 candidate bytes（含既有 EOF 规则）的 SHA-256；新失败 evidence 不授予 PASS binding。严格 reader 拒绝 malformed SHA 或没有 candidate path 的 binding。它属于原 validation JSON，进入现有 validation bytes hash / Snapshot evidence identity，不引入新 authority、receipt 或 CLI。旧 v1/v2 evidence 没有该字段时不推断、不自动升级；历史 bytes 原样保留，显式 revalidate 仍按既有 transaction 将旧 validation 原字节归档后发布新 evidence。
+
+Candidate Snapshot 仅对具有该 binding 的普通 `current_validation` successor 使用 current candidate eligibility 路径：candidate path/bytes/SHA、Unit/result/status/attempt、当前 source、active validator、完整 glossary Review、membership、exact reopen finding/scope/lineage 全部必须通过，commit 前重新检查。候选被替换成另一份同样通过 validator 的译文也会因 SHA mismatch 失败。此路径不为证明 candidate 未变而重放 historical raw/decoder/approved-interval implementation；历史 Generation/provenance 留作 audit/recovery 的独立 evidence。旧 unbound evidence、其它 feedback 与 transport-recovery/representation-bridge invocation 不取得该例外，继续原严格 reader；新 candidate 不继承旧 Reviewer A，后续 Independent QC、Surface 与 Production gate 不变。command currentness/consumer 语义已变化，首次真实 revalidation/Snapshot 前仍须完成 current docs → implementation → direct contract tests 的 first-real-use gate。
 
 ## 5. Retry：只处理 restore/validation failure
 
@@ -139,6 +145,14 @@ go run -mod=readonly ./cmd/tour-i18n retranslation retry \
 ## 6. Candidate Snapshot
 
 Candidate Snapshot 的 scope 必须由下述显式 contract 确定，不从 Snapshot ID、batch 名称或命令经验推导。省略 `--content-package` 的正式 CLI 固定选择 native Tour workflow（当前 103 Page + 19 eligible Example）；`site-v2-shell-*` 这样的 Snapshot ID **不会**选择 shell package。完整所选 scope 的所有 TranslationUnit 都有通过 automatic validation 的最终 candidate 后，才能生成 Snapshot。
+
+approved-interval 的完整 historical PASS 按 [Snapshot admission 合同](TRANSLATION_TASK_SPEC.md)
+核验：历史 result/validation/raw/import/archive/proof integrity 与当前 decoder/proof reproduction
+分开。implementation SHA/producer/decoder drift 本身不撤销历史 PASS；仅在全部 typed semantic
+evidence 和非 implementation dependencies exact、原批完整 PASS/最新选择无冲突、raw exact
+还原 candidate 且当前 active validator/source/membership/eligibility 全通过时，允许 Snapshot
+继续。tampered/missing evidence、semantic invalidation 或当前 validation failure 仍 fail closed。
+不改历史 evidence、不刷新旧 invocation、不自动继承 A，且仍须实现后的 first-real-use gate。
 
 Tour legacy/default 命令保持：
 
@@ -549,8 +563,9 @@ approved-interval representation transport 的 [contract v2 已实现](CURRENT_V
 显式 selection、legacy refs 与 approved-interval proof 全部冻结在 derived Bundle graph，不修改064 manifest；`SAME_BATCH_064_REFRESH_POSSIBLE=yes` 是安装前的架构可能性，仍不代表 lifecycle authorization。whole parent 不可编辑、不拆 target atoms，typed finding nonoverlap、active validation/current glossary、独立 re-QC/A-only 均保留。原 migration 在 `current-validation-approved-interval-first-real-use-gate` 前不授权真实 selection、064 export/current-check 或 Generation；不因此重做后来已经完成的 invocation。current-check 不依赖 external selection 文件继续存在；后续 process/retry/Snapshot 沿真实 initial import archive 的 frozen request 重构 proof。retry 必须继承同一 request，不允许换 authority 或省略 opaque protection。
 
 上述same-batch可能性只覆盖尚未installed的transport刷新。installed approved proof出现
-implementation/dependency drift时，历史PASS不提供当前Snapshot eligibility；现有re-export、
-retry、revalidate和换reopen ID的拒绝边界不变。后续工程遵循
+implementation/dependency drift时，Snapshot 可仅按第6节的完整 historical-PASS admission
+重新证明 eligibility；旧 proof 不因此变成 CURRENT。现有re-export、retry、revalidate和换
+reopen ID的拒绝边界不变。确需新的 invocation 时，后续工程遵循
 [Installed derived-transport stale recovery设计v1](INSTALLED_DERIVED_TRANSPORT_STALE_RECOVERY_DESIGN.md)：
 恢复整个原batch decoder context，重新进行该完整scope的Generation，不carry其中未直接
 drift的candidate；batch外仍走普通currentness/A-carry。实现的synthetic verification不能据此授权

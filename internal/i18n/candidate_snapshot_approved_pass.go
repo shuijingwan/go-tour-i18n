@@ -115,20 +115,33 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 	if err := RequireNewLanguageGlossaryReview(root, m.Locale); err != nil {
 		return nil, err
 	}
+	// Preserve the complete ordinary fast path, including non-approved sibling
+	// decoder variants. Only Snapshot owns the independent reconstruction below
+	// when strict reproduction cannot establish an exact-current invocation.
 	outputs := map[string]protectedTranslation{}
-	inputs, err := revisionGenerationInputsCore(root, c, m.Locale, m.Units, []map[string]protectedTranslation{outputs}, false, selection)
-	if err != nil {
-		return nil, err
+	inputs, strictErr := revisionGenerationInputsCore(root, c, m.Locale, m.Units, []map[string]protectedTranslation{outputs}, false, selection)
+	if strictErr == nil {
+		inputs, strictErr = applySurfaceTransportInWorld(root, c, m.Locale, m.Units, inputs, true)
+		if strictErr == nil && compareInstalledApprovedProofs(inputs, files) == nil {
+			return nil, nil
+		}
 	}
-	inputs, err = applySurfaceTransportInWorld(root, c, m.Locale, m.Units, inputs, true)
-	if err != nil {
-		return nil, err
+	observed := map[string]string{}
+	if strictErr != nil {
+		outputs = map[string]protectedTranslation{}
+		predecessorOutput := func(dir string, catalog *Catalog, glossary *Glossary, manifest *RetranslationBatchManifest) (map[string]protectedTranslation, func() error, error) {
+			return snapshotFrozenPredecessorOutputs(root, dir, catalog, glossary, manifest, observed)
+		}
+		inputs, err = revisionGenerationInputsAtPredecessor(root, c, m.Locale, m.Units, []map[string]protectedTranslation{outputs}, false, predecessorOutput, selection)
+		if err != nil {
+			return nil, err
+		}
+		inputs, err = applySurfaceTransportInWorld(root, c, m.Locale, m.Units, inputs, true)
+		if err != nil {
+			return nil, err
+		}
 	}
-	// Preserve the ordinary exact-current path, including its existing gates.
-	if compareInstalledApprovedProofs(inputs, files) == nil {
-		return nil, nil
-	}
-	state := &snapshotApprovedPass{inputs: append([]generationBundleInput{}, inputs...), outputs: outputs, observed: map[string]string{}}
+	state := &snapshotApprovedPass{inputs: append([]generationBundleInput{}, inputs...), outputs: outputs, observed: observed}
 	observe := func(path string) ([]byte, error) {
 		b, err := readSnapshotReferencedFile(root, path)
 		if err == nil {
@@ -320,6 +333,159 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 		return nil, err
 	}
 	return state, nil
+}
+
+// A nested ancestor supplies a frozen response decoder, not a current candidate
+// selection or an admission decision. Its exact imported archive is the sole
+// locator. The surrounding revision builder checks raw -> Snapshot candidate;
+// the selected batch still reconstructs its own current proof and passes the
+// full historical-PASS/equivalence/current-validator checks above. No recursion
+// through process or Snapshot selection is used for an approved ancestor.
+func snapshotFrozenPredecessorOutputs(root, dir string, c *Catalog, g *Glossary, m *RetranslationBatchManifest, observed map[string]string) (map[string]protectedTranslation, func() error, error) {
+	if m.TransportRecovery != nil {
+		return prepareProcessOutputContext(dir, c, g, m)
+	}
+	selection, files, err := importedApprovedIntervalSelection(root, c, m)
+	if err != nil || selection == nil {
+		if err != nil {
+			return nil, nil, err
+		}
+		return prepareProcessOutputContext(dir, c, g, m)
+	}
+	base, err := repositoryRelativePath(root, dir)
+	if err != nil {
+		return nil, nil, err
+	}
+	refs := map[string]string{}
+	bind := func(path string) ([]byte, error) {
+		b, err := readSnapshotReferencedFile(root, path)
+		if err != nil {
+			return nil, err
+		}
+		sha := sum(b)
+		if old, ok := observed[path]; ok && old != sha {
+			return nil, fmt.Errorf("Snapshot frozen predecessor changed: %s", path)
+		}
+		observed[path], refs[path] = sha, sha
+		return b, nil
+	}
+	ib, err := bind(base + "/generation-imports/initial-manifest.json")
+	if err != nil {
+		return nil, nil, err
+	}
+	var receipt GenerationResultBundleManifest
+	if err := contentidentity.StrictJSON(ib, &receipt); err != nil {
+		return nil, nil, err
+	}
+	if _, err := bind(importedGenerationArchive(m.Locale, receipt.GenerationBundleSHA256)); err != nil {
+		return nil, nil, err
+	}
+	if _, err := bind(base + "/manifest.json"); err != nil {
+		return nil, nil, err
+	}
+	implementation := map[string]bool{}
+	for _, path := range approvedIntervalImplementationPaths {
+		implementation[path] = true
+	}
+	outputs := map[string]protectedTranslation{}
+	frozenInputs := []generationBundleInput{{path: approvedIntervalSelectionMember, data: selection.bytes}, {path: "formal/manifest.json", data: files["formal/manifest.json"]}}
+	expectedProofs := map[string]bool{}
+	for _, r := range m.Units {
+		u, err := c.Unit(r.UnitID)
+		if err != nil {
+			return nil, nil, err
+		}
+		p, err := prepareTranslationUnitInput(u, g)
+		if err != nil {
+			return nil, nil, err
+		}
+		if r.SourcePath != u.SourcePath || r.SourceSHA256 != u.SourceSHA256 || sum(canonicalizeRetranslationArtifactEOF([]byte(p.Text))) != r.InputSHA256 || !bytes.Equal(files["formal/"+r.InputPath], canonicalizeRetranslationArtifactEOF([]byte(p.Text))) {
+			return nil, nil, fmt.Errorf("Snapshot frozen predecessor source/input changed: %s", r.UnitID)
+		}
+		proof, err := recoveryProofFromFiles(files, r.UnitID)
+		if err != nil {
+			return nil, nil, err
+		}
+		if selection.entry(r.UnitID) != nil {
+			if proof == nil || proof.SelectionSHA256 != sum(selection.bytes) || !reflect.DeepEqual(proof.Record, r) {
+				return nil, nil, fmt.Errorf("Snapshot frozen predecessor proof/selection mismatch")
+			}
+			_, decoder, err := typedApprovedConstruction(c, u, proof)
+			if err != nil || decoder == nil {
+				return nil, nil, fmt.Errorf("Snapshot frozen predecessor inverse unavailable: %v", err)
+			}
+			p.Adapter = decoder
+			expectedProofs[approvedIntervalProofMember(r.UnitID)] = true
+			frozenInputs = append(frozenInputs, generationBundleInput{path: approvedIntervalProofMember(r.UnitID), data: files[approvedIntervalProofMember(r.UnitID)]})
+			for _, ref := range proof.Dependencies {
+				if implementation[ref.Path] {
+					continue
+				}
+				b, err := bind(ref.Path)
+				if err != nil || sum(b) != ref.SHA256 {
+					return nil, nil, fmt.Errorf("Snapshot frozen predecessor dependency changed: %s", ref.Path)
+				}
+			}
+		} else if proof != nil || r.RepresentationBridge != nil || len(files[commentTransportPath(r)]) != 0 || len(files["formal/current-validation-predecessor-transport/"+filepath.Base(r.InputPath)+".json"]) != 0 {
+			return nil, nil, fmt.Errorf("Snapshot frozen predecessor requires its strict non-approved decoder: %s", r.UnitID)
+		}
+		outputs[r.UnitID] = p
+	}
+	for path := range files {
+		if strings.HasPrefix(path, "formal/approved-interval-transport/") && !expectedProofs[path] {
+			return nil, nil, fmt.Errorf("Snapshot frozen predecessor has an extra approved proof")
+		}
+	}
+	// Bind the exact original import and all final raw provenance, without
+	// reconstructing its historical implementation or granting it eligibility.
+	result, err := readPromotionResult(dir, m.Locale, m.BatchID, len(m.Units))
+	if err != nil {
+		return nil, nil, err
+	}
+	rb, err := bind(base + "/result.json")
+	if err != nil {
+		return nil, nil, err
+	}
+	if err := snapshotCanonicalHistoricalJSON(result, rb); err != nil {
+		return nil, nil, err
+	}
+	if result.RestorePassed != len(m.Units) || result.RestoreFailed != 0 || result.ValidationPassed != len(m.Units) || result.ValidationFailed != 0 {
+		return nil, nil, fmt.Errorf("Snapshot frozen predecessor is not complete historical PASS")
+	}
+	for i, r := range m.Units {
+		if i >= len(result.Units) || result.Units[i].UnitID != r.UnitID || result.Units[i].Status != "passed" {
+			return nil, nil, fmt.Errorf("Snapshot frozen predecessor final result mismatch")
+		}
+		v, err := readPromotionValidation(dir, m.BatchID, m.Locale, r, result.Units[i])
+		if err != nil {
+			return nil, nil, err
+		}
+		choice := selectedRetranslationUnit{batchID: m.BatchID, batchDir: dir, manifest: r, result: result.Units[i]}
+		candidate := &validatedRetranslationCandidate{validation: v, attempt: v.Attempt}
+		history, err := verifyImportedRevisionInvocationInputs(root, c, m.Locale, choice, candidate, m, frozenInputs)
+		if err != nil {
+			return nil, nil, err
+		}
+		for _, ref := range history {
+			if b, err := bind(ref.Path); err != nil || sum(b) != ref.SHA256 {
+				return nil, nil, fmt.Errorf("Snapshot frozen predecessor import changed")
+			}
+		}
+		for _, path := range []string{result.Units[i].CandidatePath, result.Units[i].ValidationPath, v.RawResponsePath} {
+			if _, err := bind(base + "/" + path); err != nil {
+				return nil, nil, err
+			}
+		}
+	}
+	return outputs, func() error {
+		for path, sha := range refs {
+			b, err := readSnapshotReferencedFile(root, path)
+			if err != nil || sum(b) != sha {
+				return fmt.Errorf("Snapshot frozen predecessor changed: %s", path)
+			}
+		}
+		return nil
+	}, nil
 }
 
 func prepareSnapshotOutputContext(batchDir string, c *Catalog, g *Glossary, m *RetranslationBatchManifest, selected map[string]selectedRetranslationUnit) (map[string]protectedTranslation, func() error, error) {
