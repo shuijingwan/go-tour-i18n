@@ -645,9 +645,10 @@ func checkSharedRepresentationSource(root string, g *Global, r SharedRepresentat
 // and consumed Bundle paths are separately derived exact, mandatory inputs.
 // Retain every prior fingerprint when evolving the declared creation profile.
 const (
-	sharedLegacyProfileSHA     = "f3d9fbe15ba2e3a474c98c5a46d04b1c3af869f8b5baa26b63a8d59dbd58f0f8"
-	sharedExtendedV1ProfileSHA = "11a0c0d22ffbc1f14a3d3ec72eef11574971e46486755469feaf3e3b3bfa9292"
-	sharedAuditV2ProfileSHA    = "71d3a48ee30b9570b7a0800535a865a6b3148559296645302ef88b6a0511d49b"
+	sharedLegacyProfileSHA         = "f3d9fbe15ba2e3a474c98c5a46d04b1c3af869f8b5baa26b63a8d59dbd58f0f8"
+	sharedExtendedV1ProfileSHA     = "11a0c0d22ffbc1f14a3d3ec72eef11574971e46486755469feaf3e3b3bfa9292"
+	sharedAuditV2ProfileSHA        = "71d3a48ee30b9570b7a0800535a865a6b3148559296645302ef88b6a0511d49b"
+	sharedRepositoryModeProfileSHA = "079cbe653a9085cd7276451784f05388fba6b3d858f22d528fb756fc01b73240"
 )
 
 func sharedFrozenProfilePaths(frozen []ShellRepresentationInput, bundle string) ([]string, error) {
@@ -680,7 +681,7 @@ func sharedFrozenProfilePaths(frozen []ShellRepresentationInput, bundle string) 
 		return nil, fmt.Errorf("shared dependency exact-set mismatch: corpus/consumed Bundle")
 	}
 	switch identity(implementation) {
-	case sharedLegacyProfileSHA, sharedExtendedV1ProfileSHA, sharedAuditV2ProfileSHA:
+	case sharedLegacyProfileSHA, sharedExtendedV1ProfileSHA, sharedAuditV2ProfileSHA, sharedRepositoryModeProfileSHA:
 		return paths, nil
 	default:
 		return nil, fmt.Errorf("shared dependency exact-set mismatch: unrecognized canonical profile")
@@ -709,7 +710,11 @@ func sharedRepresentationCurrentInputs(root string, r SharedRepresentationSucces
 		if err != nil {
 			return nil, err
 		}
-		inputs = append(inputs, ShellRepresentationInput{Reference: Reference{path, digest(b)}, Mode: uint32(st.Mode())})
+		mode, err := representationFileMode(st.Mode())
+		if err != nil {
+			return nil, err
+		}
+		inputs = append(inputs, ShellRepresentationInput{Reference: Reference{path, digest(b)}, Mode: mode})
 	}
 	if err := v.guard.bind(r.Request.Generation); err != nil {
 		return nil, err

@@ -12,6 +12,7 @@ const SharedReattestationRoot = "data/site-shell/shared-representation-reattesta
 const SharedReattestationPending = "data/.shared-structured-representation-reattestation-pending"
 
 var sharedReattestationValidationPaths = []string{
+	repositoryModeImplementation,
 	"internal/languageaudit/audit.go", "internal/languageaudit/policy.go", "internal/languageview/html.go", "internal/languageview/identity.go", "internal/languageview/semantic_role.go", "internal/languageview/semantic_go_packages.go", "internal/i18n/language_audit.go", "internal/i18n/language_audit_tour.go", "internal/i18n/language_audit_ui.go", "internal/i18n/language_audit_surface.go", "internal/sitecontent/language_audit_formal.go", "internal/sitecontent/language_audit_view.go", "internal/sitecontent/language_audit_tour.go", "docs/LANGUAGE_DEFECT_EXHAUSTION.md",
 	"internal/sitecontent/shared_representation_reattestation.go",
 	"internal/sitecontent/shared_representation_reattestation_publication.go",
@@ -77,10 +78,10 @@ func sharedDependencyChanges(old, current []ShellRepresentationInput) ([]ShellRe
 	changes := []ShellRepresentationDependencyChange{}
 	for i, a := range old {
 		b := current[i]
-		if a.Reference.Path != b.Reference.Path || a.Mode != b.Mode || a.Absent != b.Absent || a.Absent || !validSHA(a.Reference.SHA256) || !validSHA(b.Reference.SHA256) || (i > 0 && old[i-1].Reference.Path >= a.Reference.Path) {
+		if a.Reference.Path != b.Reference.Path || !sameRepresentationMode(a, b) || a.Absent != b.Absent || a.Absent || !validSHA(a.Reference.SHA256) || !validSHA(b.Reference.SHA256) || (i > 0 && old[i-1].Reference.Path >= a.Reference.Path) {
 			return nil, fmt.Errorf("shared dependency path/mode/absence changed: %s", a.Reference.Path)
 		}
-		if a == b {
+		if a.Reference == b.Reference {
 			continue
 		}
 		allowed := false
@@ -150,7 +151,11 @@ func buildSharedReattestation(root string, pointer, ref Reference, base *SharedR
 		if err != nil {
 			return nil, err
 		}
-		r.ValidationInputs = append(r.ValidationInputs, ShellRepresentationInput{Reference: Reference{path, digest(b)}, Mode: uint32(st.Mode())})
+		mode, err := representationFileMode(st.Mode())
+		if err != nil {
+			return nil, err
+		}
+		r.ValidationInputs = append(r.ValidationInputs, ShellRepresentationInput{Reference: Reference{path, digest(b)}, Mode: mode})
 	}
 	r.Identity = identity(*r)
 	return r, nil
@@ -214,7 +219,7 @@ func currentSharedRepresentationDependencies(root string, base SharedRepresentat
 	want.Previous = r.Previous
 	want.Identity = ""
 	want.Identity = identity(*want)
-	if !reflect.DeepEqual(*want, *r) {
+	if !sameSharedReattestationCurrentness(*want, *r) {
 		return fmt.Errorf("shared dependency re-attestation stale")
 	}
 	return nil
@@ -246,7 +251,7 @@ func planSharedReattestationAt(root string, g *Global, ref Reference, v *structu
 		probe.Previous = previous.Previous
 		probe.Identity = ""
 		probe.Identity = identity(probe)
-		if reflect.DeepEqual(probe, *previous) {
+		if sameSharedReattestationCurrentness(probe, *previous) {
 			return nil, fmt.Errorf("shared re-attestation already current; inspect original exact plan")
 		}
 	}

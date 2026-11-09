@@ -75,6 +75,7 @@ type ShellRepresentationResult struct {
 }
 
 var shellRepresentationParserPaths = []string{
+	repositoryModeImplementation,
 	"internal/sitecontent/shell_representation_successor.go", "docs/SHELL_REPRESENTATION_SUCCESSOR.md",
 	"internal/sitecontent/shell_representation_parser.go", "internal/i18n/semantic_teaching_body.go",
 	"internal/sitecontent/shell_inline.go", "internal/sitecontent/shell_language_source.go",
@@ -170,8 +171,27 @@ func shellRepresentationBasis(root string, g *Global, v *structuredSuccessorVali
 	}
 	return ShellRepresentationBasis{LocaleScope: "all-locales", HistoricalSnapshotSHA: g.SnapshotSHA256, Package: p, Source: rawRef, Adoption: pointer, Foundation: a.Foundation, SourceHeads: append([]Reference(nil), g.StructuredSuccessors...)}, nil
 }
-func shellRepresentationInputs(root string, b ShellRepresentationBasis, v *structuredSuccessorValidation) ([]ShellRepresentationInput, error) {
+func shellRepresentationInputs(root string, b ShellRepresentationBasis, v *structuredSuccessorValidation, frozen ...[]ShellRepresentationInput) ([]ShellRepresentationInput, error) {
 	paths := append([]string{}, shellRepresentationParserPaths...)
+	// One explicit historical inventory boundary: old bases predate this
+	// dependency. Preserve their exact path set; additive validation_inputs
+	// always bind the current mode implementation. New bases bind it directly.
+	modeDependency := len(frozen) == 0
+	if len(frozen) > 0 {
+		for _, in := range frozen[0] {
+			modeDependency = modeDependency || in.Reference.Path == repositoryModeImplementation
+		}
+	}
+	if modeDependency {
+		paths = append(paths, repositoryModeImplementation)
+	} else {
+		for i, path := range paths {
+			if path == repositoryModeImplementation {
+				paths = append(paths[:i], paths[i+1:]...)
+				break
+			}
+		}
+	}
 	paths = append(paths, b.Source.Path, ShellAdoptionCurrent, b.Adoption.Path, b.Foundation.Path, GlobalPath, SourceManifestPath, SnapshotPath)
 	for _, r := range b.SourceHeads {
 		paths = append(paths, r.Path)
@@ -221,11 +241,15 @@ func shellRepresentationInputs(root string, b ShellRepresentationBasis, v *struc
 		if err != nil {
 			return nil, err
 		}
-		out = append(out, ShellRepresentationInput{Reference: Reference{name, digest(raw)}, Mode: uint32(st.Mode())})
+		mode, err := representationFileMode(st.Mode())
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, ShellRepresentationInput{Reference: Reference{name, digest(raw)}, Mode: mode})
 	}
 	return out, nil
 }
-func buildShellRepresentationAuthority(root string, g *Global, prior *Reference, old ShellRepresentation, rule string, v *structuredSuccessorValidation) (*ShellRepresentationSuccessor, error) {
+func buildShellRepresentationAuthority(root string, g *Global, prior *Reference, old ShellRepresentation, rule string, v *structuredSuccessorValidation, frozen ...[]ShellRepresentationInput) (*ShellRepresentationSuccessor, error) {
 	basis, err := shellRepresentationBasis(root, g, v)
 	if err != nil {
 		return nil, err
@@ -234,7 +258,7 @@ func buildShellRepresentationAuthority(root string, g *Global, prior *Reference,
 	if err != nil {
 		return nil, err
 	}
-	inputs, err := shellRepresentationInputs(root, basis, v)
+	inputs, err := shellRepresentationInputs(root, basis, v, frozen...)
 	if err != nil {
 		return nil, err
 	}
@@ -246,7 +270,11 @@ func buildShellRepresentationAuthority(root string, g *Global, prior *Reference,
 		if err != nil {
 			return nil, err
 		}
-		inputs = append(inputs, ShellRepresentationInput{Reference: *prior, Mode: uint32(st.Mode())})
+		mode, err := representationFileMode(st.Mode())
+		if err != nil {
+			return nil, err
+		}
+		inputs = append(inputs, ShellRepresentationInput{Reference: *prior, Mode: mode})
 		sort.Slice(inputs, func(i, j int) bool { return inputs[i].Reference.Path < inputs[j].Reference.Path })
 	}
 	next, err := prospectiveShellRepresentation(basis.Source.Path, raw, rule)
@@ -319,10 +347,14 @@ func checkShellRepresentation(root string, g *Global, ref Reference, v *structur
 	if !reflect.DeepEqual(old, r.Old) || r.PredecessorIdentity != old.Identity {
 		return nil, fmt.Errorf("representation predecessor discontinuity")
 	}
-	want, err := buildShellRepresentationAuthority(root, g, r.Predecessor, old, r.New.Parser, v)
+	want, err := buildShellRepresentationAuthority(root, g, r.Predecessor, old, r.New.Parser, v, r.Inputs)
 	if err != nil {
 		return nil, err
 	}
+	if !sameRepresentationInputs(want.Inputs, r.Inputs) {
+		return nil, fmt.Errorf("canonical representation/source/dependencies stale")
+	}
+	want.Inputs, want.Identity = r.Inputs, r.Identity
 	if !reflect.DeepEqual(*want, r) {
 		return nil, fmt.Errorf("canonical representation/source/dependencies stale")
 	}

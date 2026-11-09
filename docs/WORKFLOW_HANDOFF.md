@@ -133,6 +133,16 @@ Codex 优先用于 correctness bug、reusable workflow blocker、activation/Prod
 
 Maintainer 或 Coordinator 在一次正常 FAILED 后，若需要连续多轮 exploratory commands 才能确定唯一下一步，应视为 workflow complexity warning，先重新评估当前路径。不能默认通过更多 command、wrapper、receipt 或 proof 解决 operability 问题。尤其多 locale workflow 必须尽量保持 machine-decidable、bounded、single-next-step；本原则不授权新增 orchestrator、schema、registry 或 framework。
 
+#### Route Convergence
+
+不要 gate-chasing，也不要 route-chasing。修复一个 gate 后暴露新的独立 historical/recovery/infrastructure blocker，且 lifecycle 未推进正式阶段时，继续执行既有 Complexity Reassessment；但多个 error 不等于多个 blocker，是否独立以 root cause 判断，不以错误消息数量判断。同根症状不能机械计为多层 blocker，也不能每出现一个症状就换一条路径。
+
+1. **Alternative-path budget：**第一次遇到 blocker 后，至多验证一个明显更小、已有合法 contract 支持的替代路径。这是上限，不是必做步骤；root cause 已明确时可以直接进入 root-fix admission。original path 与该 alternative 因同一 root cause 失败后，停止寻找第三、第四个 workaround，不再横向 route exploration，进入 Complexity Reassessment。
+2. **Root-fix convergence：**若 shared root cause 至少满足既有 Infrastructure Admission Gate 的一项——跨 locale/package/多次 workflow 的显著长期收益，实际 data loss/unsafe mutation/Production correctness-security 风险，或当前 Production/activation/正常 lifecycle 的真实 hard blocker 且无更小合法路径——并存在 bounded repair，应在明确工程授权范围内收敛到最小 root fix，完成 targeted implementation 与 targeted validation。不得用第三、第四个临时 copy、chmod/umask workaround、one-off wrapper、新临时 proof 层或 locale-specific bypass 回避已明确的 shared root cause。
+3. **新的独立复杂度层：**进入 root fix 后，普通 implementation error、targeted test failure 或同根 symptom 不自动触发换路，也不自动计为新的独立 blocker；应在原 bounded scope 内修正并验证。只有又要求 new schema、new authority family、historical decoder/reconstruction、generalized recovery framework、recovery 又需要 recovery，或出现与原 root cause 独立的 infrastructure blocker 等新复杂度层时，才因该新层再次停止并重新 Complexity Reassessment；不能沿新层自动扩张。
+
+本规则补足停止线的另一面，防止反复横向探索却不推进 lifecycle，不鼓励遇到 blocker 就无限硬修。`BUG_EXISTS != PRODUCTION_BLOCKER_REQUIRES_FIX`、infrastructure admission、sunk cost 不构成继续理由、translation/lifecycle progression priority、historical reconstruction cold path、全部 fail-closed gate，以及既有耗时、预算、授权与 mutation=unknown 停止线保持不变；本节不新增 schema、authority、CLI 或 framework，也不授权任何 formal mutation。
+
 ## Formal Command Contract v3
 
 本节是 formal command 的通用交接标准，具体命令合同仍归各自 canonical docs；不新增 receipt schema、持久化 registry 或运行权限。集中字段说明见 [Package closure](SITE_V2_WORKFLOW.md#package-closure-canonical-command-contract)、[Surface scope](SITE_V2_WORKFLOW.md#surface-scope-canonical-command-contract) 与 [Shared re-attestation plan fields](SITE_V2_WORKFLOW.md#shared-re-attestation-plan-field-semantics)；其它实例见 [Activation](SITE_V2_WORKFLOW.md#activation-canonical-command-contract)、[Integrated Surface](SITE_V2_WORKFLOW.md#integrated-surface-reviewer-bundle) 与 [Shell representation command matrix](SHELL_REPRESENTATION_SUCCESSOR.md#command-matrix)。不要求机械迁移所有旧命令。

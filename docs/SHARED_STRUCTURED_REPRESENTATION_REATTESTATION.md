@@ -2,6 +2,8 @@
 
 schema 为 `go-learning/shared-structured-representation-reattestation/v1`，plan schema 加 `/plan`。这是 shared structured family 的独立 dependency authority，`all-locales`；不授权 representation topology、source、owner、语言 output、PASS、closure 或 activation。Homepage family 的 schema、pointer 与 re-attestation 均不能代用。
 
+mode equality 使用 [repository-reproducible safety class](REPO_LOCAL_FROZEN_SOURCE.md#repository-reproducible-file-mode)：仅投影 owner/group write observation，0664 与 0644 可等价；read/execute、regular/no-symlink、absence、path/SHA 不变。新 inputs 写 canonical class；旧 base、old input inventory、raw receipt bytes/self identity/物理 SHA 原样验证，不修改旧 envelope。仅已验证的 typed current/validation inputs 与 changed-dependency modes 按类别比较；mode-only observation 不产生 dependency delta。active checker/解释器 SHA 或 validation inventory 变化仍需现有 family 的新 re-attestation，不由兼容解释自动授予 CURRENT。
+
 ## Bootstrap 与 invariant
 
 输入为 exact installed shared representation successor receipt Reference，必须与其 package/asset keyed head 一致。bootstrap 不要求旧 dependency/currentness 已 PASS；先验证 base self-identity/path/SHA、完整 predecessor lineage、frozen Document/raw round-trip、真实 consumed Generation 的 frozen transport/registry/output/provenance，再独立重建今天的 source authority、registry 和完整 old→new topology。
@@ -25,6 +27,7 @@ legitimacy 使用代码中追加式的 **canonical profile fingerprints**。从�
 | legacy | 15 | `f3d9fbe15ba2e3a474c98c5a46d04b1c3af869f8b5baa26b63a8d59dbd58f0f8` |
 | extended-v1（最初 additive checker） | 23 | `11a0c0d22ffbc1f14a3d3ec72eef11574971e46486755469feaf3e3b3bfa9292` |
 | language-audit-v2 | 37 | `71d3a48ee30b9570b7a0800535a865a6b3148559296645302ef88b6a0511d49b` |
+| repository-mode | 38 | `079cbe653a9085cd7276451784f05388fba6b3d858f22d528fb756fc01b73240` |
 
 每个完整 inventory 另含上述两个 mandatory inputs。新建 base 使用今天声明的完整 parser + validation profile，并同样要求已登记的 canonical fingerprint。以后扩大 creation profile 时，必须保留所有旧 fingerprint、追加审定的新 epoch，并同步 docs/direct contract tests；未登记的新 profile 也 fail closed。不能覆盖旧 fingerprint，不能从待验证 base 自动学习可信 profile。这是 reader 内的版本识别，不新增 artifact、registry lifecycle、schema 或 receipt field。
 

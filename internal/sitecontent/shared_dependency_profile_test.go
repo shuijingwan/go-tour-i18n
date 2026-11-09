@@ -81,7 +81,11 @@ func snapshotSharedProfile(t *testing.T, root string, paths []string) []ShellRep
 		if err != nil {
 			t.Fatal(err)
 		}
-		inputs = append(inputs, ShellRepresentationInput{Reference: ref, Mode: uint32(st.Mode())})
+		mode, err := representationFileMode(st.Mode())
+		if err != nil {
+			t.Fatal(err)
+		}
+		inputs = append(inputs, ShellRepresentationInput{Reference: ref, Mode: mode})
 	}
 	return inputs
 }
@@ -110,13 +114,20 @@ func TestSharedFrozenDependencyProfiles(t *testing.T) {
 	for _, in := range latest {
 		latestPaths = append(latestPaths, in.Reference.Path)
 	}
+	auditV2Paths := []string{}
+	for _, path := range latestPaths {
+		if path != repositoryModeImplementation {
+			auditV2Paths = append(auditV2Paths, path)
+		}
+	}
 	for _, tc := range []struct {
 		name, fingerprint string
 		paths             []string
 	}{
 		{"legacy", sharedLegacyProfileSHA, recordedSharedProfilePaths(t, Reference{installedShared008Receipt, installedShared008ReceiptSHA}, bundle)},
 		{"historical-extended", sharedExtendedV1ProfileSHA, recordedSharedProfilePaths(t, Reference{profileExtendedReceipt, profileExtendedReceiptSHA}, bundle)},
-		{"latest", sharedAuditV2ProfileSHA, latestPaths},
+		{"historical-audit-v2", sharedAuditV2ProfileSHA, auditV2Paths},
+		{"latest", sharedRepositoryModeProfileSHA, latestPaths},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			r := base

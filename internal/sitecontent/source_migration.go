@@ -219,7 +219,10 @@ func planSourceMigration(root, websiteRoot string) (*sourceMigrationPlan, error)
 			p.baseline[name] = current
 			p.result.PathCollisions++
 			info, _ := os.Lstat(pathJoin(root, name))
-			f.LocalMode = uint32(info.Mode().Perm())
+			f.LocalMode, err = sourcestorage.RepositoryFileMode(info.Mode())
+			if err != nil {
+				return nil, err
+			}
 			if bytes.Equal(current, b) {
 				p.result.ExactCollisions++
 			} else {
@@ -265,8 +268,12 @@ func planSourceMigration(root, websiteRoot string) (*sourceMigrationPlan, error)
 			return nil, fmt.Errorf("project Git mode missing: %s", name)
 		}
 		mode := strings.Fields(string(tree))[0]
+		localMode, err := sourcestorage.RepositoryFileMode(info.Mode())
+		if err != nil {
+			return nil, err
+		}
 		p.baseline[name] = b
-		p.manifest.Files = append(p.manifest.Files, FrozenSourceFile{Path: name, GitMode: mode, LocalMode: uint32(info.Mode().Perm()), Role: projectSourceRole(name), Classification: "project-owned", Size: int64(len(b)), SHA256: digest(b), ProjectCommit: strings.TrimSpace(string(commit)), ProjectBlob: strings.TrimSpace(string(blob)), Provenance: "existing committed project source; retained without mutation"})
+		p.manifest.Files = append(p.manifest.Files, FrozenSourceFile{Path: name, GitMode: mode, LocalMode: localMode, Role: projectSourceRole(name), Classification: "project-owned", Size: int64(len(b)), SHA256: digest(b), ProjectCommit: strings.TrimSpace(string(commit)), ProjectBlob: strings.TrimSpace(string(blob)), Provenance: "existing committed project source; retained without mutation"})
 	}
 	legacy, err := readRegular(root, SnapshotPath)
 	if err != nil || digest(legacy) != g.SnapshotSHA256 {

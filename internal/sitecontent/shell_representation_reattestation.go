@@ -12,6 +12,7 @@ const ShellRepresentationReattestationRoot = "data/site-shell/representation-rea
 const ShellRepresentationReattestationPending = "data/.shell-representation-reattestation-pending"
 
 var shellReattestationValidationPaths = []string{
+	repositoryModeImplementation,
 	"internal/sitecontent/shell_representation_reattestation.go",
 	"internal/sitecontent/shell_representation_reattestation_publication.go",
 	"internal/sitecontent/shell_representation_context.go",
@@ -77,10 +78,10 @@ func shellDependencyChanges(old, current []ShellRepresentationInput) ([]ShellRep
 	changes := []ShellRepresentationDependencyChange{}
 	for i, a := range old {
 		b := current[i]
-		if a.Reference.Path != b.Reference.Path || a.Mode != b.Mode || a.Absent != b.Absent {
+		if a.Reference.Path != b.Reference.Path || a.Absent != b.Absent || !sameRepresentationMode(a, b) || !validPath(a.Reference.Path) || !validSHA(a.Reference.SHA256) || !validSHA(b.Reference.SHA256) || (i > 0 && old[i-1].Reference.Path >= a.Reference.Path) {
 			return nil, fmt.Errorf("representation dependency path/mode/absence changed")
 		}
-		if a == b {
+		if a.Reference == b.Reference {
 			continue
 		}
 		allowed := false
@@ -134,7 +135,7 @@ func reconstructShellRepresentationBase(root string, g *Global, ref Reference, v
 	if !reflect.DeepEqual(old, base.Old) || base.PredecessorIdentity != old.Identity {
 		return nil, nil, fmt.Errorf("representation base predecessor discontinuity")
 	}
-	want, err := buildShellRepresentationAuthority(root, g, base.Predecessor, old, base.New.Parser, v)
+	want, err := buildShellRepresentationAuthority(root, g, base.Predecessor, old, base.New.Parser, v, base.Inputs)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -203,7 +204,11 @@ func buildShellReattestation(root string, pointer, ref Reference, base *ShellRep
 		if err != nil {
 			return nil, err
 		}
-		r.ValidationInputs = append(r.ValidationInputs, ShellRepresentationInput{Reference: Reference{path, digest(b)}, Mode: uint32(st.Mode())})
+		mode, err := representationFileMode(st.Mode())
+		if err != nil {
+			return nil, err
+		}
+		r.ValidationInputs = append(r.ValidationInputs, ShellRepresentationInput{Reference: Reference{path, digest(b)}, Mode: mode})
 	}
 	r.Identity = identity(*r)
 	return r, nil
@@ -270,7 +275,7 @@ func currentShellRepresentationDependencies(root string, g *Global, ref Referenc
 	want.Previous = r.Previous
 	want.Identity = ""
 	want.Identity = identity(*want)
-	if !reflect.DeepEqual(*want, *r) {
+	if !sameShellReattestationCurrentness(*want, *r) {
 		return nil, fmt.Errorf("dependency re-attestation is stale")
 	}
 	return base, nil
@@ -301,7 +306,7 @@ func planShellReattestationAt(root string, g *Global, v *structuredSuccessorVali
 		probe := *r
 		probe.Previous, probe.Identity = previous.Previous, ""
 		probe.Identity = identity(probe)
-		if reflect.DeepEqual(probe, *previous) {
+		if sameShellReattestationCurrentness(probe, *previous) {
 			return nil, fmt.Errorf("dependency re-attestation already current; inspect the original exact plan")
 		}
 	}

@@ -1,5 +1,7 @@
 # Shared structured canonical representation successor
 
+持久化 dependency mode 统一按 [repository-reproducible mode contract](REPO_LOCAL_FROZEN_SOURCE.md#repository-reproducible-file-mode) 解释。新 observation 写 canonical regular 0644 / executable 0755；旧 raw mode/self identity/physical SHA 保留，只有 owner/group write bits 可在 typed currentness 比较中投影。read/execute、symlink/non-regular、presence/absence 和 SHA drift 仍 fail closed；mode compatibility 不产生语言 acceptance 或 representation topology successor。当前解释器与 checker 的 exact SHA 继续由现有 shared re-attestation boundary 绑定。
+
 这是 raw source 不变时、已进入 Structured Generation 的 shared Document 的独立 source authority，schema 为 `go-learning/shared-structured-representation-successor/v1`，`locale_scope=all-locales`。它不提供翻译、语言 acceptance、Surface PASS、glossary/corpus successor 或 activation。Homepage 的 Page TU / teaching-body schema、pointer 与 [Shell representation successor](SHELL_REPRESENTATION_SUCCESSOR.md) 保持独立：其单一 Page head 不能无歧义表达多个 shared structured asset。
 
 ## 注册 owner 与 bounded proof

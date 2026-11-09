@@ -12,6 +12,8 @@ schema：`go-learning/shell-canonical-representation-successor/v1`；reviewable 
 
 receipt 保存 source package、canonical raw path/SHA、当前 adoption 与 foundation refs、structured source heads、old/new 完整表示及各自 identity/protected-input SHA、old/new Page Unit IDs、精确 released ranges、parser/contract/file mode dependencies、predecessor ref/identity。表示 identity 绑定完整 source coordinates、slots、protection 与 role/encoding，不能只用 raw SHA 或 Unit ID。predecessor exact 连续、无 cycle 且 depth≤32；当前版本只注册上述 rule，不推测未来 parser 升级。相同输出不能创建第二个无意义 successor。
 
+持久化 file mode 按 [repository-reproducible mode](REPO_LOCAL_FROZEN_SOURCE.md#repository-reproducible-file-mode) 解释：仅兼容 owner/group write observation，保留 regular/no-symlink、read/execute、presence 和 exact SHA。新 inputs 写 canonical 0644/0755；旧 receipt 先验证其原 bytes/self identity/SHA，再对 typed inputs 比较，绝不改写旧 mode 或 identity。新 base 直接绑定 mode 解释器 SHA；旧 base 重建保留其 exact frozen input path set（只识别引入解释器前后的已知边界，不补路径或忽略其它缺项），当前解释器另由 re-attestation `validation_inputs` 绑定。仅 mode observation 等价不产生 representation successor 或语言授权；真实 implementation SHA 演进仍走现有 additive authority。
+
 historical snapshot SHA 始终绑定；实体 snapshot ZIP 若按既有 frozen-manifest authority 重建而不存在，dependency 显式记录 `absent=true` 与 SHA256(empty)，由同一 invocation 的 absence guard 复验。不能创建 ZIP 迎合 checker，也不允许其它必需 dependency 缺失。Generation Bundle 通过独立 `TranslationRepresentationContextAdapter` 追加 current pointer、receipt 与本合同，不改旧 adoption 已冻结的 source-context provider bytes。
 
 ## Command matrix

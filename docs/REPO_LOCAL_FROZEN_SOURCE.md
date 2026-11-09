@@ -6,6 +6,14 @@
 
 manifest逐文件记录 path、size、SHA-256、Git mode、local mode、role、upstream exact / project override / project-owned分类。override同时保存 original upstream SHA/blob与本项目 commit/blob provenance。binary按原始 bytes校验；不改LF/EOF、不转码。strict JSON、固定排序、canonical encoding/self identity、重复路径、traversal、symlink和未知角色均 fail closed。
 
+## Repository-reproducible file mode
+
+持久化 mode 使用 regular non-executable / executable 的 repository 安全类别，不把 Git 无法保存的 owner/group write observation 当作 source semantic identity。解释规则只投影 owner/group write bits：`0444/0464/0644/0664 → 0644`，`0555/0575/0755/0775 → 0755`。其它 read/execute pattern、world-write、setuid/setgid/sticky、symlink 和 non-regular path 均拒绝；不得简单 mask 掉全部 permission bits。read/execute bits 的改变仍 fail closed，non-executable authority 不能接受 0755。移除 read/execute 权限的 umask 不在兼容范围内。
+
+新 manifest 的 `local_mode` 写 canonical class，已有文件不 chmod；`git_mode` 仍保留其原 Git provenance，不能拿 upstream Git mode 覆盖明确的本地 executable authority。旧 manifest/receipt 的 raw `local_mode`（例如 436/0664）、原 JSON bytes、self identity 和物理 SHA 原样验证及保留，仅在比较 filesystem currentness 时投影为相同类别。path、presence、size、SHA 和 regular/no-symlink 检查不变；这不是语言、QC 或 Production authority。
+
+同一规则适用于 Shell/shared representation 的 `mode`，由 `internal/sourcestorage/manifest.go` 的统一解释器实现。新 representation inputs 写 canonical mode；旧 envelope 原始 identity 先验证，再对 typed mode 字段比较，不能归一化旧 JSON 或忽略 SHA。invocation-local mutation guard 继续捕获实际 mode，执行中 chmod 即使类别不变也停止；跨 checkout 的 owner/group write 变化不构成 semantic drift。解释器和合同实现的 SHA 仍由现有 dependency re-attestation boundary 绑定；修改后必须重新完成 first-real-use verification，并由维护者另行授权现有 family 的 successor publication，不自动沿用旧 checker PASS。
+
 10个目录外 exact frozen renderer/route contract位于 `data/site-source-contracts/`，仅作 source contract reference，不编译或启动 upstream server，不接管 `/dl`、Playground、deployment或未知 routes。manifest声明的 upstream path不变，通过显式mapping找到本地文件。
 
 ## 离线迁移与检查

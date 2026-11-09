@@ -10,6 +10,8 @@ Preflight 从当前 exact representation pointer、content-addressed base receip
 
 只有原实现明确列于 `shellRepresentationParserPaths` 的 parser/contract 文件 SHA 演进可申请；path set、mode、absence 必须不变，其它 source/adoption/foundation/manifest/head/authority dependency 漂移均拒绝。parser bytes 改变并不自动获准：重建输出有任何 topology/content/identity 改变都拒绝，须另走 representation successor。没有 drift 时 preflight 为 `base_receipt_current=true, reattestation_eligible=false`，无需且禁止提交新 receipt。
 
+此处 mode 不变指 [repository-reproducible safety class](REPO_LOCAL_FROZEN_SOURCE.md#repository-reproducible-file-mode) 相同：普通 regular file 的 0664/0644 write observation 可等价，read/execute、file type、path/absence 和 SHA 不可放宽。mode-only 等价不进入 `changed_dependencies`。旧 receipt 的 `old_dependencies` 与 base envelope 仍逐字段原样绑定，self identity/physical SHA 按原 JSON 验证；仅已验证 receipt 的 typed current/validation modes 可与当前重建按类别比较，新 inputs 写 canonical mode。`validation_inputs` 新增统一解释器的 exact SHA；旧 checker SHA 或 validation inventory 失配仍 STALE，不能由 mode compatibility 自动 carry。后续使用现有 successor family 发布新的 currentness authority，原 receipt/pointer history 不改写，无新 schema 或语言/QC authority。
+
 Re-attestation receipt 冻结 base pointer path/SHA、base receipt path/SHA/identity、source authority、完整 representation、released ranges、old/current exact dependencies、逐项 changed paths/SHA/mode，以及本机制 implementation/contract 的 SHA/mode。它不包含 locale candidate、QC 或语言判断。
 
 Immutable receipts 位于 `data/site-shell/representation-reattestations/receipts/<identity>.json`；每个 base identity 有独立 pointer `data/site-shell/representation-reattestations/current/<base-identity>.json`。不扫描 latest、不按 path 缓存 PASS；其它 base 的 pointer inert。重复演进绑定 exact previous receipt，lineage 无 cycle 且 depth≤32。旧节点只作 hash-bound 历史，current head 必须与本次完整重建及当前 dependencies exact match。
@@ -36,7 +38,7 @@ Plan 包含 authority、planned receipt、current path、prior pointer SHA、eli
 
 apply 绑定 exact plan file SHA 与 exact prior re-attestation pointer SHA（absence=SHA256(empty)，不是空字符串），同时由 plan 绑定 immutable base pointer SHA。shared `data/.glossary-corpus.lock` 排他锁下重新验证全部 authority/dependencies，使用第二独立 graph 在提交前复验，并执行 aggregate mutation guard。base successor pointer/receipt 不在写入集合内。
 
-先保存 immutable receipt 并 fsync directory，再准备/fsync pointer temp；pending marker `data/.shell-representation-reattestation-pending` 绑定 input plan、prior、current path、result。再次 guard/CAS 后 atomic rename 新 pointer、fsync、verify installed bytes，最后删除 owned pending/lock。preflight→apply 间 bytes/mode/absence/directory/pointer/source mutation 均失败。
+先保存 immutable receipt 并 fsync directory，再准备/fsync pointer temp；pending marker `data/.shell-representation-reattestation-pending` 绑定 input plan、prior、current path、result。再次 guard/CAS 后 atomic rename 新 pointer、fsync、verify installed bytes，最后删除 owned pending/lock。跨 invocation 的 preflight→apply 比较 repository mode class；bytes、mode class、absence、directory、pointer 或 source drift 均失败。单一 invocation 内 guard 对其观察到的实际 mode 仍严格复验，不因 write-bit compatibility 忽略并发 chmod。
 
 同一 base + exact dependency set 已 current 时，不创建第二 receipt。新 preflight 要求使用原 exact plan inspection；原 plan inspection/apply 返回 `already_current=true, applied=false, mutation=none`。它只说明本次 no-op，不能证明其它 invocation 的 provenance。base-current 无 drift 的 plan 不可 apply。
 

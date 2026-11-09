@@ -236,6 +236,50 @@ func TestSharedRepresentationReattestationLifecycle(t *testing.T) {
 	if !reflect.DeepEqual(before, after) || !reflect.DeepEqual(after.Expected, []string{"locales/" + sharedFixtureLocale + "/structured/" + q.Path}) {
 		t.Fatal("re-attestation changed language work scope")
 	}
+	t.Run("historical-write-observation-clean-checkout", func(t *testing.T) {
+		legacy := rea.Authority
+		legacy.CurrentInputs = legacyWriteObservations(legacy.CurrentInputs)
+		legacy.ValidationInputs = legacyWriteObservations(legacy.ValidationInputs)
+		legacy.Changes, err = sharedDependencyChanges(legacy.OldInputs, legacy.CurrentInputs)
+		if err != nil {
+			t.Fatal(err)
+		}
+		legacy.Identity = ""
+		legacy.Identity = identity(legacy)
+		ref := sharedReattestationReceipt(&legacy)
+		if err := saveImmutable(root, ref.Path, legacy); err != nil {
+			t.Fatal(err)
+		}
+		frozen, _ := readRegular(root, ref.Path)
+		pointer, _ := readRegular(root, rea.CurrentPath)
+		defer writeFixture(t, root, rea.CurrentPath, pointer)
+		b, _ := Encode(ref)
+		writeFixture(t, root, rea.CurrentPath, b)
+		st, err := os.Stat(pathJoin(root, parser))
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer os.Chmod(pathJoin(root, parser), st.Mode().Perm())
+		for _, mode := range []os.FileMode{0644, 0664} {
+			if err := os.Chmod(pathJoin(root, parser), mode); err != nil {
+				t.Fatal(err)
+			}
+			got, err := PlanStructuredAssets(root, sharedFixtureLocale)
+			if err != nil || !reflect.DeepEqual(got.Expected, after.Expected) {
+				t.Fatal("shared raw write observation invalidated unchanged source", err)
+			}
+		}
+		if err := os.Chmod(pathJoin(root, parser), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := PlanStructuredAssets(root, sharedFixtureLocale); err == nil {
+			t.Fatal("shared executable-class drift accepted")
+		}
+		got, _ := readRegular(root, ref.Path)
+		if !bytes.Equal(frozen, got) {
+			t.Fatal("historical shared receipt rewritten")
+		}
+	})
 	for _, a := range after.Assets {
 		if a.ID == q.AssetID {
 			if a.State != "generation-required" {

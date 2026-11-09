@@ -3,6 +3,7 @@ package sitecontent
 import (
 	"bytes"
 	"fmt"
+	"io/fs"
 	"reflect"
 	"regexp"
 	"sort"
@@ -11,7 +12,64 @@ import (
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 	yaml "github.com/shuijingwan/go-tour-i18n/internal/sitecontent/shellyaml"
+	"github.com/shuijingwan/go-tour-i18n/internal/sourcestorage"
 )
+
+const repositoryModeImplementation = "internal/sourcestorage/manifest.go"
+
+func representationFileMode(mode fs.FileMode) (uint32, error) {
+	return sourcestorage.RepositoryFileMode(mode)
+}
+
+func sameRepresentationMode(a, b ShellRepresentationInput) bool {
+	if a.Absent || b.Absent {
+		return a.Absent == b.Absent && a.Mode == 0 && b.Mode == 0 && a.Reference.SHA256 == digest(nil) && b.Reference.SHA256 == digest(nil)
+	}
+	return sourcestorage.EquivalentRepositoryFileModes(fs.FileMode(a.Mode), fs.FileMode(b.Mode))
+}
+
+func sameRepresentationInputs(a, b []ShellRepresentationInput) bool {
+	if len(a) != len(b) || (a == nil) != (b == nil) {
+		return false
+	}
+	for i := range a {
+		if a[i].Reference != b[i].Reference || !sameRepresentationMode(a[i], b[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func sameRepresentationChanges(a, b []ShellRepresentationDependencyChange) bool {
+	if len(a) != len(b) || (a == nil) != (b == nil) {
+		return false
+	}
+	for i := range a {
+		if a[i].Old.Reference != b[i].Old.Reference || a[i].Current.Reference != b[i].Current.Reference || !sameRepresentationMode(a[i].Old, b[i].Old) || !sameRepresentationMode(a[i].Current, b[i].Current) {
+			return false
+		}
+	}
+	return true
+}
+
+// Compare only after the immutable actual receipt's original self-identity,
+// physical SHA/path and lineage have been verified. These local copies do not
+// normalize its stored bytes, identity, frozen base or old input inventory.
+func sameShellReattestationCurrentness(want, actual ShellRepresentationReattestation) bool {
+	if !sameRepresentationInputs(want.CurrentInputs, actual.CurrentInputs) || !sameRepresentationInputs(want.ValidationInputs, actual.ValidationInputs) || !sameRepresentationChanges(want.Changes, actual.Changes) {
+		return false
+	}
+	want.CurrentInputs, want.ValidationInputs, want.Changes, want.Identity = actual.CurrentInputs, actual.ValidationInputs, actual.Changes, actual.Identity
+	return reflect.DeepEqual(want, actual)
+}
+
+func sameSharedReattestationCurrentness(want, actual SharedRepresentationReattestation) bool {
+	if !sameRepresentationInputs(want.CurrentInputs, actual.CurrentInputs) || !sameRepresentationInputs(want.ValidationInputs, actual.ValidationInputs) || !sameRepresentationChanges(want.Changes, actual.Changes) {
+		return false
+	}
+	want.CurrentInputs, want.ValidationInputs, want.Changes, want.Identity = actual.CurrentInputs, actual.ValidationInputs, actual.Changes, actual.Identity
+	return reflect.DeepEqual(want, actual)
+}
 
 // The existing extractor remains the sole slot/structure authority. Keeping
 // this consumer separate preserves the frozen Learn/Docs adapter authority.

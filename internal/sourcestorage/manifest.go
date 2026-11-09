@@ -173,13 +173,37 @@ func adoptedSourcePath(upstream string) string {
 	return ContractRoot + upstream
 }
 
+// RepositoryFileMode projects only owner/group write observations out of the
+// supported regular-file modes. Read/execute bits remain exact. Special files,
+// special permission flags and world-write never become repository authority.
+// Old 0664/0775 observations map to 0644/0755 without rewriting their receipt.
+func RepositoryFileMode(mode fs.FileMode) (uint32, error) {
+	if mode&^fs.FileMode(0777) != 0 || mode&0002 != 0 {
+		return 0, fmt.Errorf("unsafe repository file mode: %s", mode)
+	}
+	canonical := (mode &^ 0220) | 0200
+	if canonical != 0644 && canonical != 0755 {
+		return 0, fmt.Errorf("unsupported repository read/execute mode: %s", mode)
+	}
+	return uint32(canonical), nil
+}
+
+func EquivalentRepositoryFileModes(old, current fs.FileMode) bool {
+	a, err := RepositoryFileMode(old)
+	if err != nil {
+		return false
+	}
+	b, err := RepositoryFileMode(current)
+	return err == nil && a == b
+}
+
 func ReadAdoptedSource(root string, f FrozenSourceFile) ([]byte, error) {
 	b, err := readRegular(root, f.Path)
 	if err != nil {
 		return nil, err
 	}
 	info, err := os.Lstat(pathJoin(root, f.Path))
-	if err != nil || uint32(info.Mode().Perm()) != f.LocalMode || int64(len(b)) != f.Size || digest(b) != f.SHA256 {
+	if err != nil || !EquivalentRepositoryFileModes(fs.FileMode(f.LocalMode), info.Mode()) || int64(len(b)) != f.Size || digest(b) != f.SHA256 {
 		return nil, fmt.Errorf("adopted frozen source changed: %s", f.Path)
 	}
 	return b, nil
