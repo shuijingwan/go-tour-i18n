@@ -87,11 +87,29 @@ REMOTE_CALL_REASON=<missing-machine-fact|failure-diagnosis|canonical-doc-read|ma
 
 - **A：长期复用收益。**明确会跨 locale/content package/多次 workflow 长期复用，累计收益显著；不能仅以“通用设计”推测未来价值。
 - **B：实际安全风险。**不实现将造成实际 data loss、unsafe mutation，或 Production correctness/security 风险。
-- **C：真实上线硬 blocker。**它是当前 Production/activation 的真实硬 blocker，且没有更小的合法路径。
+- **C：真实主线硬 blocker。**当前 locale 无法继续正常 Snapshot、QC、finalization、Surface、activation、preview 或 Production，且没有更小的合法路径。
 
 一次性 historical recovery、one-off command 或 synthetic fixture 默认不足以通过 gate。预计只使用一次或极低频使用的 capability，默认限于 readonly diagnosis、invocation-local helper、bounded one-off proof、小型局部 patch；未明确通过 gate，不得增加 persistent framework、generalized schema、authority family、long-lived reconstruction subsystem 或 broad abstraction layer。
 
 评估依据写入既有交接文本即可，不新增 checkpoint/receipt 格式。gate 通过不扩大当前任务授权或取消更窄的停止线；不能把获准局部 patch 自动升级为新 subsystem。
+
+### Stable Maintenance Mode 与 Infrastructure Admission
+
+本项目按单维护者、单台主要开发机器的实际成本取舍，优先完成 zh-CN Site v2 Production，再推进第二、第三及更多 locale。稳定维护不是禁止修 Bug 或新功能；工程投入按实际影响区分：
+
+- **MUST FIX：**已证明的 correctness/currentness bug、data loss、unsafe 或 unknown mutation、evidence/candidate/provenance corruption、Production correctness/security 风险，以及无更小合法路径的当前 lifecycle/activation/Production hard blocker。unknown mutation 仍先停止并查明状态，不授权继续 mutation。
+- **SHOULD BUILD：**已有现实跨 locale/package/多次 workflow 复用证据，能用 bounded implementation 明显减少以后每 locale 的人工命令、重复 diagnosis、failure probability 或 Codex/维护成本，且不弱化现有 correctness/gates 的能力；不能只用“以后也许需要”代替证据。
+- **DEFER：**speculative capability、architecture cleanup/perfection、只为统一抽象的重构、单个 historical corner case 的 generalized platform、无当前 lifecycle/Production 收益的工作，以及仅靠显著扩大 schema/authority/recovery surface 获得的“更完整”设计。
+
+**`BUG_EXISTS != MUST_REFACTOR`，也不代表必须 generalized fix。**先判断最小 Production-safe repair；MUST FIX 指必要风险/阻塞修复，不把每个 bug 自动升级为本轮或上线前 hard blocker，既有 `BUG_EXISTS != PRODUCTION_BLOCKER_REQUIRES_FIX`、授权范围与停止线保持有效。代码、测试、时间和 quota 的既有投入不能改变分类。
+
+schema、authority family、persistent receipt、recovery family、AST/IR、generalized decoder 等不是 blacklist；必要的新能力允许建设，但必须先通过上述 A（有现实长期复用收益）、B（实际安全/Production correctness-security 风险）或 C（无更小合法路径的当前正常 lifecycle/上线 hard blocker）至少一项。随后仍须按 **existing capability → smallest legal repair → bounded root fix** 收敛，证明没有更小合法路径。通过 admission 不等于授权大设计、扩大任务 scope 或新增 formal mutation；现有 first-real-use 与复杂度重评估边界不变。
+
+**稳定维护默认：zh-CN 首次 Production 后自动采用 Stable Maintenance Mode。**正常运行既有 lifecycle，以 fix-in-place、targeted regression、bounded compatibility/change 为默认；第二、第三 locale 的真实使用优先于 infrastructure redesign。不主动大改 workflow，不统一全部 historical recovery，不为代码美观重写稳定能力；“zh-CN 上线后清理技术债”不意味着一次大型 workflow rewrite。只有多个真实 locale 重复暴露同类 blocker，才升级为 generalized redesign candidate，且仍须重新满足 admission、最小路径和 bounded scope。
+
+**Infrastructure/lifecycle ratio warning：**若连续工程工作主要用于 infrastructure，而正式 lifecycle 长时间没有推进 Stage，必须执行 Complexity Reassessment；不能因为“系统还能继续加规则”就继续加。正常新 locale 若为通过主线而持续新增 wrapper、preflight、receipt 或 recovery command，操作复杂度本身也是成本与 workflow complexity warning。优先减少 normal-path operator burden，但不得靠弱化 gate 达成；本规则不授权新增 orchestration/framework。
+
+成功指标是 lifecycle progression 与 Production completion，不是 infrastructure completeness；zh-CN 的历史迁移复杂度不自动成为其他 locale 的 hot path。Historical reconstruction/recovery 保持 cold path，角色隔离、exact identity/hash、current authorization、validator、独立 QC/A-only、Surface、activation、Production/HUMAN 与 fail-closed 均不变。工程预算按下述 Codex Budget Rule 排序。
 
 ### Mandatory Complexity Reassessment 与 Sunk Cost Rule
 
@@ -117,7 +135,7 @@ REMOTE_CALL_REASON=<missing-machine-fact|failure-diagnosis|canonical-doc-read|ma
 
 Codex 是受限工程资源。正常 deterministic workflow、readonly inspection、currentness reassessment、contract verification、formal command execution、Git checkpoint/push 默认交 Maintainer Local terminal，Codex=0；Call-Zero-First 的 bounded readonly discovery 例外和已授权工程的必要局部读取仍按原边界执行。
 
-Codex 优先用于 correctness bug、reusable workflow blocker、activation/Production blocker，以及有明确跨 locale 长期复用价值的工程。禁止顺手重构、unrelated fixture 清债、broad test cleanup 和无上线价值的 architecture perfection。
+Codex 工程预算按顺序优先用于：**1. correctness；2. 当前 lifecycle/Production blocker；3. 有现实跨 locale 复用价值的 bounded capability。**architecture perfection 与 speculative infrastructure 不得消耗常规 Codex engineering budget；禁止顺手重构、unrelated fixture 清债、broad test cleanup 或没有现实 lifecycle/上线收益的大重构。
 
 以周总额度为口径，日常单日消耗目标约 **8%–12%**，单日 **hard cap 15%**，尽量长期保留约 **20% emergency reserve**；同时遵守平台 5h/weekly 实际限额。hard cap 不是 daily target，不为用满目标增加工作。达到 cap 即保存可信现场并停止 Codex 工程，确定性步骤交 Local terminal；额度恢复不是继续已无必要 subsystem 的理由。预算只约束投入和分工，不降低 validator、独立 QC/A-only、currentness、provenance、Production 或 HUMAN gate。
 

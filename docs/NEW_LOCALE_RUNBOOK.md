@@ -69,6 +69,14 @@ locale / domain / CDN 决策
 
 正式 Reviewer 路径继续使用独立的普通 ChatGPT **GPT-5.6 Sol + High** session；Reviewer 从未参与该 locale language generation 时才可连续承担上述审核，且不得生成 replacement 后批准自己的输出。provider 为 `chatgpt` 时的执行规范见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)，provider 为 `codex` 时见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。仓库已有正式工具与已确认事实直接复用，不为新增 locale 建立硬 wall-clock 时间目标。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于上述单 locale 固定配对；其 current/stale 规则仍只按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因每个新增 locale 默认重做。
 
+### 新 Locale 的稳定主路径
+
+zh-CN 是历史演进最复杂的首个 locale；它经历过的 migration、recovery 与 historical compatibility 不自动成为新 locale 的默认 workflow。新 locale 仍按现有主 lifecycle 推进：**Generation → validation → Candidate Snapshot → Independent QC → revision/re-QC → A-only finalization → package closure / Surface → activation → preview → Production**。各阶段是否需要 revision 及其前置关系服从现有 contract；角色隔离、A-only、Surface、Production/HUMAN 与其他正式质量 gate 不变。
+
+recovery/historical reconstruction 是 cold path，只有实际 failure 按既有 contract 触发才进入；不为“以后可能恢复”提前创建额外 receipt、replay 或 recovery state，也不移除正常主线必需的 evidence/currentness checks。第二、第三及后续 locale 优先验证“当前主路径是否足以快速上线”；只有同类 blocker 在多个真实 locale 重复出现，才作为 generalized infrastructure candidate，仍须通过 [Stable Maintenance Mode 与 Infrastructure Admission](WORKFLOW_HANDOFF.md#stable-maintenance-mode-与-infrastructure-admission)。
+
+zh-CN 首次 Production 后，不要求先做大重构才允许第二 locale 开始。Stable Maintenance 与新 locale rollout 可以并行：只修真实 blocker，必要的 bounded capability 按 admission 处理，不主动重写稳定 workflow。成功指标是 lifecycle progression / Production completion，不是 infrastructure completeness。
+
 ### 新增 locale 默认调度路径（效率优先）
 
 下表是首次上线的唯一默认调度路径。各阶段 CLI 仍保留 retry、中途 revision、stale bundle 与已有 evidence 的合法恢复能力；这些能力用于恢复已经发生的状态，不表示默认应提前导包、逐组立即 revision 或重放已完成步骤。
