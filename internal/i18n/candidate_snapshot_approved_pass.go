@@ -491,6 +491,19 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 		} else if old != nil {
 			return nil, fmt.Errorf("Snapshot extra historical approved proof")
 		}
+		// Preserve ordinary siblings as well as specialized projections. Later
+		// Snapshot candidate checks must consume this invocation's verified decoder,
+		// not reconstruct the entire installed batch through the ordinary strict
+		// reader. The revision builder above owns receipt-bound old-Unit/batch
+		// reconciliation; this decoder belongs to the current successor Unit. It is
+		// exposed only if the complete final/history/active-validator checks pass.
+		if _, prepared := outputs[record.UnitID]; !prepared {
+			ordinary, err := prepareTranslationUnitInput(u, g)
+			if err != nil {
+				return nil, err
+			}
+			outputs[record.UnitID] = ordinary
+		}
 		final, err := recoveryHistoricalFinalUnit(root, c, g, m, choice, initial, files, adapter, outputs[record.UnitID], receipt.Provider, receipt.Model)
 		if err != nil {
 			return nil, err
