@@ -341,7 +341,12 @@ func reconstructAppliedCorpusSuccessor(root string, v *structuredSuccessorValida
 	if selected == nil {
 		return nil, nil
 	}
-	g, err := LoadCurrent(root, contexts...)
+	// Corpus projection consumes source adoption, not a runtime representation
+	// envelope. Requiring that envelope here creates a retirement cycle when
+	// it freezes ZIP absence while the storage checker must inspect a present ZIP.
+	// The same source/current projection and exact successor checks below remain
+	// mandatory; ordinary LoadCurrent still verifies representation currentness.
+	g, err := loadSourceCurrent(root, contexts...)
 	if err != nil {
 		return nil, err
 	}

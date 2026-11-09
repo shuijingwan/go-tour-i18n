@@ -21,7 +21,14 @@ func CheckSourceZIPRetirement(root string) (*SourceZIPRetirement, error) {
 	if _, err := CheckFrozenSources(root); err != nil {
 		return nil, err
 	}
-	if _, err := LoadCurrent(root); err != nil {
+	// Retirement eligibility precedes deletion. Verify the full source/global
+	// projection and membership, without applying downstream representation
+	// authority whose frozen envelope may already require the ZIP to be absent.
+	g, err := loadSourceCurrent(root)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := applyPackageMembership(root, g); err != nil {
 		return nil, err
 	}
 	paths, err := CorpusAuthorityPaths(root)
