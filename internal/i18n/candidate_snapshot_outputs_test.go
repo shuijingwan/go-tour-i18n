@@ -120,11 +120,16 @@ func TestSnapshotPreparedOutputBindsSelectedRetryResponse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	priorValidation, err := os.ReadFile(filepath.Join(choice.batchDir, choice.result.ValidationPath))
+	if err != nil {
+		t.Fatal(err)
+	}
 	v.Attempt = 2
 	name := filepath.Base(choice.manifest.InputPath)
 	flat := name[:len(name)-len(filepath.Ext(name))]
 	v.RawResponsePath = "retries/" + flat + "/attempt-002" + filepath.Ext(name)
 	base := "data/retranslation-runs/" + o.Locale + "/" + choice.batchID + "/"
+	writeSnapshotSource(t, root, base+"retries/"+flat+"/attempt-001-validation.json", priorValidation)
 	writeSnapshotSource(t, root, base+choice.result.ValidationPath, append(mustJSON(v), '\n'))
 	writeSnapshotSource(t, root, base+v.RawResponsePath, raw)
 	g, err := LoadGlossary(root, o.Locale)

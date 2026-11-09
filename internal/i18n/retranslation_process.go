@@ -79,6 +79,7 @@ type RetranslationValidation struct {
 	InputPath       string   `json:"input_path"`
 	RawResponsePath string   `json:"raw_response_path"`
 	CandidatePath   string   `json:"candidate_path,omitempty"`
+	CandidateSHA256 string   `json:"candidate_sha256,omitempty"`
 	Error           string   `json:"error,omitempty"`
 }
 
@@ -206,6 +207,7 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 				result.ValidationFailed++
 			} else {
 				evidence.Status = "passed"
+				evidence.CandidateSHA256 = sum(candidate)
 				result.ValidationPassed++
 			}
 			unitResult.Status = evidence.Status
@@ -472,6 +474,9 @@ func decodeRetranslationValidation(data []byte, unit *TranslationUnit) (*Retrans
 	if current.SchemaVersion == retranslationProcessSchemaVersion {
 		if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &current); err != nil {
 			return nil, err
+		}
+		if current.CandidateSHA256 != "" && (!validSHA256(current.CandidateSHA256) || current.CandidatePath == "") {
+			return nil, errors.New("invalid validation candidate SHA binding")
 		}
 		return &current, nil
 	}

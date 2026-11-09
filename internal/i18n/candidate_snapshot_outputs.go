@@ -16,6 +16,41 @@ func prepareSnapshotRevisionOutputs(root string, c *Catalog, locale string, g *G
 	outputs := map[string]protectedTranslation{}
 	checks := []func() error{}
 	seen := map[string]bool{}
+	bound := map[string]bool{}
+	for _, u := range latest.ordered {
+		choice := latest.selectedByID[u.ID]
+		v, refs, err := snapshotBoundCurrentValidationCandidate(root, c, locale, u, choice)
+		if err != nil {
+			return nil, nil, err
+		}
+		if v == nil {
+			continue
+		}
+		bound[u.ID] = true
+		review, err := RequireUnifiedGlossaryReview(root, locale)
+		if err != nil {
+			return nil, nil, err
+		}
+		authority, err := currentTranslationAuthority(root, u, locale)
+		if err != nil {
+			return nil, nil, err
+		}
+		checks = append(checks, func() error {
+			fresh, freshRefs, err := snapshotBoundCurrentValidationCandidate(root, c, locale, u, choice)
+			if err != nil || fresh == nil || !reflect.DeepEqual(v, fresh) || !reflect.DeepEqual(refs, freshRefs) {
+				return fmt.Errorf("Snapshot current validated candidate changed: %v", err)
+			}
+			got, err := currentTranslationAuthority(root, u, locale)
+			if err != nil || got != authority {
+				return fmt.Errorf("Snapshot current validator authority changed")
+			}
+			freshReview, err := RequireUnifiedGlossaryReview(root, locale)
+			if err != nil || !reflect.DeepEqual(review, freshReview) {
+				return fmt.Errorf("Snapshot current full glossary Review changed")
+			}
+			return nil
+		})
+	}
 	// Ordinary successors retain their selected ancestor's response decoder,
 	// while their QC authority remains the new Snapshot's independent finding.
 	for _, u := range latest.ordered {
@@ -121,8 +156,19 @@ func prepareSnapshotRevisionOutputs(root string, c *Catalog, locale string, g *G
 	}
 	for _, u := range latest.ordered {
 		choice := latest.selectedByID[u.ID]
-		if choice.machine != nil || (choice.manifest.RevisionFeedbackSource != CurrentValidationRevisionFeedback && choice.manifest.RepresentationBridge == nil) || seen[choice.batchID] {
+		if bound[u.ID] || choice.machine != nil || (choice.manifest.RevisionFeedbackSource != CurrentValidationRevisionFeedback && choice.manifest.RepresentationBridge == nil) || seen[choice.batchID] {
 			continue
+		}
+		if choice.manifest.RevisionFeedbackSource == CurrentValidationRevisionFeedback {
+			// Validate the caller's scope before projecting the frozen decoder
+			// package. That historical projection must not repair invalid scope.
+			pkg, _, _, _, err := translationAuthorizationScope(c)
+			if err != nil {
+				return nil, nil, err
+			}
+			if _, err := SelectCurrentValidationReopenPackage(c, pkg); err != nil {
+				return nil, nil, err
+			}
 		}
 		seen[choice.batchID] = true
 		evidenceCatalog := snapshotEvidenceCatalog(scopes, c, u.ID)
@@ -175,7 +221,7 @@ func prepareSnapshotRevisionOutputs(root string, c *Catalog, locale string, g *G
 			}
 			continue
 		}
-		projections, check, err := prepareProcessOutputContext(choice.batchDir, evidenceCatalog, g, m)
+		projections, check, err := prepareSnapshotOutputContext(choice.batchDir, evidenceCatalog, g, m, latest.selectedByID)
 		if err != nil {
 			return nil, nil, err
 		}

@@ -23,6 +23,30 @@ func processedPromotionFixture(t *testing.T, count int) (string, *Catalog, strin
 	return root, catalog, batchID
 }
 
+// Keep intentional candidate mutations bound to the validation fixture so the
+// promotion test can reach its validator/restore gate. Review evidence stays
+// unchanged: these cases must fail before review is consumed.
+func bindPromotionFixtureCandidateSHA(t *testing.T, batchDir string) {
+	t.Helper()
+	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", "lesson-1.article"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(batchDir, "validation", "lesson-1.json")
+	b, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var validation RetranslationValidation
+	if err := json.Unmarshal(b, &validation); err != nil {
+		t.Fatal(err)
+	}
+	validation.CandidateSHA256 = sum(candidate)
+	if err := writeTranslationJSON(path, validation); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestPromotionBatchREIsLocaleAwareAndKeepsZHCNCompatibility(t *testing.T) {
 	if !promotionBatchRE("zh-CN").MatchString("chatgpt-zh-CN-013") {
 		t.Fatal("zh-CN historical batch was rejected")
@@ -451,6 +475,7 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
+			bindPromotionFixtureCandidateSHA(t, batchDir)
 		}, "canonical validation"},
 		{"GTI18N token", func(t *testing.T, root string, catalog *Catalog, batch string) {
 			batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
@@ -462,6 +487,7 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
+			bindPromotionFixtureCandidateSHA(t, batchDir)
 		}, "contains GTI18N token"},
 	}
 	for _, tt := range tests {
@@ -501,6 +527,7 @@ func TestRetranslationPromoteBindsInputRawAndCandidateEvidence(t *testing.T) {
 			if err := os.WriteFile(path, candidate, 0644); err != nil {
 				t.Fatal(err)
 			}
+			bindPromotionFixtureCandidateSHA(t, batchDir)
 		}, "restored candidate does not match saved candidate"},
 		{"saved input content", func(t *testing.T, root, batchDir string) {
 			path := filepath.Join(batchDir, "inputs", "lesson-1.article")

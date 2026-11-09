@@ -182,7 +182,9 @@ execution `task_kind=translation-unit-retry` 不改变原 batch 的 semantic tas
 
 若旧 Bundle 缺项或 authority 更新，但原 revision batch 的 manifest/authorization 未变且没有正式 raw responses/import，可以为**同一 batch**重新执行 Generation Bundle export；无需新建 revision batch。current-check 按当前完整合同重建 canonical Bundle，使旧 ZIP 自然 stale/non-canonical，不手工补 ZIP、删除旧证据或覆盖正式输出。
 
-已经installed的approved derived proof后来stale，不适用上述同批刷新。
+已经installed的approved derived proof后来stale，不适用上述同批刷新。新的 Generation/recovery
+invocation 仍按下述恢复合同；Candidate Snapshot 的 historical-PASS admission 与新 invocation
+权限分开，以本文后述 Snapshot 专属合同为准。
 [Installed derived-transport recovery设计v1](INSTALLED_DERIVED_TRANSPORT_STALE_RECOVERY_DESIGN.md)
 规定新的窄authority、原batch完整decoder-context closure及全范围successor invocation；
 要求真实新Language Generation，不把旧raw作为新output，不修改旧proof比较或同batch历史。
@@ -370,6 +372,20 @@ Surface-bounded predecessor 也可通过独立记录的 ordinary QC bridge 提�
 
 ### Current-validation predecessor codec recovery
 
-whole approved interval consumer 以 [contract v2](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#derived-transport-command-contract-v2已实现真实使用待-gate) 为入口：legacy provenance 与 approved-interval representation authority 独立，whole parent immutable/opaque，不建立 target atom mapping。必须以 typed machine coordinates 证明全部 editable finding regions 与 parent 无交集，重建 exact restores，并保留 current glossary/representation、active validation、独立 re-QC/A-only。export-only `--approved-interval-selection <repository-relative JSON>` 只能出现一次，要求同一显式完整 `--content-package`；current-check 不接受 selector/override，只从 `formal/approved-interval-selection.json` 的 frozen exact bytes 独立重建。proof schema 为 `go-learning/approved-interval-transport/v1`，member 为 `formal/approved-interval-transport/<current-unit-id>.json`；unknown schema/mode、missing/extra/tampered proof 均 fail closed。process/retry/Snapshot 从真实 initial imported Bundle 重建同一 decoder/provenance，不回退普通 Page restore；retry 继承相同 selection/proof，真实新 import 的 provider/model 与 historical legacy authority 分离。引用和 proof 均不回写064 manifest。实现不授权真实调用，仍须独立 first-real-use gate。
+whole approved interval consumer 以 [contract v2](CURRENT_VALIDATION_APPROVED_INTERVAL_MIGRATION_DESIGN.md#derived-transport-command-contract-v2已实现真实使用待-gate) 为入口：legacy provenance 与 approved-interval representation authority 独立，whole parent immutable/opaque，不建立 target atom mapping。必须以 typed machine coordinates 证明全部 editable finding regions 与 parent 无交集，重建 exact restores，并保留 current glossary/representation、active validation、独立 re-QC/A-only。export-only `--approved-interval-selection <repository-relative JSON>` 只能出现一次，要求同一显式完整 `--content-package`；current-check 不接受 selector/override，只从 `formal/approved-interval-selection.json` 的 frozen exact bytes 独立重建。proof schema 为 `go-learning/approved-interval-transport/v1`，member 为 `formal/approved-interval-transport/<current-unit-id>.json`；unknown schema/mode、missing/extra/tampered proof 均 fail closed。process/retry 从真实 initial imported Bundle 重建同一 decoder/provenance（Snapshot 的独立 admission 见下文），不回退普通 Page restore；retry 继承相同 selection/proof，真实新 import 的 provider/model 与 historical legacy authority 分离。引用和 proof 均不回写064 manifest。实现不授权真实调用，仍须独立 first-real-use gate。
+
+**Candidate Snapshot historical-PASS admission：**历史 evidence integrity 与当前 implementation
+能否逐字节重建旧 derived proof 分开。仅 Snapshot 可在原 approved batch 完整 full-PASS、
+所有 Unit 仍为同批 latest selection 时，验证 canonical result/validation 原 bytes、exact initial
+receipt/archive/inventory/proof、全部最终 attempt/raw/import history，以及 frozen decoder 对
+candidate 的 exact restore。随后独立重建当前 finding/representation 语义，要求完整 typed
+projection/inverse、language/provenance 与非 implementation dependencies exact；仅既有
+code-owned approved implementation dependency refs 与 validator implementation identity 可不同，
+每个最终 candidate 仍须当前 active validator PASS。result、validation 与全部引用的 SHA 在本次
+读取和 commit 前重验；missing/tampered/unknown evidence、semantic/source/membership/候选变化、
+不完整 PASS、冲突 successor 或当前 validation failure 继续拒绝。历史 proof 不被改写或标为
+CURRENT，不把旧 PASS 当作 QC/A，不豁免 source、glossary、membership 或 candidate eligibility。
+此 admission 不授权 retry/revalidate 刷新 proof、同批 re-export 或新的 Generation invocation；
+有 transport-recovery authority 的 batch 继续使用原严格 authority/currentness reader。
 
 current-validation predecessor 的 protected raw 可能属于 sealed Surface/inherited bridge 表示，不能拿普通 current Page decoder 假定其可编辑。普通 restore 失败后，仅按 [representation-only transport contract](TRANSLATION_UNIT_REPLACEMENT.md#current-validation-predecessor-representation-transport) 确定性组合既有 source-owned codec；不能借 QC-only exclusive bridge 改写本轮 authority。Bundle 的 `formal/current-validation-predecessor-transport` 冻结 exact bindings，`formal/historical-protected-candidates` 保留历史 raw；Generation 只编辑 supplied `formal/protected-candidates`，不重建 mapping。comment-revision transport 仍仅开放原 reopen 授权的 slots。当前 source/formal input/Unit delta 非零、missing import/codec 或未知新 protection 都拒绝；没有可以从 engineering impact 的 `unknown=false` 推导的 PASS。export/current-check 与 import/process/后续 Snapshot 使用同一 response decoder reconstruction，仍须独立 validation/re-QC/A-only。无 formal metadata delta 的 pending batch 可保留；任何未关闭 Unit 继续阻止整批 Bundle，不自动补 receipt 或输出。

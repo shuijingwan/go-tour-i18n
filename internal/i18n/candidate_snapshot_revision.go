@@ -161,7 +161,11 @@ func buildSnapshotRevision(root string, c *Catalog, locale string, base *Quality
 		if authority, err := currentTranslationAuthority(root, u, locale); err != nil || !validSHA256(authority) {
 			return nil, nil, fmt.Errorf("unknown revision adapter/parser: %s", u.ID)
 		}
-		v, err := validateSelectedRetranslationCandidateWithOutput(root, c, locale, g, u, choice, snapshotPreparedOutput(outputs, u.ID))
+		v, boundRefs, err := snapshotBoundCurrentValidationCandidate(root, c, locale, u, choice)
+		bound := v != nil
+		if err == nil && !bound {
+			v, err = validateSelectedRetranslationCandidateWithOutput(root, c, locale, g, u, choice, snapshotPreparedOutput(outputs, u.ID))
+		}
 		if err != nil {
 			return nil, nil, err
 		}
@@ -171,7 +175,11 @@ func buildSnapshotRevision(root string, c *Catalog, locale string, base *Quality
 		}
 		generationRefs, verified := invocations[key]
 		if !verified {
-			generationRefs, err = verifyImportedRevisionInvocation(root, c, locale, choice, v)
+			if bound {
+				generationRefs = boundRefs
+			} else {
+				generationRefs, err = verifySnapshotRevisionInvocation(root, c, locale, choice, v, latest.selectedByID)
+			}
 			if err != nil {
 				return nil, nil, err
 			}

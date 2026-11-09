@@ -181,6 +181,7 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 			unitResult.Error = evidence.Error
 		} else {
 			evidence.Status = "passed"
+			evidence.CandidateSHA256 = sum(candidate)
 		}
 		unitResult.Status = evidence.Status
 	}

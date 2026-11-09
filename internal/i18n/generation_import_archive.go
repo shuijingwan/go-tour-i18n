@@ -50,7 +50,6 @@ func checkImportedGenerationIdentity(r GenerationResultBundleManifest, m Generat
 }
 
 func verifyImportedRevisionInvocation(root string, c *Catalog, locale string, choice selectedRetranslationUnit, v *validatedRetranslationCandidate) ([]GlossaryArchiveReference, error) {
-	refs := []GlossaryArchiveReference{}
 	m, err := readRetranslationProcessManifest(choice.batchDir, locale, choice.batchID)
 	if err != nil {
 		return nil, err
@@ -76,6 +75,14 @@ func verifyImportedRevisionInvocation(root string, c *Catalog, locale string, ch
 			return nil, err
 		}
 	}
+	return verifyImportedRevisionInvocationInputs(root, c, locale, choice, v, m, inputs)
+}
+
+// The Snapshot-only historical-PASS reader supplies inputs only after proving
+// complete installed integrity and exact current semantic equivalence. Ordinary
+// callers above continue to require current invocation reproduction.
+func verifyImportedRevisionInvocationInputs(root string, c *Catalog, locale string, choice selectedRetranslationUnit, v *validatedRetranslationCandidate, m *RetranslationBatchManifest, inputs []generationBundleInput) ([]GlossaryArchiveReference, error) {
+	refs := []GlossaryArchiveReference{}
 	for _, attempt := range []int{1, v.attempt} {
 		if attempt == 1 && v.attempt == 1 && len(refs) > 0 {
 			continue

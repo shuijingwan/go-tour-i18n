@@ -671,7 +671,7 @@ func recoveryHistoricalFinalUnit(root string, c *Catalog, g *Glossary, m *Retran
 		gm := GenerationBundleManifest{Attempt: n, TaskKind: initial.TaskKind}
 		if n > 1 {
 			gm.TaskKind = "translation-unit-retry"
-			gm.ExpectedOutputs = []GenerationBundleExpectedOutput{{UnitID: u.ID}}
+			gm.ExpectedOutputs = []GenerationBundleExpectedOutput{{UnitID: u.ID, BundlePath: "outputs/" + filepath.Base(choice.manifest.InputPath)}}
 		}
 		path := generationImportReceiptPath(choice.batchDir, gm)
 		rel, err := repositoryRelativePath(root, path)

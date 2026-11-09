@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -86,7 +87,65 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	if err != nil {
 		return nil, err
 	}
-	prepared, err := preflightRetranslationProcess(batchDir, catalog, glossary, manifest)
+	// An existing current-validation successor is validated as current bytes.
+	// It is not a restore recovery. Keep the old decoder path for all other
+	// feedback kinds and for restore_failed Units without an existing candidate.
+	currentOnly := false
+	for _, r := range result.Units {
+		if r.UnitID == options.UnitID && (r.Status == "passed" || r.Status == "validation_failed") && manifest.TransportRecovery == nil {
+			for _, record := range manifest.Units {
+				currentOnly = currentOnly || (record.UnitID == options.UnitID && record.RevisionFeedbackSource == CurrentValidationRevisionFeedback && record.RepresentationBridge == nil)
+			}
+		}
+	}
+	var prepared []preparedRetranslationPage
+	if currentOnly {
+		if err := validateCurrentValidationCandidateResult(manifest, &result); err != nil {
+			return nil, err
+		}
+		refs, checkErr := currentValidationCandidateLineage(root, catalog, manifest)
+		if checkErr != nil {
+			return nil, checkErr
+		}
+		review, err := RequireUnifiedGlossaryReview(root, options.Locale)
+		if err != nil {
+			return nil, err
+		}
+		for _, record := range manifest.Units {
+			if record.UnitID != options.UnitID {
+				continue
+			}
+			u, err := catalog.Unit(record.UnitID)
+			if err != nil {
+				return nil, err
+			}
+			identity, err := currentTranslationAuthority(root, u, options.Locale)
+			if err != nil {
+				return nil, err
+			}
+			prepared = append(prepared, preparedRetranslationPage{unit: u, manifest: record, checkOutputContext: func() error {
+				fresh, err := currentValidationCandidateLineage(root, catalog, manifest)
+				if err != nil || !reflect.DeepEqual(fresh, refs) {
+					return fmt.Errorf("current revalidation lineage changed: %v", err)
+				}
+				got, err := currentTranslationAuthority(root, u, options.Locale)
+				if err != nil || got != identity {
+					return fmt.Errorf("current revalidation validator authority changed")
+				}
+				freshGlossary, err := LoadGlossary(root, options.Locale)
+				if err != nil || !reflect.DeepEqual(glossary, freshGlossary) {
+					return fmt.Errorf("current revalidation glossary changed")
+				}
+				freshReview, err := RequireUnifiedGlossaryReview(root, options.Locale)
+				if err != nil || !reflect.DeepEqual(review, freshReview) {
+					return fmt.Errorf("current revalidation full glossary Review changed")
+				}
+				return nil
+			}})
+		}
+	} else {
+		prepared, err = preflightRetranslationProcess(batchDir, catalog, glossary, manifest)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -99,6 +158,16 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	}
 	if item == nil {
 		return nil, fmt.Errorf("translation unit %q is not in retranslation batch %q", options.UnitID, options.BatchID)
+	}
+	if currentOnly {
+		base, err := repositoryRelativePath(root, batchDir)
+		if err != nil {
+			return nil, err
+		}
+		input, err := readSnapshotReferencedFile(root, base+"/"+item.manifest.InputPath)
+		if err != nil || sum(input) != item.manifest.InputSHA256 {
+			return nil, fmt.Errorf("current revalidation saved input hash mismatch")
+		}
 	}
 	resultIndex := -1
 	for i := range result.Units {
@@ -160,6 +229,9 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 		if err != nil {
 			return nil, fmt.Errorf("read restored candidate for %s: %w", options.UnitID, err)
 		}
+		if current.CandidateSHA256 != "" && current.CandidateSHA256 != sum(candidate) {
+			return nil, fmt.Errorf("%s: current validated candidate SHA mismatch", options.UnitID)
+		}
 	}
 	raw, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(current.RawResponsePath)))
 	if err != nil {
@@ -170,23 +242,64 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 			return nil, err
 		}
 	}
+	if currentOnly {
+		// Reuse the invocation-local pre-commit check for the bytes just read;
+		// a concurrent candidate/evidence/input replacement cannot be sealed by
+		// this validation. No persistent checkpoint or new CAS format is added.
+		base, err := repositoryRelativePath(root, batchDir)
+		if err != nil {
+			return nil, err
+		}
+		refs := []GlossaryArchiveReference{}
+		for path, sha := range map[string]string{
+			base + "/manifest.json": "", base + "/result.json": sum(resultData),
+			base + "/" + item.manifest.InputPath: item.manifest.InputSHA256,
+			base + "/" + wantValidation:          sum(validationData),
+			base + "/" + wantCandidate:           sum(candidate),
+			base + "/" + current.RawResponsePath: sum(raw),
+		} {
+			ref, err := successorReference(root, path)
+			if err != nil || (sha != "" && ref.SHA256 != sha) {
+				return nil, fmt.Errorf("current revalidation evidence changed: %s", path)
+			}
+			refs = append(refs, ref)
+		}
+		fresh, err := readRetranslationProcessManifest(batchDir, options.Locale, options.BatchID)
+		if err != nil || !reflect.DeepEqual(manifest, fresh) {
+			return nil, fmt.Errorf("current revalidation manifest changed")
+		}
+		lineageCheck := prepared[0].checkOutputContext
+		prepared[0].checkOutputContext = func() error {
+			if err := lineageCheck(); err != nil {
+				return err
+			}
+			for _, ref := range refs {
+				if _, err := readCompatibilityReference(root, ref); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}
 	if recoverRestore {
 		if err := verifyRestoreRecoveryInvocation(root, batchDir, manifest, *item, current, raw); err != nil {
 			return nil, err
 		}
 	}
-	restored, failures := item.protected.restore(string(raw))
-	restoredBytes := []byte(restored)
-	if len(failures) != 0 {
-		return nil, fmt.Errorf("%s: current restore failed: %s", options.UnitID, strings.Join(failures, "; "))
-	}
-	if recoverRestore {
-		candidate = restoredBytes
-		if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
-			candidate = canonicalizeRetranslationArtifactEOF(candidate)
+	if !currentOnly {
+		restored, failures := item.protected.restore(string(raw))
+		restoredBytes := []byte(restored)
+		if len(failures) != 0 {
+			return nil, fmt.Errorf("%s: current restore failed: %s", options.UnitID, strings.Join(failures, "; "))
 		}
-	} else if !bytes.Equal(restoredBytes, candidate) && !bytes.Equal(canonicalizeRetranslationArtifactEOF(restoredBytes), candidate) {
-		return nil, fmt.Errorf("%s: restored candidate does not match saved candidate", options.UnitID)
+		if recoverRestore {
+			candidate = restoredBytes
+			if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+				candidate = canonicalizeRetranslationArtifactEOF(candidate)
+			}
+		} else if !bytes.Equal(restoredBytes, candidate) && !bytes.Equal(canonicalizeRetranslationArtifactEOF(restoredBytes), candidate) {
+			return nil, fmt.Errorf("%s: restored candidate does not match saved candidate", options.UnitID)
+		}
 	}
 	number, historyRelative, err := nextRevalidationHistory(batchDir, flatID)
 	if err != nil {
@@ -195,10 +308,12 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	previousStatus := current.Status
 	current.CandidatePath, unitResult.CandidatePath = wantCandidate, wantCandidate
 	current.Error = ""
+	current.CandidateSHA256 = ""
 	if err := ValidateTranslationUnitCandidate(root, catalog, options.UnitID, options.Locale, candidate); err != nil {
 		current.Status, current.Error = "validation_failed", err.Error()
 	} else {
 		current.Status = "passed"
+		current.CandidateSHA256 = sum(candidate)
 	}
 	unitResult.Status, unitResult.Error = current.Status, current.Error
 	recountRetranslationResult(&result)

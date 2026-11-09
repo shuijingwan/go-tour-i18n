@@ -279,6 +279,9 @@ func checkPromotionReview(batchDir, batchID, locale string, unit *TranslationUni
 }
 
 func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, unit *TranslationUnit, manifest RetranslationBatchUnit, validation *RetranslationValidation, glossary *Glossary, candidate []byte, locale string, compatibility *PreparedGlossaryCompatibility, outputs ...*protectedTranslation) (int, error) {
+	if validation.CandidateSHA256 != "" && validation.CandidateSHA256 != sum(candidate) {
+		return 0, fmt.Errorf("%s: current validated candidate SHA mismatch", unit.ID)
+	}
 	input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(manifest.InputPath)))
 	if err != nil || sum(input) != manifest.InputSHA256 {
 		return 0, fmt.Errorf("%s: input_sha256 mismatch", unit.ID)

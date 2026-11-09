@@ -180,6 +180,9 @@ func snapshotMembershipAssessments(root, locale string, members map[string]*Cata
 func validateSnapshotMembershipCandidate(root string, current *Catalog, locale string, g *Glossary, u *TranslationUnit, choice selectedRetranslationUnit, output *protectedTranslation, members map[string]*Catalog, proofs map[*Catalog]*CurrentTranslationAuthorization, compatibility *PreparedGlossaryCompatibility) (*validatedRetranslationCandidate, error) {
 	c := snapshotEvidenceCatalog(members, current, u.ID)
 	if c == current {
+		if v, _, err := snapshotBoundCurrentValidationCandidate(root, current, locale, u, choice); err != nil || v != nil {
+			return v, err
+		}
 		return validateSelectedRetranslationCandidateWithOutput(root, c, locale, g, u, choice, output, compatibility)
 	}
 	if proofs[c] != nil {
@@ -267,7 +270,10 @@ func validateSnapshotMembershipCandidate(root string, current *Catalog, locale s
 	if err != nil {
 		return nil, err
 	}
-	v, err := validateSelectedRetranslationCandidateWithOutput(root, evidenceCatalog, locale, g, u, choice, output, compatibility)
+	v, _, err := snapshotBoundCurrentValidationCandidate(root, current, locale, u, choice)
+	if err == nil && v == nil {
+		v, err = validateSelectedRetranslationCandidateWithOutput(root, evidenceCatalog, locale, g, u, choice, output, compatibility)
+	}
 	if err != nil {
 		return nil, err
 	}
