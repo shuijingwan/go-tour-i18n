@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"sort"
 	"strings"
 	"testing"
 
@@ -14,6 +15,230 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 	"github.com/shuijingwan/go-tour-i18n/internal/sourcestorage"
 )
+
+func TestStorageCompatibilityHistoricalStructuredPointer(t *testing.T) {
+	root := siteFixture(t, "current-authorization-fresh-fixture")
+	// Adopt the exact registered subset and the fixture's Tour files. Keep a
+	// complete manifest for this disposable repository so retirement exercises
+	// the full adoption checker, not just the historical corpus helper.
+	repo := repositoryRoot(t)
+	m, err := loadSourceManifest(repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wanted := map[string]bool{}
+	for _, name := range m.Legacy.Paths {
+		wanted[name] = true
+	}
+	mini := *m
+	mini.Files = []FrozenSourceFile{}
+	for _, f := range m.Files {
+		if !wanted[f.UpstreamPath] && !strings.HasPrefix(f.Path, "_content/tour/") {
+			continue
+		}
+		b, err := readRegular(repo, f.Path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		writeFixture(t, root, f.Path, b)
+		if err := os.Chmod(pathJoin(root, f.Path), fs.FileMode(f.LocalMode)); err != nil {
+			t.Fatal(err)
+		}
+		mini.Files = append(mini.Files, f)
+	}
+	sealSourceManifest(&mini)
+	b, err := Encode(mini)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeFixture(t, root, SourceManifestPath, b)
+	name := "data/site-shell/translation.html"
+	before, err := readRegular(root, name)
+	if err != nil {
+		t.Fatal(err)
+	}
+	at := bytes.LastIndex(before, []byte("</main>"))
+	proposal := func(label string) Reference {
+		t.Helper()
+		body := append(bytes.Clone(before[:at]), []byte("<section><p>Synthetic "+label+" source.</p></section>\n")...)
+		body = append(body, before[at:]...)
+		path := "data/storage-" + label + "-body.html"
+		writeFixture(t, root, path, body)
+		p := StructuredSourceProposal{Schema: StructuredSourceSuccessorSchema, Package: "site-v2-shell", Previous: Reference{name, digest(before)}, Body: Reference{path, digest(body)}, InsertAt: at}
+		b, _ := Encode(p)
+		path = "data/storage-" + label + "-proposal.json"
+		writeFixture(t, root, path, b)
+		ref, err := ReferenceFile(root, path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return ref
+	}
+	first := proposal("first")
+	a, err := BuildStructuredSourceSuccessor(root, first)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := AdoptStructuredSourceSuccessor(root, first, a.BaseIdentity); err != nil {
+		t.Fatal(err)
+	}
+	old, err := BuildAdoptedCorpusSuccessor(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	oldBytes, _ := Encode(old.Result)
+	archive := "data/glossary-corpus-history/" + digest(oldBytes) + ".json"
+	pointer := structuredSourceCurrent(name)
+	prior, err := ReferenceFile(root, pointer)
+	if err != nil {
+		t.Fatal(err)
+	}
+	frozenReceipt, err := ReferenceFile(root, StructuredSourceSuccessorPath(a))
+	if err != nil {
+		t.Fatal(err)
+	}
+	frozenPointer, err := Encode(frozenReceipt)
+	if err != nil || digest(frozenPointer) != prior.SHA256 {
+		t.Fatal("historical pointer must bind the exact explicit receipt", err)
+	}
+	if _, err := CorrectUnconsumedStructuredSource(root, proposal("second"), a.BaseIdentity, prior.SHA256); err != nil {
+		t.Fatal(err)
+	}
+	currentPointer, err := ReferenceFile(root, pointer)
+	if err != nil || currentPointer == prior {
+		t.Fatal("fixture must advance the physical pointer", err)
+	}
+	currentBytes, err := readRegular(root, i18n.GlossaryCorpusPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := AdoptCorpusProjection(root, digest(currentBytes), true); err != nil {
+		t.Fatal(err)
+	}
+	writeFixture(t, root, archive, oldBytes)
+	if _, err := i18n.LoadUnifiedGlossaryCorpus(root); err != nil {
+		t.Fatal("current pointer must remain strictly current", err)
+	}
+	if _, err := i18n.LoadGlossaryCorpusAt(root, archive); err == nil {
+		t.Fatal("regression fixture did not advance the physical pointer")
+	}
+	frozen, err := readStorageCompatibilityCorpus(root, archive)
+	if err != nil || !reflect.DeepEqual(*frozen, old.Result) {
+		t.Fatal("historical pointer replaced by current bytes or projection", err)
+	}
+	proof, _, err := CreateSourceStorageCompatibility(root, false)
+	if err != nil {
+		t.Fatal("storage compatibility must consume the proven historical pointer", err)
+	}
+	writeProof(t, root, *proof)
+	for _, state := range []string{"present", "absent"} {
+		t.Run("retirement-"+state, func(t *testing.T) {
+			if state == "absent" {
+				zip, err := readRegular(root, SnapshotPath)
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer writeFixture(t, root, SnapshotPath, zip)
+				if err := os.Remove(pathJoin(root, SnapshotPath)); err != nil {
+					t.Fatal(err)
+				}
+			}
+			result, err := CheckSourceZIPRetirement(root)
+			if err != nil || result.Status != "READY" || result.CoveredReferences == 0 {
+				t.Fatal("retirement must consume the archive's frozen receipt binding", result, err)
+			}
+			if got, err := ReferenceFile(root, pointer); err != nil || got != currentPointer {
+				t.Fatal("retirement changed the current pointer", got, err)
+			}
+			if _, err := i18n.LoadUnifiedGlossaryCorpus(root); err != nil {
+				t.Fatal("current corpus must remain strictly current", err)
+			}
+		})
+	}
+	if _, err := i18n.RequireUnifiedGlossaryReview(root, "zh-CN"); err == nil {
+		t.Fatal("storage history granted new language eligibility")
+	}
+	for _, mode := range []string{"missing-receipt", "tampered-receipt", "broken-proposal", "current-stale", "arbitrary-stale", "missing-explicit-receipt", "wrong-pointer-path", "semantic-identity", "archive-bytes", "pointer-symlink"} {
+		t.Run(mode, func(t *testing.T) {
+			changed := old.Result
+			changed.Sources = append([]i18n.GlossaryArchiveReference(nil), old.Result.Sources...)
+			path := ""
+			switch mode {
+			case "missing-receipt", "tampered-receipt":
+				path = StructuredSourceSuccessorPath(a)
+			case "broken-proposal":
+				path = first.Path
+			case "current-stale":
+				path = pointer
+			case "archive-bytes":
+				path = archive
+			case "pointer-symlink":
+				path = pointer
+			case "arbitrary-stale":
+				path = "data/storage-unrelated-pointer.json"
+				writeFixture(t, root, path, []byte("current unrelated bytes"))
+				defer os.Remove(pathJoin(root, path))
+				changed.Sources = append(changed.Sources, i18n.GlossaryArchiveReference{Path: path, SHA256: digest([]byte("old unrelated bytes"))})
+				path = ""
+			case "missing-explicit-receipt":
+				for i, ref := range changed.Sources {
+					if ref.Path == StructuredSourceSuccessorPath(a) {
+						changed.Sources = append(changed.Sources[:i], changed.Sources[i+1:]...)
+						break
+					}
+				}
+			case "wrong-pointer-path":
+				for i := range changed.Sources {
+					if changed.Sources[i].Path == pointer {
+						changed.Sources[i].Path = structuredSourceCurrent("data/unrelated-source.html")
+					}
+				}
+			case "semantic-identity":
+				changed.Identity = digest([]byte("incorrect semantic identity"))
+			}
+			if path != "" {
+				b, err := readRegular(root, path)
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer writeFixture(t, root, path, b)
+				if mode == "pointer-symlink" {
+					if err := os.Remove(pathJoin(root, path)); err != nil {
+						t.Fatal(err)
+					}
+					if err := os.Symlink(pathJoin(root, first.Path), pathJoin(root, path)); err != nil {
+						t.Fatal(err)
+					}
+					defer os.Remove(pathJoin(root, path))
+				} else if mode == "missing-receipt" {
+					if err := os.Remove(pathJoin(root, path)); err != nil {
+						t.Fatal(err)
+					}
+				} else {
+					writeFixture(t, root, path, append(bytes.Clone(b), ' '))
+				}
+			} else {
+				sort.Slice(changed.Sources, func(i, j int) bool { return changed.Sources[i].Path < changed.Sources[j].Path })
+				b, _ := Encode(changed)
+				path = "data/glossary-corpus-history/" + digest(b) + ".json"
+				writeFixture(t, root, path, b)
+				defer os.Remove(pathJoin(root, path))
+			}
+			if _, _, err := CreateSourceStorageCompatibility(root, false); err == nil {
+				t.Fatal("unproven storage/corpus history accepted", mode)
+			}
+			if result, err := CheckSourceZIPRetirement(root); err == nil && result.Status == "READY" {
+				t.Fatal("retirement accepted unproven storage/corpus history", mode)
+			}
+		})
+	}
+	if b, _ := readRegular(root, archive); !bytes.Equal(b, oldBytes) {
+		t.Fatal("historical corpus was modified")
+	}
+	if got, err := ReferenceFile(root, frozenReceipt.Path); err != nil || got != frozenReceipt {
+		t.Fatal("historical receipt was modified", got, err)
+	}
+}
 
 func storageProofFixture(t *testing.T) (string, sourcestorage.Compatibility, []byte) {
 	t.Helper()

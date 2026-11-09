@@ -6,6 +6,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/contentidentity"
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
@@ -64,7 +65,7 @@ func CreateSourceStorageCompatibility(root string, apply bool) (*sourcestorage.C
 	}
 	required := map[string]bool{}
 	for _, path := range paths {
-		corpus, err := i18n.LoadGlossaryCorpusAt(root, path)
+		corpus, err := readStorageCompatibilityCorpus(root, path)
 		if err != nil {
 			return nil, "", err
 		}
@@ -132,4 +133,89 @@ func CreateSourceStorageCompatibility(root string, apply bool) (*sourcestorage.C
 		}
 	}
 	return p, path, nil
+}
+
+// Storage history is not current language eligibility. Only immutable archives
+// may resolve an old structured-source pointer from their own exact receipt;
+// the current corpus retains the ordinary physical path/SHA contract.
+func readStorageCompatibilityCorpus(root, path string) (*i18n.GlossarySourceCorpus, error) {
+	if path == i18n.GlossaryCorpusPath {
+		return i18n.LoadGlossaryCorpusAt(root, path)
+	}
+	if _, err := os.Lstat(pathJoin(root, "data/.corpus-successor-pending")); !os.IsNotExist(err) {
+		return nil, fmt.Errorf("mutation=unknown: corpus successor publication pending")
+	}
+	b, err := readRegular(root, path)
+	if err != nil {
+		return nil, err
+	}
+	if !utf8.Valid(b) || path != "data/glossary-corpus-history/"+digest(b)+".json" {
+		return nil, fmt.Errorf("invalid immutable archived corpus path/bytes")
+	}
+	var c i18n.GlossarySourceCorpus
+	if err := StrictJSON(b, &c); err != nil {
+		return nil, err
+	}
+	if err := i18n.ValidateGlossaryCorpus(&c); err != nil {
+		return nil, err
+	}
+	last := ""
+	for _, ref := range c.Sources {
+		if ref.Path <= last || !validPath(ref.Path) || !validSHA(ref.SHA256) {
+			return nil, fmt.Errorf("invalid archived corpus source registry")
+		}
+		last = ref.Path
+		if ref.Path == SnapshotPath {
+			required, err := i18n.CorpusStorageRequirements(&c)
+			if err != nil {
+				return nil, err
+			}
+			if err := sourcestorage.CheckCorpusReference(root, contentidentity.Reference{Path: path, SHA256: digest(b)}, c.Identity, contentidentity.Reference{Path: ref.Path, SHA256: ref.SHA256}, required); err != nil {
+				return nil, err
+			}
+			continue
+		}
+		physical, readErr := readRegular(root, ref.Path)
+		if readErr == nil && digest(physical) == ref.SHA256 {
+			continue
+		}
+		if readErr != nil && !os.IsNotExist(readErr) {
+			return nil, readErr
+		}
+		if err := verifyStorageHistoricalPointer(root, &c, ref); err != nil {
+			return nil, fmt.Errorf("archived corpus source stale: %s: %w", ref.Path, err)
+		}
+	}
+	return &c, nil
+}
+
+func verifyStorageHistoricalPointer(root string, c *i18n.GlossarySourceCorpus, frozen i18n.GlossaryArchiveReference) error {
+	if !strings.HasPrefix(frozen.Path, StructuredSourceSuccessorRoot+"current/") {
+		return fmt.Errorf("no historical source reader for this reference")
+	}
+	// Use the corpus's explicit immutable refs, not today's head or a receipt
+	// directory scan. This is the same pointer encoding/proof as adopted corpus
+	// historical projection; Check validates the entire immutable lineage.
+	for _, source := range c.Sources {
+		if !strings.HasPrefix(source.Path, StructuredSourceSuccessorRoot+"receipts/") {
+			continue
+		}
+		ref := Reference{Path: source.Path, SHA256: source.SHA256}
+		pointer, err := Encode(ref)
+		if err != nil {
+			return err
+		}
+		if digest(pointer) != frozen.SHA256 {
+			continue
+		}
+		a, err := CheckStructuredSourceSuccessor(root, ref)
+		if err != nil {
+			return err
+		}
+		if structuredSourceCurrent(a.Previous.Path) != frozen.Path {
+			return fmt.Errorf("historical structured pointer/source binding mismatch")
+		}
+		return nil
+	}
+	return fmt.Errorf("no exact immutable structured-source receipt for historical pointer")
 }

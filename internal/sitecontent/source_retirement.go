@@ -42,7 +42,7 @@ func CheckSourceZIPRetirement(root string) (*SourceZIPRetirement, error) {
 		if err != nil {
 			return nil, err
 		}
-		c, err := i18n.LoadGlossaryCorpusAt(root, p)
+		c, err := readStorageCompatibilityCorpus(root, p)
 		if err != nil {
 			return nil, fmt.Errorf("corpus verification %s: %w", p, err)
 		}
