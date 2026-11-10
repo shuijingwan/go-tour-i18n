@@ -134,7 +134,37 @@ go run -mod=readonly ./cmd/tour-i18n quality-check record-batch \
   --rating <A|B|C|D> [--finding '<finding shared by this group>']
 ```
 
-`record` 的 `--unit-id` 可以重复，用于一次原子记录多个同 rating、同 finding Unit；结论不同必须拆开记录。`record-batch` 默认且最大 `limit=60`，按 immutable Snapshot 的稳定 index 记录连续范围。A 可以没有 finding；B/C/D 必须提供非空 `--finding`。两个命令都拒绝覆盖已有 Unit 结果。
+`record` 的 `--unit-id` 可以重复，用于一次原子记录多个同 rating、同 finding Unit；同一次 Reviewer working set 的异构结论使用下面的 `--judgments-file` 模式，不必逐 Unit 重跑 recording。`record-batch` 默认且最大 `limit=60`，按 immutable Snapshot 的稳定 index 记录连续范围。A 可以没有 finding；B/C/D 必须提供非空 finding。两个旧入口的正常语义不变，均拒绝覆盖已有 Unit 结果。
+
+#### 同一 Reviewer working set 的异构结论记录
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n quality-check record \
+  --locale <locale> --snapshot-id <snapshot-id> \
+  --content-package <registered-package> \
+  --reviewer-session <independent-reviewer-session> \
+  [--previous-snapshot-id <previous-snapshot-id> | --full-rereview] \
+  --judgments-file /tmp/<working-set>-judgments.json
+```
+
+JSON 文件必须是明确的数组，例如：
+
+```json
+[
+  {"unit_id": "<unit-a>", "rating": "A"},
+  {"unit_id": "<unit-b>", "rating": "B", "finding": "该 Unit 的具体问题。"},
+  {"unit_id": "<unit-c>", "rating": "C", "finding": "另一个 Unit 的具体问题。"}
+]
+```
+
+这是 command transport/input，不是新 lifecycle authority、receipt 或持久化 schema；不会复制输入文件到正式目录。由 caller 明确提供同一次独立 Reviewer response 的结论，不解析或猜测自然语言 Markdown。文件路径可为当前工作目录下的相对路径或绝对路径（例如 `/tmp`）。严格拒绝 unknown fields（含客户端 `index`）、重复 JSON key、trailing JSON、空数组/null、重复/空 Unit ID、非 A/B/C/D、B/C/D 空 finding。finding 仅按既有 `record` 合同 trim 首尾空白，内部文字与换行保留；stable index 从 Snapshot 取得。
+
+`--judgments-file` 只可出现一次，且与 `--unit-id`、`--rating`、`--finding` 互斥，显式传空值也不例外。bulk 模式必须提供非空 `--reviewer-session`，校验独立角色并与已开始 results 的 session exact-match。仍限同 kind、最多 60 Unit；不合并多次 Reviewer invocation，也不豁免 initial working-set partition。registered package 沿用共享 `--content-package` catalog selection 与 Snapshot binding；native Tour 沿用原 scope。predecessor/full-rereview 的 first-write 与持久化 lineage 规则完全不变。
+
+一次调用只建立一次共享 Snapshot/currentness/lineage recording context，逐 Unit 仍执行完整 repository identity/evidence 校验，相关 reconciliation receipt context 仅在本 invocation 内复用。所有 judgment 全部通过后才 merge/sort，复用现有 writer 经临时文件和单次 rename 发布 `quality-check-results.json`；任何 judgment、session、lineage、scope 或 identity 校验失败均不写部分结果，也不覆盖已有 Unit。最终 schema/bytes 与同一 Snapshot 上逐 Unit 使用旧 `record` 得到的结果一致。没有新缓存、恢复协议或并发写入合同；维护者仍串行记录，写入后才出现的 stdout/I/O failure 不能当作“未写入”，须先只读核对 canonical results。
+
+stdout 继续使用 `QualityCheckRecordResult` JSON：`recorded_count` 是本次新增数，`result_count` 是总数，`unit_ids` 为请求顺序，`path` 为 canonical results 路径；bulk 模式的共享 `rating` 为空字符串，各 Unit 的真实 rating/finding 以 results 文件为准。此 CLI input/currentness contract 已修改，旧 first-real-use verification 失效；真实使用前由 Maintainer Local 按 [Formal Command Contract v3](WORKFLOW_HANDOFF.md#formal-command-contract-v3) 重新核对 current docs → implementation → direct CLI tests。该能力不改变 revision、finalization、Independent QC/A-only、Surface 或 Production gate。
+
 
 单次 Reviewer model invocation / response 最多审核 60 TranslationUnits；Page / Example 分开。60 是实际审核质量边界，不得通过在同一次 response 内串联多个 `<=60` working set 绕过。下一组必须由新的用户请求触发新的 model invocation；每组仍须逐 TranslationUnit 审核，不得抽样。当前首次 122-Unit locale 的 full QC 推荐依次审核 Page stable index `1-60`、Page stable index `61-103`、Example stable index `104-122`，最多三次独立 Reviewer 请求。revision re-QC 按实际 pending scope 分组，每次仍最多 60，且 Page / Example 分开。
 

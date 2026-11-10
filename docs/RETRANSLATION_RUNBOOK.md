@@ -224,7 +224,7 @@ go run -mod=readonly ./cmd/tour-i18n quality-check reviewer-bundle-check \
   --bundle /tmp/<locale>-<snapshot-id>-qc-<stable-index>.zip
 ```
 
-bundle 完整包含该 working set 的 source/current target、完整 glossary、relevant manifest/input、validation、Snapshot、carry-forward/pending scope、rubric/authority 与 hashes。`reviewer-bundle-check` 必须在记录结论前确认 ZIP 与当前 working tree 逐字节一致。Reviewer 仍只返回 A/B/C/D + findings；现有 `quality-check record` / `record-batch` 是唯一记录入口，不新增第二套结果 import 或 QC state machine。
+bundle 完整包含该 working set 的 source/current target、完整 glossary、relevant manifest/input、validation、Snapshot、carry-forward/pending scope、rubric/authority 与 hashes。`reviewer-bundle-check` 必须在记录结论前确认 ZIP 与当前 working tree 逐字节一致。Reviewer 仍只返回 A/B/C/D + findings；现有 `quality-check record` / `record-batch` 是唯一记录入口。同一次 working set 有不同 rating/finding 时，使用 `record --judgments-file <JSON-array-path>`，由 caller 明确提供 `unit_id/rating/finding`，不从 Markdown 猜结论；必须带独立 `--reviewer-session`，保留 current package、最多 60 同 kind、predecessor/currentness 等全部 gate。该模式复用一次共享校验并在全组成功后原子写一次，任一 judgment 失败均无部分 results。输入、互斥 flags、stdout 与首次真实使用边界见 [异构结论记录合同](TRANSLATION_QUALITY_REVIEW.md#同一-reviewer-working-set-的异构结论记录)。不新增 persistent schema/authority、第二套结果 import 或 QC state machine。
 
 ## 7. Quality Check 与 revision batch
 

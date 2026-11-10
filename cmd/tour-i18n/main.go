@@ -824,34 +824,7 @@ func run(args []string) error {
 			manifest.Locale, manifest.SnapshotID, manifest.WorkingSetKind, manifest.StartIndex, manifest.EndIndex, manifest.UnitCount, manifest.InputIdentitySHA256)
 		return nil
 	case "quality-check record":
-		fs := flag.NewFlagSet("quality-check record", flag.ContinueOnError)
-		locale := fs.String("locale", "", "target locale")
-		reviewerSession := fs.String("reviewer-session", "", "独立 Reviewer session")
-		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
-		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
-		fullRereview := fs.Bool("full-rereview", false, "explicitly accept a full repeated review with no predecessor")
-		rating := fs.String("rating", "", "Quality Check rating: A, B, C, or D")
-		finding := fs.String("finding", "", "per-TranslationUnit finding; required for B/C/D")
-		var unitIDs repeatedStrings
-		fs.Var(&unitIDs, "unit-id", "TranslationUnit id; repeat for multiple units with the same rating")
-		if err := fs.Parse(args[2:]); err != nil {
-			return err
-		}
-		if *locale == "" || *snapshotID == "" || *rating == "" || len(unitIDs) == 0 {
-			return fmt.Errorf("--locale, --snapshot-id, at least one --unit-id, and --rating are required")
-		}
-		if fs.NArg() != 0 {
-			return fmt.Errorf("unexpected quality-check record arguments: %s", strings.Join(fs.Args(), " "))
-		}
-		result, err := i18n.RecordQualityCheckResults(root, catalog, i18n.QualityCheckRecordOptions{
-			ReviewerSession: *reviewerSession,
-			Locale:          *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID, FullRereview: *fullRereview,
-			UnitIDs: unitIDs, Rating: *rating, Finding: *finding,
-		})
-		if err != nil {
-			return err
-		}
-		return printJSON(result)
+		return qualityCheckRecordCommand(root, catalog, args[2:], os.Stdout)
 	case "quality-check finalize":
 		fs := flag.NewFlagSet("quality-check finalize", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

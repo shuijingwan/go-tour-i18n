@@ -52,6 +52,31 @@ type QualityCheckRecordOptions struct {
 	Finding            string
 }
 
+// QualityCheckJudgment is command input, not a receipt or a results schema.
+// Stable indexes and all authority bindings are resolved from the Snapshot.
+type QualityCheckJudgment struct {
+	UnitID  string `json:"unit_id"`
+	Rating  string `json:"rating"`
+	Finding string `json:"finding,omitempty"`
+}
+
+type QualityCheckRecordJudgmentsOptions struct {
+	ReviewerSession    string
+	FullRereview       bool
+	Locale             string
+	SnapshotID         string
+	PreviousSnapshotID string
+	Judgments          []QualityCheckJudgment
+}
+
+// Invocation-local instrumentation for deterministic performance regressions.
+type qualityCheckRecordingStats struct {
+	SnapshotReads           int
+	ContextBuilds           int
+	RepositoryEvidenceReads int
+	WriteAttempts           int
+}
+
 type QualityCheckRecordBatchOptions struct {
 	ReviewerSession    string
 	FullRereview       bool
@@ -224,6 +249,38 @@ func cloneEffectiveQualityCheckResults(in map[string]effectiveQualityCheckResult
 }
 
 func RecordQualityCheckResults(root string, catalog *Catalog, options QualityCheckRecordOptions) (*QualityCheckRecordResult, error) {
+	judgments := make([]QualityCheckJudgment, 0, len(options.UnitIDs))
+	for _, id := range options.UnitIDs {
+		judgments = append(judgments, QualityCheckJudgment{UnitID: id, Rating: options.Rating, Finding: options.Finding})
+	}
+	return recordQualityCheckJudgments(root, catalog, options, judgments, false, nil)
+}
+
+// RecordQualityCheckJudgments validates one independent Reviewer working set
+// and publishes it once. No judgment is committed before the entire set passes.
+func RecordQualityCheckJudgments(root string, catalog *Catalog, options QualityCheckRecordJudgmentsOptions) (*QualityCheckRecordResult, error) {
+	return recordQualityCheckJudgmentsBulk(root, catalog, options, nil)
+}
+
+func recordQualityCheckJudgmentsBulk(root string, catalog *Catalog, options QualityCheckRecordJudgmentsOptions, stats *qualityCheckRecordingStats) (*QualityCheckRecordResult, error) {
+	if strings.TrimSpace(options.ReviewerSession) == "" {
+		return nil, errors.New("独立质量审核记录必须给出 --reviewer-session")
+	}
+	ids := make([]string, 0, len(options.Judgments))
+	for _, j := range options.Judgments {
+		ids = append(ids, j.UnitID)
+	}
+	return recordQualityCheckJudgments(root, catalog, QualityCheckRecordOptions{
+		ReviewerSession: options.ReviewerSession, FullRereview: options.FullRereview,
+		Locale: options.Locale, SnapshotID: options.SnapshotID, PreviousSnapshotID: options.PreviousSnapshotID, UnitIDs: ids,
+	}, options.Judgments, true, stats)
+}
+
+func recordQualityCheckJudgments(root string, catalog *Catalog, options QualityCheckRecordOptions, judgments []QualityCheckJudgment, heterogeneous bool, stats *qualityCheckRecordingStats) (*QualityCheckRecordResult, error) {
+	// Enforce the bulk contract itself, before role/currentness/evidence work.
+	if heterogeneous && len(judgments) > DefaultQualityCheckBatchLimit {
+		return nil, fmt.Errorf("quality-check heterogeneous judgment limit must not exceed %d", DefaultQualityCheckBatchLimit)
+	}
 	if catalog == nil {
 		return nil, errors.New("quality-check catalog is required")
 	}
@@ -244,26 +301,44 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 			return nil, errors.New("previous_snapshot_id must differ from snapshot_id")
 		}
 	}
-	if !validQualityRating(options.Rating) {
-		return nil, fmt.Errorf("invalid quality-check rating %q", options.Rating)
-	}
-	finding := strings.TrimSpace(options.Finding)
-	if options.Rating != "A" && finding == "" {
-		return nil, errors.New("quality-check finding is required for rating B, C, or D")
-	}
-	if len(options.UnitIDs) == 0 {
+	if len(judgments) == 0 {
 		return nil, errors.New("at least one quality-check unit_id is required")
 	}
-	if err := catalog.RequireTranslationInvocation(options.UnitIDs); err != nil {
-		return nil, err
+	byJudgment := make(map[string]QualityCheckJudgment, len(judgments))
+	for _, j := range judgments {
+		if j.UnitID == "" {
+			return nil, fmt.Errorf("empty or duplicate quality-check unit_id %q", j.UnitID)
+		}
+		if _, duplicate := byJudgment[j.UnitID]; duplicate {
+			return nil, fmt.Errorf("empty or duplicate quality-check unit_id %q", j.UnitID)
+		}
+		if !validQualityRating(j.Rating) {
+			return nil, fmt.Errorf("invalid quality-check rating %q", j.Rating)
+		}
+		j.Finding = strings.TrimSpace(j.Finding)
+		if j.Rating != "A" && j.Finding == "" {
+			return nil, errors.New("quality-check finding is required for rating B, C, or D")
+		}
+		byJudgment[j.UnitID] = j
 	}
-	if len(catalog.TranslationScope) > 0 {
+	// Legacy validation order remains unchanged. Bulk resolves Snapshot kinds
+	// first so its independent same-kind gate cannot be masked by catalog or
+	// initial-working-set checks. All those existing checks still run below.
+	if !heterogeneous {
+		if err := catalog.RequireTranslationInvocation(options.UnitIDs); err != nil {
+			return nil, err
+		}
+	}
+	if len(catalog.TranslationScope) > 0 || heterogeneous {
 		if options.ReviewerSession == "" {
 			return nil, errors.New("独立质量审核记录必须给出 --reviewer-session")
 		}
 		if err := CheckUnifiedLanguageRole(root, options.Locale, options.ReviewerSession, "reviewer"); err != nil {
 			return nil, err
 		}
+	}
+	if stats != nil {
+		stats.SnapshotReads++
 	}
 	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
@@ -296,7 +371,7 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	if err != nil {
 		return nil, err
 	}
-	if previousSnapshotID == "" {
+	if previousSnapshotID == "" && !heterogeneous {
 		if err := catalog.RequireInitialTranslationWorkingSet(options.UnitIDs); err != nil {
 			return nil, err
 		}
@@ -319,6 +394,12 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	for _, unit := range snapshot.Units {
 		byID[unit.UnitID] = unit
 	}
+	// Use the existing current-world reconciliation reader with one shared
+	// receipt context. Distinct Units still receive every exact evidence check.
+	machines := map[string]*machineSelection{}
+	if stats != nil {
+		stats.ContextBuilds++
+	}
 	seenRequested := map[string]bool{}
 	selected := make([]QualityCheckSnapshotUnit, 0, len(options.UnitIDs))
 	for _, unitID := range options.UnitIDs {
@@ -330,10 +411,39 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 		if !ok {
 			return nil, fmt.Errorf("snapshot %q has no unit %q", options.SnapshotID, unitID)
 		}
-		if _, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, unit); err != nil {
-			return nil, fmt.Errorf("snapshot index %d (%s) identity: %w", unit.Index, unit.UnitID, err)
-		}
 		selected = append(selected, unit)
+	}
+	if heterogeneous {
+		if len(selected) == 0 {
+			return nil, errors.New("at least one quality-check Snapshot Unit is required")
+		}
+		for _, unit := range selected[1:] {
+			if unit.UnitKind != selected[0].UnitKind {
+				return nil, fmt.Errorf("quality-check heterogeneous judgments must have the same UnitKind; mixed %s and %s are not allowed", selected[0].UnitKind, unit.UnitKind)
+			}
+		}
+		if err := catalog.RequireTranslationInvocation(options.UnitIDs); err != nil {
+			return nil, err
+		}
+		if previousSnapshotID == "" {
+			if err := catalog.RequireInitialTranslationWorkingSet(options.UnitIDs); err != nil {
+				return nil, err
+			}
+		}
+	}
+	for _, unit := range selected {
+		if stats != nil {
+			stats.RepositoryEvidenceReads++
+		}
+		var evidenceErr error
+		if unit.RepresentationReconciliation != nil {
+			_, _, evidenceErr = machineSnapshotEvidence(root, catalog, options.Locale, unit, machines)
+		} else {
+			_, evidenceErr = readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, unit)
+		}
+		if evidenceErr != nil {
+			return nil, fmt.Errorf("snapshot index %d (%s) identity: %w", unit.Index, unit.UnitID, evidenceErr)
+		}
 	}
 
 	results := &QualityCheckResults{
@@ -355,7 +465,8 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 		if existingByID[unit.UnitID] {
 			return nil, fmt.Errorf("quality-check result already exists for %s", unit.UnitID)
 		}
-		results.Results = append(results.Results, QualityCheckResult{Index: unit.Index, UnitID: unit.UnitID, Rating: options.Rating, Finding: finding})
+		j := byJudgment[unit.UnitID]
+		results.Results = append(results.Results, QualityCheckResult{Index: unit.Index, UnitID: unit.UnitID, Rating: j.Rating, Finding: j.Finding})
 	}
 	sort.Slice(results.Results, func(i, j int) bool { return results.Results[i].Index < results.Results[j].Index })
 	results.ResultCount = len(results.Results)
@@ -365,11 +476,14 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	}
 	results.SnapshotManifestSHA256 = sum(manifestData)
 	path := qualityCheckResultsPath(root, options.Locale, options.SnapshotID)
-	if err := writeQualityCheckResults(path, results); err != nil {
-		return nil, err
-	}
 	repositoryPath, err := repositoryRelativePath(root, path)
 	if err != nil {
+		return nil, err
+	}
+	if stats != nil {
+		stats.WriteAttempts++
+	}
+	if err := writeQualityCheckResults(path, results); err != nil {
 		return nil, err
 	}
 	unitIDs := make([]string, 0, len(selected))
