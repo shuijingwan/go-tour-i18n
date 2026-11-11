@@ -122,7 +122,7 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle current-check \
   --bundle /tmp/<locale>-<batch-id>-generation.zip
 ```
 
-registered content package（例如 `learn-docs-v1`）必须从 retranslation lifecycle 延续同一显式选择：`generation-bundle export` 与 `generation-bundle current-check` 两次独立 invocation 都须传 `--content-package <registered-package>`。不能从 batch、receipt、路径或历史 invocation 反推 package scope；省略 selector 不会自动选择 registered package，而会按默认 Tour scope 检查并对 scope mismatch fail closed。Learn/Docs 的 canonical 示例：
+registered content package（例如 `learn-docs-v1`）必须从 retranslation lifecycle 延续同一显式选择：`generation-bundle export`、`current-check`、`result-pack`（如使用）与 `import` 每次独立 invocation 都须传同一个 `--content-package <registered-package>`。目录与 Result ZIP import 均适用。不能从 Bundle、batch、receipt、路径或历史 invocation 反推 package scope；普通 registered Bundle 省略 selector 会按默认 Tour scope 检查并对 scope mismatch fail closed。Learn/Docs 的 canonical 示例：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
@@ -136,18 +136,19 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle current-check \
 
 首次 122 Unit 的默认调度固定为 60 Page、43 Page、19 Example 三个 initial batch；每个 batch 使用一次 model invocation，正式落地并取得 automatic validation evidence 后停止，等待维护者明确“继续”。不得在一次 response 串联多个 initial batch。完整顺序与合法恢复边界见[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md#新增-locale-默认调度路径效率优先)。
 
-ChatGPT 在隔离 staging 中成组保存完整 TranslationUnit，并检查 expected filename exact set、protected token、glossary、明显未翻译文本、无解释/fence 与 single-LF。维护者 Local terminal 具备输出目录访问能力时执行以下命令；ChatGPT 不 remote 代跑：
+ChatGPT 在隔离 staging 中成组保存完整 TranslationUnit，并检查 expected filename exact set、protected token、glossary、明显未翻译文本、无解释/fence 与 single-LF。维护者 Local terminal 具备输出目录访问能力时执行以下 registered package 示例，selector 必须与 export/current-check 一致；native/default Tour import 可以省略 selector。ChatGPT 不 remote 代跑：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
+  --content-package <registered-package> \
   --bundle /tmp/<locale>-<batch-id>-generation.zip \
   --input-dir /tmp/.go-tour-i18n-generation/<locale>/<batch-id> \
   --provider chatgpt --model gpt-5.6-sol-high
 ```
 
-该命令直接检查目录，不创建 Result ZIP。确需跨环境传输时，outputs ZIP 仍只是原始输出传输包，先由 `result-pack` 生成正式 `kind=go-tour-i18n/generation-result-bundle` Result ZIP，再使用 `import --result`；历史 Result ZIP 也继续兼容。
+该命令直接检查目录，不创建 Result ZIP。确需跨环境传输时，outputs ZIP 仍只是原始输出传输包，先由 `result-pack --content-package <registered-package>` 生成正式 `kind=go-tour-i18n/generation-result-bundle` Result ZIP，再使用 `import --content-package <registered-package> --result ...`，两步均延续相同 selector；完整示例见[任务规范](TRANSLATION_TASK_SPEC.md#deterministic-generation-bundle-transport)。native/default Tour 可省略 selector，历史 Result ZIP 继续兼容。
 
-`generation-bundle import` 对目录与 Result ZIP 共用 current canonical bundle、全部 input identity、locale/batch/task/attempt、provider/model、exact-set、路径、UTF-8/no-BOM/single-LF、protected restore、glossary 与 machine candidate 检查，并以同一已验证字节安装。导入会将既有 `GenerationResultBundleManifest` 持久保存为 provenance 记录，不新增 schema；记录 provider、model、Generation Bundle SHA-256、input identity、attempt 与输出 hashes。import 不等于 `retranslation process` / `retry` 写出的 automatic validation evidence，更不等于 Quality Check；每批通过 automatic validation 后仍停下等待维护者明确“继续”。
+`generation-bundle import` 对目录与 Result ZIP 共用 current canonical bundle、全部 input identity、locale/batch/task/attempt、provider/model、exact-set、路径与 UTF-8/no-BOM/single-LF 检查，并以同一已验证字节安装。protected restore、输出的 glossary/结构与 machine candidate 检查仍由后续 `retranslation process` / `retry` 完成，semantic failure 保留逐 Unit evidence。导入会将既有 `GenerationResultBundleManifest` 持久保存为 provenance 记录，不新增 schema；记录 provider、model、Generation Bundle SHA-256、input identity、attempt 与输出 hashes。import 不等于 automatic validation evidence，更不等于 Quality Check；每批通过 automatic validation 后仍停下等待维护者明确“继续”。
 
 Reviewer ZIP 继续由维护者上传给独立 Reviewer。只有确需兼容 outputs ZIP / Result ZIP 或 Reviewer ZIP 时，才涉及当前产品所需的附件上传/下载；本流程没有无需用户操作即可跨 ChatGPT / Ubuntu 或跨 session 双向传送附件的通道。
 

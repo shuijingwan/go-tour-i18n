@@ -211,10 +211,13 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle recover \
 
 `recover` 先重验 CURRENT bundle 与正式 batch state，不覆盖 formal output；随后逐 expected output 验证 filename identity、UTF-8/no-BOM/single-LF、protected restore、glossary 与 machine candidate。损坏 archive 的总体读取/完整性错误保留为 issue，但错误发生前已经完整读取并通过上述验证的成员可以独立复用；同一 output 若出现不同的有效字节则 fail closed。命令输出 `COMPLETE` / `PARTIAL` / `NONE` 与精确 `missing:` 列表；`PARTIAL` 是成功的恢复诊断，不表示 formal import 已完成。Generation 只生成 `missing` Unit 并补入新的 recovered staging，最后仍必须让该目录满足 exact set，再走普通 `generation-bundle import`、`process` / `retry` 与 automatic validation。recovery staging 不新增 provenance/schema，正式 provenance 仍只由后续 import 记录真实 provider/model。
 
-将完整生成结果先放入按 locale + batch 隔离的本地隐藏 staging。具备同一本地文件访问能力时，initial、revision 与 retry 默认直接目录 import，不制作临时 Result ZIP：
+将完整生成结果先放入按 locale + batch 隔离的本地隐藏 staging。registered package 的 `import`（目录与 Result ZIP）和 `result-pack` 必须显式携带与 export/current-check 相同的 `--content-package <registered-package>`，由 shared parser 选择同一个 complete registered catalog 重验 CURRENT Bundle；不从 Bundle、batch、receipt、路径或历史 invocation 推断。普通 registered Bundle 缺 selector、错误或 foreign selector 均 fail closed；不新增 manifest package 字段。native/default Tour import/result-pack 可以省略 selector。既有 approved-interval frozen selection/proof 的兼容读取与严格验证不变；显式 selector 与 frozen selection 冲突时必须拒绝，不能以 frozen selection 覆盖显式选择。
+
+具备同一本地文件访问能力时，initial、revision 与 retry 默认直接目录 import，不制作临时 Result ZIP。以下均为 registered package 示例；native/default Tour 可去掉 selector：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
+  --content-package <registered-package> \
   --bundle /tmp/<locale>-<batch-id>-generation.zip \
   --input-dir /tmp/.go-tour-i18n-generation/<locale>/<batch-id> \
   --provider <chatgpt|codex> --model <provider-specific-formal-model>
@@ -224,17 +227,23 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle result-pack \
+  --content-package <registered-package> \
   --bundle /tmp/<locale>-<batch-id>-generation.zip \
   --provider <chatgpt|codex> --model <provider-specific-formal-model> \
   --input-dir <exact-output-directory> \
   --output /tmp/<locale>-<batch-id>-result.zip
 
 go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
+  --content-package <registered-package> \
   --bundle /tmp/<locale>-<batch-id>-generation.zip \
   --result /tmp/<locale>-<batch-id>-result.zip
 ```
 
-目录 import 与 Result ZIP import 共用 current canonical bundle、原 ZIP 完整性与全部 authority/input identity、locale/batch/task/attempt、expected outputs、真实 provider/model、exact file set、路径、UTF-8/no-BOM/single-LF、protected restore、glossary 与 machine candidate 检查。目录 symlink、额外目录/FIFO/非普通文件、缺失或额外文件、stale 输入、身份不符及已有正式输出均 fail closed。initial/revision 完整 staging 后原子安装且 no-replace；当前整批目录安装要求 Linux amd64 内核支持 `renameat2(RENAME_NOREPLACE)`，其他平台 fail closed。retry 保持单文件 no-overwrite。目录 import 将既有 `GenerationResultBundleManifest` 持久保存在 `data/retranslation-runs/<locale>/<batch-id>/generation-imports/initial-manifest.json`，retry manifest 按 unit 与 attempt 命名；记录 provider/model、Generation Bundle SHA-256、input identity、attempt 与输出 hashes；检查过程中若状态不确定，pending marker 会阻止 import 重放及 `process` / `retry`，必须先核实实际文件。目录与 Result ZIP 两种导入都只完成机器安全检查，不判断语言质量；随后仍由 `retranslation process` / `retry` 生成正式 automatic validation evidence，并继续独立 A-only QC。
+目录 import 与 Result ZIP import 共用 current canonical bundle、原 ZIP 完整性与全部 authority/input identity、locale/batch/task/attempt、expected outputs、真实 provider/model、exact file set、路径与 UTF-8/no-BOM/single-LF 检查。protected restore、输出的 glossary/结构与 machine candidate 检查保持在后续 `retranslation process` / `retry`，失败按 Unit 保留 evidence。目录 symlink、额外目录/FIFO/非普通文件、缺失或额外文件、stale 输入、身份不符及已有正式输出均 fail closed。initial/revision 完整 staging 后原子安装且 no-replace；当前整批目录安装要求 Linux amd64 内核支持 `renameat2(RENAME_NOREPLACE)`，其他平台 fail closed。retry 保持单文件 no-overwrite。目录 import 将既有 `GenerationResultBundleManifest` 持久保存在 `data/retranslation-runs/<locale>/<batch-id>/generation-imports/initial-manifest.json`，retry manifest 按 unit 与 attempt 命名；记录 provider/model、Generation Bundle SHA-256、input identity、attempt 与输出 hashes；检查过程中若状态不确定，pending marker 会阻止 import 重放及 `process` / `retry`，必须先核实实际文件。目录与 Result ZIP 两种导入都只完成机器安全检查，不判断语言质量；随后仍由 `retranslation process` / `retry` 生成正式 automatic validation evidence，并继续独立 A-only QC。
+
+`generation-bundle import` 的 formal command contract：OPERATION 为安装已生成的 exact outputs；INPUT_KIND 为原 Generation ZIP 加输出目录或正式 Result ZIP（两者互斥），`--bundle` / `--result` 必须是非 symlink 普通文件，`--input-dir` 必须是真实目录，路径可为绝对路径或相对当前工作目录。目录模式必填真实 `--provider` / `--model`，Result ZIP 模式禁止这两个 flags，使用其 manifest 的 provenance。STDOUT_KIND 是 plain text：`Generation result imported:` 包含 locale/batch/task/attempt/provider/model/outputs/input identity/Generation ZIP SHA，随后列出 `installed:` 路径，不输出 JSON receipt。
+
+MUTATION_EXPECTATION=known：仅写该 batch 的 expected raw/retry outputs、既有 generation-imports provenance/pending 与内容寻址 Generation archive；不生成 candidate、validation、result 或 QC。CURRENTNESS_CHECK 为同一所选 complete package catalog 上的 canonical Bundle 重建和上述全部检查；IDEMPOTENCE 为拒绝重放/覆盖，不能将重复 import 当作 no-op。PRIOR_OR_CAS 无额外 CLI 字段；以正式目标/provenance absence、pending 独占及 no-replace publication 拦截冲突。SUCCESS_STOP 为 outputs/provenance 完整安装且 pending 清除，随后交维护者安排 process/retry；FAILURE_STOP 为保留 Bundle/staging/已有 evidence，停止下游操作，不能假定失败必然 mutation=none。pending 或 mutation 不确定时先诊断，不盲重放、不自动清理、也不进入 historical/transport recovery。
 
 ## 5. 输出契约
 

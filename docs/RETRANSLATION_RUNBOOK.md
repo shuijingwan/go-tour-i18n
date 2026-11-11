@@ -57,7 +57,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 这三部分不可拆分。initial Page / Example bulk Generation 仍由维护者 Local terminal 导出 `generation-bundle export` ZIP 并 handoff 给 ChatGPT 或 Codex；不得改用逐文件输入或模型自行扫描工作树。生成者将完整 TranslationUnit 成组保存到按 locale + batch 隔离的隐藏 staging；具备本机访问能力时默认由 `generation-bundle import --input-dir` 直接安装，不生成或下载 outputs ZIP。确需跨环境传输、目录不可访问时，兼容使用 outputs ZIP → `result-pack` → Result ZIP import。若 Generation/transport 在 import 前中断，先核对 formal state，再对仍 CURRENT 的 Generation Bundle 使用 `generation-bundle recover` 从 partial staging / interrupted tar/tar.gz 中逐 Unit 回收可验证完整成果，只重新生成其 `missing` scope；recovery staging 补齐 exact set 后仍走普通 import。Reviewer ZIP 继续由维护者上传给独立 Reviewer。目录与 ZIP importer、recovery preflight 都保留现有机器安全与 provenance gate，随后仍须执行 process / validation。完整命令、current/exact-set/no-overwrite/recovery 规则见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)。TranslationUnit 是翻译、validation 和 review 的最小单位；Generation Bundle 仅运输输入，不是 batch authority 或审核 evidence。
 
-**Generation Bundle package selector 必须延续。**上文未带 selector 的示例属于 native/default Tour scope。registered content package 的 `retranslation export` 及后续 `generation-bundle export` / `generation-bundle current-check` 必须按各自合同显式传同一个 `--content-package <registered-package>`；后两步是独立 invocation，不从 batch、receipt、路径或历史 invocation 推断 package。缺 selector 不会自动切换到 registered scope，scope mismatch 必须 fail closed。Learn/Docs 示例：
+**Generation Bundle package selector 必须延续。**上文未带 selector 的示例属于 native/default Tour scope。registered content package 的 `retranslation export` 及后续 `generation-bundle export` / `current-check` / `result-pack`（如使用）/ `import` 必须显式传同一个 `--content-package <registered-package>`；每步是独立 invocation，不从 Bundle、batch、receipt、路径或历史 invocation 推断 package。普通 registered Bundle 缺 selector 不会自动切换到 registered scope，scope mismatch 必须 fail closed。Learn/Docs 示例：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
@@ -67,9 +67,14 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
 go run -mod=readonly ./cmd/tour-i18n generation-bundle current-check \
   --content-package learn-docs-v1 \
   --bundle /tmp/<locale>-<batch-id>-generation.zip
+go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
+  --content-package learn-docs-v1 \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip \
+  --input-dir /tmp/.go-tour-i18n-generation/<locale>/<batch-id> \
+  --provider chatgpt --model gpt-5.6-sol-high
 ```
 
-current-validation invocation 的 native Tour selector 也须按其合同显式传 `--content-package tour-v1`。`generation-bundle import` 不接受 `--content-package`，仍按 frozen Bundle 验证 approved scope；不能把 export/current-check 的 flag 机械追加到 import。
+current-validation export/current-check 的 native Tour selector 仍须按其合同显式传 `--content-package tour-v1`；native/default Tour import 可以不带 selector。目录 import 与 `import --result` 使用调用者选择的同一 complete package scope 重验 CURRENT Bundle；Result ZIP 路径的 `result-pack` 也须延续该 selector。既有 approved-interval frozen selection/proof 校验保持不变，显式 selector 与 frozen selection 冲突时拒绝，不覆盖调用者的选择。
 
 ## 3. Process 与 automatic validation
 

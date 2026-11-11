@@ -181,6 +181,8 @@ canonical repo docs/code 是 authority，direct tests 是可执行 contract evid
 
 **Package selector propagation：**lifecycle 一旦显式选择 registered content package，后续 shared TranslationUnit command 必须按各 command 的 current contract 显式携带同一 package selector，不得从 batch、receipt、路径或历史 invocation 推断。若某 command 明确不接受 package selector，则遵守该 command 的 current contract，不机械追加 flag。
 
+`generation-bundle import`（目录与 Result ZIP）及兼容路径的 `result-pack` 均接受该 selector，必须与 export/current-check 的 registered package 一致；import 不是 propagation 的例外。普通 registered Bundle 缺 selector、错误或 foreign package 均 fail closed，不从 Bundle 自动选包；native/default Tour import 可不带 selector。canonical 示例与 import 的 mutation/stop 合同见[Generation Bundle transport](TRANSLATION_TASK_SPEC.md#deterministic-generation-bundle-transport)。
+
 每个 command/mode 的 canonical contract 必须无歧义给出以下信息（字段可沿用各文档的既有名称，不强制统一表格）：
 
 | 信息 | 必须说明 |

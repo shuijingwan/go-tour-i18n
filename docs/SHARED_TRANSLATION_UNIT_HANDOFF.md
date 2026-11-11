@@ -8,6 +8,16 @@
 
 复用既有 `retranslation export`、Generation Bundle current-check/import/recover、`process`、`retry`、最新结果选择、候选快照、独立质量审核、精确修订、再审核及 A-only finalization。内容包 closure 接收共享终结证据并检查当前候选一致；旧 Site CLI 不再新增独立审核/修订/终结记录，历史读取兼容。
 
+当前 registered package selector 必须从 export/current-check 延续到 `generation-bundle import`；目录与 Result ZIP 路径相同，兼容路径的 `result-pack` 也必须显式携带同一 selector。不从 Bundle、batch、receipt 或路径推断。native/default Tour import 可以省略 selector；普通 registered Bundle 缺 selector 必须 fail closed。Learn/Docs 目录示例（完整 contract 见[任务规范](TRANSLATION_TASK_SPEC.md#deterministic-generation-bundle-transport)）：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
+  --content-package learn-docs-v1 \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip \
+  --input-dir /tmp/.go-tour-i18n-generation/<locale>/<batch-id> \
+  --provider chatgpt --model gpt-5.6-sol-high
+```
+
 未新增 schema 或 Site-specific recovery / partial acceptance receipt。只在既有 manifest 扩展可选 `generation_origin`，保留原完整 Bundle/result 的内容寻址归档，并在既有审核结果中添加可选 `reviewer_session`。原 JSON 不能由正常新 Generation Bundle receipt 如实冒充原模型输入，来源绑定解决的是表示适配与证据完整性，不新增生成 invocation。所有历史证据保持原布局。
 
 传输导入检查安全、真实 provenance、identity、精确集合、文件格式与不可覆盖；逐单元语义校验由共享处理完成。29 通过、1 失败时保留29个成功候选及证据，仅失败页进入正常精确重试；重试成功得到30/30。批处理一次报告所有独立失败 ID/原因，不在第一个失败处停止。包级 identity 变化不自动使每页失效；沿用要求精确正式输入及候选不变、当前机器校验与当前完整术语审核通过。

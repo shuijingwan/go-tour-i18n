@@ -268,10 +268,7 @@ func run(args []string) error {
 	case "generation-bundle recover":
 		return recoverGenerationBundleCommand(root, catalog, args[2:])
 	case "generation-bundle import":
-		if contentPackage != "" {
-			return fmt.Errorf("generation-bundle import does not accept --content-package; approved scope comes from the frozen Bundle")
-		}
-		return importGenerationResultBundleCommand(root, catalog, args[2:])
+		return importGenerationResultBundleCommand(root, catalog, args[2:], contentPackage)
 	case "course-metadata assemble":
 		return assembleCourseMetadata(root, catalog, args[2:])
 	case "course-metadata refresh":

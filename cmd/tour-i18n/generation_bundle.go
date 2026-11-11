@@ -290,7 +290,7 @@ func recoverGenerationBundleCommand(root string, catalog *i18n.Catalog, args []s
 	return nil
 }
 
-func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, args []string) error {
+func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, args []string, contentPackage string) error {
 	fs := flag.NewFlagSet("generation-bundle import", flag.ContinueOnError)
 	executionPath := fs.String("generation-execution", "", "exact new model execution object for recovery")
 	executionSHA := fs.String("generation-execution-sha256", "", "exact execution object SHA")
@@ -328,7 +328,7 @@ func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, arg
 		if *provider == "" || *model == "" {
 			return fmt.Errorf("--provider and --model are required with --input-dir")
 		}
-		catalog, err = approvedIntervalImportCatalog(catalog, bundle)
+		catalog, err = approvedIntervalImportCatalog(catalog, bundle, contentPackage)
 		if err != nil {
 			return err
 		}
@@ -348,7 +348,7 @@ func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, arg
 		if readErr != nil {
 			return readErr
 		}
-		catalog, err = approvedIntervalImportCatalog(catalog, bundle)
+		catalog, err = approvedIntervalImportCatalog(catalog, bundle, contentPackage)
 		if err != nil {
 			return err
 		}
@@ -368,11 +368,11 @@ func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, arg
 	return nil
 }
 
-// Import has no external package selector. A frozen approved request supplies
-// its explicit package; this only selects a complete registered scope on a copy.
-// The domain importer still freshly reconstructs and verifies the entire graph
-// before installing any output. Ordinary imports keep their existing Catalog.
-func approvedIntervalImportCatalog(c *i18n.Catalog, bundle []byte) (*i18n.Catalog, error) {
+// Ordinary imports retain the caller's selected Catalog. Preserve the existing
+// frozen approved-request scope on a copy, but never override a conflicting
+// explicit CLI selector (including native tour-v1's unscoped Catalog).
+// The domain importer still freshly verifies the entire graph before install.
+func approvedIntervalImportCatalog(c *i18n.Catalog, bundle []byte, contentPackage string) (*i18n.Catalog, error) {
 	files, err := i18n.ReadTransportBundle(bundle, i18n.TranslationUnitGenerationBundleMaxFiles, i18n.TranslationUnitGenerationBundleMaxBytes)
 	if err != nil {
 		return nil, err
@@ -394,6 +394,9 @@ func approvedIntervalImportCatalog(c *i18n.Catalog, bundle []byte) (*i18n.Catalo
 	}
 	if selection.Schema != i18n.ApprovedIntervalSelectionSchema || selection.Locale != manifest.Locale || selection.BatchID != manifest.BatchID {
 		return nil, fmt.Errorf("approved interval import selection identity mismatch")
+	}
+	if contentPackage != "" && contentPackage != selection.ContentPackage {
+		return nil, fmt.Errorf("approved interval import explicit content-package conflicts with frozen selection")
 	}
 	return i18n.SelectCurrentValidationReopenPackage(c, selection.ContentPackage)
 }

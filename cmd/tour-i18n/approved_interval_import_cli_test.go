@@ -15,6 +15,14 @@ import (
 )
 
 func TestApprovedIntervalDeflateDirectoryImportRun(t *testing.T) {
+	for _, mode := range []string{"existing-frozen-selection", "explicit-selector"} {
+		t.Run(mode, func(t *testing.T) {
+			testApprovedIntervalDeflateDirectoryImportRun(t, mode == "explicit-selector")
+		})
+	}
+}
+
+func testApprovedIntervalDeflateDirectoryImportRun(t *testing.T, explicitSelector bool) {
 	done := contentidentity.BeginMemoization()
 	defer done()
 	f := approvedIntervalRunFixture(t)
@@ -85,7 +93,7 @@ func TestApprovedIntervalDeflateDirectoryImportRun(t *testing.T) {
 		argv []string
 		want string
 	}{
-		{"external-package-override", append(append([]string{}, args...), "--content-package", "tour-v1"), "import does not accept --content-package"},
+		{"external-package-override", append(append([]string{}, args...), "--content-package", "tour-v1"), "explicit content-package conflicts with frozen selection"},
 		{"missing-model", args[:8], "--provider and --model are required"},
 		{"missing-provider", append(append([]string{}, args[:6]...), args[8:]...), "--provider and --model are required"},
 		{"mutually-exclusive-result", append(append([]string{}, args...), "--result", "unused-result.zip"), "usage: generation-bundle import"},
@@ -98,6 +106,9 @@ func TestApprovedIntervalDeflateDirectoryImportRun(t *testing.T) {
 				t.Fatal("rejected import changed authority/state")
 			}
 		})
+	}
+	if explicitSelector {
+		args = append(args, "--content-package", f.f.pkg)
 	}
 	out, err := authorizationDiagnosisOutput(t, func() error { return run(args) })
 	if err != nil || !strings.Contains(string(out), "Generation result imported: ") {
