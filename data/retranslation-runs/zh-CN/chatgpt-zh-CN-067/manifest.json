@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-067",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "representation_bridge": {
+        "path": "data/quality-check-reopens/zh-CN/learn-docs-qc024-restricted-bridge-001.json",
+        "sha256": "648cb9f0e8c69159cae40ee3db84803e17c3612378f1ca7b7534b6b726373f21"
+      },
+      "unit_id": "393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c",
+      "unit_kind": "page",
+      "source_path": "_content/doc/tutorial/add-a-test.html",
+      "source_sha256": "d5ea155f25736df5051fddc35df81af3600b57700972d8fde4c344345c9a0ca0",
+      "input_path": "inputs/393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c.article",
+      "input_sha256": "0ab958bd7e1505bd339c825cd67497a9908ea3e1275083354a087a13fdfdc45f",
+      "protected_token_count": 132,
+      "previous_snapshot_id": "learn-docs-v1-qc-024",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "**Category:** visible punctuation spacing. 完整 Page same-class scan 确认 1 处：测试函数说明中 `\u003ccode\u003eTest\u003c/code\u003e 开头）` 与句号之间残留可见空白，呈现为 `开头） 。`。**Scope:** 仅该 Page 中非代码自然语言的“可见文本后存在空白再接中文标点”predicate；本 Page 确认 1 处。保留代码、identifier、HTML 和测试语义。"
+    },
+    {
+      "representation_bridge": {
+        "path": "data/quality-check-reopens/zh-CN/learn-docs-qc024-restricted-bridge-001.json",
+        "sha256": "648cb9f0e8c69159cae40ee3db84803e17c3612378f1ca7b7534b6b726373f21"
+      },
+      "unit_id": "b49d8e873a0f66f6803077eb534583a155d2bd209a032d7c00fba8fea856da5c",
+      "unit_kind": "page",
+      "source_path": "_content/doc/tutorial/json.md",
+      "source_sha256": "9bb5bed860a71bdb4dc9776c9eff2e5f4a40f1ca9851851bfd1619c1793970be",
+      "input_path": "inputs/b49d8e873a0f66f6803077eb534583a155d2bd209a032d7c00fba8fea856da5c.article",
+      "input_sha256": "2bb5c43ced6e3a7c3c8b94f6be127793c6c6063429cbbcb09435cd412df6e059",
+      "protected_token_count": 272,
+      "previous_snapshot_id": "learn-docs-v1-qc-024",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "**Categories:** visible punctuation spacing / untranslated natural-language residue. 完整 Page scan 确认 **12** 处“非空字符 + whitespace + 中文标点”可见排版缺陷；另有 `和/或（and/or）`，中文含义已表达后仍保留普通英文 conjunction。**Scope:** 当前 Page 这两类 predicate；JSON、API、Go type、code identity 不变。"
+    },
+    {
+      "representation_bridge": {
+        "path": "data/quality-check-reopens/zh-CN/learn-docs-qc024-restricted-bridge-001.json",
+        "sha256": "648cb9f0e8c69159cae40ee3db84803e17c3612378f1ca7b7534b6b726373f21"
+      },
+      "unit_id": "d799614a9f1efd848505c615a88f2fb0f092ac22f743b3da042e12de1127fd8b",
+      "unit_kind": "page",
+      "source_path": "_content/doc/database/cancel-operations.md",
+      "source_sha256": "c71ef831003d93f55e7ffb503aadb883797e574b21d905caa42c783cf02ff683",
+      "input_path": "inputs/d799614a9f1efd848505c615a88f2fb0f092ac22f743b3da042e12de1127fd8b.article",
+      "input_sha256": "bc0f0763e3ad12ab31c187c68c1536f3a628333f7955bf8f5d1f1967288aacb9",
+      "protected_token_count": 86,
+      "previous_snapshot_id": "learn-docs-v1-qc-024",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "**Category:** spurious Markdown paragraph break. `有关 Context 的更多信息，请参阅` 与 `[Go 并发模式：Context](/blog/context)。` 之间存在空段落边界，把 canonical source 的单个完整句子拆成两个 paragraph，并使前一段句法未完成。完整 Page same-class scan确认 **1** 处。**Scope:** 仅此 paragraph-boundary predicate；`Context`/link identity 不变。"
+    }
+  ]
+}
