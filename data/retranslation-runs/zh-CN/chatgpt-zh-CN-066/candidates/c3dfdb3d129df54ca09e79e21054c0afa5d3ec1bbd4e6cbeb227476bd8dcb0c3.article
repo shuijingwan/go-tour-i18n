@@ -1,0 +1,658 @@
+<!--{
+  "Title": "教程：使用 Go 和 Gin 开发 RESTful API",
+  "Breadcrumb": true
+}-->
+
+本教程介绍使用 Go 和 [Gin Web Framework](https://gin-gonic.com/en/docs/)（Gin）编写 RESTful Web 服务 API 的基础知识。
+
+
+如果你对 Go
+及其工具已有基本了解，就能更好地学习本教程。如果这是你第一次接触 Go，请先阅读
+[教程：Go 入门](/doc/tutorial/getting-started)，
+快速了解基础知识。
+
+Gin 简化了构建 Web 应用程序时的许多编码工作，
+包括 Web 服务。本教程将使用 Gin 对请求进行路由、
+获取请求详情，并为响应编组 JSON。
+
+在本教程中，你将构建一个包含两个端点的 RESTful API 服务器。
+示例项目是一个保存复古爵士唱片数据的资料库。
+
+本教程包括以下部分：
+
+1. 设计 API 端点。
+2. 为代码创建文件夹。
+3. 创建数据。
+4. 编写返回所有项目的处理函数。
+5. 编写添加新项目的处理函数。
+6. 编写返回特定项目的处理函数。
+
+**注意：**其他教程请参阅 [教程](/doc/tutorial/index.html)。
+
+如果想在 Google Cloud Shell 中以交互式教程的方式完成这些步骤，
+请点击下面的按钮。
+
+[![在 Cloud Shell 中打开](https://gstatic.com/cloudssh/images/open-btn.png)](https://ide.cloud.google.com/?cloudshell_workspace=~&walkthrough_tutorial_url=https://raw.githubusercontent.com/golang/tour/master/tutorial/web-service-gin.md)
+
+
+## 先决条件
+
+*   **Go。**建议使用最新版 Go 学习本教程。
+    有关安装说明，请参阅 [安装 Go](/doc/install)。
+*   **用于编辑代码的工具。**任意文本编辑器都可以。
+*   **命令行终端。**Go 可以在 Linux 和 Mac 上的任意终端中良好运行，
+    在 Windows 上则可以使用 PowerShell 或 cmd。
+*   **curl 工具。**Linux 和 Mac 通常已经安装了该工具。
+    Windows 10 Insider build 17063 及更高版本也包含它；更早的
+    Windows 版本可能需要自行安装。更多信息请参阅
+    [Tar 和 Curl 登陆 Windows](https://docs.microsoft.com/en-us/virtualization/community/team-blog/2017/20171219-tar-and-curl-come-to-windows)。
+
+## 设计 API 端点 {#design_endpoints}
+
+你将构建一个 API，用于访问一家销售复古黑胶唱片的商店。因此需要提供端点，让客户端能够为用户获取
+和添加唱片。
+
+
+开发 API 时，通常会先设计端点。
+如果端点易于理解，API 用户就更容易正确使用它们。
+
+下面是本教程要创建的端点。
+
+/albums
+*   `GET` — 获取所有唱片的列表，并以 JSON 返回。
+*   `POST` — 根据以 JSON 发送的请求数据添加新唱片。
+
+/albums/:id
+*   `GET` — 根据唱片的 ID 获取唱片，并以 JSON 返回唱片数据。
+
+接下来，为代码创建文件夹。
+
+## 为代码创建文件夹 {#create_folder}
+
+首先，为即将编写的代码创建项目。
+
+1. 打开命令提示符并切换到主目录。
+
+    在 Linux 或 Mac 上：
+
+    ```
+    $ cd
+    ```
+
+    在 Windows 上：
+
+    ```
+    C:\> cd %HOMEPATH%
+    ```
+
+2. 使用命令提示符，为代码创建名为
+    web-service-gin 的目录。
+
+    ```
+    $ mkdir web-service-gin
+    $ cd web-service-gin
+    ```
+
+3. 创建一个用于管理依赖项的模块。
+
+    运行 `go mod init` 命令，并指定代码所在模块的路径。
+    
+
+    ```
+    $ go mod init example/web-service-gin
+    go: creating new go.mod: module example/web-service-gin
+    ```
+
+    该命令会创建一个 go.mod 文件，用于列出并跟踪所添加的依赖项。
+    有关使用模块路径命名模块的更多信息，请参阅
+    [管理依赖项](/doc/modules/managing-dependencies#naming_module)。
+
+接下来，你将设计用于处理数据的数据结构。
+
+## 创建数据 {#create_data}
+
+为了简化教程，这里会把数据存储在内存中。更典型的
+API 会与数据库交互。
+
+请注意，把数据存储在内存中意味着每次停止服务器时唱片集合都会丢失，
+服务器重新启动后再重新创建。
+
+#### 编写代码
+
+1. 使用文本编辑器，在 web-service
+    目录中创建名为 main.go 的文件。Go 代码将写在这个文件中。
+2. 在 main.go 文件顶部粘贴下面的包声明。
+
+    ```
+    package main
+    ```
+
+    独立程序（相对于库而言）始终位于 `main` 包中。
+
+3. 在包声明下方粘贴下面的 
+    `album` 结构体声明。它用于在内存中保存唱片数据。
+
+    类似 ``json:"artist"`` 的结构体标签会指定结构体内容序列化为 JSON 时字段应使用的名称。
+    如果没有这些标签，JSON
+    会使用结构体字段的大写名称——这在
+    JSON 中并不是常见风格。
+
+    ```
+    // album 表示一条唱片记录的数据（类型标识为 album）。
+    type album struct {
+    	ID     string  `json:"id"`
+    	Title  string  `json:"title"`
+    	Artist string  `json:"artist"`
+    	Price  float64 `json:"price"`
+    }
+    ```
+
+4. 在刚添加的结构体声明下方，粘贴下面这个由
+    `album` 结构体组成的切片，其中包含用于初始化的数据。
+
+    ```
+    // albums 是用于提供 album 初始数据的切片。
+    var albums = []album{
+    	{ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
+    	{ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
+    	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
+    }
+    ```
+
+接下来，你将编写代码实现第一个端点。
+
+## 编写返回所有项目的处理函数 {#all_items}
+
+当客户端向 `GET /albums` 发出请求时，希望把所有
+唱片以 JSON 返回。
+
+为此，你将编写：
+
+*   准备响应的逻辑
+*   把请求路径映射到该逻辑的代码
+
+请注意，这与运行时实际执行顺序相反；这里先添加依赖项，再添加依赖这些内容的代码。
+
+
+#### 编写代码
+
+1. 在上一节添加的结构体代码下方，粘贴
+    下面用于获取唱片列表的代码。
+
+    这个 `getAlbums` 函数会根据 `album` 结构体切片创建 JSON，
+    并把 JSON 写入响应。
+
+    ```
+    // getAlbums 以 JSON 格式返回所有 albums 的列表。
+    func getAlbums(c *gin.Context) {
+    	c.IndentedJSON(http.StatusOK, albums)
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   编写一个 `getAlbums` 函数，它接收一个
+        [`gin.Context`](https://pkg.go.dev/github.com/gin-gonic/gin#Context)
+        参数。请注意，可以给这个函数起任意名称——Gin 和 Go 都不要求特定的函数命名格式。
+        
+
+        `gin.Context` 是 Gin 中最重要的部分。它携带请求
+        详情、验证并序列化 JSON 等。（尽管名称相似，
+        它与 Go 内置的
+        [`context`](/pkg/context/) 包不同。）
+
+    *   调用 [`Context.IndentedJSON`](https://pkg.go.dev/github.com/gin-gonic/gin#Context.IndentedJSON)
+        把结构体序列化为 JSON 并加入响应。
+
+        该函数的第一个实参是希望发送给客户端的 HTTP 状态码。
+        这里传入 [`StatusOK`](https://pkg.go.dev/net/http#StatusOK)
+         常量，它来自 `net/http` 包，用于表示 `200 OK`。
+
+        请注意，可以把对 `Context.IndentedJSON` 的调用替换为对
+        [`Context.JSON`](https://pkg.go.dev/github.com/gin-gonic/gin#Context.JSON)
+        的调用，以发送更紧凑的 JSON。实际使用中，带缩进的形式在调试时更容易阅读，大小差异通常也很小。
+        
+
+2. 在 main.go 顶部附近、`albums` 切片声明下方，粘贴
+    下面的代码，把处理函数分配给一个端点路径。
+
+    这样会建立关联：`getAlbums` 处理发往
+    `/albums` 端点路径的请求。
+
+    ```
+    func main() {
+    	router := gin.Default()
+    	router.GET("/albums", getAlbums)
+
+    	router.Run("localhost:8080")
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   使用
+        [`Default`](https://pkg.go.dev/github.com/gin-gonic/gin#Default) 初始化 Gin 路由器。
+    *   使用 [`GET`](https://pkg.go.dev/github.com/gin-gonic/gin#RouterGroup.GET)
+        函数，把 `GET` HTTP 方法和 `/albums` 路径与处理
+        函数关联起来。
+
+        请注意，你传入的是 `getAlbums` 函数的_名称_。这
+        不同于传入函数的_结果_；后者需要
+        传入 `getAlbums()`（注意括号）。
+
+    *   使用 [`Run`](https://pkg.go.dev/github.com/gin-gonic/gin#Engine.Run)
+        函数把路由器附加到 `http.Server` 并启动服务器。
+
+3. 在 main.go 顶部附近、包声明下方，导入
+    支持刚才代码所需的包。
+
+    文件开头几行代码应如下所示：
+
+    ```
+    package main
+
+    import (
+    	"net/http"
+
+    	"github.com/gin-gonic/gin"
+    )
+    ```
+
+4. 保存 main.go。
+
+#### 运行代码
+
+1. 开始把 Gin 模块作为依赖项进行跟踪。
+
+    在命令行中使用 [`go get`](/cmd/go/#hdr-Add_dependencies_to_current_module_and_install_them)
+    把 github.com/gin-gonic/gin 模块添加为你的模块的依赖项。
+    使用点号参数表示“获取当前
+    目录中代码的依赖项”。
+
+    ```
+    $ go get .
+    go get: added github.com/gin-gonic/gin v1.7.2
+    ```
+
+    Go 会解析并下载该依赖项，以满足前一步添加的 `import`
+    声明。
+
+2. 在包含 main.go 的目录中通过命令行运行代码。
+    使用点号参数表示“运行当前目录中的代码”。
+
+    ```
+    $ go run .
+    ```
+
+    代码运行后，就有了一个正在运行的 HTTP 服务器，可以向它
+    发送请求。
+
+3. 在新的命令行窗口中使用 `curl`，向正在运行的
+    Web 服务发出请求。
+
+    ```
+    $ curl http://localhost:8080/albums
+    ```
+
+    该命令应显示为服务提供的初始数据。
+
+    ```
+    [
+            {
+                    "id": "1",
+                    "title": "Blue Train",
+                    "artist": "John Coltrane",
+                    "price": 56.99
+            },
+            {
+                    "id": "2",
+                    "title": "Jeru",
+                    "artist": "Gerry Mulligan",
+                    "price": 17.99
+            },
+            {
+                    "id": "3",
+                    "title": "Sarah Vaughan and Clifford Brown",
+                    "artist": "Sarah Vaughan",
+                    "price": 39.99
+            }
+    ]
+    ```
+
+你已经启动了一个 API！下一节将创建另一个端点，并添加
+处理 `POST` 请求以添加项目的代码。
+
+## 编写添加新项目的处理函数 {#add_item}
+
+当客户端向 `/albums` 发出 `POST` 请求时，希望把请求正文中描述的唱片
+添加到现有唱片数据中。
+
+为此，你将编写：
+
+*   把新唱片添加到现有列表的逻辑。
+*   把 `POST` 请求路由到该逻辑的一小段代码。
+
+#### 编写代码
+
+1. 添加代码，把唱片数据加入唱片列表。
+
+    在 `import` 语句之后的某处粘贴下面的代码。（文件末尾
+    很适合放这段代码，不过 Go 并不要求按特定顺序
+    声明函数。）
+
+    ```
+    // postAlbums 根据请求正文中收到的 JSON 创建并添加一条 album 唱片记录。
+    func postAlbums(c *gin.Context) {
+    	var newAlbum album
+
+    	// 调用 BindJSON，将接收到的 JSON 绑定到
+    	// newAlbum.
+    	if err := c.BindJSON(&newAlbum); err != nil {
+    		return
+    	}
+
+    	// 将新的 album 唱片记录添加到切片。
+    	albums = append(albums, newAlbum)
+    	c.IndentedJSON(http.StatusCreated, newAlbum)
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   使用 [`Context.BindJSON`](https://pkg.go.dev/github.com/gin-gonic/gin#Context.BindJSON)
+        把请求正文绑定到 `newAlbum`。
+    *   把根据 JSON 初始化的 `album` 结构体追加到 `albums`
+        切片。
+    *   向响应添加 `201` 状态码，并附上表示所添加唱片的 JSON。
+        
+
+2. 修改 `main` 函数，使其包含 `router.POST` 函数，
+    如下所示。
+
+    ```
+    func main() {
+    	router := gin.Default()
+    	router.GET("/albums", getAlbums)
+    	router.POST("/albums", postAlbums)
+
+    	router.Run("localhost:8080")
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   把 `POST` 方法在 `/albums` 路径上的请求与 `postAlbums`
+        函数关联起来。
+
+        使用 Gin，可以把处理函数与一个 HTTP 方法和路径
+        组合关联起来。这样，就可以根据客户端使用的方法，把发往
+        同一路径的请求分别路由。
+
+#### 运行代码
+
+1. 如果上一节启动的服务器仍在运行，请先停止它。
+2. 在包含 main.go 的目录中通过命令行运行代码。
+
+    ```
+    $ go run .
+    ```
+
+3. 在另一个命令行窗口中使用 `curl`，向正在
+    运行的 Web 服务发出请求。
+
+    ```
+    $ curl http://localhost:8080/albums \
+        --include \
+        --header "Content-Type: application/json" \
+        --request "POST" \
+        --data '{"id": "4","title": "The Modern Sound of Betty Carter","artist": "Betty Carter","price": 49.99}'
+    ```
+
+    该命令应显示已添加唱片的响应头和 JSON。
+
+    ```
+    HTTP/1.1 201 Created
+    Content-Type: application/json; charset=utf-8
+    Date: Wed, 02 Jun 2021 00:34:12 GMT
+    Content-Length: 116
+
+    {
+        "id": "4",
+        "title": "The Modern Sound of Betty Carter",
+        "artist": "Betty Carter",
+        "price": 49.99
+    }
+    ```
+
+4. 与上一节一样，使用 `curl` 获取完整唱片列表，
+    从而确认新唱片已添加。
+
+    ```
+    $ curl http://localhost:8080/albums \
+        --header "Content-Type: application/json" \
+        --request "GET"
+    ```
+
+    该命令应显示唱片列表。
+
+    ```
+    [
+            {
+                    "id": "1",
+                    "title": "Blue Train",
+                    "artist": "John Coltrane",
+                    "price": 56.99
+            },
+            {
+                    "id": "2",
+                    "title": "Jeru",
+                    "artist": "Gerry Mulligan",
+                    "price": 17.99
+            },
+            {
+                    "id": "3",
+                    "title": "Sarah Vaughan and Clifford Brown",
+                    "artist": "Sarah Vaughan",
+                    "price": 39.99
+            },
+            {
+                    "id": "4",
+                    "title": "The Modern Sound of Betty Carter",
+                    "artist": "Betty Carter",
+                    "price": 49.99
+            }
+    ]
+    ```
+
+下一节将添加代码，处理针对特定项目的 `GET`。
+
+## 编写返回特定项目的处理函数 {#specific_item}
+
+当客户端向 `GET /albums/[id]` 发出请求时，希望返回
+其 ID 与 `id` 路径参数匹配的唱片。
+
+为此，你将：
+
+*   添加获取所请求唱片的逻辑。
+*   把路径映射到该逻辑。
+
+#### 编写代码
+
+1. 在上一节添加的 `postAlbums` 函数下方，粘贴
+    下面用于获取特定唱片的代码。
+
+    这个 `getAlbumByID` 函数会提取请求路径中的 ID，然后
+    查找匹配的唱片。
+
+    ```
+    // getAlbumByID 查找 ID 值与客户端发送的 id
+    // 参数匹配的唱片，并将变量 a 对应的唱片作为响应返回。
+    func getAlbumByID(c *gin.Context) {
+    	id := c.Param("id")
+
+    	// 遍历 albums 列表，查找
+    	// ID 值与参数匹配的唱片。
+    	for _, a := range albums {
+    		if a.ID == id {
+    			c.IndentedJSON(http.StatusOK, a)
+    			return
+    		}
+    	}
+    	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   使用 [`Context.Param`](https://pkg.go.dev/github.com/gin-gonic/gin#Context.Param)
+        从 URL 中取得 `id` 路径参数。把这个
+        处理函数映射到路径时，会在
+        路径中包含该参数的占位符。
+    *   遍历切片中的 `album` 结构体，寻找其 `ID`
+        字段值与 `id` 参数值匹配的项。如果找到，就把
+        该 `album` 结构体序列化为 JSON，并以 `200 OK`
+        HTTP 状态码返回。
+
+        如前所述，真实服务通常会使用数据库
+        查询完成这项查找。
+
+    *   如果没有找到唱片，则返回带有 [`http.StatusNotFound`](https://pkg.go.dev/net/http#StatusNotFound)
+         的 HTTP `404` 错误。
+
+2. 最后，修改 `main`，加入新的 `router.GET` 调用，
+    此时路径为 `/albums/:id`，如下例所示。
+
+    ```
+    func main() {
+    	router := gin.Default()
+    	router.GET("/albums", getAlbums)
+    	router.GET("/albums/:id", getAlbumByID)
+    	router.POST("/albums", postAlbums)
+
+    	router.Run("localhost:8080")
+    }
+    ```
+
+    在这段代码中，你将：
+
+    *   把 `/albums/:id` 路径与 `getAlbumByID` 函数关联起来。在
+        Gin 中，路径项前的冒号表示该项是
+        路径参数。
+
+#### 运行代码
+
+1. 如果上一节启动的服务器仍在运行，请先停止它。
+2. 在包含 main.go 的目录中通过命令行运行代码，
+    启动服务器。
+
+    ```
+    $ go run .
+    ```
+
+3. 在另一个命令行窗口中使用 `curl`，向正在
+    运行的 Web 服务发出请求。
+
+    ```
+    $ curl http://localhost:8080/albums/2
+    ```
+
+    该命令应显示使用的 ID 所对应唱片的 JSON。如果
+    没有找到唱片，则会收到带错误消息的 JSON。
+
+    ```
+    {
+            "id": "2",
+            "title": "Jeru",
+            "artist": "Gerry Mulligan",
+            "price": 17.99
+    }
+    ```
+
+## 总结 {#conclusion}
+
+恭喜！你已经使用 Go 和 Gin 编写了一个简单的 RESTful Web
+服务。
+
+建议接下来学习：
+
+*   如果刚开始学习 Go，可以在
+    [Effective Go](/doc/effective_go) 和
+    [如何编写 Go 代码](/doc/code)中了解实用的最佳实践。
+*   [Go 语言之旅](/tour/)是循序渐进学习
+    Go 基础知识的好去处。
+*   有关 Gin 的更多信息，请参阅 [Gin Web Framework 包文档](https://pkg.go.dev/github.com/gin-gonic/gin)
+    或 [Gin Web Framework 文档](https://gin-gonic.com/en/docs/)。
+
+## 完整代码 {#completed_code}
+
+本节包含你在本教程中构建的应用程序完整代码。
+
+```
+package main
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+// album 表示一条唱片记录的数据（类型标识为 album）；代码中用 a 表示单条记录。
+type album struct {
+	ID     string  `json:"id"`
+	Title  string  `json:"title"`
+	Artist string  `json:"artist"`
+	Price  float64 `json:"price"`
+}
+
+// albums 是用于提供 album 初始数据的切片。
+var albums = []album{
+	{ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
+	{ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
+	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
+}
+
+func main() {
+	router := gin.Default()
+	router.GET("/albums", getAlbums)
+	router.GET("/albums/:id", getAlbumByID)
+	router.POST("/albums", postAlbums)
+
+	router.Run("localhost:8080")
+}
+
+// getAlbums 以 JSON 格式返回 albums 中的所有唱片。
+func getAlbums(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, albums)
+}
+
+// postAlbums 根据请求正文中收到的 JSON 创建并添加一条 album 唱片记录。
+func postAlbums(c *gin.Context) {
+	var newAlbum album
+
+	// 调用 BindJSON，将接收到的 JSON 绑定到
+	// newAlbum.
+	if err := c.BindJSON(&newAlbum); err != nil {
+		return
+	}
+
+	// 将新的 album 唱片记录添加到切片。
+	albums = append(albums, newAlbum)
+	c.IndentedJSON(http.StatusCreated, newAlbum)
+}
+
+// getAlbumByID 查找 album 中 ID 值与客户端发送的 id
+// 参数匹配的 album，然后通过变量 a 返回对应唱片。
+func getAlbumByID(c *gin.Context) {
+	id := c.Param("id")
+
+	// 遍历 albums 列表，查找其中
+	// ID 值与参数匹配的 album。
+	for _, a := range albums {
+		if a.ID == id {
+			c.IndentedJSON(http.StatusOK, a)
+			return
+		}
+	}
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+}
+```

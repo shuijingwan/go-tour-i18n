@@ -1,0 +1,340 @@
+---
+title: Go 模糊测试
+layout: article
+breadcrumb: true
+---
+
+从 Go 1.18 开始，Go 在标准工具链中支持模糊测试。原生 Go 模糊测试
+[受 OSS-Fuzz 支持](https://google.github.io/oss-fuzz/getting-started/new-project-guide/go-lang/#native-go-fuzzing-support)。
+
+
+**可以试试[使用 Go 进行模糊测试的教程](/doc/tutorial/fuzz)。**
+
+## 概述
+
+模糊测试是一种自动化测试，它会持续操纵程序的输入以
+发现 bug。Go 模糊测试使用代码覆盖率引导，智能地遍历
+被模糊测试的代码，从而发现故障并向用户报告。由于它
+能够触达人工经常遗漏的边界情况，因此模糊测试对于
+发现安全利用方式和漏洞尤其有价值。
+
+下面是一个[模糊测试](#glos-fuzz-test)示例，其中突出显示了主要
+组成部分。
+
+<img class="DarkMode-img" alt="展示完整模糊测试的示例代码，其中包含一个模糊测试目标。
+在模糊测试目标之前，通过 f.Add 添加了一个语料库条目；模糊测试目标的参数
+被突出显示为模糊测试实参。"
+src="/security/fuzz/example-dark.png" style="width: 600px; height:
+auto;"/>
+<img alt="展示完整模糊测试的示例代码，其中包含一个模糊测试目标。
+在模糊测试目标之前，通过 f.Add 添加了一个语料库条目；模糊测试目标的参数
+被突出显示为模糊测试实参。"
+src="/security/fuzz/example.png" style="width: 600px; height:
+auto;" class="LightMode-img"/>
+
+## 编写模糊测试
+
+### 要求
+
+下面是模糊测试必须遵守的规则。
+
+- 模糊测试必须是名称形如 `FuzzXxx` 的函数，只接受一个
+  `*testing.F`，并且没有返回值。
+- 模糊测试必须位于 \*\_test.go 文件中才能运行。
+- 一个[模糊测试目标](#glos-fuzz-target)必须是对
+  <code>[(\*testing.F).Fuzz](https://pkg.go.dev/testing#F.Fuzz)</code> 的方法调用，
+  其第一个参数接受一个 `*testing.T`，后面跟着模糊测试
+  实参。没有返回值。
+- 每个模糊测试必须恰好有一个模糊测试目标。
+- 所有[种子语料库](#glos-seed-corpus)条目的类型都必须
+  与[模糊测试实参](#glos-fuzzing-arguments)完全相同，并且顺序一致。
+  这一规则适用于对
+  <code>[(\*testing.F).Add](https://pkg.go.dev/testing#F.Add)</code> 的调用，以及
+  模糊测试的 testdata/fuzz 目录中的任何语料库文件。
+- 模糊测试实参只能使用以下类型：
+  - `string`, `[]byte`
+  - `int`, `int8`, `int16`, `int32`/`rune`, `int64`
+  - `uint`, `uint8`/`byte`, `uint16`, `uint32`, `uint64`
+  - `float32`, `float64`
+  - `bool`
+
+### 建议 {#suggestions}
+
+以下建议可以帮助你充分利用模糊测试。
+
+- 模糊测试目标应快速且具有确定性，这样模糊测试引擎才能高效
+  工作，并且能够轻松复现新的故障和代码覆盖率。
+- 由于模糊测试目标会由多个 worker 并行调用，而且调用
+  顺序是不确定的，因此模糊测试目标的状态不应在每次调用
+  结束后继续保留，其行为也不应依赖
+  全局状态。
+
+## 运行模糊测试
+
+运行模糊测试有两种模式：作为单元测试运行（默认 `go test`），或
+启用模糊测试（`go test -fuzz=FuzzTestName`）。
+
+默认情况下，模糊测试的运行方式与单元测试很相似。每个[种子语料库
+条目](#glos-seed-corpus)都会针对模糊测试目标进行测试，并在退出前报告任何
+故障。
+
+要启用模糊测试，请运行 `go test` 并使用 `-fuzz` 标志，提供一个
+只匹配单个模糊测试的正则表达式。默认情况下，该包中的其他所有测试都会
+在模糊测试开始前运行。这是为了确保模糊测试不会报告任何
+本来已能由现有测试捕获的问题。
+
+请注意，运行模糊测试多长时间由你决定。如果一直找不到错误，
+一次模糊测试执行完全可能无限期运行下去。
+未来将支持使用 OSS-Fuzz 等工具持续运行这些模糊测试，
+参见 [Issue #50192](/issue/50192)。
+
+**注意：**应在支持代码覆盖率
+插桩的平台（目前为 AMD64 和 ARM64）上运行模糊测试，这样语料库才能在运行过程中有意义地
+增长，并在模糊测试时覆盖更多代码。
+
+### 命令行输出
+
+模糊测试进行期间，[模糊测试引擎](#glos-fuzzing-engine)
+会生成新的输入，并用这些输入运行所提供的模糊测试目标。默认情况下，
+它会持续运行，直到发现一个[失败输入](#glos-failing-input)，或
+用户取消进程（例如，使用 Ctrl^C）。
+
+输出大致如下：
+
+```
+~ go test -fuzz FuzzFoo
+fuzz: elapsed: 0s, gathering baseline coverage: 0/192 completed
+fuzz: elapsed: 0s, gathering baseline coverage: 192/192 completed, now fuzzing with 8 workers
+fuzz: elapsed: 3s, execs: 325017 (108336/sec), new interesting: 11 (total: 202)
+fuzz: elapsed: 6s, execs: 680218 (118402/sec), new interesting: 12 (total: 203)
+fuzz: elapsed: 9s, execs: 1039901 (119895/sec), new interesting: 19 (total: 210)
+fuzz: elapsed: 12s, execs: 1386684 (115594/sec), new interesting: 21 (total: 212)
+PASS
+ok      foo 12.692s
+```
+
+最开始的几行表示，在
+模糊测试开始前会收集“基线覆盖率”。
+
+为了收集基线覆盖率，模糊测试引擎会执行[种子
+语料库](#glos-seed-corpus)和[生成的语料库](#glos-generated-corpus)，以
+确保没有发生错误，并了解现有
+语料库已经提供了怎样的代码覆盖率。
+
+后续各行提供当前模糊测试执行的相关信息：
+
+  - elapsed：进程启动后已经过去的时间
+  - execs：针对模糊测试目标运行过的输入总数
+    （以及自上一条日志以来的平均 execs/sec）
+  - new interesting：本次模糊测试执行过程中，已
+    加入生成语料库的“有价值”输入总数（以及整个
+    语料库的总大小）
+
+一个输入要被视为“有价值”，它必须让代码覆盖率扩展到
+现有生成语料库无法到达的位置。通常，新的
+有价值输入数量会在开始时快速增长，之后逐渐放缓，并在
+发现新分支时偶尔出现一轮增长。
+
+随着语料库中的输入开始覆盖更多代码行，你应当看到 “new interesting” 数值随时间
+逐渐趋缓；如果模糊测试引擎找到新的代码路径，则可能
+偶尔突然增长。
+
+### 失败输入
+
+模糊测试过程中可能因多种原因发生失败：
+
+  - 代码或测试发生了 panic。
+  - 模糊测试目标会调用 `t.Fail`；调用可能直接发生，也可能经由
+  `t.Error`、`t.Fatal` 等方法间接发生。
+  - 发生了不可恢复的错误，例如 `os.Exit` 或栈溢出。
+  - 模糊测试目标执行时间过长。目前，每次
+  模糊测试目标执行的超时时间为 1 秒。这可能由于死锁或
+  无限循环，也可能只是代码的预期行为。因此我们才会
+  [建议让模糊测试目标尽可能快速](#suggestions)。
+
+如果发生错误，模糊测试引擎会尝试把输入最小化为
+仍能产生错误的尽可能小、且最便于人阅读的值。
+要配置这一行为，请参阅[自定义设置](#custom-settings)一节。
+
+最小化完成后，会记录错误消息，输出
+最后大致如下：
+
+```
+    Failing input written to testdata/fuzz/FuzzFoo/a878c3134fe0404d44eb1e662e5d8d4a24beb05c3d68354903670ff65513ff49
+    To re-run:
+    go test -run=FuzzFoo/a878c3134fe0404d44eb1e662e5d8d4a24beb05c3d68354903670ff65513ff49
+FAIL
+exit status 1
+FAIL    foo 0.839s
+```
+
+模糊测试引擎会把这个[失败输入](#glos-failing-input)写入该模糊测试的种子
+语料库，之后默认运行 `go test` 时也会执行它，
+以便在 bug 修复后作为回归测试。
+
+下一步需要诊断问题并修复 bug，然后重新运行 
+`go test` 确认修复有效，再提交补丁，并让 testdata 中的新文件
+充当回归测试。
+
+### 自定义设置 {#custom-settings}
+
+go 命令的默认设置应适用于大多数模糊测试用例。因此
+通常在命令行执行模糊测试时，大致应如下所示：
+
+```
+$ go test -fuzz={FuzzTestName}
+```
+
+不过，`go` 命令在运行模糊测试时确实提供了一些设置。
+这些设置记录在 [`cmd/go` 包文档](https://pkg.go.dev/cmd/go)中。
+
+这里重点介绍其中几个：
+
+- `-fuzztime`：模糊测试目标在退出前
+  执行的总时间或总迭代次数，默认无限期运行。
+- `-fuzzminimizetime`：每次最小化尝试期间，模糊测试目标
+  执行的时间或迭代次数，默认 60 秒。你可以在
+  模糊测试时设置 `-fuzzminimizetime 0`，完全禁用最小化。
+- `-parallel`：同时运行的模糊测试进程数，默认
+  `$GOMAXPROCS`。目前在模糊测试期间设置 -cpu 不起作用。
+
+## 语料库文件格式
+
+语料库文件使用一种特殊格式编码。
+[种子语料库](#glos-seed-corpus)和[生成的
+语料库](#glos-generated-corpus)都使用相同格式。
+
+下面是一个语料库文件示例：
+
+```
+go test fuzz v1
+[]byte("hello\\xbd\\xb2=\\xbc ⌘")
+int64(572293)
+```
+
+第一行用于告诉模糊测试引擎该文件的编码
+版本。虽然目前没有规划未来的编码格式版本，
+但设计必须支持这种可能性。
+
+后续每一行都是构成该语料库条目的值，
+如果需要，可以直接复制到 Go 代码中。
+
+在上面的示例中，先有一个 `[]byte`，后面跟着一个 `int64`。这些类型
+必须与模糊测试实参完全匹配，并保持相同顺序。针对这些
+类型的模糊测试目标大致如下：
+
+```
+f.Fuzz(func(*testing.T, []byte, int64) {})
+```
+
+指定自己的种子语料库值最简单的方法，是使用
+`(*testing.F).Add` 方法。在上面的示例中，大致如下：
+
+```
+f.Add([]byte("hello\\xbd\\xb2=\\xbc ⌘"), int64(572293))
+```
+
+不过，你可能有体积很大的二进制文件，不希望把它们作为代码
+复制到测试中，而更希望让它们在
+testdata/fuzz/{FuzzTestName} 目录中继续作为单独的种子语料库条目。
+可以使用 [`file2fuzz`](https://pkg.go.dev/golang.org/x/tools/cmd/file2fuzz) 工具；其包路径为
+golang.org/x/tools/cmd/file2fuzz。该工具可把这些二进制文件转换为
+以 `[]byte` 编码的语料库文件。
+
+使用该工具的方法：
+
+```
+$ go install golang.org/x/tools/cmd/file2fuzz@latest
+$ file2fuzz -h
+```
+
+## 资源
+
+- **教程**：
+  - 可以通过[使用 Go 进行模糊测试的教程](/doc/tutorial/fuzz)深入了解
+    这些新概念。
+  - 如果想看更短、更偏入门的 Go 模糊测试教程，请参阅[这篇
+    博客文章](/blog/fuzz-beta)。
+- **文档**：
+  - [`testing`](https://pkg.go.dev//testing#hdr-Fuzzing) 包文档
+    介绍了编写模糊测试时使用的 `testing.F` 类型。
+  - [`cmd/go`](https://pkg.go.dev/cmd/go) 包文档介绍了
+    与模糊测试相关的标志。
+- **技术细节**：
+  - [设计草案](/s/draft-fuzzing-design)
+  - [提案](/issue/44551)
+
+## 术语表 {#glossary}
+
+<a id="glos-corpus-entry"></a>
+**语料库条目：** 语料库中的一个输入，可在模糊测试期间使用。它
+可以是特殊格式的文件，也可以是对
+<code>[(\*testing.F).Add](https://pkg.go.dev/testing#F.Add)</code> 的调用。
+
+<a id="glos-coverage-guidance"></a>
+**代码覆盖率引导：** 一种模糊测试方法，利用代码
+覆盖率的扩展来判断哪些语料库条目值得保留以供后续使用。
+
+<a id="glos-failing-input"></a>
+**失败输入：** 一个会在针对
+[模糊测试目标](#glos-fuzz-target)运行时导致错误或 panic 的语料库条目。
+
+<a id="glos-fuzz-target"></a>
+**模糊测试目标：** 模糊测试函数中，会针对语料库
+条目和模糊测试期间生成的值执行的函数。要将该函数提供给模糊测试，需要调用：
+
+<code>[(\*testing.F).Fuzz](https://pkg.go.dev/testing#F.Fuzz)</code>。
+
+<a id="glos-fuzz-test"></a>
+**模糊测试：** 测试文件中形如 `func FuzzXxx(*testing.F)`
+ 的函数，可用于模糊测试。
+
+<a id="glos-fuzzing"></a>
+**模糊测试：** 一种自动化测试，会持续操纵程序的输入
+以发现 bug 或
+[漏洞](#glos-vulnerability)等代码可能存在的问题。
+
+<a id="glos-fuzzing-arguments"></a>
+**模糊测试实参：** 会传给模糊测试目标，并由
+[变异器](#glos-mutator)修改的类型。
+
+<a id="glos-fuzzing-engine"></a>
+**模糊测试引擎：** 管理模糊测试的工具，包括维护
+语料库、调用变异器、识别新的覆盖率以及报告故障。
+
+<a id="glos-generated-corpus"></a>
+**生成的语料库：** 模糊测试引擎在模糊测试过程中随
+时间维护、用于跟踪进度的语料库。它存储在 `$GOCACHE`/fuzz。
+这些条目只在模糊测试期间使用。
+
+<a id="glos-mutator"></a>
+**变异器：** 模糊测试期间使用的工具，会随机修改语料库条目，
+然后再把它们传给模糊测试目标。
+
+<a id="glos-package"></a>
+**包：** 同一目录中一起
+编译的一组源文件。参见 Go[ 语言规范中的“包”一节](/ref/spec#Packages)。
+
+
+<a id="glos-seed-corpus"></a>
+**种子语料库：** 用户为模糊测试提供的语料库，可用于
+引导模糊测试引擎。它由模糊测试中对 f.Add
+ 的调用提供的语料库条目，以及包内 testdata/fuzz/{FuzzTestName}
+目录中的文件组成。无论是否启用模糊测试，使用 `go test`
+ 时默认都会运行这些条目。
+
+<a id="glos-test-file"></a>
+**测试文件：** 形如 xxx_test.go 的文件，可包含测试、
+基准测试、示例和模糊测试。
+
+<a id="glos-vulnerability"></a>
+**漏洞：**代码中与安全相关、可被攻击者利用的
+弱点。
+
+## 反馈
+
+如果遇到问题或有功能建议，请[提交
+issue](/issue/new?&labels=fuzz)。
+
+关于该功能的讨论和一般反馈，也可以加入
+Gophers Slack 中的 [#fuzzing 频道](https://gophers.slack.com/archives/CH5KV1AKE)。

@@ -1,0 +1,99 @@
+<!--{
+  "Title": "执行不返回数据的 SQL 语句"
+}-->
+
+执行不返回数据的数据库操作时，请使用 `database/sql` 包中的 `Exec` 或 
+`ExecContext` 方法。可以通过这种方式执行的 SQL 语句包括 
+`INSERT`、`DELETE` 和 `UPDATE`。
+
+如果查询可能返回行，请改用 `Query` 或 `QueryContext` 方法。
+更多信息请参阅 [查询数据库](/doc/database/querying)。
+
+`ExecContext` 方法的工作方式与 `Exec` 方法相同，但还会额外接收一个 
+`context.Context` 参数，具体说明见
+[取消进行中的操作](/doc/database/cancel-operations)。
+
+下面的示例代码使用
+[`DB.Exec`](https://pkg.go.dev/database/sql#DB.Exec) 执行一条
+语句，向 `album` 表中添加一张新唱片。
+
+```
+func AddAlbum(alb Album) (int64, error) {
+	result, err := db.Exec("INSERT INTO album (title, artist) VALUES (?, ?)", alb.Title, alb.Artist)
+	if err != nil {
+		return 0, fmt.Errorf("AddAlbum: %v", err)
+	}
+
+	// 获取客户端为新唱片生成的 ID。
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, fmt.Errorf("AddAlbum: %v", err)
+	}
+	// 返回新唱片的 ID。
+	return id, nil
+}
+```
+
+`DB.Exec` 会返回两个值：一个 [`sql.Result`](https://pkg.go.dev/database/sql#Result)
+和一个错误。当错误为 `nil` 时，可以使用该 `Result` 获取最后插入项的 ID
+（如示例所示），也可以取得此次操作影响的行数。
+
+
+**注意：**预处理语句中的参数占位符会因所使用的 
+DBMS 和驱动程序而异。例如，Postgres 的
+[pq 驱动程序](https://pkg.go.dev/github.com/lib/pq)要求使用类似 
+`$1` 的占位符，而不是 `?`。
+
+如果代码会反复执行同一条 SQL 语句，可以考虑使用 
+`sql.Stmt`，根据 SQL
+语句创建可重复使用的预处理语句。更多信息请参阅 [使用预处理语句](/doc/database/prepared-statements)。
+
+**注意：**不要使用诸如 `fmt.Sprintf`
+ 这样的字符串格式化函数来拼接 SQL 语句！这样可能引入 SQL 注入风险。
+更多信息请参阅 [避免 SQL 注入风险](/doc/database/sql-injection)。
+
+#### 用于执行不返回行的 SQL 语句的函数 {#no_rows_functions}
+
+<table id="no-rows-functions-list" class="DocTable">
+  <thead>
+    <tr class="DocTable-head">
+      <th class="DocTable-cell" width="20%">函数</th>
+      <th class="DocTable-cell">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell">
+        <code><a href="https://pkg.go.dev/database/sql#DB.Exec">DB.Exec</a></code><br/>
+        <code><a href="https://pkg.go.dev/database/sql#DB.ExecContext">DB.ExecContext</a></code>
+      </td>
+      <td class="DocTable-cell">独立执行一条 SQL 语句。</td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell">
+        <code><a href="https://pkg.go.dev/database/sql#Tx.Exec">Tx.Exec</a></code><br/>
+        <code><a href="https://pkg.go.dev/database/sql#Tx.ExecContext">Tx.ExecContext</a></code>
+      </td>
+      <td class="DocTable-cell">在更大的事务中执行一条 SQL 语句。更多信息请参阅
+          <a href="/doc/database/execute-transactions">执行事务</a>。
+      </td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell">
+        <code><a href="https://pkg.go.dev/database/sql#Stmt.Exec">Stmt.Exec</a></code><br/>
+        <code><a href="https://pkg.go.dev/database/sql#Stmt.ExecContext">Stmt.ExecContext</a></code>
+      </td>
+      <td class="DocTable-cell">执行已经预处理的 SQL 语句。更多信息请参阅
+          <a href="/doc/database/prepared-statements">使用预处理语句</a>。
+      </td>
+    </tr>
+    <tr class="DocTable-row">
+      <td class="DocTable-cell">
+        <code><a href="https://pkg.go.dev/database/sql#Conn.ExecContext">Conn.ExecContext</a></code>
+      </td>
+      <td class="DocTable-cell">用于保留连接。更多信息请参阅
+          <a href="/doc/database/manage-connections">管理连接</a>。
+      </td>
+    </tr>
+  </tbody>
+</table>
