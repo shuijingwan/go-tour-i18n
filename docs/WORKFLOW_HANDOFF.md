@@ -179,6 +179,8 @@ canonical repo docs/code 是 authority，direct tests 是可执行 contract evid
 
 **命令名不能推导 operation。**`*-check`、`*-preflight`、`*-inspect`、`*-record`、`*-apply` 的名称不能代替 operation/input-kind/mutation contract；禁止用其它 family 的行为类比。尤其 Shell `shell-representation-successor --input <plan>` 是 plan inspection，`shell-representation-check --input <receipt>` 是 receipt verification。
 
+**Package selector propagation：**lifecycle 一旦显式选择 registered content package，后续 shared TranslationUnit command 必须按各 command 的 current contract 显式携带同一 package selector，不得从 batch、receipt、路径或历史 invocation 推断。若某 command 明确不接受 package selector，则遵守该 command 的 current contract，不机械追加 flag。
+
 每个 command/mode 的 canonical contract 必须无歧义给出以下信息（字段可沿用各文档的既有名称，不强制统一表格）：
 
 | 信息 | 必须说明 |

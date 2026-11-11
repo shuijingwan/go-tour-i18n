@@ -59,7 +59,7 @@
   go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
     --locale zh-CN --batch-id chatgpt-zh-CN-023 --content-package learn-docs-v1 \
     --output /home/wangqiang/code/go-tour-i18n/.site-v2-staging/zh-CN-learn-docs-page-batch-2-shared-generation.zip
-  go run -mod=readonly ./cmd/tour-i18n generation-bundle check \
+  go run -mod=readonly ./cmd/tour-i18n generation-bundle current-check \
     --content-package learn-docs-v1 \
     --bundle /home/wangqiang/code/go-tour-i18n/.site-v2-staging/zh-CN-learn-docs-page-batch-2-shared-generation.zip
   sha256sum /home/wangqiang/code/go-tour-i18n/.site-v2-staging/zh-CN-learn-docs-page-batch-2-shared-generation.zip

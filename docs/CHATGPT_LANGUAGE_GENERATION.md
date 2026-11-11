@@ -112,12 +112,26 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 该模式不是 QC revision、Surface reopen、retry 或 revalidation，不使用 stale `--previous-snapshot-id`，也不允许 unaffected Unit。其 Generation Bundle task kind 为 `translation-unit-glossary-stale-recovery`；ChatGPT 仍按当前完整 glossary 与新 protected input 生成 replacement，并以 `provider=chatgpt`、`model=gpt-5.6-sol-high` 走普通目录 import/process。input identity 未变化的 candidate 保持不动。随后必须建立 full Snapshot，并因 glossary identity 变化执行完整 QC；旧 A 不 carry-forward。
 
-initial Page / Example bulk export 后由 Local terminal 生成 provider-neutral Generation ZIP 并 handoff；ChatGPT 完整读取一个附件即可取得 manifest、全部 inputs、完整 glossary 与当前 authority，无需再通过 Remote Desktop Commander 逐文件读取。译文写入 `/tmp/.go-tour-i18n-generation/<locale>/<batch-id>/` 隔离目录；首次 Page / Example、revision 与 retry 都可使用同一目录 import：
+initial Page / Example bulk export 后由 Local terminal 生成 provider-neutral Generation ZIP 并 handoff；ChatGPT 完整读取一个附件即可取得 manifest、全部 inputs、完整 glossary 与当前 authority，无需再通过 Remote Desktop Commander 逐文件读取。译文写入 `/tmp/.go-tour-i18n-generation/<locale>/<batch-id>/` 隔离目录；首次 Page / Example、revision 与 retry 都可使用同一目录 import。以下未带 package selector 的 export/current-check 示例仅用于 native/default Tour scope；要求显式 selector 的 current-validation invocation 仍须按其合同传参：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
   --locale <locale> --batch-id <batch-id> \
   --output /tmp/<locale>-<batch-id>-generation.zip
+go run -mod=readonly ./cmd/tour-i18n generation-bundle current-check \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip
+```
+
+registered content package（例如 `learn-docs-v1`）必须从 retranslation lifecycle 延续同一显式选择：`generation-bundle export` 与 `generation-bundle current-check` 两次独立 invocation 都须传 `--content-package <registered-package>`。不能从 batch、receipt、路径或历史 invocation 反推 package scope；省略 selector 不会自动选择 registered package，而会按默认 Tour scope 检查并对 scope mismatch fail closed。Learn/Docs 的 canonical 示例：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
+  --content-package learn-docs-v1 \
+  --locale <locale> --batch-id <batch-id> \
+  --output /tmp/<locale>-<batch-id>-generation.zip
+go run -mod=readonly ./cmd/tour-i18n generation-bundle current-check \
+  --content-package learn-docs-v1 \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip
 ```
 
 首次 122 Unit 的默认调度固定为 60 Page、43 Page、19 Example 三个 initial batch；每个 batch 使用一次 model invocation，正式落地并取得 automatic validation evidence 后停止，等待维护者明确“继续”。不得在一次 response 串联多个 initial batch。完整顺序与合法恢复边界见[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md#新增-locale-默认调度路径效率优先)。
