@@ -69,11 +69,42 @@ func historicalBridgeDecoder(root string, c *Catalog, g *Glossary, locale string
 	build := func() (*SameUnitBridgeResolution, error) {
 		result := &SameUnitBridgeResolution{Receipt: r, Adapters: map[string]TranslationUnitAdapter{}}
 		for _, q := range r.Units {
-			historical := record
-			historical.UnitID, historical.PreviousSnapshotID = q.UnitID, r.PreviousSnapshotID
+			// Each sibling has its own formal identity and restricted predecessor
+			// semantics. Recover its exact SHA-bound record, never the caller's.
+			var historical *RetranslationBatchUnit
+			for _, binding := range r.SameUnitBridge.Bindings {
+				if binding.UnitID != q.UnitID {
+					continue
+				}
+				_, data, err := readHistoricalBridgeReference(root, locale, binding.OriginalManifest)
+				if err != nil {
+					return nil, err
+				}
+				manifest, err := decodeRetranslationManifest(data)
+				if err != nil {
+					return nil, err
+				}
+				if manifest.Locale != locale || manifest.BatchID != q.Snapshot.SelectedBatchID {
+					return nil, fmt.Errorf("historical bridge predecessor manifest identity mismatch: %s", q.UnitID)
+				}
+				for _, predecessor := range manifest.Units {
+					if predecessor.UnitID == q.UnitID {
+						if historical != nil {
+							return nil, fmt.Errorf("ambiguous historical bridge predecessor: %s", q.UnitID)
+						}
+						copy := predecessor
+						historical = &copy
+					}
+				}
+			}
+			if historical == nil {
+				return nil, fmt.Errorf("historical bridge predecessor missing: %s", q.UnitID)
+			}
+			historical.RepresentationBridge = &ref
+			historical.PreviousSnapshotID = r.PreviousSnapshotID
 			historical.PreviousRating, historical.PreviousFinding = q.PreviousRating, q.Finding
 			historical.RevisionFeedbackSource = "quality_check"
-			p, err := frozenBridgeOutput(root, c, g, locale, historical)
+			p, err := frozenBridgeOutput(root, c, g, locale, *historical)
 			if err != nil {
 				return nil, err
 			}
