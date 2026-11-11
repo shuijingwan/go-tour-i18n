@@ -330,6 +330,11 @@ func revisionGenerationInputsAtPredecessor(root string, catalog *Catalog, locale
 			}
 			candidate = canonicalizeRetranslationArtifactEOF(candidate)
 		}
+		// Ordinary QC needs only this selected predecessor's editing baseline.
+		// An exact ordinary inverse already proves it; discovering a historical
+		// projection would unnecessarily recheck unselected batch siblings. Other
+		// feedback and genuinely restricted outputs keep the strict reader below.
+		ordinaryQCExactRestore := record.RevisionFeedbackSource == "quality_check" && len(failures) == 0 && bytes.Equal(candidate, evidence.candidate)
 		if validatedBridge != nil {
 			// Reuse the exact old-raw restore established by the full canonical
 			// bridge reconstruction above, only after fresh raw/candidate/evidence
@@ -344,7 +349,7 @@ func revisionGenerationInputsAtPredecessor(root string, catalog *Catalog, locale
 				return nil, fmt.Errorf("bridge predecessor restore binding drift")
 			}
 			candidate, failures = evidence.candidate, nil
-		} else if evidence.record.RevisionFeedbackSource == CurrentValidationRevisionFeedback {
+		} else if evidence.record.RevisionFeedbackSource == CurrentValidationRevisionFeedback && !ordinaryQCExactRestore {
 			key := outputScope{predecessorCatalog, evidence.batchDir}
 			projections, ok := predecessorOutputs[key]
 			if !ok {
