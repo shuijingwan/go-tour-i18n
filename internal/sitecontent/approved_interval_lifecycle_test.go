@@ -18,7 +18,7 @@ func TestApprovedIntervalBundleLifecycle(t *testing.T) {
 	checkApprovedIntervalBundleLifecycle(t, false)
 }
 
-func checkApprovedIntervalBundleLifecycle(t *testing.T, ordinarySibling bool) {
+func checkApprovedIntervalBundleLifecycle(t *testing.T, ordinarySibling bool, after ...func(*testing.T, string, *i18n.Catalog, i18n.CurrentValidationReopenOptions, string, string, i18n.GenerationBundleOptions)) {
 	done := contentidentity.BeginMemoization()
 	defer done()
 	sourceRoot, sourceCatalog, semantic := semanticReviewFixtureSource(t, func(i int, b []byte) []byte {
@@ -237,6 +237,10 @@ func checkApprovedIntervalBundleLifecycle(t *testing.T, ordinarySibling bool) {
 	}
 	if !found {
 		t.Fatal("Snapshot lost the new Bundle's selected retry provenance")
+	}
+	if len(after) > 0 {
+		after[0](t, root, c, o, r.BatchID, historical.CurrentUnitID, options)
+		return
 	}
 	if ordinarySibling {
 		checkSnapshotReconciledHistoricalInvocation(t, root, c, o, r.BatchID, historical, bundle)

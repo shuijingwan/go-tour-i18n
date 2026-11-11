@@ -12,7 +12,7 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
-func currentValidationSurfacePredecessorFixture(t *testing.T) (string, *i18n.Catalog, string, string) {
+func currentValidationSurfacePredecessorFixture(t *testing.T, ordinaryBridge ...bool) (string, *i18n.Catalog, string, string) {
 	t.Helper()
 	root, c, batch := surfaceCapabilityFixture(t)
 	discovery, e := i18n.PrepareSurfaceRevisionTransport(root, c, "zh-CN", batch, nil, false)
@@ -34,11 +34,42 @@ func currentValidationSurfacePredecessorFixture(t *testing.T) (string, *i18n.Cat
 	if p, e := i18n.ProcessRetranslationBatch(root, c, i18n.RetranslationProcessOptions{Locale: "zh-CN", BatchID: batch}); e != nil || p.ValidationPassed != 1 {
 		t.Fatal(p, e)
 	}
-	const snapshot = "surface-current-validation-a"
+	snapshot := "surface-current-validation-a"
 	if _, _, e = i18n.CreateQualityCheckCandidateSnapshot(root, c, i18n.QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: snapshot}); e != nil {
 		t.Fatal(e)
 	}
-	if _, e = i18n.RecordQualityCheckResults(root, c, i18n.QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: snapshot, PreviousSnapshotID: requestSnapshot(t, root, batch), UnitIDs: []string{id}, Rating: "A", ReviewerSession: "independent-synthetic-reviewer"}); e != nil {
+	previous := requestSnapshot(t, root, batch)
+	if len(ordinaryBridge) != 0 && ordinaryBridge[0] {
+		// Reuse the same sealed Surface fixture, with an existing immutable
+		// ordinary QC bridge between Surface and current-validation invocations.
+		cvpredBridgeFixtureContext(t, root, c)
+		if _, e = i18n.RecordQualityCheckResults(root, c, i18n.QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: snapshot, PreviousSnapshotID: previous, UnitIDs: []string{id}, Rating: "B", Finding: "Improve ordinary prose.", ReviewerSession: "independent-synthetic-reviewer"}); e != nil {
+			t.Fatal(e)
+		}
+		writeFixture(t, root, "engineering/cvpred-review.md", []byte("Independent Reviewer B: Improve ordinary prose.\n"))
+		opts := i18n.SameUnitBridgeOptions{Locale: "zh-CN", ContentPackage: c.TranslationPackages[0].ID, BridgeID: "ordinary-before-cvpred", PreviousSnapshotID: snapshot, SnapshotSHA256: digest(mustReadFixture(t, root, "data/quality-check-snapshots/zh-CN/"+snapshot+"/manifest.json")), ReviewerEvidence: i18n.GlossaryArchiveReference{Path: "engineering/cvpred-review.md", SHA256: digest(mustReadFixture(t, root, "engineering/cvpred-review.md"))}, UnitIDs: []string{id}, Record: true}
+		bridge, err := i18n.PrepareSameUnitRepresentationBridge(root, c, opts)
+		if err != nil {
+			t.Fatal("fixture inherited ordinary bridge", err)
+		}
+		next, err := i18n.ExportRetranslationBatch(root, c, i18n.RetranslationExportOptions{Locale: "zh-CN", Generator: i18n.RetranslationGeneratorChatGPT, UnitIDs: []string{id}, AllowReexport: true, PreviousSnapshotID: snapshot, RepresentationBridgeID: opts.BridgeID})
+		if err != nil {
+			t.Fatal(err)
+		}
+		bundle, _, err := i18n.ExportTranslationUnitGenerationBundle(root, c, i18n.GenerationBundleOptions{Locale: "zh-CN", BatchID: next.BatchID})
+		if err != nil {
+			t.Fatal(err)
+		}
+		surfaceImport(t, root, c, bundle, map[string][]byte{id: []byte(bridge.Receipt.SameUnitBridge.Bindings[0].Template)})
+		if p, err := i18n.ProcessRetranslationBatch(root, c, i18n.RetranslationProcessOptions{Locale: "zh-CN", BatchID: next.BatchID}); err != nil || p.ValidationPassed != 1 {
+			t.Fatal("fixture ordinary bridge process", err)
+		}
+		previous, snapshot, batch = snapshot, "ordinary-before-current-validation-a", next.BatchID
+		if _, _, err := i18n.CreateQualityCheckCandidateSnapshot(root, c, i18n.QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: snapshot}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, e = i18n.RecordQualityCheckResults(root, c, i18n.QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: snapshot, PreviousSnapshotID: previous, UnitIDs: []string{id}, Rating: "A", ReviewerSession: "independent-synthetic-reviewer"}); e != nil {
 		t.Fatal(e)
 	}
 	if _, _, e = i18n.FinalizeQualityCheck(root, c, i18n.QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: snapshot}); e != nil {

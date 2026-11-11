@@ -8,6 +8,8 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+
+	"github.com/shuijingwan/go-tour-i18n/internal/contentidentity"
 )
 
 const SameUnitBridgeAuthoritySource = "quality-check-transport"
@@ -25,6 +27,15 @@ type SameUnitBridgeAdapter interface {
 type SurfaceSameUnitBridgeAdapter interface {
 	BridgeSurfaceRevision(TranslationUnitAdapter, []byte, []byte) (TranslationUnitAdapter, []byte, []byte, error)
 }
+
+// Optional source-owned composition for an approved-interval predecessor.
+// It neither implements nor relaxes the comment/Surface transport contracts.
+type ApprovedIntervalSameUnitBridgeAdapter interface {
+	ApprovedIntervalBridgeCatalog(*Catalog) *Catalog
+	CompareApprovedIntervalBridge(ApprovedIntervalProjection, ApprovedIntervalProjection) error
+	BridgeApprovedIntervalRevision(ApprovedIntervalProjection, []byte, []byte) (TranslationUnitAdapter, []byte, []byte, error)
+}
+
 type SameUnitBridgeOptions struct {
 	Locale             string                   `json:"locale"`
 	ContentPackage     string                   `json:"content_package"`
@@ -158,7 +169,20 @@ func buildSameUnitBridge(root string, c *Catalog, o SameUnitBridgeOptions) (*Qua
 	if err != nil || sum(b) != o.ReviewerEvidence.SHA256 {
 		return nil, nil, fmt.Errorf("bridge Reviewer evidence identity mismatch")
 	}
-	ev := newQualityCheckEvaluation(root, o.Locale, c)
+	// Historical QC/machine readers consume the source owner's actual adapters,
+	// while current source/validator checks below keep the caller's decorators.
+	historyCatalog := c
+	first, err := c.Unit(o.UnitIDs[0])
+	if err != nil {
+		return nil, nil, err
+	}
+	if factory, ok := first.Adapter.(ApprovedIntervalSameUnitBridgeAdapter); ok {
+		historyCatalog, err = sameUnitBridgeSourceCatalog(c, factory)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+	ev := newQualityCheckEvaluation(root, o.Locale, historyCatalog)
 	snapshot, results, err := ev.loadEffectiveQualityCheckResults(o.PreviousSnapshotID, map[string]bool{})
 	if err != nil {
 		return nil, nil, err
@@ -181,7 +205,6 @@ func buildSameUnitBridge(root string, c *Catalog, o SameUnitBridgeOptions) (*Qua
 		selected[id] = true
 	}
 	r := &QualityCheckSurfaceReopen{SchemaVersion: qualityCheckSurfaceReopenSchemaVersion, EvidenceType: qualityCheckSurfaceReopenEvidenceType, AuthoritySource: SameUnitBridgeAuthoritySource, Locale: o.Locale, ReopenID: o.BridgeID, PreviousSnapshotID: o.PreviousSnapshotID, SameUnitBridge: a}
-	var records []RetranslationBatchUnit
 	for i, s := range snapshot.Units {
 		if s.UnitID != ordered[i].ID {
 			return nil, nil, fmt.Errorf("bridge ordered package identity mismatch")
@@ -211,27 +234,16 @@ func buildSameUnitBridge(root string, c *Catalog, o SameUnitBridgeOptions) (*Qua
 		if err != nil || sum(saved) != e.record.InputSHA256 {
 			return nil, nil, fmt.Errorf("bridge saved protected input drift")
 		}
-		records = append(records, RetranslationBatchUnit{UnitID: s.UnitID, UnitKind: s.UnitKind, SourcePath: s.SourcePath, SourceSHA256: s.SourceSHA256, InputPath: e.record.InputPath, InputSHA256: e.record.InputSHA256, ProtectedTokenCount: e.record.ProtectedTokenCount, PreviousSnapshotID: o.PreviousSnapshotID, RevisionFeedbackSource: "quality_check", PreviousRating: q.rating, PreviousFinding: q.finding})
 		a.Options.UnitIDs = append(a.Options.UnitIDs, s.UnitID)
 	}
 	if len(selected) > 0 || len(r.Units) != len(o.UnitIDs) {
 		return nil, nil, fmt.Errorf("bridge exact Unit set mismatch")
 	}
 	r.UnitCount = len(r.Units)
-	// Reuse canonical predecessor/provenance/QC/current-validation readers. The
-	// capability guard is intentionally not run until a recorded bridge exists.
-	inputs, err := revisionGenerationInputs(root, c, o.Locale, records)
-	if err != nil {
-		return nil, nil, err
-	}
-	for _, in := range inputs {
-		if in.repositoryPath != "" {
-			b, err := read(in.repositoryPath)
-			if err != nil || !bytes.Equal(b, in.data) {
-				return nil, nil, fmt.Errorf("bridge predecessor changed: %s", in.repositoryPath)
-			}
-		}
-	}
+	// QC/source/input/evidence were checked above. The specialized branches
+	// below prove exact archive/raw/inverse provenance themselves. A generic
+	// revision decoder here would first demand installed-proof reproduction,
+	// preventing the bridge from consuming its frozen representation evidence.
 	qcRefs, err := qualityCheckFinalizationInputs(root, o.Locale, o.PreviousSnapshotID, map[string]bool{})
 	if err != nil {
 		return nil, nil, err
@@ -266,10 +278,9 @@ func buildSameUnitBridge(root string, c *Catalog, o SameUnitBridgeOptions) (*Qua
 			return nil, nil, err
 		}
 	}
-	a.ProjectionImplementationSHA256, err = TranslationMachineAuthority(root, []string{"internal/i18n/same_unit_bridge.go", "internal/sitecontent/same_unit_bridge.go", "internal/i18n/surface_same_unit_bridge.go", "internal/sitecontent/surface_same_unit_bridge.go", "internal/sitecontent/surface_transport.go", "internal/sitecontent/translation_adapter.go", "internal/sitecontent/formal_page.go"})
-	if err != nil {
-		return nil, nil, err
-	}
+	implementationPaths := []string{"internal/i18n/same_unit_bridge.go", "internal/sitecontent/same_unit_bridge.go", "internal/i18n/surface_same_unit_bridge.go", "internal/sitecontent/surface_same_unit_bridge.go", "internal/sitecontent/surface_transport.go", "internal/sitecontent/translation_adapter.go", "internal/sitecontent/formal_page.go"}
+	approvedImplementation := false
+	predecessorImplementation := false
 	decoders := map[string]protectedTranslation{}
 	for _, reopened := range r.Units {
 		s := reopened.Snapshot
@@ -318,6 +329,12 @@ func buildSameUnitBridge(root string, c *Catalog, o SameUnitBridgeOptions) (*Qua
 		resultBytes, err := readFrozen(batchBase + "/result.json")
 		if err != nil {
 			return nil, nil, err
+		}
+		for _, ref := range []GlossaryArchiveReference{{s.CandidatePath, s.CandidateSHA256}, {s.ValidationPath, s.ValidationSHA256}} {
+			b, err := readFrozen(ref.Path)
+			if err != nil || sum(b) != ref.SHA256 {
+				return nil, nil, fmt.Errorf("bridge reviewed evidence drift: %s", ref.Path)
+			}
 		}
 		surface := e.record.RevisionFeedbackSource == "surface_review" && hasSurfaceTransport(root, o.Locale, e.record.RevisionAuthorizationID)
 		if (!surface && e.record.RevisionFeedbackSource != CurrentValidationRevisionFeedback) || e.record.GenerationOrigin != nil {
@@ -370,6 +387,16 @@ func buildSameUnitBridge(root string, c *Catalog, o SameUnitBridgeOptions) (*Qua
 		if !matched || original.Locale != o.Locale || original.BatchID != s.SelectedBatchID || original.Attempt != s.Attempt {
 			return nil, nil, fmt.Errorf("bridge restricted import/attempt mismatch")
 		}
+		if !bytes.Equal(files["formal/manifest.json"], manifestBytes) || !bytes.Equal(files["formal/"+e.record.InputPath], inputBytes) {
+			return nil, nil, fmt.Errorf("bridge imported manifest/formal input mismatch")
+		}
+		manifest, err := decodeRetranslationManifest(manifestBytes)
+		if err != nil {
+			return nil, nil, err
+		}
+		if err := verifySameUnitBridgeImportHistory(root, c, manifest, e.record, s.Attempt, files, readFrozen); err != nil {
+			return nil, nil, err
+		}
 		name := filepath.Base(e.record.InputPath)
 		member := commentTransportPath(e.record)
 		historical := files["formal/candidates/"+name]
@@ -389,11 +416,48 @@ func buildSameUnitBridge(root string, c *Catalog, o SameUnitBridgeOptions) (*Qua
 		if sum(input) != e.record.InputSHA256 {
 			return nil, nil, fmt.Errorf("bridge formal input delta is not zero")
 		}
+		if err := sameUnitBridgeRepresentationUnambiguous(files, e.record); err != nil {
+			return nil, nil, err
+		}
+
 		var adapter TranslationUnitAdapter
 		var template []byte
 		if surface {
 			member = surfaceBridgeMember(u.ID)
 			adapter, template, ancestor, err = surfaceSameUnitBridgeOutput(root, c, o.Locale, e.record, raw, e.candidate, files, readFrozen)
+			if err != nil {
+				return nil, nil, err
+			}
+		} else if files[approvedIntervalProofMember(u.ID)] != nil {
+			member = approvedIntervalProofMember(u.ID)
+			if !approvedImplementation {
+				implementationPaths = append(implementationPaths, "internal/i18n/approved_interval_same_unit_bridge.go", "internal/sitecontent/approved_interval_same_unit_bridge.go")
+				approvedImplementation = true
+			}
+			for _, path := range []string{"internal/i18n/approved_interval_same_unit_bridge.go", "internal/sitecontent/approved_interval_same_unit_bridge.go"} {
+				if _, err := read(path); err != nil {
+					return nil, nil, err
+				}
+			}
+			if err := verifyApprovedSameUnitBridgeCurrent(root, c, g, o.Locale, e.record, files, read, readFrozen); err != nil {
+				return nil, nil, err
+			}
+			adapter, template, ancestor, err = approvedSameUnitBridgeOutput(c, u, e.record, raw, e.candidate, files)
+			if err != nil {
+				return nil, nil, err
+			}
+		} else if files[currentValidationBridgeMember(e.record)] != nil {
+			member = currentValidationBridgeMember(e.record)
+			if !predecessorImplementation {
+				implementationPaths = append(implementationPaths, "internal/i18n/current_validation_same_unit_bridge.go", "internal/i18n/candidate_snapshot_approved_pass.go")
+				predecessorImplementation = true
+			}
+			for _, path := range []string{"internal/i18n/current_validation_same_unit_bridge.go", "internal/i18n/candidate_snapshot_approved_pass.go"} {
+				if _, err := read(path); err != nil {
+					return nil, nil, err
+				}
+			}
+			adapter, template, ancestor, err = currentValidationSameUnitBridgeOutput(root, c, g, o.Locale, e.record, raw, e.candidate, files, read, readFrozen)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -457,8 +521,16 @@ func buildSameUnitBridge(root string, c *Catalog, o SameUnitBridgeOptions) (*Qua
 		binding := SameUnitBridgeBinding{
 			ProtectedInput: GlossaryArchiveReference{inputPath, sum(inputBytes)}, OriginalManifest: GlossaryArchiveReference{batchBase + "/manifest.json", sum(manifestBytes)}, OriginalResult: GlossaryArchiveReference{batchBase + "/result.json", sum(resultBytes)}, UnitID: u.ID, FormalInputSHA256: sum(input), Raw: GlossaryArchiveReference{rawPath, sum(raw)}, Import: GlossaryArchiveReference{importPath, sum(imported)}, Archive: GlossaryArchiveReference{archivePath, sum(archive)}, TransportMember: member, TransportSHA256: sum(files[member]), OrdinaryAncestorSHA256: sum(ancestor), Template: string(template), TemplateSHA256: sum(template), CurrentAuthority: authority}
 		binding.OldRepresentationIdentity = sum(mustJSON([]string{u.ID, binding.Raw.SHA256, binding.TransportSHA256, s.CandidateSHA256}))
-		binding.NewRepresentationIdentity = sum(mustJSON([]string{a.ProjectionImplementationSHA256, binding.OldRepresentationIdentity, binding.OrdinaryAncestorSHA256, binding.TemplateSHA256, authority, sum([]byte(text)), sum(mustJSON(tokens))}))
 		a.Bindings = append(a.Bindings, binding)
+	}
+	a.ProjectionImplementationSHA256, err = TranslationMachineAuthority(root, implementationPaths)
+	if err != nil {
+		return nil, nil, err
+	}
+	for i := range a.Bindings {
+		binding := &a.Bindings[i]
+		p := decoders[binding.UnitID]
+		binding.NewRepresentationIdentity = sum(mustJSON([]string{a.ProjectionImplementationSHA256, binding.OldRepresentationIdentity, binding.OrdinaryAncestorSHA256, binding.TemplateSHA256, binding.CurrentAuthority, sum([]byte(p.Text)), sum(mustJSON(p.Tokens))}))
 	}
 	for path, sha := range frozen {
 		a.FrozenDependencies = append(a.FrozenDependencies, GlossaryArchiveReference{path, sha})
@@ -642,6 +714,77 @@ func frozenBridgeOutput(root string, c *Catalog, g *Glossary, locale string, rec
 			text, tokens, err := decoder.ProtectedInput(g)
 			return protectedTranslation{Text: text, Tokens: tokens, Adapter: decoder}, err
 		}
+		if binding.TransportMember == approvedIntervalProofMember(u.ID) {
+			if sum(files[binding.TransportMember]) != binding.TransportSHA256 {
+				return protectedTranslation{}, fmt.Errorf("frozen approved bridge proof drift")
+			}
+			raw, err := readSnapshotReferencedFile(root, binding.Raw.Path)
+			if err != nil || sum(raw) != binding.Raw.SHA256 {
+				return protectedTranslation{}, fmt.Errorf("frozen approved bridge raw drift")
+			}
+			reviewed, err := readSnapshotReferencedFile(root, baseline.Snapshot.CandidatePath)
+			if err != nil || sum(reviewed) != baseline.Snapshot.CandidateSHA256 {
+				return protectedTranslation{}, fmt.Errorf("frozen approved bridge candidate drift")
+			}
+			mb, err := readSnapshotReferencedFile(root, binding.OriginalManifest.Path)
+			if err != nil || sum(mb) != binding.OriginalManifest.SHA256 || !bytes.Equal(files["formal/manifest.json"], mb) {
+				return protectedTranslation{}, fmt.Errorf("frozen approved bridge manifest drift")
+			}
+			m, err := decodeRetranslationManifest(mb)
+			if err != nil {
+				return protectedTranslation{}, err
+			}
+			var predecessor RetranslationBatchUnit
+			for _, r := range m.Units {
+				if r.UnitID == u.ID {
+					predecessor = r
+				}
+			}
+			decoder, template, ancestor, err := approvedSameUnitBridgeOutput(c, u, predecessor, raw, reviewed, files)
+			if err != nil || !bytes.Equal(template, []byte(binding.Template)) || sum(template) != binding.TemplateSHA256 || sum(ancestor) != binding.OrdinaryAncestorSHA256 || predecessor.InputSHA256 != binding.FormalInputSHA256 || predecessor.InputSHA256 != record.InputSHA256 {
+				return protectedTranslation{}, fmt.Errorf("frozen approved bridge reconstruction mismatch: %v", err)
+			}
+			text, tokens, err := decoder.ProtectedInput(g)
+			return protectedTranslation{Text: text, Tokens: tokens, Adapter: decoder}, err
+		}
+		if strings.HasPrefix(binding.TransportMember, "formal/current-validation-predecessor-transport/") {
+			mb, err := readSnapshotReferencedFile(root, binding.OriginalManifest.Path)
+			if err != nil || sum(mb) != binding.OriginalManifest.SHA256 || !bytes.Equal(files["formal/manifest.json"], mb) {
+				return protectedTranslation{}, fmt.Errorf("frozen predecessor bridge manifest drift")
+			}
+			m, err := decodeRetranslationManifest(mb)
+			if err != nil {
+				return protectedTranslation{}, err
+			}
+			var predecessor RetranslationBatchUnit
+			for _, item := range m.Units {
+				if item.UnitID == u.ID {
+					predecessor = item
+				}
+			}
+			if binding.TransportMember != currentValidationBridgeMember(predecessor) || sum(files[binding.TransportMember]) != binding.TransportSHA256 || m.BatchID != baseline.Snapshot.SelectedBatchID || predecessor.InputSHA256 != binding.FormalInputSHA256 || predecessor.InputSHA256 != record.InputSHA256 {
+				return protectedTranslation{}, fmt.Errorf("frozen predecessor bridge binding drift")
+			}
+			raw, err := readSnapshotReferencedFile(root, binding.Raw.Path)
+			if err != nil || sum(raw) != binding.Raw.SHA256 {
+				return protectedTranslation{}, fmt.Errorf("frozen predecessor bridge raw drift")
+			}
+			reviewed, err := readSnapshotReferencedFile(root, baseline.Snapshot.CandidatePath)
+			if err != nil || sum(reviewed) != baseline.Snapshot.CandidateSHA256 {
+				return protectedTranslation{}, fmt.Errorf("frozen predecessor bridge candidate drift")
+			}
+			read := func(path string) ([]byte, error) { return readSnapshotReferencedFile(root, path) }
+			decoder, template, ancestor, err := currentValidationSameUnitBridgeOutput(root, c, g, locale, predecessor, raw, reviewed, files, read, read)
+			if err != nil || !bytes.Equal(template, []byte(binding.Template)) || sum(template) != binding.TemplateSHA256 || sum(ancestor) != binding.OrdinaryAncestorSHA256 {
+				return protectedTranslation{}, fmt.Errorf("frozen predecessor bridge reconstruction mismatch: %v", err)
+			}
+			identity, err := currentTranslationAuthority(root, u, locale)
+			if err != nil || identity != binding.CurrentAuthority {
+				return protectedTranslation{}, fmt.Errorf("frozen predecessor bridge current authority drift")
+			}
+			text, tokens, err := decoder.ProtectedInput(g)
+			return protectedTranslation{Text: text, Tokens: tokens, Adapter: decoder}, err
+		}
 		var p CommentRevisionTransport
 		if err := decodeStrictCourseSourceDescriptionReviewJSON(files[binding.TransportMember], &p); err != nil || sum(files[binding.TransportMember]) != binding.TransportSHA256 {
 			return protectedTranslation{}, fmt.Errorf("frozen restricted mapping drift")
@@ -682,4 +825,99 @@ func frozenBridgeOutput(root string, c *Catalog, g *Glossary, locale string, rec
 		return protectedTranslation{Text: text, Tokens: tokens, Adapter: decoder}, nil
 	}
 	return protectedTranslation{}, fmt.Errorf("frozen bridge Unit missing")
+}
+
+// Observe every original import/attempt, including the initial archive when a
+// retry supplied the reviewed response. These exact facts replace the generic
+// process reader's provenance work, not its implementation-replay gate.
+func verifySameUnitBridgeImportHistory(root string, c *Catalog, m *RetranslationBatchManifest, r RetranslationBatchUnit, attempt int, files map[string][]byte, read func(string) ([]byte, error)) error {
+	base := "data/retranslation-runs/" + m.Locale + "/" + m.BatchID + "/"
+	name := filepath.Base(r.InputPath)
+	ext := filepath.Ext(name)
+	flat := strings.TrimSuffix(name, ext)
+	if attempt < 1 {
+		return fmt.Errorf("approved bridge invalid attempt")
+	}
+	dir := filepath.Join(root, base, "retries", flat)
+	if attempt > 1 {
+		if err := validateRetryAttemptSequenceForExtension(dir, attempt, attempt, ext); err != nil {
+			return err
+		}
+	} else if entries, err := os.ReadDir(dir); err != nil && !os.IsNotExist(err) {
+		return err
+	} else if len(entries) > 0 {
+		return fmt.Errorf("approved bridge initial attempt has unconsumed retry history")
+	}
+
+	for n := 1; n <= attempt; n++ {
+		probe := GenerationBundleManifest{Attempt: n}
+		rawPath := "raw-responses/" + name
+		if n > 1 {
+			probe.TaskKind = "translation-unit-retry"
+			probe.ExpectedOutputs = []GenerationBundleExpectedOutput{{BundlePath: "outputs/" + name}}
+			rawPath = "retries/" + flat + fmt.Sprintf("/attempt-%03d%s", n, ext)
+		}
+		path, err := repositoryRelativePath(root, generationImportReceiptPath(filepath.Join(root, base), probe))
+		if err != nil {
+			return err
+		}
+		b, err := read(path)
+		if err != nil {
+			return err
+		}
+		var receipt GenerationResultBundleManifest
+		if err := contentidentity.StrictJSON(b, &receipt); err != nil {
+			return err
+		}
+		archive, err := read(importedGenerationArchive(m.Locale, receipt.GenerationBundleSHA256))
+		if err != nil {
+			return err
+		}
+		gm, original, err := readGenerationBundle(archive)
+		if err != nil {
+			return err
+		}
+		if err := checkImportedGenerationIdentity(receipt, gm, archive, original); err != nil {
+			return err
+		}
+		task := "translation-unit-revision"
+		if n > 1 {
+			task = "translation-unit-retry"
+		}
+		if gm.Locale != m.Locale || gm.BatchID != m.BatchID || gm.Attempt != n || gm.TaskKind != task || !bytes.Equal(original["formal/manifest.json"], files["formal/manifest.json"]) || !bytes.Equal(original["formal/"+r.InputPath], files["formal/"+r.InputPath]) || !bytes.Equal(original[approvedIntervalSelectionMember], files[approvedIntervalSelectionMember]) || !bytes.Equal(original[approvedIntervalProofMember(r.UnitID)], files[approvedIntervalProofMember(r.UnitID)]) {
+			return fmt.Errorf("approved bridge historical invocation identity mismatch")
+		}
+		raw, err := read(base + rawPath)
+		if err != nil {
+			return err
+		}
+		matches := 0
+		for _, out := range gm.ExpectedOutputs {
+			if out.UnitID == r.UnitID && out.InstallPath == rawPath {
+				for _, actual := range receipt.Outputs {
+					if actual.BundlePath == out.BundlePath && actual.SHA256 == sum(raw) && actual.Size == int64(len(raw)) {
+						matches++
+					}
+				}
+			}
+		}
+		if matches != 1 {
+			return fmt.Errorf("approved bridge historical raw/import mismatch")
+		}
+		if n < attempt {
+			b, err := read(base + "retries/" + flat + fmt.Sprintf("/attempt-%03d-validation.json", n))
+			if err != nil {
+				return err
+			}
+			u, err := c.Unit(r.UnitID)
+			if err != nil {
+				return err
+			}
+			v, err := decodeRetranslationValidation(b, u)
+			if err != nil || v.Attempt != n || v.BatchID != m.BatchID || v.Locale != m.Locale || v.RawResponsePath != rawPath || (v.Status != "restore_failed" && v.Status != "validation_failed") {
+				return fmt.Errorf("approved bridge retry validation history mismatch: %v", err)
+			}
+		}
+	}
+	return nil
 }

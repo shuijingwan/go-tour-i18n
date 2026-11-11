@@ -376,8 +376,8 @@ whole approved interval consumer 以 [contract v2](CURRENT_VALIDATION_APPROVED_I
 
 **Candidate Snapshot historical-PASS admission：**历史 evidence integrity 与当前 implementation
 能否逐字节重建旧 derived proof 分开。仅 Snapshot 可在原 approved batch 完整 full-PASS、
-所有 Unit 仍为同批 latest selection 时，验证 canonical result/validation 原 bytes、exact initial
-receipt/archive/inventory/proof、全部最终 attempt/raw/import history，以及 frozen decoder 对
+planner 实际从该 batch admission 的每个 Unit 仍为该 Unit 的 exact latest selection 时，
+验证完整批次的 canonical result/validation 原 bytes、exact initial receipt/archive/inventory/proof、全部最终 attempt/raw/import history，以及 frozen decoder 对
 candidate 的 exact restore。随后独立重建当前 finding/representation 语义，要求完整 typed
 projection/inverse、language/provenance 与非 implementation dependencies exact；仅既有
 code-owned approved implementation dependency refs 与 validator implementation identity 可不同。
@@ -391,8 +391,11 @@ comparison 通过后，仅为 historical invocation identity 比对使用 exact 
 bytes；不把历史 transport 声明 CURRENT，也不用历史 implementation 执行 current reconstruction。
 frozen inverse 仍须 exact restore candidate，每个最终 candidate 仍须当前 active validator PASS。
 result、validation 与全部引用的 SHA 在本次读取和 commit 前重验；missing/tampered/unknown evidence、semantic/source/membership/候选变化、
-不完整 PASS、冲突 successor 或当前 validation failure 继续拒绝。历史 proof 不被改写或标为
-CURRENT，不把旧 PASS 当作 QC/A，不豁免 source、glossary、membership 或 candidate eligibility。
+不完整 PASS、admitted Unit 自己的 later overlapping successor（含只有 manifest、尚无 result 的
+pending successor）或当前 validation failure 继续拒绝。同 batch 未被 admission 的 sibling
+可有合法 successor，不因此否定 untouched selected sibling；它们必须走正常 selector 的 newer
+candidate，不允许 old fallback。完整历史 batch/evidence 不裁剪、不重写，不生成 partial historical
+receipt；返回的旧 decoder 仅覆盖 admitted Units。历史 proof 不被改写或标为 CURRENT，不把旧 PASS 当作 QC/A，不豁免 source、glossary、membership 或 candidate eligibility。
 此 admission 不授权 retry/revalidate 刷新 proof、同批 re-export 或新的 Generation invocation；
 有 transport-recovery authority 的 batch 继续使用原严格 authority/currentness reader。
 

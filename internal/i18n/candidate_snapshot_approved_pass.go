@@ -379,9 +379,20 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 	}
 	// Admission verifies the planner's exact choices; it must never select a
 	// second candidate set or impose global no-fallback rules on other callers.
-	// The normal selector deliberately ignores export-only batches. Historical
-	// admission additionally requires no overlapping successor, including one
-	// which has not yet produced a result.
+	// Historical integrity belongs to the complete batch. Current selection and
+	// successor conflicts belong only to Units actually admitted from it. A newer
+	// sibling must never be recovered through this batch's decoder/output map.
+	admitted := map[string]bool{}
+	for _, record := range m.Units {
+		if choice, ok := selected[record.UnitID]; ok && choice.batchID == m.BatchID {
+			admitted[record.UnitID] = true
+		}
+	}
+	if len(admitted) == 0 {
+		return nil, fmt.Errorf("Snapshot historical approved PASS has no selected Units")
+	}
+	// The normal selector ignores export-only batches. A pending successor on
+	// an admitted Unit must still block, even before it has produced a result.
 	match := promotionBatchRE(m.Locale).FindStringSubmatch(m.BatchID)
 	if match == nil {
 		return nil, fmt.Errorf("Snapshot historical batch has no formal ordinal")
@@ -406,10 +417,8 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 			return nil, err
 		}
 		for _, newer := range successor.Units {
-			for _, old := range m.Units {
-				if newer.UnitID == old.UnitID {
-					return nil, fmt.Errorf("Snapshot historical PASS has a conflicting successor: %s", successor.BatchID)
-				}
+			if admitted[newer.UnitID] {
+				return nil, fmt.Errorf("Snapshot historical PASS has a conflicting successor: %s", successor.BatchID)
 			}
 		}
 	}
@@ -439,10 +448,16 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 	}
 	expected := map[string]bool{}
 	for i, record := range m.Units {
-		choice, ok := selected[record.UnitID]
-		if !ok || choice.batchID != m.BatchID || !reflect.DeepEqual(choice.manifest, record) || result.Units[i].UnitID != record.UnitID || result.Units[i].UnitKind != record.UnitKind || result.Units[i].Status != "passed" || result.Units[i].Error != "" || !reflect.DeepEqual(result.Units[i], choice.result) {
+		if result.Units[i].UnitID != record.UnitID || result.Units[i].UnitKind != record.UnitKind || result.Units[i].Status != "passed" || result.Units[i].Error != "" {
+			return nil, fmt.Errorf("Snapshot historical approved batch is not complete full PASS")
+		}
+		if choice := selected[record.UnitID]; admitted[record.UnitID] && (filepath.Clean(choice.batchDir) != filepath.Clean(filepath.Join(root, base)) || !reflect.DeepEqual(choice.manifest, record) || !reflect.DeepEqual(result.Units[i], choice.result)) {
 			return nil, fmt.Errorf("Snapshot historical approved PASS scope/selection conflicts with latest result")
 		}
+		// Verify every original final/history without borrowing a successor's
+		// result. This local value proves historical integrity; it is never added
+		// to the planner's selected map or used to fall back to an old candidate.
+		choice := selectedRetranslationUnit{batchID: m.BatchID, batchDir: filepath.Join(root, base), manifest: record, result: result.Units[i]}
 		u, err := c.Unit(record.UnitID)
 		if err != nil {
 			return nil, err
@@ -549,6 +564,11 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 	}
 	if _, err := observe(base + "manifest.json"); err != nil {
 		return nil, err
+	}
+	for id := range state.outputs {
+		if !admitted[id] {
+			delete(state.outputs, id)
+		}
 	}
 	return state, nil
 }
