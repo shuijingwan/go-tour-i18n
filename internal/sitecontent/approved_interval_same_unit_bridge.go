@@ -82,7 +82,11 @@ func (a PageAdapter) BridgeApprovedIntervalRevision(projection i18n.ApprovedInte
 		ordinary.WriteString(strings.NewReplacer(pairs...).Replace(response[start:end]))
 	}
 	ordinary.WriteString(p.Values[len(p.Values)-1])
-	source, err := protectionPieces(p.Old.Document.Units[0])
+	responsePage, ordinaryBytes, err := p.Old.bridgeReleaseNaturalAtoms(a, []byte(ordinary.String()))
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	source, err := protectionPieces(responsePage.Document.Units[0])
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -121,7 +125,7 @@ func (a PageAdapter) BridgeApprovedIntervalRevision(projection i18n.ApprovedInte
 	}
 	// Source-owned adjacent tokens delimit this complete historical prose piece.
 	// Their identity/uniqueness was already proved by the old decoder above.
-	ordinaryRaw := ordinary.String()
+	ordinaryRaw := string(ordinaryBytes)
 	start, end := 0, len(ordinaryRaw)
 	if parent > 0 {
 		start = strings.Index(ordinaryRaw, source[parent-1].text) + len(source[parent-1].text)
@@ -138,11 +142,11 @@ func (a PageAdapter) BridgeApprovedIntervalRevision(projection i18n.ApprovedInte
 	}
 	text := ordinaryRaw[:start] + token + ordinaryRaw[end:]
 	tokens := []string{}
-	for _, t := range p.Old.Document.Units[0].Protected {
+	for _, t := range responsePage.Document.Units[0].Protected {
 		tokens = append(tokens, t.Token)
 	}
 	tokens = append(tokens, token)
-	out := &approvedOrdinaryBridge{old: p.Old, text: text, tokens: tokens, parentToken: token, parent: ordinaryRaw[start:end]}
+	out := &approvedOrdinaryBridge{old: responsePage, text: text, tokens: tokens, parentToken: token, parent: ordinaryRaw[start:end]}
 	if parent > 0 {
 		out.left = source[parent-1].text
 	}

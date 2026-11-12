@@ -81,6 +81,156 @@ func TestSameUnitBridgeSourceComposition(t *testing.T) {
 	}
 }
 
+func TestRestrictedBridgeReleasesNaturalAtom(t *testing.T) {
+	var incident naturalRoleFixture
+	for _, f := range naturalRoleFixtures(t) {
+		if f.Path == "_content/doc/tutorial/json.md" && f.Raw == "and/or" {
+			incident = f
+		}
+	}
+	if incident.Source == "" {
+		t.Fatal("missing existing json natural-language incident fixture")
+	}
+	source := []byte(incident.Source + "\n\nKeep [link](https://example.test).\n\n```go\n// Explain the return value.\nfunc f() string { return \"literal\" }\n```\n")
+	d, err := ParseWorkflowDocument(Source{Path: incident.Path, Kind: "page", Route: "/doc/tutorial/json", SHA256: digest(source)}, source, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(d.Units[0].Source, "and/or") {
+		t.Fatal("current representation must expose the conjunction")
+	}
+	historical := *d
+	historical.Units = append([]Unit(nil), d.Slots...)
+	found := false
+	for i, slot := range historical.Units {
+		if string(source[slot.Start:slot.End]) == incident.Source {
+			historical.Units[i] = incident.Old
+			historical.Units[i].Start, historical.Units[i].End = slot.Start, slot.End
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("historical source coordinate not found")
+	}
+	historical, err = FormalPage(historical, source, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	a := PageAdapter{historical, source}
+	ordinary := historical.Units[0].Source
+	found = false
+	for _, token := range historical.Units[0].Protected {
+		if token.Raw == "and/or" && token.Role == "atom" {
+			ordinary = strings.Replace(ordinary, token.Token, "和/或（"+token.Token+"）", 1)
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("historical conjunction must be an atom")
+	}
+	old, err := a.Restore(ordinary)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bodies, err := a.CommentRevisionBodies(old)
+	if err != nil || len(bodies) != 1 {
+		t.Fatal("source-owned comment fixture", err)
+	}
+	body := bodies[0]
+	reviewed := append(append(append([]byte{}, old[:body.Start]...), []byte("说明返回内容。")...), old[body.End:]...)
+	p := &i18n.CommentRevisionTransport{Schema: "go-learning/comment-revision-transport/v1", UnitID: historical.Units[0].ID, SourceSHA256: digest(source), Slots: []i18n.CommentRevisionTransportSlot{{SlotID: "source-owned-test-coordinate", Start: body.Start, End: body.End}}, Boundaries: []string{"⟪GTI18N_aaaaaaaa_000001⟫", "⟪GTI18N_aaaaaaaa_000002⟫"}}
+	decoder, template, err := a.BridgeRestrictedRevision([]byte(ordinary), old, reviewed, []byte(p.Boundaries[0]+"说明返回内容。"+p.Boundaries[1]), p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertBridgeNaturalAtomEditable(t, decoder, template, bridgeEOF(reviewed))
+	if !bytes.Equal(a.Source, source) || digest(source) != d.SourceSHA || a.Document.Units[0].ID != historical.Units[0].ID {
+		t.Fatal("source identity changed")
+	}
+}
+
+func TestApprovedBridgeReleasesNaturalAtomReadonly(t *testing.T) {
+	if os.Getenv("GO_TOUR_APPROVED_INTERVAL_READONLY") != "1" {
+		t.Skip("explicit readonly projection regression against existing b49 evidence")
+	}
+	root := repositoryRoot(t)
+	const id = "b49d8e873a0f66f6803077eb534583a155d2bd209a032d7c00fba8fea856da5c"
+	var receipt i18n.QualityCheckSurfaceReopen
+	if err := json.Unmarshal(mustReadFixture(t, root, "data/quality-check-reopens/zh-CN/learn-docs-qc024-restricted-bridge-003.json"), &receipt); err != nil {
+		t.Fatal(err)
+	}
+	for _, binding := range receipt.SameUnitBridge.Bindings {
+		if binding.UnitID != id {
+			continue
+		}
+		archive := mustReadFixture(t, root, binding.Archive.Path)
+		if digest(archive) != binding.Archive.SHA256 {
+			t.Fatal("frozen archive SHA mismatch")
+		}
+		files, err := i18n.ReadTransportBundle(archive, i18n.TranslationUnitGenerationBundleMaxFiles, i18n.TranslationUnitGenerationBundleMaxBytes)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var proof i18n.ApprovedIntervalTransport
+		if err := json.Unmarshal(files[binding.TransportMember], &proof); err != nil {
+			t.Fatal(err)
+		}
+		var codec approvedPageCodec
+		if err := StrictJSON(proof.Projection.Codec, &codec); err != nil {
+			t.Fatal(err)
+		}
+		old := codec.Old
+		d, err := ParseWorkflowDocument(documentSource(old.Document), old.Source, old.Document.StableIndex)
+		if err != nil || d.Units[0].ID != id {
+			t.Fatal("current source representation identity", err)
+		}
+		for _, q := range receipt.Units {
+			if q.UnitID != id {
+				continue
+			}
+			raw := mustReadFixture(t, root, binding.Raw.Path)
+			reviewed := mustReadFixture(t, root, q.Snapshot.CandidatePath)
+			if digest(raw) != binding.Raw.SHA256 || digest(reviewed) != q.Snapshot.CandidateSHA256 {
+				t.Fatal("frozen raw/candidate SHA mismatch")
+			}
+			decoder, template, ancestor, err := (PageAdapter{*d, old.Source}).BridgeApprovedIntervalRevision(proof.Projection, raw, reviewed)
+			if err != nil || !bytes.Equal(ancestor, []byte(codec.Baseline)) {
+				t.Fatal("source-owned approved bridge projection", err)
+			}
+			assertBridgeNaturalAtomEditable(t, decoder, template, bridgeEOF(reviewed))
+			return
+		}
+	}
+	t.Fatal("existing approved b49 binding not found")
+}
+
+func assertBridgeNaturalAtomEditable(t *testing.T, decoder i18n.TranslationUnitAdapter, template, reviewed []byte) {
+	t.Helper()
+	if !bytes.Contains(template, []byte("and/or")) {
+		t.Fatal("released natural-language atom remains opaque")
+	}
+	got, err := decoder.Restore(string(template))
+	if err != nil || !bytes.Equal(bridgeEOF(got), reviewed) {
+		t.Fatal("baseline no longer restores exact reviewed bytes", err)
+	}
+	revised := bytes.ReplaceAll(template, []byte("and/or"), nil)
+	got, err = decoder.Restore(string(revised))
+	if err != nil || !bytes.Equal(bridgeEOF(got), bytes.ReplaceAll(reviewed, []byte("and/or"), nil)) {
+		t.Fatal("Generation-style conjunction deletion failed", err)
+	}
+	_, tokens, err := decoder.ProtectedInput(nil)
+	if err != nil || len(tokens) == 0 {
+		t.Fatal("lost protected identities", err)
+	}
+	for _, token := range tokens {
+		for _, bad := range []string{strings.Replace(string(template), token, "", 1), string(template) + token, strings.Replace(string(template), token, "changed-token", 1)} {
+			if _, err := decoder.Restore(bad); err == nil {
+				t.Fatal("protected identity/boundary exactness weakened", token)
+			}
+		}
+	}
+}
+
 // Shared-lifecycle acceptance fixture, called after the existing comment
 // transport fixture has created a reviewed, restricted predecessor in TempDir.
 func testSameUnitBridgeLifecycle(t *testing.T, root string, c *i18n.Catalog, snapshot, id string) {

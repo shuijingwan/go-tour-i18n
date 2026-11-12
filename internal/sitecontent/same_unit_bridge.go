@@ -19,6 +19,14 @@ func (a PageAdapter) BridgeRestrictedRevision(ordinaryRaw, old, reviewed, restri
 	if err != nil || !bytes.Equal(bridgeEOF(before), bridgeEOF(old)) {
 		return nil, nil, fmt.Errorf("bridge ordinary ancestor mismatch: %v", err)
 	}
+	current, err := ParseWorkflowDocument(documentSource(a.Document), a.Source, a.Document.StableIndex)
+	if err != nil {
+		return nil, nil, err
+	}
+	a, ordinaryRaw, err = a.bridgeReleaseNaturalAtoms(PageAdapter{*current, a.Source}, ordinaryRaw)
+	if err != nil {
+		return nil, nil, err
+	}
 	sourceBodies, err := a.CommentRevisionBodies(a.Source)
 	if err != nil {
 		return nil, nil, err
@@ -204,6 +212,68 @@ func (a PageAdapter) BridgeRestrictedRevision(ordinaryRaw, old, reviewed, restri
 	return next, result, nil
 }
 func bridgeEOF(b []byte) []byte { return append(bytes.TrimRight(b, "\n"), '\n') }
+
+// Release only historical atoms whose exact canonical-source interval is now
+// natural-language prose. Keep all other historical protection (including an
+// approved opaque parent); never parse or protect translated candidate bytes.
+// This private response Page does not replace the caller's formal Unit/input.
+func (old PageAdapter) bridgeReleaseNaturalAtoms(current PageAdapter, raw []byte) (PageAdapter, []byte, error) {
+	if !bytes.Equal(old.Source, current.Source) || len(old.Document.Units) != 1 || len(current.Document.Units) != 1 {
+		return PageAdapter{}, nil, fmt.Errorf("bridge atom release source mismatch")
+	}
+	prior, err := protectionPieces(old.Document.Units[0])
+	if err != nil {
+		return PageAdapter{}, nil, err
+	}
+	now, err := protectionPieces(current.Document.Units[0])
+	if err != nil {
+		return PageAdapter{}, nil, err
+	}
+	released := map[[2]int]bool{}
+	for _, p := range prior {
+		if p.token == nil || p.token.Role != "atom" || p.token.Binding != nil || !hasLanguage(p.token.Raw) {
+			continue
+		}
+		for _, q := range now {
+			if q.token == nil && p.start >= q.start && p.end <= q.end && p.start < p.end && q.text[p.start-q.start:p.end-q.start] == p.token.Raw && classifyProseToken(p.token.Raw, string(old.Source[max(0, p.start-96):p.start]), string(old.Source[p.end:min(len(old.Source), p.end+48)])) == naturalLanguage {
+				released[[2]int{p.start, p.end}] = true
+			}
+		}
+	}
+	if len(released) == 0 {
+		return old, raw, nil
+	}
+	doc := old.Document
+	doc.Units = append([]Unit(nil), doc.Slots...)
+	for i, slot := range doc.Units {
+		pieces, err := protectionPieces(slot)
+		if err != nil {
+			return PageAdapter{}, nil, err
+		}
+		remove := map[string]bool{}
+		for _, p := range pieces {
+			if p.token != nil && released[[2]int{slot.Start + p.start, slot.Start + p.end}] {
+				slot.Source = strings.Replace(slot.Source, p.token.Token, p.token.Raw, 1)
+				remove[p.token.Token] = true
+			}
+		}
+		slot.Protected = nil
+		for _, p := range doc.Units[i].Protected {
+			if !remove[p.Token] {
+				slot.Protected = append(slot.Protected, p)
+			}
+		}
+		slot.SourceSHA = unitSourceIdentity(slot.Source, slot.Protected)
+		doc.Units[i] = slot
+	}
+	doc, err = FormalPage(doc, old.Source, old.Document.StableIndex)
+	if err != nil {
+		return PageAdapter{}, nil, err
+	}
+	next := PageAdapter{doc, old.Source}
+	projected, err := next.RebaseRevisionPredecessor(old, raw)
+	return next, projected, err
+}
 
 // Package metadata is source authority, distinct from language history. These
 // are the existing shared Site Page source/registry references, never locale
