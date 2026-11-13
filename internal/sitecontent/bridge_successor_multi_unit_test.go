@@ -110,5 +110,8 @@ func TestMultiUnitApprovedIntervalBridgeHistoricalReconstruction(t *testing.T) {
 		if !approved {
 			t.Fatal("fixture must exercise the approved template/ancestor invariant")
 		}
+		t.Run("retry-currentness-reuse", func(t *testing.T) {
+			testRegisteredBridgeRetryReuse(t, root, c, next, sealed.Receipt.SameUnitBridge.Options.ReviewerEvidence.Path)
+		})
 	})
 }

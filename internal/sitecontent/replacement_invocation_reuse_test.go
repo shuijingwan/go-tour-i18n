@@ -104,6 +104,7 @@ func TestPageReplacementCommandInvocation(t *testing.T) {
 
 func TestReplacementInvocationReuseWithAdoptedPages(t *testing.T) {
 	root, _, c, frozen := replacementPageFixture(t)
+	c.DerivedTransportCodecReader = derivedApprovedCodec
 	ref := freezeReplacementFixture(t, root, frozen)
 	want, err := resolvePageReplacements(root, c, ref)
 	if err != nil {
@@ -132,6 +133,30 @@ func TestReplacementInvocationReuseWithAdoptedPages(t *testing.T) {
 	if v.metrics["replacement-resolution-build:"+ref.Path] != 1 || v.metrics["replacement-resolution-reuse:"+ref.Path] != 2 {
 		t.Fatal("owned adopted wrapper disabled invocation reuse", v.metrics)
 	}
+	// Reader presence is part of the key; a hit restores the live reader into
+	// the returned historical Catalog without keeping a callback in cached data.
+	got, err := c.ReplacementResolver(root, c, ref)
+	if err != nil || got.HistoricalCatalog.DerivedTransportCodecReader == nil {
+		t.Fatal("historical reader lost on hit", err)
+	}
+	withoutCodec := *c
+	withoutCodec.DerivedTransportCodecReader = nil
+	if _, err := c.ReplacementResolver(root, &withoutCodec, ref); err != nil || v.metrics["replacement-resolution-build:"+ref.Path] != 2 {
+		t.Fatal("codec presence omitted from data key", err, v.metrics)
+	}
+	unknownCodec := *c
+	unknownCodec.DerivedTransportCodecReader = func(a i18n.TranslationUnitAdapter, codec, inventory []byte) (any, any, i18n.TranslationUnitAdapter, error) {
+		return derivedApprovedCodec(a, codec, inventory)
+	}
+	reuses := v.metrics["replacement-resolution-reuse:"+ref.Path]
+	for i := 0; i < 2; i++ {
+		if _, err := c.ReplacementResolver(root, &unknownCodec, ref); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if v.metrics["replacement-resolution-reuse:"+ref.Path] != reuses {
+		t.Fatal("unknown reader reused a known-codec projection")
+	}
 	// The root remains part of the exact input, even though pure source
 	// reconciliation does not use ProtectedInput's current eligibility gate.
 	a := c.Adapted[0].Adapter.(adoptedPageAdapter)
@@ -140,7 +165,7 @@ func TestReplacementInvocationReuseWithAdoptedPages(t *testing.T) {
 	if _, err := c.ReplacementResolver(root, c, ref); err != nil {
 		t.Fatal(err)
 	}
-	if v.metrics["replacement-resolution-build:"+ref.Path] != 2 {
+	if v.metrics["replacement-resolution-build:"+ref.Path] != 3 {
 		t.Fatal("private root omitted from key")
 	}
 	if _, _, err := a.ProtectedInput(&i18n.Glossary{}); err == nil {

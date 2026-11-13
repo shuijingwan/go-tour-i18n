@@ -9,8 +9,17 @@ import (
 )
 
 type cachedPageReplacement struct {
-	input  *i18n.Catalog
-	result *i18n.TranslationUnitReplacementResolution
+	input        *i18n.Catalog
+	result       *i18n.TranslationUnitReplacementResolution
+	derivedCodec bool
+}
+
+// Only the closed, stateless source-owned codec has a known implementation.
+// Keep its presence in the data key, but not the function value: DeepEqual
+// considers every nonnil function unequal, even to itself. Unknown readers
+// retain the native path; a code pointer is never used to identify closures.
+func reusableDerivedCodec(c *i18n.Catalog) bool {
+	return c.DerivedTransportCodecReader == nil || reflect.ValueOf(c.DerivedTransportCodecReader).Pointer() == reflect.ValueOf(derivedApprovedCodec).Pointer()
 }
 
 // AttachPageReplacementInvocation gives one freshly built command Catalog the
@@ -64,12 +73,16 @@ func (v *closureValidation) resolvePageReplacement(root string, c *i18n.Catalog,
 		}
 	}
 	input := *c
+	if !reusableDerivedCodec(c) {
+		return resolvePageReplacements(root, c, ref)
+	}
+	input.DerivedTransportCodecReader = nil
 	input.BridgeResolver = nil
 	input.BridgeConstructionContext = nil
 	input.ReplacementResolver, input.SurfaceAuthorityReader, input.HistoricalContextReader, input.PreviewFailureReader = nil, nil, nil, nil
 	key := Reference{Path: ref.Path, SHA256: ref.SHA256}
 	for _, cached := range v.reconciliations[key] {
-		if reflect.DeepEqual(&input, cached.input) {
+		if cached.derivedCodec == (c.DerivedTransportCodecReader != nil) && reflect.DeepEqual(&input, cached.input) {
 			v.count("replacement-resolution-reuse:" + ref.Path)
 			return restoreReplacementReaders(cloneReplacementValue(reflect.ValueOf(cached.result)).Interface().(*i18n.TranslationUnitReplacementResolution), c), nil
 		}
@@ -96,16 +109,18 @@ func (v *closureValidation) resolvePageReplacement(root string, c *i18n.Catalog,
 		}
 		private := cloneReplacementValue(reflect.ValueOf(r)).Interface().(*i18n.TranslationUnitReplacementResolution)
 		h := private.HistoricalCatalog
+		h.DerivedTransportCodecReader = nil
 		h.BridgeResolver = nil
 		h.BridgeConstructionContext = nil
 		h.ReplacementResolver, h.SurfaceAuthorityReader, h.HistoricalContextReader, h.PreviewFailureReader = nil, nil, nil, nil
-		v.reconciliations[key] = append(v.reconciliations[key], cachedPageReplacement{cloneReplacementValue(reflect.ValueOf(&input)).Interface().(*i18n.Catalog), private})
+		v.reconciliations[key] = append(v.reconciliations[key], cachedPageReplacement{cloneReplacementValue(reflect.ValueOf(&input)).Interface().(*i18n.Catalog), private, c.DerivedTransportCodecReader != nil})
 	}
 	return r, nil
 }
 
 func restoreReplacementReaders(r *i18n.TranslationUnitReplacementResolution, c *i18n.Catalog) *i18n.TranslationUnitReplacementResolution {
 	h := r.HistoricalCatalog
+	h.DerivedTransportCodecReader = c.DerivedTransportCodecReader
 	h.BridgeResolver = c.BridgeResolver
 	h.BridgeConstructionContext = c.BridgeConstructionContext
 	h.ReplacementResolver, h.SurfaceAuthorityReader, h.HistoricalContextReader, h.PreviewFailureReader = c.ReplacementResolver, c.SurfaceAuthorityReader, c.HistoricalContextReader, c.PreviewFailureReader
@@ -142,6 +157,16 @@ func cloneReplacementValue(v reflect.Value) reflect.Value {
 			}
 		}
 	case reflect.Struct:
+		// The approved ordinary response is another closed data decoder. Its
+		// private Page and token slice need private copies just like PageAdapter;
+		// immutable strings can be copied directly. No factory/gate is changed.
+		if v.Type() == reflect.TypeOf(approvedOrdinaryBridge{}) {
+			p := v.Interface().(approvedOrdinaryBridge)
+			p.old = cloneReplacementValue(reflect.ValueOf(p.old)).Interface().(PageAdapter)
+			p.tokens = cloneReplacementValue(reflect.ValueOf(p.tokens)).Interface().([]string)
+			out.Set(reflect.ValueOf(p))
+			break
+		}
 		// This owned wrapper adds only an immutable root string. Its current
 		// corpus gate lives in ProtectedInput, never in pure reconciliation.
 		// Copy the private field explicitly and retain it in the typed key.

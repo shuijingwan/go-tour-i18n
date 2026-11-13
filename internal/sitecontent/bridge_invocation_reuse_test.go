@@ -11,6 +11,52 @@ import (
 
 type unknownBridgePage struct{ PageAdapter }
 
+func TestBridgeInvocationApprovedDecoderOwnership(t *testing.T) {
+	a, _, _, _ := bridgeGraphInputs(t)
+	root := t.TempDir()
+	c := &i18n.Catalog{Adapted: []i18n.AdaptedTranslationUnit{{Adapter: a}}, DerivedTransportCodecReader: derivedApprovedCodec}
+	AttachPageReplacementInvocation(root, c)
+	ref := i18n.GlossaryArchiveReference{Path: "receipt.json", SHA256: "identity"}
+	calls := 0
+	build := func() (*i18n.SameUnitBridgeResolution, error) {
+		calls++
+		p := &approvedOrdinaryBridge{
+			old:  cloneReplacementValue(reflect.ValueOf(a)).Interface().(PageAdapter),
+			text: "template", tokens: []string{"token"}, parentToken: "token", parent: "parent", left: "left", right: "right",
+		}
+		return &i18n.SameUnitBridgeResolution{Adapters: map[string]i18n.TranslationUnitAdapter{"unit": p}}, nil
+	}
+	first, err := c.BridgeResolver(root, c, "historical", ref, build)
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := first.Adapters["unit"].(*approvedOrdinaryBridge)
+	p.old.Source[0] = '!'
+	p.old.Document.Slots[0].Source = "consumer mutation"
+	p.tokens[0], p.text, p.parentToken, p.parent, p.left, p.right = "changed", "changed", "changed", "changed", "changed", "changed"
+	second, err := c.BridgeResolver(root, c, "historical", ref, build)
+	if err != nil || calls != 1 {
+		t.Fatal("approved decoder not reused", calls, err)
+	}
+	p = second.Adapters["unit"].(*approvedOrdinaryBridge)
+	if !reflect.DeepEqual(p.old, a) || p.text != "template" || p.tokens[0] != "token" || p.parentToken != "token" || p.parent != "parent" || p.left != "left" || p.right != "right" {
+		t.Fatal("approved decoder aliases consumer data", p)
+	}
+	unknownCalls := 0
+	for i := 0; i < 2; i++ {
+		_, err := c.BridgeResolver(root, c, "current", ref, func() (*i18n.SameUnitBridgeResolution, error) {
+			unknownCalls++
+			return &i18n.SameUnitBridgeResolution{Adapters: map[string]i18n.TranslationUnitAdapter{"unit": unknownBridgePage{a}}}, nil
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	if unknownCalls != 2 {
+		t.Fatal("unknown output adapter admitted", unknownCalls)
+	}
+}
+
 func TestBridgeInvocationReconstructionReuse(t *testing.T) {
 	source := []byte("# Heading\n\nOrdinary prose.\n")
 	d, err := ParseWorkflowDocument(Source{Path: "_content/doc/bridge.md", Kind: "page", Route: "/doc/bridge", SHA256: digest(source)}, source, 1)
@@ -18,6 +64,9 @@ func TestBridgeInvocationReconstructionReuse(t *testing.T) {
 		t.Fatal(err)
 	}
 	c := &i18n.Catalog{Adapted: []i18n.AdaptedTranslationUnit{{Adapter: PageAdapter{*d, source}}}}
+	// Registered package Catalogs carry this source-owned reader. A nonnil
+	// function must not silently disable exact-data reconstruction reuse.
+	c.DerivedTransportCodecReader = derivedApprovedCodec
 	root := t.TempDir()
 	AttachPageReplacementInvocation(root, c)
 	ref := i18n.GlossaryArchiveReference{Path: "receipt.json", SHA256: "identity"}
@@ -77,6 +126,23 @@ func TestBridgeInvocationReconstructionReuse(t *testing.T) {
 	}
 	if calls != 6 {
 		t.Fatal("unknown wrapped adapter admitted", calls)
+	}
+	withoutCodec := *c
+	withoutCodec.DerivedTransportCodecReader = nil
+	if _, err := c.BridgeResolver(root, &withoutCodec, "current", ref, build); err != nil || calls != 7 {
+		t.Fatal("codec presence omitted from data key", calls, err)
+	}
+	unknownCodec := *c
+	unknownCodec.DerivedTransportCodecReader = func(a i18n.TranslationUnitAdapter, codec, inventory []byte) (any, any, i18n.TranslationUnitAdapter, error) {
+		return derivedApprovedCodec(a, codec, inventory)
+	}
+	for i := 0; i < 2; i++ {
+		if _, err := c.BridgeResolver(root, &unknownCodec, "current", ref, build); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if calls != 9 {
+		t.Fatal("unknown codec reader admitted", calls)
 	}
 }
 

@@ -8,8 +8,9 @@ import (
 )
 
 type bridgeReconstructionKey struct {
-	reference Reference
-	mode      string
+	reference    Reference
+	mode         string
+	derivedCodec bool
 }
 
 type cachedBridgeReconstruction struct {
@@ -51,10 +52,14 @@ func (v *closureValidation) resolveBridgeReconstruction(root string, c *i18n.Cat
 		}
 	}
 	input := *c
+	if !reusableDerivedCodec(c) {
+		return canonical()
+	}
+	input.DerivedTransportCodecReader = nil
 	input.BridgeResolver = nil
 	input.BridgeConstructionContext = nil
 	input.ReplacementResolver, input.SurfaceAuthorityReader, input.HistoricalContextReader, input.PreviewFailureReader = nil, nil, nil, nil
-	key := bridgeReconstructionKey{Reference{Path: ref.Path, SHA256: ref.SHA256}, mode}
+	key := bridgeReconstructionKey{Reference{Path: ref.Path, SHA256: ref.SHA256}, mode, c.DerivedTransportCodecReader != nil}
 	for _, cached := range v.bridgeReconstructions[key] {
 		if reflect.DeepEqual(&input, cached.input) {
 			if adopted {
@@ -77,7 +82,11 @@ func (v *closureValidation) resolveBridgeReconstruction(root string, c *i18n.Cat
 		return nil, err
 	}
 	for _, a := range r.Adapters {
-		if _, ok := a.(PageAdapter); !ok {
+		switch a.(type) {
+		case PageAdapter, *approvedOrdinaryBridge:
+			// Both are closed source-owned data decoders. The approved form
+			// contains only a Page, strings and tokens, with no runtime reader.
+		default:
 			return r, nil
 		}
 	}
