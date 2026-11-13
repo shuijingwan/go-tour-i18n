@@ -200,9 +200,13 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 			}
 			evidence.CandidatePath = candidatePath
 			unitResult.CandidatePath = candidatePath
-			if err := ValidateTranslationUnitCandidate(root, catalog, item.unit.ID, options.Locale, candidate); err != nil {
+			validationErr := validateRetranslationCandidateArtifact(candidate)
+			if validationErr == nil {
+				validationErr = ValidateTranslationUnitCandidate(root, catalog, item.unit.ID, options.Locale, candidate)
+			}
+			if validationErr != nil {
 				evidence.Status = "validation_failed"
-				evidence.Error = err.Error()
+				evidence.Error = validationErr.Error()
 				unitResult.Error = evidence.Error
 				result.ValidationFailed++
 			} else {

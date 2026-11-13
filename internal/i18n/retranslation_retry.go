@@ -175,9 +175,13 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		}
 		evidence.CandidatePath = candidateRelative
 		unitResult.CandidatePath = candidateRelative
-		if err := ValidateTranslationUnitCandidate(root, catalog, unitID, options.Locale, candidate); err != nil {
+		validationErr := validateRetranslationCandidateArtifact(candidate)
+		if validationErr == nil {
+			validationErr = ValidateTranslationUnitCandidate(root, catalog, unitID, options.Locale, candidate)
+		}
+		if validationErr != nil {
 			evidence.Status = "validation_failed"
-			evidence.Error = err.Error()
+			evidence.Error = validationErr.Error()
 			unitResult.Error = evidence.Error
 		} else {
 			evidence.Status = "passed"

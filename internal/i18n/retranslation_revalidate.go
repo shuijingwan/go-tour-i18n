@@ -319,8 +319,12 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	current.CandidatePath, unitResult.CandidatePath = wantCandidate, wantCandidate
 	current.Error = ""
 	current.CandidateSHA256 = ""
-	if err := ValidateTranslationUnitCandidate(root, catalog, options.UnitID, options.Locale, candidate); err != nil {
-		current.Status, current.Error = "validation_failed", err.Error()
+	validationErr := validateRetranslationCandidateArtifact(candidate)
+	if validationErr == nil {
+		validationErr = ValidateTranslationUnitCandidate(root, catalog, options.UnitID, options.Locale, candidate)
+	}
+	if validationErr != nil {
+		current.Status, current.Error = "validation_failed", validationErr.Error()
 	} else {
 		current.Status = "passed"
 		current.CandidateSHA256 = sum(candidate)
@@ -339,10 +343,10 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	newResult = append(newResult, '\n')
 	historyPath := filepath.Join(batchDir, filepath.FromSlash(historyRelative))
 	updates := []retranslationFileUpdate{{target: historyPath, data: validationData, requireMissing: true}}
-	resultHistory := ""
+	resultHistory := strings.TrimSuffix(historyRelative, "validation.json") + "result.json"
+	updates = append(updates, retranslationFileUpdate{target: filepath.Join(batchDir, filepath.FromSlash(resultHistory)), data: resultData, requireMissing: true})
 	if recoverRestore {
-		resultHistory = strings.TrimSuffix(historyRelative, "validation.json") + "result.json"
-		updates = append(updates, retranslationFileUpdate{target: filepath.Join(batchDir, filepath.FromSlash(resultHistory)), data: resultData, requireMissing: true}, retranslationFileUpdate{target: candidatePath, data: candidate, requireMissing: true})
+		updates = append(updates, retranslationFileUpdate{target: candidatePath, data: candidate, requireMissing: true})
 	}
 	updates = append(updates, retranslationFileUpdate{target: validationPath, data: newValidation}, retranslationFileUpdate{target: resultPath, data: newResult})
 	if err := checkPreparedRetranslationContext(prepared); err != nil {
