@@ -93,6 +93,7 @@ func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []st
 	batchID := fs.String("batch-id", "", "retranslation batch id")
 	unitID := fs.String("unit-id", "", "retry TranslationUnit id; omit for initial/revision batch")
 	output := fs.String("output", "", "generation ZIP output")
+	currentCheck := fs.Bool("current-check", false, "verify CURRENT in this invocation before publishing; see docs/GENERATION_BUNDLE_EXPORT_CURRENT.md")
 	selection := fs.String("approved-interval-selection", "", "explicit repository-relative approved interval selection JSON (export only)")
 	selectionFlags := 0
 	for _, arg := range args {
@@ -107,7 +108,7 @@ func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []st
 		return err
 	}
 	if *locale == "" || *batchID == "" || *output == "" || fs.NArg() != 0 {
-		return fmt.Errorf("usage: generation-bundle export --locale <locale> --batch-id <batch-id> [--unit-id <retry-unit-id>] --output <output.zip>")
+		return fmt.Errorf("usage: generation-bundle export --locale <locale> --batch-id <batch-id> [--unit-id <retry-unit-id>] [--current-check] --output <output.zip>")
 	}
 	if selectionFlags > 0 && (*selection == "" || contentPackage == "") {
 		return fmt.Errorf("approved interval selection requires a path and explicit --content-package")
@@ -119,12 +120,23 @@ func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []st
 	if err := requireCurrentValidationBundlePackage(data, contentPackage); err != nil {
 		return err
 	}
+	if *currentCheck {
+		// Keep the exact existing verifier, including retry reconciliation and
+		// fresh dependency checks. run owns the Catalog/memo lifetime across
+		// export and verification; no result is carried to another invocation.
+		if _, err := i18n.VerifyCurrentTranslationUnitGenerationBundle(root, catalog, data); err != nil {
+			return err
+		}
+	}
 	path, err := writeNewTransportOutput(*output, data)
 	if err != nil {
 		return err
 	}
 	fmt.Printf("Generation bundle exported: %s (locale=%s batch=%s task=%s kind=%s attempt=%d outputs=%d identity=%s)\n",
 		path, manifest.Locale, manifest.BatchID, manifest.TaskKind, manifest.UnitKind, manifest.Attempt, len(manifest.ExpectedOutputs), manifest.InputIdentitySHA256)
+	if *currentCheck {
+		fmt.Printf("Generation bundle: CURRENT (locale=%s batch=%s task=%s attempt=%d identity=%s)\n", manifest.Locale, manifest.BatchID, manifest.TaskKind, manifest.Attempt, manifest.InputIdentitySHA256)
+	}
 	return nil
 }
 

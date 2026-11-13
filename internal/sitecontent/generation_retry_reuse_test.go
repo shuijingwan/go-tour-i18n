@@ -80,6 +80,24 @@ func testRegisteredBridgeRetryReuse(t *testing.T, root string, catalog *i18n.Cat
 	if buildCounts[1] >= buildCounts[0] || buildCounts[1] == 0 {
 		t.Fatal("registered codec disabled bridge reuse", buildCounts)
 	}
+	// The combined CLI calls these same two public operations with one owner.
+	// Verification keeps its fresh gates but must reuse export's full builds.
+	AttachPageReplacementInvocation(root, &c)
+	combinedResolver := c.BridgeResolver
+	combinedBuilds := 0
+	c.BridgeResolver = func(root string, input *i18n.Catalog, mode string, ref i18n.GlossaryArchiveReference, build func() (*i18n.SameUnitBridgeResolution, error)) (*i18n.SameUnitBridgeResolution, error) {
+		return combinedResolver(root, input, mode, ref, func() (*i18n.SameUnitBridgeResolution, error) { combinedBuilds++; return build() })
+	}
+	combined, cm, err := i18n.ExportTranslationUnitGenerationBundle(root, &c, options)
+	if err != nil || !bytes.Equal(combined, bundle) {
+		t.Fatal("combined export drift", err)
+	}
+	exportBuilds := combinedBuilds
+	verified, err := i18n.VerifyCurrentTranslationUnitGenerationBundle(root, &c, combined)
+	if err != nil || !reflect.DeepEqual(cm, verified) || combinedBuilds != exportBuilds {
+		t.Fatal("combined verifier repeated full reconstruction", exportBuilds, combinedBuilds, err)
+	}
+	t.Logf("combined bridge export_builds=%d verification_additional_builds=%d", exportBuilds, combinedBuilds-exportBuilds)
 	// A separately rebuilt canonical transport is still byte-identical.
 	rebuilt, _, err := i18n.ExportTranslationUnitGenerationBundle(root, &c, options)
 	if err != nil || !bytes.Equal(bundle, rebuilt) {

@@ -138,6 +138,7 @@ Generation 与 Reviewer 必须保持独立 session。Reviewer 只给 finding / r
 - [Site v2 Workflow](docs/SITE_V2_WORKFLOW.md)
 - [多语言翻译流程](docs/TRANSLATION_WORKFLOW.md)
 - [翻译任务规范](docs/TRANSLATION_TASK_SPEC.md)
+- [Generation Bundle export 的 immediate CURRENT 选项](docs/GENERATION_BUNDLE_EXPORT_CURRENT.md)
 - [Glossary Review](docs/GLOSSARY_REVIEW.md)
 - [Locale Surface Review](docs/LOCALE_SURFACE_REVIEW.md)
 - [Production Runbook](docs/PRODUCTION_RUNBOOK.md)
