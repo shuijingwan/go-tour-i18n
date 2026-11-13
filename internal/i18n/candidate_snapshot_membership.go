@@ -88,11 +88,12 @@ func snapshotEvidenceCatalog(scopes map[string]*Catalog, current *Catalog, id st
 	return current
 }
 
-// Current-validation revisions retain the complete package of their frozen
-// Snapshot. A membership child is authority for historical candidate evidence,
-// not a substitute scope for that revision's decoder or invocation validation.
+// Current-validation and representation-bridge revisions retain the complete
+// package of their frozen Snapshot. A membership child is authority for
+// historical candidate evidence, not a substitute scope for that revision's
+// decoder or invocation validation.
 func snapshotRevisionEvidenceCatalog(root string, current *Catalog, locale string, choice selectedRetranslationUnit, fallback *Catalog) (*Catalog, error) {
-	if choice.machine != nil || choice.manifest.RevisionFeedbackSource != CurrentValidationRevisionFeedback {
+	if choice.machine != nil || (choice.manifest.RevisionFeedbackSource != CurrentValidationRevisionFeedback && choice.manifest.RepresentationBridge == nil) {
 		return fallback, nil
 	}
 	inventory := *current
