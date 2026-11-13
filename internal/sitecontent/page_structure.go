@@ -53,7 +53,11 @@ func validatePageSlotSyntax(s Unit, target string, raw []byte) error {
 		plain = strings.NewReplacer(replacements...).Replace(plain)
 	}
 	if strings.ContainsRune(plain, '\n') {
-		return fmt.Errorf("new unprotected line boundary")
+		var err error
+		plain, err = bridgeFormattingSyntax(s, target, plain, raw)
+		if err != nil {
+			return err
+		}
 	}
 	_, tail, _ := strings.Cut(s.Locator, "#")
 	context, _, _ := strings.Cut(tail, ":")

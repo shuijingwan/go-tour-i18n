@@ -162,5 +162,21 @@ func currentValidationSameUnitBridgeOutput(root string, c *Catalog, g *Glossary,
 	if err := validateTranslationUnitWithGlossary(root, c, u, locale, reviewed, g); err != nil {
 		return nil, nil, nil, fmt.Errorf("bridge current validation failed: %v", err)
 	}
+	// An already ordinary decoder may still contain source formatting atoms.
+	// Only its source owner may project those bytes into a private response;
+	// the original cvpred/template and all authority proofs above stay exact.
+	if projection, ok := fresh.output.Adapter.(interface {
+		BridgeResponseFormattingWhitespace([]byte) (TranslationUnitAdapter, []byte, error)
+	}); ok {
+		adapter, template, err := projection.BridgeResponseFormattingWhitespace(raw)
+		if err != nil {
+			return nil, nil, nil, err
+		}
+		restored, err := adapter.Restore(string(template))
+		if err != nil || !bytes.Equal(canonicalizeRetranslationArtifactEOF(restored), reviewed) {
+			return nil, nil, nil, fmt.Errorf("bridge formatting reviewed inverse mismatch: %v", err)
+		}
+		return adapter, canonicalizeRetranslationArtifactEOF(template), []byte(fresh.Template), nil
+	}
 	return fresh.output.Adapter, canonicalizeRetranslationArtifactEOF(raw), []byte(fresh.Template), nil
 }
