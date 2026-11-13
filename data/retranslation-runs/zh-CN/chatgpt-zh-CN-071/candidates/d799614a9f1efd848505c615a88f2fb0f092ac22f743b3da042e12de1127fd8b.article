@@ -1,0 +1,66 @@
+<!--{
+  "Title": "取消进行中的操作"
+}-->
+
+可以使用 Go 的
+[`context.Context`](https://pkg.go.dev/context#Context) 来管理进行中的操作。`Context` 是一种
+标准 Go 数据值，可以报告它所代表的整个操作是否已经被取消、
+是否已不再需要。通过在应用程序的函数调用和服务之间传递
+`context.Context`，相关代码就可以在处理不再
+需要时提前停止工作并返回错误。有关 `Context` 的更多信息，
+请参阅
+[Go 并发模式：Context](/blog/context)。
+
+例如，你可能希望：
+
+*   终止运行时间过长的操作，包括耗时超过预期的
+    数据库操作。
+*   传播来自其他位置的取消请求，例如客户端
+    关闭连接时。
+
+许多面向 Go 开发者的 API 都包含接收 `Context` 参数的方法，
+便于在整个应用程序中使用 `Context`。
+
+### 在超时后取消数据库操作 {#timeout_cancel}
+
+可以使用 `Context` 设置超时或截止时间，在到达该时间后取消操作。
+要派生带有超时或截止时间的 `Context`，可以调用
+[`context.WithTimeout`](https://pkg.go.dev/context#WithTimeout) 或
+[`context.WithDeadline`](https://pkg.go.dev/context#WithDeadline)。
+
+下面的超时示例代码派生一个 `Context`，并把它传给
+`sql.DB` 的 [`QueryContext`](https://pkg.go.dev/database/sql#DB.QueryContext)
+方法。
+
+```
+func QueryWithTimeout(ctx context.Context) {
+	// 创建一个带超时设置的 Context。
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	// 将带超时设置的 Context 传给查询。
+	rows, err := db.QueryContext(queryCtx, "SELECT * FROM album")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	// 处理返回的行。
+}
+```
+
+当一个上下文从外层上下文派生时（例如本例中的 `queryCtx` 从
+`ctx` 派生），如果外层上下文被取消，派生出的
+上下文也会自动取消。例如，在 HTTP 服务器中，
+`http.Request.Context` 方法会返回与请求关联的上下文。
+如果 HTTP 客户端断开连接或取消 HTTP
+请求（在 HTTP/2 中可以做到），该上下文就会被取消。把 HTTP 请求的上下文传给
+上面的 `QueryWithTimeout` 后，数据库查询会在以下_任一_
+情况下提前停止：整个 HTTP 请求被取消，或者查询耗时超过五
+秒。
+
+**注意：** 创建带有超时或截止时间的新 `Context` 时，务必 defer 调用返回的 `cancel` 函数。
+这样，当包含该代码的函数退出时，就会释放新 `Context` 持有的资源。
+它也会取消
+`queryCtx`，不过到函数返回时，本来就不应再有任何代码使用
+`queryCtx`。
