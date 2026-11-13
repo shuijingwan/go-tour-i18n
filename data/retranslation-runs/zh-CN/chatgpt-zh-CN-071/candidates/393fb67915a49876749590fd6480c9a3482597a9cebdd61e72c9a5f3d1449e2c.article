@@ -107,7 +107,7 @@ func TestHelloEmpty(t *testing.T) {
   </li>
 
   <li>
-    在命令行中切换到 greetings 目录，然后运行 
+    在命令行中切换到 greetings 目录，然后运行
     <a href="/cmd/go/#hdr-Test_packages"
       ><code>go test</code> 命令</a
     >
@@ -154,7 +154,6 @@ ok      example.com/greetings   0.372s
       在 greetings/greetings.go 中，用下面的代码替换
       <code>Hello</code> 函数。请注意，高亮的代码行会改变
       函数返回的值，就像不小心删除了 <code>name</code> 参数一样。
-      
     </p>
 
     <pre>
@@ -197,7 +196,6 @@ FAIL    example.com/greetings   0.182s
 
 <p>
   在下一节（也是最后一节）中，你将了解如何编译并安装代码，以便在本地运行。
-  
 </p>
 
 <p class="Navigation">
