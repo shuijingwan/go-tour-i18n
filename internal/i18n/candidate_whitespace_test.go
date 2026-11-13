@@ -245,8 +245,16 @@ func TestRevalidatePassedWhitespaceCandidateAllowsRetry(t *testing.T) {
 	if err != nil || got.PreviousStatus != "passed" || got.Status != "validation_failed" || got.Attempt != 1 || !strings.Contains(got.Error, "trailing whitespace") {
 		t.Fatal("old SHA-bound PASS was not revalidated as a defect", got, err)
 	}
-	if got.ResultHistoryPath == "" || !bytes.Equal(read(got.HistoryPath), previousValidation) || !bytes.Equal(read(got.ResultHistoryPath), previousResult) {
-		t.Fatal("old validation/result not archived byte-exactly")
+	if got.ResultHistoryPath != "" || !bytes.Equal(read(got.HistoryPath), previousValidation) {
+		t.Fatal("ordinary revalidation history contract changed")
+	}
+	resultHistory := strings.TrimSuffix(got.HistoryPath, "validation.json") + "result.json"
+	if _, err := os.Stat(filepath.Join(dir, filepath.FromSlash(resultHistory))); !os.IsNotExist(err) {
+		t.Fatal("ordinary revalidation created result history", err)
+	}
+	currentResult := read("result.json")
+	if err := json.Unmarshal(currentResult, &result); err != nil || bytes.Equal(currentResult, previousResult) || result.Units[0].Status != "validation_failed" || result.ValidationFailed != 1 || result.ValidationPassed != 0 {
+		t.Fatal("ordinary revalidation did not update current result", result, err)
 	}
 	var failed RetranslationValidation
 	if err := json.Unmarshal(read("validation/lesson-1.json"), &failed); err != nil || failed.CandidateSHA256 != "" || failed.Attempt != old.Attempt || failed.RawResponsePath != old.RawResponsePath {

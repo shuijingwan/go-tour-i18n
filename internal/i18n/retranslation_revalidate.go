@@ -343,10 +343,10 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	newResult = append(newResult, '\n')
 	historyPath := filepath.Join(batchDir, filepath.FromSlash(historyRelative))
 	updates := []retranslationFileUpdate{{target: historyPath, data: validationData, requireMissing: true}}
-	resultHistory := strings.TrimSuffix(historyRelative, "validation.json") + "result.json"
-	updates = append(updates, retranslationFileUpdate{target: filepath.Join(batchDir, filepath.FromSlash(resultHistory)), data: resultData, requireMissing: true})
+	resultHistory := ""
 	if recoverRestore {
-		updates = append(updates, retranslationFileUpdate{target: candidatePath, data: candidate, requireMissing: true})
+		resultHistory = strings.TrimSuffix(historyRelative, "validation.json") + "result.json"
+		updates = append(updates, retranslationFileUpdate{target: filepath.Join(batchDir, filepath.FromSlash(resultHistory)), data: resultData, requireMissing: true}, retranslationFileUpdate{target: candidatePath, data: candidate, requireMissing: true})
 	}
 	updates = append(updates, retranslationFileUpdate{target: validationPath, data: newValidation}, retranslationFileUpdate{target: resultPath, data: newResult})
 	if err := checkPreparedRetranslationContext(prepared); err != nil {
