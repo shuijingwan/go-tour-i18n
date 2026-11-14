@@ -1,0 +1,142 @@
+{
+  "reviewer_session": "chatgpt-zh-CN-reviewer",
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-CN",
+  "snapshot_id": "learn-docs-v1-qc-025",
+  "snapshot_manifest_sha256": "a950c4cb8f6a6e00483a30353750a5becb4a13bd67f1104ba4bbbb49b1f30ec9",
+  "previous_snapshot_id": "learn-docs-v1-qc-024",
+  "rubric": "translation-quality/v1",
+  "result_count": 23,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "393fb67915a49876749590fd6480c9a3482597a9cebdd61e72c9a5f3d1449e2c",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "704fb9e2968f11379508a1f22a9837e154dd94ef14e4f781ecd7d7ed701a13a3",
+      "rating": "B",
+      "finding": "Category: Chinese prose spacing / typography. map 列表项中出现 `存储 键值对`，两个连续中文词组之间残留 1 个无语义用途的 ASCII space。完整 Unit same-class scan 确认该“Han prose + ASCII space + Han prose”明确实例为 1 处。此前 `key/value` ordinary-English residue 已关闭，但当前实例仍需修订。"
+    },
+    {
+      "index": 6,
+      "unit_id": "36346dcd0f2901eadeb8f4ec8c70dc4c0e709457e72ed30880c9e471e18c398a",
+      "rating": "C",
+      "finding": "Category 1: spurious Markdown paragraph boundary. source 中“稍后在 Query for a single row 一节学习单行查询”属于同一个括号句；current target 在 `（稍后会在` 与 `[查询单行](#single_row)...` 之间插入空段落，使前一 paragraph 句法未完成、后一 paragraph 成为残片。完整 Unit 同类“句内 paragraph fracture”scan 确认 1 处。Category 2: same-class residual — visible whitespace→Chinese punctuation. `[Config](...)` 后换行空白再接 `，以及`，当前 Unit 此 predicate 剩余 1 处。Category 3: formal Han↔Latin technical boundary. `MySQL为例` 中 technical identity `MySQL` 与中文正文直接粘连；当前 Unit 明确同类实例 1 处。"
+    },
+    {
+      "index": 7,
+      "unit_id": "0ecf62b07a368ffb8b06193d58be2c23e812fcbb51bf4f5810c67ef31107d3ff",
+      "rating": "B",
+      "finding": "Category: inline-code / literal formatting. `不带` 后的 fuzz flag 被写成 code span `` ` -fuzz` ``，即 code span 内容本身带有前导空格，而 source technical literal 为 `-fuzz`。完整 Unit 对 inline-code 首尾空白 scan 确认 1 处。其余此前 punctuation、debugger link 与 UTF-8 replacement-character 类问题未见同类 residual。"
+    },
+    {
+      "index": 9,
+      "unit_id": "5b475205acbf5bd75bf05d04a110ff6d39bbc4e6b377943170aa2151ce86bed8",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "1829c72166fe3d16154c3f36be4e436b51e8d5ff1725c426d2564bf6a4c44275",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "b49d8e873a0f66f6803077eb534583a155d2bd209a032d7c00fba8fea856da5c",
+      "rating": "B",
+      "finding": "Category: same-class residual — paragraph/punctuation structure. 在 `var m Message` code block 之后，新 paragraph 直接以 `，然后调用 json.Unmarshal...` 开头；source 的语义是 code block 前后同一句的连续成分，而 current target 将中文逗号置于新 paragraph 起始，形成明显的中文句法/排版缺陷。完整 Unit 的 whitespace/paragraph-boundary→Chinese-punctuation scan 确认当前剩余 1 处。"
+    },
+    {
+      "index": 18,
+      "unit_id": "c3dfdb3d129df54ca09e79e21054c0afa5d3ec1bbd4e6cbeb227476bd8dcb0c3",
+      "rating": "B",
+      "finding": "Category: unsupported semantic additions in translated Go comments. 完整 Unit 对 translated code comments 做同类扫描后，发现 source 未表达的解释性内容被加入：① 两处 `album represents...` 注释增加“类型标识为 album”，其中完整代码版本还增加“代码中用 a 表示单条记录”；② 两处 `getAlbumByID` 注释增加通过“变量 a”返回唱片的说明；③ 两处 `postAlbums adds...` 注释增加“创建”语义。以上信息与代码可能相容，但属于 source-external additions。bounded scope 为本 Unit translated Go comments；protected identifiers/API identity 保持不变。"
+    },
+    {
+      "index": 19,
+      "unit_id": "b1d98230ae3df4fc789951b9434cebc92a097caf92e0493eb7d4e81f3135ea7e",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "d799614a9f1efd848505c615a88f2fb0f092ac22f743b3da042e12de1127fd8b",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "710755b7111a6d99c424ec6d345cbbe68672a3dab3ba998432cd28fd258b42ce",
+      "rating": "C",
+      "finding": "Category: semantic agent/beneficiary inversion; same-class residual. source code comment `Get the new album's generated ID for the client.` 表示获取已生成的新唱片 ID、供 client 使用；current target `获取客户端为新唱片生成的 ID。` 改成了“客户端生成 ID”，改变了动作施事关系。完整 Unit 对 localized code comments 的同类角色关系 scan 未发现第二处；此处为 exact-instance-only residual。"
+    },
+    {
+      "index": 22,
+      "unit_id": "d61aeba25412a5486456e3e5f2d3910e0bf27381f71b37eba29853d462174a1b",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "4708d52292821a7a838084e4407ab41f240bcfb3d77fc173497374f0e4788b70",
+      "rating": "C",
+      "finding": "Category 1: spurious intra-sentence paragraph boundary. source 中 ORM 与 non-relational NoSQL data stores 位于同一完整介绍句；current target 在 `以及非关系型` 后插入空 paragraph，再以 `NoSQL 数据存储。` 继续，导致前一 paragraph 句法未完成。完整 Unit 此类 sentence-fracturing paragraph boundary = 1。Category 2: formal technical-boundary spacing. 小节项标题 `NoSQL数据存储` 中 `NoSQL` 与中文正文直接粘连；完整 Unit 此明确 Han↔Latin technical-boundary instance = 1。此前 ORM 施受/修饰关系问题本身已关闭。"
+    },
+    {
+      "index": 26,
+      "unit_id": "dd353848a883a0ce4efa4a6c72b49d08551f13701c8b98b35520092d45c6ebbe",
+      "rating": "B",
+      "finding": "Category: same-class residual — visible whitespace→Chinese punctuation. `务必调用 stmt.Close` 后换行，再以 `。这会...` 开始下一行；Markdown soft line break 在 inline code 与中文句号之间留下可见 whitespace。完整 Unit 当前此 predicate = 1 处。Bundle 已明确 `album` / `id` 属于 protected technical identity，本 finding 不将其视为 untranslated residue。"
+    },
+    {
+      "index": 29,
+      "unit_id": "83847dd2c9d2c76a864241e435e527d39c8697366d30bed775f4a77d2da50d9a",
+      "rating": "B",
+      "finding": "Category: spurious paragraph/link split. 第一个模块特性列表项中，`请参阅` 与紧随其后的 `[版本管理](#versioning)。` 之间存在空白 paragraph boundary，把 source 的一个完整句子拆成“请参阅”与独立链接 paragraph。Bundle machine attention 对该 Unit 的 `paragraph-link-split` 同类扫描亦仅定位此 1 处；其他跨行 link text 未形成同样的空 paragraph。"
+    },
+    {
+      "index": 30,
+      "unit_id": "61c3a8166079f2411ded5981623c0e2c7945ee164f8ac11b17d4f956b214174b",
+      "rating": "C",
+      "finding": "Category 1: spurious intra-sentence paragraph boundary. `replace` notes 中 current target 第一 paragraph 结束于 `因为`，随后空行，再由 `` `replace` 指令只应用于主模块。`` 继续；source 是由 `since` 连成的单一句子。完整 Unit 此类句法断裂 = 1 处。Category 2: same-class link-label line-break spacing. Bundle attention 中当前 Unit 的 Chinese link label 明确有 2 处跨行后形成中文词内可见空白：`从自己的仓库分叉中使用外部模块 / 代码`、`使用本地 / 目录中的模块代码`。此前 vendoring terminology category 未见 residual。"
+    },
+    {
+      "index": 32,
+      "unit_id": "7eb8c6d141170074062064dfc1367ae28002c16a1cd825ee5666fc73c0e3b8b5",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "82a1f9b16b20d60a538c1873daf9afb5c446aded1d2bff16e3b5650ed6bafb1e",
+      "rating": "C",
+      "finding": "Category 1: technical semantic mistranslation — GOPROXY separator behavior. source 明确规定：使用 comma 时，只有“当前 URL 返回 HTTP 404 或 410”才尝试列表中的下一个 URL；current target 出现 `只有在列表中的下一个 URL 之前，当前 URL 返回...才会继续尝试`，加入 source 不存在的“在下一个 URL 之前”关系，使条件语义和中文句法均错误。对 comma/pipe 两个 sibling rules 完整扫描后，pipe rule 正确，因此该 semantic defect 为 exact-instance-only。Category 2: same-class residual — whitespace→Chinese punctuation. 模块认证段括号内容在 `内容` 后换行，再以 `），` 开头；当前 Unit 此 predicate 剩余 1 处。"
+    },
+    {
+      "index": 41,
+      "unit_id": "8042e585ed8b19f87a6b95c1e1a71bc43a9ab550e6308731005694a0dd6d061d",
+      "rating": "C",
+      "finding": "Category: API-mechanism omission + structural split. glossary 的 `fuzz target` 定义中，source 明确说明该函数是“通过把函数传给 `(*testing.F).Fuzz`”提供给 fuzz test；current target 仅表达“需要调用 `(*testing.F).Fuzz`”，遗漏“将该函数作为参数传入”的关键 API 关系，并把方法链接拆成独立 paragraph。完整 glossary definition same-class scan 未发现第二处同类 API-mechanism omission；bounded scope 为 `fuzz target` 定义。"
+    },
+    {
+      "index": 42,
+      "unit_id": "950eb43dcbeff65a683ee58307184e4e75652f9ee881cd046f1c4cf7529498d0",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "78bb61869a1d012f449488964d8282dda51c0664f2cc8b65c00eec2054f1d166",
+      "rating": "B",
+      "finding": "Category: formal Han↔Latin technical spacing. 按 Bundle `zh-CN` language policy 对完整 Page 做 same-class scan，确认 3 处 technical Latin / inline-code 与 Han prose 直接粘连：`LLM输出`、`以及head/master`、`` `[security]`前缀``。此前 ordinary-language `e.g` / `and/or` residue 已关闭；当前 finding 仅限这 3 个 spacing instances。"
+    },
+    {
+      "index": 46,
+      "unit_id": "970d9162f36489ed1cea186c70428d536fe1f9485b2e255537b735e3c275cb00",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "ff777d1f41091a8b8269f4787a6aa78f2097263412b0e01ba0c7cdd73fcf6775",
+      "rating": "B",
+      "finding": "Category: Markdown list hierarchy / semantic attachment. source 的 architecture 第 3 项中，govulncheck explanation 是该编号项的连续说明；current target 在 `自己项目中的漏洞。` 后插入空 paragraph，并以未缩进的 `[govulncheck 命令]...` 开启普通 paragraph，使这段说明脱离第 3 个 numbered item 的结构归属。完整 numbered-list continuation scan 中此类明确实例 = 1 处。此前 `NOTE` ordinary-language residue 已关闭。"
+    }
+  ]
+}
