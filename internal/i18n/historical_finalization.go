@@ -107,7 +107,21 @@ func verifyHistoricalQualityCheckFinalization(root, locale, snapshotID string, c
 	}
 	results := map[string]*QualityCheckResults{}
 	snapshots := map[string]*QualityCheckSnapshotManifest{snapshotID: s}
+	correctionInputs := map[string]QualityCheckFinalizationInput{}
 	for _, ref := range f.QCResults {
+		if err := validateSnapshotID(ref.SnapshotID); err != nil {
+			return nil, err
+		}
+		if strings.HasPrefix(ref.Path, qualityCheckCorrectionDir(locale, ref.SnapshotID)+"/") {
+			if _, duplicate := correctionInputs[ref.Path]; duplicate {
+				return nil, fmt.Errorf("duplicate historical QC correction input")
+			}
+			if _, err := bind(ref.Path, ref.SHA256); err != nil {
+				return nil, err
+			}
+			correctionInputs[ref.Path] = ref
+			continue
+		}
 		if results[ref.SnapshotID] != nil || ref.Path != filepath.ToSlash(filepath.Join("data", "quality-check-snapshots", locale, ref.SnapshotID, "quality-check-results.json")) {
 			return nil, fmt.Errorf("historical QC input exact-set/path mismatch")
 		}
@@ -133,6 +147,28 @@ func verifyHistoricalQualityCheckFinalization(root, locale, snapshotID string, c
 				}
 			}
 		}
+	}
+	// Corrections are exact immutable QC inputs, never an unbound A overlay.
+	// Old finalizations with no correction keep their original input inventory.
+	for id := range results {
+		original, err := readOriginalQualityCheckResults(root, locale, snapshots[id])
+		if err != nil {
+			return nil, err
+		}
+		_, corrections, err := readQualityCheckCorrections(root, snapshots[id], original)
+		if err != nil {
+			return nil, err
+		}
+		for _, ref := range corrections {
+			bound, ok := correctionInputs[ref.Path]
+			if !ok || bound.SnapshotID != id || bound.SHA256 != ref.SHA256 {
+				return nil, fmt.Errorf("historical QC correction not exactly bound")
+			}
+			delete(correctionInputs, ref.Path)
+		}
+	}
+	if len(correctionInputs) != 0 {
+		return nil, fmt.Errorf("orphan historical QC correction input")
 	}
 	// Validate recorded predecessor graph without any mutable/current lookup.
 	zeroReviewLineage := map[string]string{}

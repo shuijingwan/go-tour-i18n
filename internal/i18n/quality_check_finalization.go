@@ -257,6 +257,17 @@ func qualityCheckFinalizationInputs(root, locale, snapshotID string, seen map[st
 		return nil, err
 	}
 	all = append(all, QualityCheckFinalizationInput{SnapshotID: snapshotID, Path: rel, SHA256: sum(b)})
+	original, err := readOriginalQualityCheckResults(root, locale, s)
+	if err != nil {
+		return nil, err
+	}
+	_, corrections, err := readQualityCheckCorrections(root, s, original)
+	if err != nil {
+		return nil, err
+	}
+	for _, ref := range corrections {
+		all = append(all, QualityCheckFinalizationInput{SnapshotID: snapshotID, Path: ref.Path, SHA256: ref.SHA256})
+	}
 	return all, nil
 }
 

@@ -203,6 +203,60 @@ go run -mod=readonly ./cmd/tour-i18n quality-check scope \
 
 `quality-check-results.json` 的 lineage identity 在该文件第一次成功写入时固定。revision Snapshot 的第一次 `quality-check record` 或 `record-batch` 必须使用与 prospective scope 相同的 `--previous-snapshot-id`；后续 record 可以省略该参数并沿用已经持久化的 predecessor。results 文件已经存在时，scope 或 record 显式传入的 `--previous-snapshot-id` 只能与 persisted `previous_snapshot_id` 做 exact-match 一致性确认，不能把 empty lineage 补成 revision lineage，也不能改为另一个 predecessor；lineage 错误应回到正确的 Snapshot/QC recording workflow evidence 处理，禁止人工编辑 JSON。后续 scope 可以从结果文件继续解析多轮 carry-forward。`a_count == unit_count`、B/C/D 均为 0 且 `pending_count == 0` 时，`ready_for_finalization=true`，才可以执行 finalization；JSON 同时保留 deprecated `ready_for_final_review` alias 供旧消费者读取。
 
+### 已记录 Quality Check judgment 的 source-mismatch correction
+
+独立 Reviewer 确认自己已记录的 B/C/D finding 与 exact canonical source 不符、明确撤回该 finding 并纠正为 A 时，使用 `quality-check correct`。这是 admission C 的 bounded recorded-judgment correction；只支持 `non-A → A` 与 `finding_disposition=withdrawn-source-mismatch`，不支持其它 rating 调整、A reopen、译文生成或新的审核历史平台。不得手改原 results/candidate/protected token，也不得用 legacy `retranslation review supersede` 替代。
+
+维护者将原独立 Reviewer 的真实 correction response 明确转录为 JSON，不得让机器自行判断或补造 Reviewer 结论。例如：
+
+```json
+{
+  "locale": "<locale>",
+  "snapshot_id": "<snapshot-id>",
+  "original_results": {"path": "data/quality-check-snapshots/<locale>/<snapshot-id>/quality-check-results.json", "sha256": "<exact-original-file-sha256>"},
+  "reviewer_session": "<original-independent-reviewer-session>",
+  "unit_id": "<exact-unit-id>",
+  "index": 7,
+  "original_rating": "B",
+  "original_finding": "<exact-original-finding>",
+  "corrected_rating": "A",
+  "finding_disposition": "withdrawn-source-mismatch",
+  "reason": "<Reviewer 对 exact source occurrence 的纠错理由>",
+  "correction_required": true,
+  "replacement_text_generated": false,
+  "repository_mutation": "none"
+}
+```
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n quality-check correct \
+  --content-package <registered-package> \
+  --locale <locale> --snapshot-id <snapshot-id> \
+  --reviewer-session <original-independent-reviewer-session> \
+  --correction-file /tmp/reviewer-correction.json \
+  --correction-sha256 <exact-input-file-sha256>
+```
+
+| Contract | 语义 |
+| --- | --- |
+| COMMAND / OPERATION | `quality-check correct` / immutable recorded-judgment correction；调用本身即 record，无 `--apply` 或 dry-run |
+| INPUT_KIND / INPUT_PATH_CONTRACT | 一个独立 Reviewer correction JSON；`--correction-file` 接受绝对路径或相对当前工作目录的路径；内含 `original_results.path` 必须 exact canonical repository-relative path，绝对路径即使位于 repo 内也拒绝 |
+| REQUIRED_FLAGS / FORBIDDEN_FLAGS | locale、snapshot-id、reviewer-session、correction-file、correction-sha256 各恰好一次且非空；registered lifecycle 显式携带原 package selector，native/default Tour 可不带；拒绝 positional、unknown flags、rating/unit-id 覆盖参数及重复 flags |
+| STDOUT | `QualityCheckCorrectionRecordResult` JSON：`locale,snapshot_id,unit_id,index,path,sha256`；path/SHA 指向新 artifact，不是原 results 或输入 JSON |
+| MUTATION_EXPECTATION | known：仅新增 `data/quality-check-snapshots/<locale>/<snapshot-id>/judgment-corrections/<sha256(unit-id UTF-8 bytes)>.json` 一个 immutable artifact；不改原 results、Snapshot、candidate/raw/validation、batch、finalization 或 status |
+| IDEMPOTENCE | no-replace；同 Unit 重复（包括 exact replay）及 conflicting correction 一律失败，不覆盖、不自动合并；每个 Unit 最多一份 correction |
+| CURRENTNESS_CHECK | Snapshot/current glossary/package scope、latest processed selected candidate identity、磁盘 source、candidate/validation evidence；仅 unfinalized Snapshot 可 record。输入 SHA、原 results path/SHA、原 rating/finding、Snapshot stable index/full Unit identity 必须 exact；Reviewer 必须与原 results session 相同且通过现有独立角色检查。legacy 无明确 Reviewer identity 的 results 不可据此获得新 A |
+| PRIOR_OR_CAS | prior 是 JSON 内显式 original results path/SHA/rating/finding 与 input SHA；发布前再核对 results/manifest bytes；目标必须 absent，完整临时文件经 atomic link no-replace 发布。维护者串行记录；没有跨文件锁或针对外部并发编辑的事务/CAS 保证 |
+| SUCCESS_STOP | 新 artifact 与 stdout path/SHA 一致后，回既有 readonly scope/preflight 核对 exact pending；不自动生成 replacement、revision、Snapshot 或 finalization |
+| FAILURE_STOP | prior/currentness/role/JSON/duplicate/tamper 失败不得继续；发布前失败不写 correction。stdout/I/O failure 或外部并发编辑时先只读核对目标 path/SHA，不假设未写、不盲目 replay |
+| RECOVERY / REPLAY | 保留原结果和原 Reviewer correction bytes；禁止修补或删除 artifact、重放历史 invocation、批量迁移旧 QC。缺真正独立 correction evidence 时停止 |
+
+artifact schema 为 additive `go-learning/quality-check-judgment-correction/v1`，保留 exact Reviewer response bytes（JSON 中 base64）、其 SHA、原 results 引用、Snapshot manifest SHA、完整 frozen Unit、原 judgment、纠正后 A/empty finding、reason/disposition 和 self identity。严格拒绝 unknown/duplicate JSON keys、trailing JSON、缺失显式 false、wrong identity 和非 canonical artifact encoding。correction 不自授 Reviewer authority；原独立 Reviewer identity 与现有角色隔离检查不可由输入声明替代。
+
+共享 effective reader 先验证原 results，再逐份验证 correction，仅替换 exact Unit 的 rating/finding；其它 judgments、lineage、rubric 与 carry identity 不变。没有 correction 时旧 reader 行为不变，不做 implicit migration。首份 correction 冻结原 results bytes，后续 record/backfill 不得再改该文件；其它 Unit 的独立 correction 可继续绑定同一原 SHA。原 results 永久可审计。scope、revision authorization、carry 和 finalization 读取同一 effective judgment；finalization 沿用既有 QC input reference 列表额外 hash-bind correction，historical verifier 检查 exact correction inventory/bytes，不将今日临时 overlay 冒充历史 A。旧 results/finalization schema 不改、无 correction 的旧 evidence bytes 不变。
+
+真实首次使用前，由 Maintainer Local 按 [Formal Command Contract v3](WORKFLOW_HANDOFF.md#formal-command-contract-v3) 重新核对 current docs → parser/dispatcher/reader/publisher → direct CLI tests；工程测试不授权真实 record。
+
 ### Legacy Final Review incremental scope
 
 以下命令只读取正式 Final Review evidence：

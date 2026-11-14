@@ -4,6 +4,8 @@ current package membership扩大但已存在多个 disjoint finalized predecesso
 
 本能力属于 `internal/i18n` 共享生命周期，不增加 Generation、Reviewer、QC 或 package 专属状态机。旧 Snapshot、Reviewer、finalization、compatibility、successor、Surface 与 Production evidence 保持原 bytes。
 
+独立 Reviewer 对已记录 source-mismatch finding 的纠错使用 [Quality Check judgment correction](TRANSLATION_QUALITY_REVIEW.md#已记录-quality-check-judgment-的-source-mismatch-correction)。原 results 不改写；effective A 的来源是 exact 原 judgment 加原独立 Reviewer 的 immutable correction，不能由 machine re-attestation 自行产生。新 finalization 的既有 QC input references 同时绑定原 results 和 correction；historical integrity 验证两者 exact bytes/inventory，之后 current eligibility 仍独立执行 source/candidate/validator/scope gates。无 correction 的旧 schema、proof 和 checkpoint 不迁移。
+
 ## 实施前 coupling inventory
 
 | 分类 | 现有 authority / 函数 | 耦合与处理边界 |

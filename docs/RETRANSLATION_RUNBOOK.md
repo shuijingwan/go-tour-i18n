@@ -247,6 +247,8 @@ bundle 完整包含该 working set 的 source/current target、完整 glossary�
 
 ## 7. Quality Check 与 revision batch
 
+若已记录的 B/C/D finding 被原独立 Reviewer 因 exact source mismatch 正式撤回并纠正为 A，先按 [recorded judgment correction contract](TRANSLATION_QUALITY_REVIEW.md#已记录-quality-check-judgment-的-source-mismatch-correction) 使用 additive `quality-check correct`；不是 translation/retry，也不能用 legacy review supersede 或手改 results/candidate。原 QC bytes 冻结，effective scope 仅更新 exact Unit；先由 Maintainer Local 完成新 CLI first-real-use gate，record 后重新读取 scope，只对剩余 B/C/D 进入 revision。已失败的 zero-output Generation 保留原事实，不 replay/retrofit，correction 不创建 successor batch。
+
 ChatGPT Quality Check 必须以同一份 Candidate Snapshot manifest 为审核范围，不得自行从各 batch 中重新挑选 candidate。首次 locale 没有历史 QC result 时，`quality-check scope` 必须返回全部 Unit pending。完成实际审核后用 `quality-check record` 或 `quality-check record-batch` 写入该 Snapshot 的 `quality-check-results.json`。全 A 后由 `quality-check finalize` 生成唯一 promotion authority。当前严格生产策略只接受 A：
 
 - A：通过 Quality Check；

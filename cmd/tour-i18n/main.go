@@ -822,6 +822,8 @@ func run(args []string) error {
 		return nil
 	case "quality-check record":
 		return qualityCheckRecordCommand(root, catalog, args[2:], os.Stdout)
+	case "quality-check correct":
+		return qualityCheckCorrectCommand(root, catalog, args[2:], os.Stdout)
 	case "quality-check finalize":
 		fs := flag.NewFlagSet("quality-check finalize", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

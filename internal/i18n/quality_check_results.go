@@ -344,8 +344,11 @@ func recordQualityCheckJudgments(root string, catalog *Catalog, options QualityC
 	if err != nil {
 		return nil, err
 	}
-	existing, err := readQualityCheckResults(root, options.Locale, snapshot)
+	existing, err := readOriginalQualityCheckResults(root, options.Locale, snapshot)
 	if err != nil {
+		return nil, err
+	}
+	if err := requireUncorrectedQualityCheckResults(root, snapshot, existing); err != nil {
 		return nil, err
 	}
 	if existing != nil && options.FullRereview {
@@ -550,8 +553,11 @@ func BackfillQualityCheckFinding(root string, catalog *Catalog, options QualityC
 	if err != nil {
 		return nil, err
 	}
-	results, err := readQualityCheckResults(root, options.Locale, snapshot)
+	results, err := readOriginalQualityCheckResults(root, options.Locale, snapshot)
 	if err != nil {
+		return nil, err
+	}
+	if err := requireUncorrectedQualityCheckResults(root, snapshot, results); err != nil {
 		return nil, err
 	}
 	if results == nil {
@@ -922,7 +928,7 @@ func (evaluation *qualityCheckEvaluation) loadEffectiveQualityCheckResults(snaps
 	return snapshot, effective, nil
 }
 
-func readQualityCheckResults(root, locale string, snapshot *QualityCheckSnapshotManifest) (*QualityCheckResults, error) {
+func readOriginalQualityCheckResults(root, locale string, snapshot *QualityCheckSnapshotManifest) (*QualityCheckResults, error) {
 	path := qualityCheckResultsPath(root, locale, snapshot.SnapshotID)
 	data, err := os.ReadFile(path)
 	if os.IsNotExist(err) {
