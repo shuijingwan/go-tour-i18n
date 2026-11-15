@@ -252,6 +252,25 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 			return nil, err
 		}
 	}
+	whitespace, whitespaceIdentity, err := importedWhitespaceAttempt(root, catalog, manifest, item.manifest, current.Attempt, current.RawResponsePath, raw)
+	if err != nil {
+		return nil, err
+	}
+	if whitespace != nil {
+		text, tokens, _ := whitespace.ProtectedInput(glossary)
+		item.protected = protectedTranslation{Adapter: whitespace, Text: text, Tokens: tokens}
+		priorCheck := prepared[0].checkOutputContext
+		prepared[0].checkOutputContext = func() error {
+			_, identity, err := importedWhitespaceAttempt(root, catalog, manifest, item.manifest, current.Attempt, current.RawResponsePath, raw)
+			if err != nil || identity != whitespaceIdentity {
+				return fmt.Errorf("whitespace revalidation evidence drift: %v", err)
+			}
+			if priorCheck != nil {
+				return priorCheck()
+			}
+			return nil
+		}
+	}
 	if currentOnly {
 		// Reuse the invocation-local pre-commit check for the bytes just read;
 		// a concurrent candidate/evidence/input replacement cannot be sealed by

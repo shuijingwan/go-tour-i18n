@@ -144,6 +144,16 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if err != nil {
 		return nil, err
 	}
+	whitespace, whitespaceIdentity, err := importedWhitespaceAttempt(root, catalog, manifest, item.manifest, nextAttempt, retryRawRelative, retryRaw)
+	if err != nil {
+		return nil, err
+	}
+	if whitespace != nil {
+		text, tokens, _ := whitespace.ProtectedInput(glossary)
+		item.protected = protectedTranslation{Adapter: whitespace, Text: text, Tokens: tokens}
+	} else if _, err := prepareWhitespaceRetry(root, catalog, manifest, item.manifest, &current, validationData, false); err != nil {
+		return nil, err
+	}
 	historyRelative := filepath.ToSlash(filepath.Join(retryDirRelative, fmt.Sprintf("attempt-%03d-validation.json", currentAttempt)))
 	historyPath := filepath.Join(batchDir, filepath.FromSlash(historyRelative))
 	if _, err := os.Stat(historyPath); err == nil {
@@ -216,6 +226,10 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	}
 	if freshImportIdentity != retryImportIdentity {
 		return nil, fmt.Errorf("approved retry imported invocation changed during validation")
+	}
+	_, freshWhitespaceIdentity, err := importedWhitespaceAttempt(root, catalog, manifest, item.manifest, nextAttempt, retryRawRelative, retryRaw)
+	if err != nil || freshWhitespaceIdentity != whitespaceIdentity {
+		return nil, fmt.Errorf("whitespace attempt imported evidence drift: %v", err)
 	}
 	if err := checkPreparedRetranslationContext(prepared); err != nil {
 		return nil, err

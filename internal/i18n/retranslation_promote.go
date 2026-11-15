@@ -376,6 +376,23 @@ func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, u
 			protected = decoder
 		}
 	}
+	if attempt > 1 {
+		batch, err := readRetranslationProcessManifest(batchDir, locale, validation.BatchID)
+		if err != nil {
+			return 0, err
+		}
+		whitespace, _, err := importedWhitespaceAttempt(root, catalog, batch, manifest, attempt, validation.RawResponsePath, raw)
+		if err != nil {
+			return 0, err
+		}
+		if whitespace != nil {
+			text, tokens, _ := whitespace.ProtectedInput(glossary)
+			protected = protectedTranslation{Adapter: whitespace, Text: text, Tokens: tokens}
+			if err := validateRetranslationCandidateArtifact(candidate); err != nil {
+				return 0, err
+			}
+		}
+	}
 	restored, failures := protected.restore(string(raw))
 	restoredBytes := []byte(restored)
 	if len(failures) != 0 || (!bytes.Equal(restoredBytes, candidate) && !bytes.Equal(canonicalizeRetranslationArtifactEOF(restoredBytes), candidate)) {

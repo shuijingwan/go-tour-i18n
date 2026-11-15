@@ -51,7 +51,7 @@ func RecoverGenerationOutputs(root string, catalog *Catalog, generationBundleDat
 	if outputDir == "" {
 		return nil, errors.New("generation recovery requires an output directory")
 	}
-	manifest, _, err := currentGenerationBundle(root, catalog, generationBundleData)
+	manifest, files, err := currentGenerationBundle(root, catalog, generationBundleData)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func RecoverGenerationOutputs(root string, catalog *Catalog, generationBundleDat
 				issues = append(issues, GenerationRecoveryIssue{Source: candidate.source, Output: expected.BundlePath, Reason: err.Error()})
 				continue
 			}
-			if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, candidate.data); err != nil {
+			if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, candidate.data, files); err != nil {
 				issues = append(issues, GenerationRecoveryIssue{Source: candidate.source, Output: expected.BundlePath, Reason: err.Error()})
 				continue
 			}

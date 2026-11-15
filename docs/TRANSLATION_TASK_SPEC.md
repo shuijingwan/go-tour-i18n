@@ -160,6 +160,17 @@ TranslationUnit Generation Bundle 的 canonical ZIP 使用 **Deflate、显式 le
 
 retry 仅对当前 `restore_failed` / `validation_failed` Unit 增加 `--unit-id <unit-id>`；bundle 自动绑定下一连续 attempt、当前 validation/result 和完整原 batch 输入。`manifest.json` 声明 schema、task kind、locale、batch、Unit kind、attempt、exact expected outputs、全部成员 inventory/hash 与聚合 input identity。ZIP 内仍包含原始 batch manifest、manifest 列出的全部 inputs、完整 glossary 和当前 authority；ZIP 不替代这些 semantic authority。ChatGPT 与 Codex 都读取同一 contract，不因 provider 改变内容边界。
 
+若 exact restore 的 whitespace-only failure 完全位于 protected expansion，ordinary retry
+不能表达修复，必须 fail closed。显式 `--protected-whitespace-repair` 是同一 retry family
+的 bounded attempt codec，合同见 [Runbook](RETRANSLATION_RUNBOOK.md#protected-structural-whitespace-的-attempt-bound-codec)。
+当 `formal/whitespace-attempt/codec.json` 存在，只有同目录 `response.article` 才是该目标
+Unit 的输出 baseline，覆盖下面 ordinary revision editor instruction。WS1 boundaries 必须
+exact/unique/in-order；只可保留或删除 exposed 原 ASCII 空白，不能输出/移动/修改正文、
+code、link/API/directive/literal 或 LF。所有语言与结构 bytes 都 opaque。该 codec 不是
+language approval；完整原 input/source/Unit、旧 raw/provenance 与 QC finding 不变，仍需
+restore、artifact hygiene、active validation 和 independent re-QC，不赋予其它 validator
+failure 的修复能力。current-check/import/readers 只消费 exact frozen attempt，不自动推断 mode。
+
 export 与 current-check 是独立 invocation，使用同一 complete package-selection contract。CLI 每次重建 source/catalog；显式 `--content-package tour-v1` 选择 canonical Tour-native default complete scope（全部 native Page、eligible Example、canonical ordering、无 foreign adapter），不需要也不创建 registration。Tour Catalog 必须没有 explicit `TranslationScope`；不得清空 partial、different-order 或 foreign scope 后 widening。其它显式 package 必须经既有 `UseTranslationPackage()` 选择 exact complete registered descriptor；未知 package 或已有不匹配 scope 拒绝。recorded current-validation revision 的正式 export/current-check 调用均须显式提供一次同一 `--content-package`，不能从 batch 的少数 Unit 推断 package 全集；current-validation reopen 与 revision export 复用相同 complete selector。canonical exporter 在读取 predecessor context 前独立证明完整 package scope，并要求 batch 每个 Unit 都属于该 scope；historical reader 不能借恢复 predecessor catalog 覆盖调用者显式选择的另一 package。
 
 current-check 重新执行 canonical exporter，核对 Files inventory、聚合 identity 与完整 ZIP bytes，不复用上次 export 的 PASS。单次 revision graph 构建可以复用已经验证的同一 current-validation reopen 和 frozen QC evaluation，但返回前仍重新读取 receipt 并核验全部冻结历史引用。既有 invocation memoization 只复用 freshly supplied exact bytes 的确定性转换，不缓存 disk observation、currentness 或 authorization，不跨 invocation 保存结果。性能测试须分离两个 invocation 的 memo scope，不能用同一 memo scope 或旧 ZIP 的历史 CURRENT 代替当前检查；已安装输出的 batch 继续拒绝重新导出 initial/revision Bundle，benchmark 只能使用隔离副本。

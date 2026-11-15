@@ -95,8 +95,17 @@ func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []st
 	output := fs.String("output", "", "generation ZIP output")
 	currentCheck := fs.Bool("current-check", false, "verify CURRENT in this invocation before publishing; see docs/GENERATION_BUNDLE_EXPORT_CURRENT.md")
 	selection := fs.String("approved-interval-selection", "", "explicit repository-relative approved interval selection JSON (export only)")
+	whitespaceRepair := fs.Bool("protected-whitespace-repair", false, "attempt-bound protected structural-whitespace deletion only (retry export)")
 	selectionFlags := 0
+	whitespaceFlags := 0
+	unitFlags := 0
 	for _, arg := range args {
+		if arg == "--unit-id" || arg == "-unit-id" || strings.HasPrefix(arg, "--unit-id=") || strings.HasPrefix(arg, "-unit-id=") {
+			unitFlags++
+		}
+		if arg == "--protected-whitespace-repair" || arg == "-protected-whitespace-repair" || strings.HasPrefix(arg, "--protected-whitespace-repair=") || strings.HasPrefix(arg, "-protected-whitespace-repair=") {
+			whitespaceFlags++
+		}
 		if arg == "--approved-interval-selection" || strings.HasPrefix(arg, "--approved-interval-selection=") || arg == "-approved-interval-selection" || strings.HasPrefix(arg, "-approved-interval-selection=") {
 			selectionFlags++
 		}
@@ -104,16 +113,22 @@ func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []st
 	if selectionFlags > 1 {
 		return fmt.Errorf("approved interval selection flag must appear once")
 	}
+	if whitespaceFlags > 1 {
+		return fmt.Errorf("protected-whitespace-repair flag must appear once")
+	}
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
 	if *locale == "" || *batchID == "" || *output == "" || fs.NArg() != 0 {
-		return fmt.Errorf("usage: generation-bundle export --locale <locale> --batch-id <batch-id> [--unit-id <retry-unit-id>] [--current-check] --output <output.zip>")
+		return fmt.Errorf("usage: generation-bundle export --locale <locale> --batch-id <batch-id> [--unit-id <retry-unit-id>] [--protected-whitespace-repair] [--current-check] --output <output.zip>")
 	}
 	if selectionFlags > 0 && (*selection == "" || contentPackage == "") {
 		return fmt.Errorf("approved interval selection requires a path and explicit --content-package")
 	}
-	data, manifest, err := i18n.ExportTranslationUnitGenerationBundle(root, catalog, i18n.GenerationBundleOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID, ApprovedIntervalSelection: *selection})
+	if *whitespaceRepair && (*unitID == "" || unitFlags != 1 || selectionFlags > 0) {
+		return fmt.Errorf("protected-whitespace-repair requires one retry --unit-id and cannot combine approved interval selection")
+	}
+	data, manifest, err := i18n.ExportTranslationUnitGenerationBundle(root, catalog, i18n.GenerationBundleOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID, ApprovedIntervalSelection: *selection, ProtectedWhitespaceRepair: *whitespaceRepair})
 	if err != nil {
 		return err
 	}

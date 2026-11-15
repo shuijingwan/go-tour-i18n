@@ -200,6 +200,12 @@ finding kind 为 `duplicate-prose-literal`，绑定 exact intervals/anchors/atom
 
 ## 同一 formal Unit 的受限 transport bridge
 
+protected-token expansion 造成的 structural-whitespace retry 使用 [bounded attempt codec](RETRANSLATION_RUNBOOK.md#protected-structural-whitespace-的-attempt-bound-codec)，
+不冒用本节要求 passed predecessor 的 bridge，也不扩大前述 duplicate-prose-literal
+machine finding。它保持同一 formal source/input/Unit，原失败 candidate 的所有词句仍 opaque，
+只证明 exact 空白删除；没有新的 QC/language authority、replacement 或 implicit successor。
+原 ordinary invocation 与新 codec invocation 分别由各自 exact attempt archive 验证。
+
 ### Surface-bounded predecessor → independent ordinary QC bridge
 
 本节也允许 passed Surface-bounded same-ID predecessor 在后续独立 QC 得到 B/C/D 后建立**新的 ordinary QC bridge template**。Unit ID/kind、source path/SHA、formal protected input path/SHA 必须不变；previous Snapshot、所选 Surface batch、candidate/validation/attempt、原 import/archive/raw、Surface reopen/transport 与完整 frozen dependencies 必须精确验证。当前完整 package、glossary/full Review、active validator、QC results/rating/finding 和显式独立 Reviewer evidence path/SHA 仍单独重验。preflight 的临时 revision record 从已验证 predecessor record 取得 input path/SHA，再保留原 exact comparison；不以空 SHA 或可选比较通过。

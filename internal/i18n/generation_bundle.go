@@ -55,6 +55,9 @@ var translationUnitGenerationAuthorityPaths = []string{
 	"internal/sitecontent/surface_same_unit_bridge.go",
 	"internal/i18n/comment_revision_transport.go",
 	"internal/sitecontent/comment_revision_transport.go",
+	"internal/i18n/attempt_whitespace_codec.go",
+	"internal/i18n/attempt_whitespace_workflow.go",
+	"internal/sitecontent/attempt_whitespace.go",
 	"AGENTS.md",
 	"docs/SHARED_TRANSLATION_UNIT_LIFECYCLE.md",
 	"docs/WORKFLOW_HANDOFF.md",
@@ -70,6 +73,7 @@ type GenerationBundleOptions struct {
 	BatchID                   string
 	UnitID                    string
 	ApprovedIntervalSelection string
+	ProtectedWhitespaceRepair bool
 	approvedIntervalSelection []byte // Only canonical reconstruction consumes frozen ZIP bytes.
 }
 
@@ -153,6 +157,9 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	}
 	if catalog == nil {
 		return nil, GenerationBundleManifest{}, errors.New("generation bundle catalog is required")
+	}
+	if options.ProtectedWhitespaceRepair && (options.UnitID == "" || options.ApprovedIntervalSelection != "" || len(options.approvedIntervalSelection) != 0) {
+		return nil, GenerationBundleManifest{}, fmt.Errorf("protected whitespace repair requires a single ordinary retry Unit")
 	}
 	if err := ValidateLocaleName(options.Locale); err != nil {
 		return nil, GenerationBundleManifest{}, err
@@ -245,6 +252,8 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	}
 	attempt := 1
 	selected := manifest.Units
+	var whitespaceInputs []generationBundleInput
+	var checkWhitespace func() error
 	var retryEvidence []struct {
 		bundle, repository string
 		data               []byte
@@ -310,6 +319,28 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 			return nil, GenerationBundleManifest{}, fmt.Errorf("current retry attempt identity mismatch for %s", options.UnitID)
 		}
 		attempt = currentAttempt + 1
+		whitespaceInputs, err = prepareWhitespaceRetry(root, catalog, manifest, *record, validation, validationData, options.ProtectedWhitespaceRepair)
+		if err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+		if len(whitespaceInputs) > 0 {
+			checkWhitespace = func() error {
+				data, err := readCompatibilityFile(root, validationRepo)
+				if err != nil || !bytes.Equal(data, validationData) {
+					return fmt.Errorf("whitespace retry validation changed during export")
+				}
+				fresh, err := prepareWhitespaceRetry(root, catalog, manifest, *record, validation, validationData, true)
+				if err != nil || len(fresh) != len(whitespaceInputs) {
+					return fmt.Errorf("whitespace retry inputs changed: %v", err)
+				}
+				for i := range fresh {
+					if fresh[i].path != whitespaceInputs[i].path || !bytes.Equal(fresh[i].data, whitespaceInputs[i].data) {
+						return fmt.Errorf("whitespace retry input drift")
+					}
+				}
+				return nil
+			}
+		}
 		retryEvidence = append(retryEvidence,
 			struct {
 				bundle, repository string
@@ -324,6 +355,7 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 
 	type entry = generationBundleInput
 	entries := []entry{{"formal/manifest.json", manifestRepo, manifestData}}
+	entries = append(entries, whitespaceInputs...)
 	if originTaskKind == "translation-unit-revision" {
 		revisionInputs, err := revisionGenerationInputsCore(root, catalog, options.Locale, manifest.Units, nil, true, selection)
 		if err != nil {
@@ -415,6 +447,9 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 		if taskKind == "translation-unit-retry" {
 			context.Instruction += fmt.Sprintf(" This is machine retry attempt %d for only the selected restore_failed/validation_failed Unit; retain the original exact revision semantics and finding closure contract.", attempt)
 		}
+	}
+	if len(whitespaceInputs) > 0 {
+		context.Instruction += " Protected structural-whitespace attempt codec: ONLY formal/whitespace-attempt/response.article is the output baseline for this Unit; it overrides all ordinary revision templates. All language, code, link/API/directive/literal and structural bytes are opaque. Preserve every WS1 boundary token exactly/uniquely and in order; delete only the exposed trailing ASCII whitespace. Do not write, relocate or regenerate prose, remap ordinary tokens, edit formal inputs, or treat this failed baseline/codec as language approval. Original raw/candidate/validation remain immutable. Normal restore, artifact hygiene, current validation and Independent re-QC remain required."
 	}
 	contextData, err := json.MarshalIndent(context, "", "  ")
 	if err != nil {
@@ -522,6 +557,11 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 			return nil, GenerationBundleManifest{}, err
 		}
 	}
+	if checkWhitespace != nil {
+		if err := checkWhitespace(); err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+	}
 	return bundle, manifestOut, nil
 }
 
@@ -619,7 +659,7 @@ func PackGenerationResultBundle(root string, catalog *Catalog, generationBundleD
 		if surface {
 			err = validatePreparedGenerationOutput(root, catalog, manifest.Locale, expected.UnitID, data, protected, batch.ArtifactEOF)
 		} else {
-			err = validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, data)
+			err = validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, data, files)
 		}
 		if err != nil {
 			return nil, GenerationResultBundleManifest{}, fmt.Errorf("%s: %w", dirEntry.Name(), err)
@@ -689,7 +729,7 @@ func ImportGenerationOutputDirectory(root string, catalog *Catalog, generationBu
 	for _, expected := range manifest.ExpectedOutputs {
 		outputs[expected.BundlePath] = outputBytes[filepath.Base(expected.BundlePath)]
 	}
-	if err := validateGenerationOutputSet(root, catalog, manifest, outputs); err != nil {
+	if err := validateGenerationOutputSet(root, catalog, manifest, outputs, generationFiles); err != nil {
 		return nil, err
 	}
 	result, err := installGenerationOutputs(root, manifest, generationBundleData, generationFiles["manifest.json"], provider, model, outputs)
@@ -704,7 +744,11 @@ func currentGenerationBundle(root string, catalog *Catalog, generationBundleData
 	if err != nil {
 		return manifest, nil, err
 	}
-	current, _, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: manifest.Locale, BatchID: manifest.BatchID, UnitID: retryUnitID(manifest), approvedIntervalSelection: files[approvedIntervalSelectionMember]})
+	_, whitespace := files[attemptWhitespaceMember]
+	if whitespace && (manifest.TaskKind != "translation-unit-retry" || len(manifest.ExpectedOutputs) != 1) {
+		return manifest, nil, fmt.Errorf("whitespace codec requires exact retry invocation")
+	}
+	current, _, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: manifest.Locale, BatchID: manifest.BatchID, UnitID: retryUnitID(manifest), approvedIntervalSelection: files[approvedIntervalSelectionMember], ProtectedWhitespaceRepair: whitespace})
 	if err != nil {
 		return manifest, nil, fmt.Errorf("generation bundle is stale: %w", err)
 	}
@@ -743,13 +787,13 @@ func validateGenerationResult(root string, catalog *Catalog, generationBundleDat
 	for _, output := range resultManifest.Outputs {
 		outputByPath[output.BundlePath] = resultFiles[output.BundlePath]
 	}
-	if err := validateGenerationOutputSet(root, catalog, manifest, outputByPath); err != nil {
+	if err := validateGenerationOutputSet(root, catalog, manifest, outputByPath, generationFiles); err != nil {
 		return nil, err
 	}
 	return outputByPath, nil
 }
 
-func validateGenerationOutputSet(root string, catalog *Catalog, manifest GenerationBundleManifest, outputs map[string][]byte) error {
+func validateGenerationOutputSet(root string, catalog *Catalog, manifest GenerationBundleManifest, outputs map[string][]byte, inputs ...map[string][]byte) error {
 	if len(outputs) != len(manifest.ExpectedOutputs) {
 		return errors.New("generation result bundle output set mismatch")
 	}
@@ -760,6 +804,17 @@ func validateGenerationOutputSet(root string, catalog *Catalog, manifest Generat
 		}
 		if err := validateGenerationOutputBytes(data); err != nil {
 			return fmt.Errorf("%s: %w", expected.BundlePath, err)
+		}
+		if len(inputs) > 0 {
+			if _, codec := inputs[0][attemptWhitespaceMember]; codec {
+				g, err := LoadGlossary(root, manifest.Locale)
+				if err != nil {
+					return err
+				}
+				if err := validateTranslationUnitGenerationOutput(root, catalog, g, manifest.Locale, manifest.BatchID, expected.UnitID, data, inputs[0]); err != nil {
+					return err
+				}
+			}
 		}
 		// Semantic failures belong to process/retry, where every independent
 		// Unit is retained and receives its own validation evidence.
@@ -1219,7 +1274,7 @@ func validateGenerationOutputBytes(data []byte) error {
 	return nil
 }
 
-func validateTranslationUnitGenerationOutput(root string, catalog *Catalog, glossary *Glossary, locale, batchID, unitID string, data []byte) error {
+func validateTranslationUnitGenerationOutput(root string, catalog *Catalog, glossary *Glossary, locale, batchID, unitID string, data []byte, inputs ...map[string][]byte) error {
 	unit, err := catalog.Unit(unitID)
 	if err != nil {
 		return err
@@ -1237,6 +1292,29 @@ func validateTranslationUnitGenerationOutput(root string, catalog *Catalog, glos
 	}
 	if record == nil {
 		return fmt.Errorf("output Unit absent from batch")
+	}
+	if len(inputs) > 0 {
+		if _, present := inputs[0][attemptWhitespaceMember]; present {
+			var gm GenerationBundleManifest
+			if err := decodeStrictBundleJSON(inputs[0]["manifest.json"], &gm); err != nil {
+				return err
+			}
+			if gm.TaskKind != "translation-unit-retry" || len(gm.ExpectedOutputs) != 1 || gm.ExpectedOutputs[0].UnitID != unitID {
+				return fmt.Errorf("whitespace output wrong retry scope")
+			}
+			p, err := whitespaceAttemptFromFiles(root, catalog, batchManifest, *record, gm.Attempt, inputs[0])
+			if err != nil {
+				return err
+			}
+			restored, err := p.Restore(string(data))
+			if err != nil {
+				return err
+			}
+			if err := validateRetranslationCandidateArtifact(restored); err != nil {
+				return err
+			}
+			return ValidateTranslationUnitCandidate(root, catalog, unitID, locale, restored)
+		}
 	}
 	protected, err := prepareInvocationRetranslationOutput(root, catalog, glossary, locale, batchManifest.Units, *record, batchID)
 	if err != nil {

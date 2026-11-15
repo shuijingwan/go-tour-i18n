@@ -161,6 +161,56 @@ go run -mod=readonly ./cmd/tour-i18n retranslation retry \
 
 `retranslation retry` 默认只输出目标 Unit 的 PASS/FAILED、当前 attempt/status 和整个 batch 的 restore/validation 汇总，不展开 batch 中的全部成功 Unit；失败时同时显示当前失败原因及 candidate/validation evidence path。需要完整 `RetranslationProcessResult` JSON（包括 `units` 数组）的机器调用方必须显式传 `--json`。
 
+### Protected structural-whitespace 的 attempt-bound codec
+
+`validation_failed` 本身不保证 ordinary retry 可执行。对 source-owned Page，若原 raw
+的 exact token expansion 证明某个 whitespace-only 行全部来自 protected formatting atom，
+且没有 editable bytes，ordinary export/preparation 拒绝并报告
+`protected-response representation cannot express this validation repair`。有合法 editable
+ASCII 行尾空格的普通 retry 保持原行为；不分析其它 validator failure 的可修复性。
+
+此 exact class 可显式使用 `generation-bundle export --protected-whitespace-repair`，
+同时提供原 `--locale`、`--batch-id`、唯一失败 `--unit-id`、`--output`，registered package
+仍必须显式提供同一 `--content-package`。不修改原 batch/input/Unit 或旧 attempt，不记录
+reopen/bridge，不使用 `representation-machine` 的 duplicate-prose-literal authority。
+
+codec schema 为 `go-tour-i18n/protected-structural-whitespace-attempt/v1`，仅封存在既有
+Generation Bundle 的 `formal/whitespace-attempt/codec.json`。同目录保存 original raw /
+candidate / validation、previous raw / validation 的 exact bytes 和 `response.article`；
+不增加 repository receipt、pointer、通用 registry 或独立 recovery lifecycle。它绑定 locale、
+batch、下一连续 attempt、完整原 Unit record/source/input/manifest、glossary、original decoder
+identity、exact import/archive、source/token/candidate coordinates 与 expected repair SHA。
+
+Generation **只能输出该 `response.article` 的 WS1 tokens 与 exposed ASCII whitespace**。
+所有词句、code/link/API/directive/literal、LF 和结构均是 opaque copied slices；slots 只接受
+原空白或删除，不接受任何新词句/空白、partial spelling、token 编辑/复制/换序或正文移动。
+额外的原本 editable 行尾 ASCII 空格也仅收窄为原样/删除，不获得其它 prose editing 能力。
+source proof 只支持无 binding 的 prose formatting atom 中 LF 后的缩进；boundary、code/pre、
+literal、attribute、hard break、显式 whitespace styling 或不唯一 ownership 均 fail closed。
+baseline 必须 exact restore 原 failed candidate；原 ordinary decoder 与 original raw 永久保留。
+机器只构造 opaque slices/coordinates，不生成或修改目标语言内容，也不授予 QC/A 或 PASS。
+
+| Formal Command Contract v3 字段 | Contract |
+| --- | --- |
+| COMMAND / OPERATION | 现有 `generation-bundle export` 的显式 bounded retry transport mode |
+| INPUT / FLAGS | exact current failed Unit/batch；`--protected-whitespace-repair` 至多一次、必须配 `--unit-id`；不得与 approved-interval selection 混用；不支持未知 decoder/class |
+| PATH / STDOUT | `--output` 是新 ZIP path，建议 repository 外；stdout 沿用 export 的 locale/batch/task/attempt/count/identity；`--current-check` 可组合 |
+| MUTATION / IDEMPOTENCE | 只发布新 transport ZIP，不写 lifecycle；existing output/no-replace 冲突拒绝，不 overwrite/no-op |
+| CURRENTNESS | complete package/batch、原 source/input、glossary/current authority、原/previous evidence/provenance 与 fresh codec reconstruction；standalone current-check 不接受此 override，只消费 ZIP 冻结 mode；不缓存 PASS |
+| PRIOR / CAS | previous validation/result 必须仍是相同 current failure，attempt 连续；export 返回前重读 proof；import 保留 absence/pending/no-overwrite 与真实 provider/model |
+| SUCCESS / FAILURE STOP | export 成功后停止交接；任何 scope/hash/codec/coordinate/currentness drift 不发布 ZIP。先 preserve/diagnose，不 replay/retrofit |
+
+目录 import 与 Result ZIP path 共用 exact codec/attempt 绑定与 restore/hygiene/active validation。
+process/retry 仍正式记录 automatic validation；revalidate 与 Snapshot/QC historical readers 从
+该 exact attempt 的 import receipt/archive 重建，不读取 latest 作为 decoder fallback。旧 raw /
+validation 仍按既有 retry history 原字节归档；后续 failed codec attempt 只能显式绑定同一
+immutable origin，不能借 retry 换 scope。独立 re-QC/A-only 等后续 gate 不变。
+
+这是修改后的 formal command/currentness/consumer contract。第一次真实使用前必须由
+Maintainer Local 重新完成 current docs → implementation → direct CLI/contract tests gate。
+工程测试不授权任何真实 export/import/process。已有 partial Generation outputs 保留真实
+bytes 与 provenance，本 capability 不授权重生成、改写或隐式绑定到另一 invocation。
+
 ## 6. Candidate Snapshot
 
 Candidate Snapshot 的 scope 必须由下述显式 contract 确定，不从 Snapshot ID、batch 名称或命令经验推导。省略 `--content-package` 的正式 CLI 固定选择 native Tour workflow（当前 103 Page + 19 eligible Example）；`site-v2-shell-*` 这样的 Snapshot ID **不会**选择 shell package。完整所选 scope 的所有 TranslationUnit 都有通过 automatic validation 的最终 candidate 后，才能生成 Snapshot。
