@@ -73,8 +73,8 @@ current authority PASS，更不能持久化 `readSameUnitBridge` 的成功结论
 | GROUP | 共同入口 / 原 consumer | 本轮收敛 | 尚未覆盖 / 必须保留 |
 | --- | --- | --- | --- |
 | Workflow Documents（D） | WorkflowDocuments；Page 注册、workflow generation/review、shell successor | workflow.go 的三个调用经 sharedWorkflowDocuments，共用既有 package representation；formal Page projection 独立进程 cold=1 / warm=0，与 canonical 完整数据身份一致 | AttachPageTranslationUnits、BuildShellSuccessorAffectedScope 仍走 canonical reader |
-| Current corpus/source（A） | CheckUnifiedCorpus；adopted Page ProtectedInput、current authorization、bridge reconstruction | recorded bridge 的 readonly construction 有显式 source-proof owner；同 phase current-source projection 首次构建 1 次，后续 0 次；新 phase 新 owner | current 判定不跨 invocation；record 保留 eager entry/final guards |
-| QC / Snapshot（A/B/C） | qualityCheckEvaluation、AssessCurrentTranslation、closure/Surface scope | 消费 source、Global、package、archive、historical Page 和 historical structured graph；不增加 command cache | current/历史授权判定和冻结 native adapter 边界仍逐次验证，不持久化 evaluator/proof 的 PASS |
+| Current corpus/source（A） | CheckUnifiedCorpus；adopted Page ProtectedInput、current authorization、bridge reconstruction | recorded bridge 以及 Generation Bundle export/current-check、retry-handoff/member check 的 readonly construction 共用既有 source-proof owner；同 phase current-source projection 首次构建 1 次，后续 0 次；新 phase 新 owner | current 判定不跨 invocation；record 保留 eager entry/final guards |
+| QC / Snapshot（A/B/C） | qualityCheckEvaluation、AssessCurrentTranslation、closure/Surface scope | 消费 source、Global、package、archive、historical Page 和 historical structured graph；effective QC 单个 readonly phase 共享 reconciliation 的 current glossary/Reviewer 输入，并在返回前完整重验；不增加 command cache | 每 Unit canonical assessment、current/历史授权判定和冻结 native adapter 边界仍执行，不持久化 evaluator/proof 的 PASS |
 | Bridge representation（B） | readSameUnitBridgeForInvocation、source-owned ordinary factories | Catalog 私有 construction context 共享 source proof 和 pure representation；独立进程 representation cold=1 / warm=0；restricted-comment / Surface 构造与 canonical receipt bytes/SHA 相同 | frozen historical lineage、QC finding、Review、candidate/validation、import provenance 仍按原 reader 验证 |
 
 record CLI 使用 eager 的 `BridgeRepresentationCatalog` 数据视图。原两次 complete fresh
@@ -82,6 +82,22 @@ construction、receipt bytes 比较、最终 dependency verification 和 write-o
 顺序不变。record 没有在写入后才执行的 deferred guard；第二次 construction 不复用第一次
 currentness verdict。readonly recorded bridge 的完整 proof context 在返回任何结果前关闭
 aggregate guard，不供其他 invocation 使用。未知 adapter 保留原实现。
+
+retry current-check 的完整 batch process preflight、逐 Unit source/input/protected、
+raw/provenance 检查及 historical/current 两次 result verification 均保留。共享的是该
+readonly phase 的 source projection 与 language inputs，不是 sibling、target 或整批
+currentness 结论。retry-handoff 的 member checks 共用一个外层 source observation owner，
+返回前关闭完整 fresh guard；下一次 invocation 创建新 owner。QC phase 仍逐 Unit 重读
+冻结 references、source、glossary 和 adapter authority，退出前再次运行完整 Unified Review
+验证。没有显式 owner 的 reconciliation reader 保持 eager 验证。
+
+2026-11-15 的独立 disposable 13-Unit authority root 测量中，同一 single-Unit retry ZIP
+的 canonical verification 保持 CURRENT、ZIP SHA 与 input identity 不变；同为隔离 cold
+L2 的前后 wall 为 417.22 / 184.56 秒，CPU 为 446.63 / 189.30 秒，current-source 完整
+构建为 21 / 9 次。process preflight 仍为 1 次、13 Units，result verification 仍为 2 次。
+本轮未达到 120 秒目标，按停止线不再优化；剩余主要成本为 historical bridge lineage
+reconstruction 与 current corpus/QC authority 检查。生产 warm baseline 352.29 秒与上述
+隔离 cold 测量分别记录，不作为同一 cache-state 的对比。
 
 ### 三项剩余入口的最终分类
 

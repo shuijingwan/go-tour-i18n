@@ -12,8 +12,25 @@ import (
 // VerifyCurrentTranslationUnitGenerationBundle checks transport currentness
 // without installing outputs or replacing the original invocation identity.
 func VerifyCurrentTranslationUnitGenerationBundle(root string, catalog *Catalog, bundle []byte) (GenerationBundleManifest, error) {
-	m, _, err := currentGenerationBundle(root, catalog, bundle)
+	var m GenerationBundleManifest
+	err := withReadonlyGenerationInputs(root, catalog, func(scoped *Catalog) error {
+		var err error
+		m, _, err = currentGenerationBundle(root, scoped, bundle)
+		return err
+	})
 	return m, err
+}
+
+func withReadonlyGenerationInputs(root string, c *Catalog, work func(*Catalog) error) error {
+	if c == nil || c.ReadonlyInputContext == nil {
+		return work(c)
+	}
+	return c.ReadonlyInputContext(root, c, func(scoped *Catalog) error {
+		// Nested exports/member checks belong to this same readonly phase.
+		local := *scoped
+		local.ReadonlyInputContext = nil
+		return work(&local)
+	})
 }
 
 // Rebuild the canonical transport using current immutable inputs and the

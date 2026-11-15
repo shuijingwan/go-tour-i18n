@@ -4,14 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"path/filepath"
-	"reflect"
 	"strings"
 )
 
 // validateCurrentAssessment separates an immutable representation transition
 // from today's language-input eligibility. The legacy edge verifier remains
 // available to legacy compatibility consumers; its inventory is not expanded.
-func (s *machineSelection) validateCurrentAssessment(root string, c *Catalog) (*snapshotUnitRepositoryEvidence, error) {
+func (s *machineSelection) validateCurrentAssessment(root string, c *Catalog, scopes ...*reconciliationCurrentInputs) (*snapshotUnitRepositoryEvidence, error) {
 	locale := s.receipt.Options.Locale
 	if err := CheckPromotionTransactionState(root, locale); err != nil {
 		return nil, err
@@ -31,18 +30,15 @@ func (s *machineSelection) validateCurrentAssessment(root string, c *Catalog) (*
 	if err != nil || reviewerResults == nil {
 		return nil, fmt.Errorf("reconciliation original Reviewer Snapshot binding: %v", err)
 	}
-	review, err := RequireUnifiedGlossaryReview(root, locale)
-	if err != nil {
+	inputs := &reconciliationCurrentInputs{}
+	shared := len(scopes) > 0 && scopes[0] != nil
+	if shared {
+		inputs = scopes[0]
+	}
+	if err := inputs.prepare(root, locale); err != nil {
 		return nil, err
 	}
-	current, err := readCompatibilityFile(root, glossaryReviewGlossaryPath(locale))
-	if err != nil {
-		return nil, err
-	}
-	g, err := parseGlossary(locale, bytes.NewReader(current))
-	if err != nil {
-		return nil, err
-	}
+	current, g := inputs.current, inputs.glossary
 	u, err := c.Unit(s.unit.Replacement.CurrentUnitID)
 	if err != nil {
 		return nil, err
@@ -73,9 +69,10 @@ func (s *machineSelection) validateCurrentAssessment(root string, c *Catalog) (*
 	if err != nil || !bytes.Equal(current, after) {
 		return nil, fmt.Errorf("reconciliation assessment glossary drift")
 	}
-	afterReview, err := RequireUnifiedGlossaryReview(root, locale)
-	if err != nil || !reflect.DeepEqual(review, afterReview) {
-		return nil, fmt.Errorf("reconciliation assessment Unified Review drift")
+	if !shared {
+		if err := inputs.check(); err != nil {
+			return nil, err
+		}
 	}
 	source, err := readCompatibilityFile(root, u.SourcePath)
 	if err != nil || validateSnapshotSourceIdentity(c, u, source) != nil {

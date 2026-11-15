@@ -39,6 +39,17 @@ func InstallRetryHandoffDirectory(staging, destination string) error {
 // ExportRetryHandoff deduplicates authenticated bytes, never canonical retry
 // identities. Members belong to one batch and follow its immutable Unit order.
 func ExportRetryHandoff(root string, catalog *Catalog, bundles [][]byte) ([]byte, RetryHandoff, error) {
+	var data []byte
+	var h RetryHandoff
+	err := withReadonlyGenerationInputs(root, catalog, func(scoped *Catalog) error {
+		var err error
+		data, h, err = exportRetryHandoff(root, scoped, bundles)
+		return err
+	})
+	return data, h, err
+}
+
+func exportRetryHandoff(root string, catalog *Catalog, bundles [][]byte) ([]byte, RetryHandoff, error) {
 	var empty RetryHandoff
 	if len(bundles) == 0 || len(bundles) > MaxRetranslationExportLimit {
 		return nil, empty, fmt.Errorf("retry handoff requires 1..%d members", MaxRetranslationExportLimit)
@@ -207,6 +218,16 @@ func ReadRetryHandoff(data []byte) (RetryHandoff, [][]byte, error) {
 // the aggregate is stale; remaining original single-Unit identities can still
 // be current according to the existing authenticated sibling-history rule.
 func VerifyCurrentRetryHandoff(root string, catalog *Catalog, data []byte) (RetryHandoff, error) {
+	var h RetryHandoff
+	err := withReadonlyGenerationInputs(root, catalog, func(scoped *Catalog) error {
+		var err error
+		h, err = verifyCurrentRetryHandoff(root, scoped, data)
+		return err
+	})
+	return h, err
+}
+
+func verifyCurrentRetryHandoff(root string, catalog *Catalog, data []byte) (RetryHandoff, error) {
 	h, bundles, err := ReadRetryHandoff(data)
 	if err != nil {
 		return h, err

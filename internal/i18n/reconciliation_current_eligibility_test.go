@@ -83,3 +83,58 @@ func TestReconciledCurrentAssessmentMembershipAppend(t *testing.T) {
 	}
 	t.Log("historical=49 current=51; legacy foreign-scope edge remains invalid; canonical assessment compatible=49; semantic impact rejected; no partial authorization")
 }
+
+func TestReconciliationCurrentInputPhaseGuards(t *testing.T) {
+	root, c, _ := makeRetranslationReviewBatchFixture(t, 1, "input-phase")
+	input := &reconciliationCurrentInputs{}
+	if err := input.prepare(root, "zh-CN"); err != nil {
+		t.Fatal(err)
+	}
+	first := input.glossary
+	if err := input.prepare(root, "zh-CN"); err != nil || input.glossary != first {
+		t.Fatal("common inputs rebuilt", err)
+	}
+	if err := input.prepare(t.TempDir(), "zh-CN"); err == nil {
+		t.Fatal("input scope crossed roots")
+	}
+	if err := input.prepare(root, "en-GB"); err == nil {
+		t.Fatal("input scope crossed locales")
+	}
+	if err := input.check(); err != nil {
+		t.Fatal(err)
+	}
+	reviewData, err := readCompatibilityFile(root, input.review.Path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var review UnifiedGlossaryReview
+	if err := decodeStrictCourseSourceDescriptionReviewJSON(reviewData, &review); err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range []string{glossaryReviewGlossaryPath("zh-CN"), input.review.Path, unifiedReviewerArchive("zh-CN", review.BundleSHA), GlossaryCorpusPath} {
+		t.Run(path, func(t *testing.T) {
+			before, err := readCompatibilityFile(root, path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer writeSnapshotSource(t, root, path, before)
+			writeSnapshotSource(t, root, path, append(bytes.Clone(before), 'x'))
+			if err := input.check(); err == nil {
+				t.Fatal("phase accepted changed language inputs", path)
+			}
+		})
+	}
+	eval := newQualityCheckEvaluation(root, "zh-CN", c)
+	if _, _, err := eval.loadEffectiveQualityCheckResults("input-phase", map[string]bool{}); err != nil {
+		t.Fatal(err)
+	}
+	if eval.reconciliationInputs != nil {
+		t.Fatal("input phase escaped success")
+	}
+	if _, _, err := eval.loadEffectiveQualityCheckResults("missing-phase", map[string]bool{}); err == nil {
+		t.Fatal("missing Snapshot accepted")
+	}
+	if eval.reconciliationInputs != nil {
+		t.Fatal("input phase escaped failure")
+	}
+}

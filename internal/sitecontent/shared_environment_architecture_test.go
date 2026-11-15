@@ -19,7 +19,7 @@ func TestSharedHeavyEnvironmentOwnership(t *testing.T) {
 		t.Fatal(err)
 	}
 	owners := map[string]string{"buildGlobalCanonical": "observedGlobalSource", "deriveGlobalSource": "observedGlobalSource", "deriveHistoricalPageProjection": "historicalPageProjectionWithCounter", "derivePackageRepresentation": "sharedPackageRepresentation", "deriveHistoricalStructuredGraph": "sharedHistoricalStructuredGraph"}
-	required := map[string]string{"BuildGlobal": "observedGlobalSource", "resolvePageReplacements": "sharedHistoricalPageProjection", "CurrentPackageDocuments": "sharedPackageRepresentation", "withBridgeConstructionEnvironment": "withReadonlyStructuredValidation", "BridgeRepresentationCatalog": "bridgeRepresentationCatalog", "resolveBridgeReconstruction": "originalBridgeCatalog", "reconstructFrozenStructuredRepresentation": "sharedHistoricalStructuredGraph", "observe": "observeSourcePath"}
+	required := map[string]string{"BuildGlobal": "observedGlobalSource", "resolvePageReplacements": "sharedHistoricalPageProjection", "CurrentPackageDocuments": "baseCurrentPackageDocuments", "baseCurrentPackageDocuments": "sharedPackageRepresentation", "withBridgeConstructionEnvironment": "withReadonlyStructuredValidation", "withReadonlyTranslationInputs": "withReadonlyStructuredValidation", "BridgeRepresentationCatalog": "bridgeRepresentationCatalog", "resolveBridgeReconstruction": "originalBridgeCatalog", "reconstructFrozenStructuredRepresentation": "sharedHistoricalStructuredGraph", "observe": "observeSourcePath"}
 	seen := map[string]bool{}
 	for _, name := range files {
 		if strings.HasSuffix(name, "_test.go") {
@@ -37,8 +37,8 @@ func TestSharedHeavyEnvironmentOwnership(t *testing.T) {
 			ast.Inspect(fn.Body, func(n ast.Node) bool {
 				if assignment, ok := n.(*ast.AssignStmt); ok {
 					for _, lhs := range assignment.Lhs {
-						if field, ok := lhs.(*ast.SelectorExpr); ok && field.Sel.Name == "sharedSourceObservation" && fn.Name.Name != "withBridgeConstructionEnvironment" {
-							t.Errorf("%s: %s extends the readonly bridge observation lifetime", name, fn.Name.Name)
+						if field, ok := lhs.(*ast.SelectorExpr); ok && field.Sel.Name == "sharedSourceObservation" && fn.Name.Name != "withBridgeConstructionEnvironment" && fn.Name.Name != "withReadonlyTranslationInputs" {
+							t.Errorf("%s: %s extends the readonly construction observation lifetime", name, fn.Name.Name)
 						}
 					}
 				}

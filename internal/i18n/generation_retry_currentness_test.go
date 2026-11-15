@@ -3,6 +3,7 @@ package i18n
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -85,6 +86,50 @@ func TestRetryGenerationBundleSiblingCurrentness(t *testing.T) {
 				t.Fatal(err)
 			}
 		}
+	}
+}
+
+func TestRetryHandoffReadonlyInputScopeOwnership(t *testing.T) {
+	root, c, _, bundles, _ := siblingRetryFixture(t)
+	want, _, err := ExportRetryHandoff(root, c, bundles)
+	if err != nil {
+		t.Fatal(err)
+	}
+	calls := 0
+	active := false
+	c.ReadonlyInputContext = func(r string, catalog *Catalog, work func(*Catalog) error) error {
+		if r != root || active {
+			t.Fatal("input owner crossed root or nested invocation")
+		}
+		calls++
+		active = true
+		defer func() { active = false }()
+		return work(catalog)
+	}
+	got, _, err := ExportRetryHandoff(root, c, bundles)
+	if err != nil || !bytes.Equal(want, got) || calls != 1 {
+		t.Fatal("member checks did not share one owner or changed bytes", calls, err)
+	}
+	if _, err := VerifyCurrentRetryHandoff(root, c, got); err != nil || calls != 2 {
+		t.Fatal("new command retained a prior owner", calls, err)
+	}
+	if _, err := VerifyCurrentTranslationUnitGenerationBundle(root, c, bundles[0]); err != nil || calls != 3 {
+		t.Fatal("single check did not close its own phase", calls, err)
+	}
+	if active || c.ReadonlyInputContext == nil {
+		t.Fatal("caller Catalog/lifetime changed")
+	}
+	c.ReadonlyInputContext = func(_ string, catalog *Catalog, work func(*Catalog) error) error {
+		if err := work(catalog); err != nil {
+			return err
+		}
+		return fmt.Errorf("fresh final input guard failed")
+	}
+	if _, err := VerifyCurrentTranslationUnitGenerationBundle(root, c, bundles[0]); err == nil {
+		t.Fatal("CURRENT escaped a failed final guard")
+	}
+	if _, _, err := ExportRetryHandoff(root, c, bundles); err == nil {
+		t.Fatal("handoff escaped a failed final guard")
 	}
 }
 

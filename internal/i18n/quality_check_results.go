@@ -177,16 +177,17 @@ type effectiveQualityCheckMaterialization struct {
 // its fixed root/locale/catalog authority, so a completed materialization can
 // be reused safely while recursive in-progress IDs remain guarded by seen.
 type qualityCheckEvaluation struct {
-	originalOnly       bool // historical A integrity only; consumers separately check current compatibility
-	root               string
-	locale             string
-	catalog            *Catalog
-	compatibility      *PreparedGlossaryCompatibility
-	effective          map[string]effectiveQualityCheckMaterialization
-	repositoryEvidence map[string]*snapshotUnitRepositoryEvidence
-	machineEvidence    map[string]*machineSelection
-	stats              *qualityCheckEvaluationStats
-	membership         map[string]*qualityCheckMembershipBaseline
+	reconciliationInputs *reconciliationCurrentInputs // active readonly phase only
+	originalOnly         bool                         // historical A integrity only; consumers separately check current compatibility
+	root                 string
+	locale               string
+	catalog              *Catalog
+	compatibility        *PreparedGlossaryCompatibility
+	effective            map[string]effectiveQualityCheckMaterialization
+	repositoryEvidence   map[string]*snapshotUnitRepositoryEvidence
+	machineEvidence      map[string]*machineSelection
+	stats                *qualityCheckEvaluationStats
+	membership           map[string]*qualityCheckMembershipBaseline
 }
 
 type qualityCheckEvaluationStats struct {
@@ -225,7 +226,7 @@ func (evaluation *qualityCheckEvaluation) readSnapshotUnitRepositoryEvidence(sna
 	var evidence *snapshotUnitRepositoryEvidence
 	var err error
 	if unit.RepresentationReconciliation != nil {
-		evidence, _, err = machineSnapshotEvidenceInWorld(evaluation.root, evaluation.catalog, evaluation.locale, unit, evaluation.machineEvidence, evaluation.originalOnly || evaluation.compatibility.historicalSHA != "")
+		evidence, _, err = machineSnapshotEvidenceInWorld(evaluation.root, evaluation.catalog, evaluation.locale, unit, evaluation.machineEvidence, evaluation.originalOnly || evaluation.compatibility.historicalSHA != "", evaluation.reconciliationInputs)
 	} else {
 		evidence, err = readSnapshotUnitRepositoryEvidence(evaluation.root, evaluation.catalog, evaluation.locale, unit)
 	}
@@ -810,6 +811,23 @@ func (evaluation *qualityCheckEvaluation) materializeOriginalFinalization(proof 
 }
 
 func (evaluation *qualityCheckEvaluation) loadEffectiveQualityCheckResults(snapshotID string, seen map[string]bool) (*QualityCheckSnapshotManifest, map[string]effectiveQualityCheckResult, error) {
+	if evaluation.originalOnly || evaluation.reconciliationInputs != nil {
+		return evaluation.materializeEffectiveQualityCheckResults(snapshotID, seen)
+	}
+	inputs := &reconciliationCurrentInputs{}
+	evaluation.reconciliationInputs = inputs
+	defer func() { evaluation.reconciliationInputs = nil }()
+	snapshot, results, err := evaluation.materializeEffectiveQualityCheckResults(snapshotID, seen)
+	if err != nil {
+		return nil, nil, err
+	}
+	if err := inputs.check(); err != nil {
+		return nil, nil, err
+	}
+	return snapshot, results, nil
+}
+
+func (evaluation *qualityCheckEvaluation) materializeEffectiveQualityCheckResults(snapshotID string, seen map[string]bool) (*QualityCheckSnapshotManifest, map[string]effectiveQualityCheckResult, error) {
 	if seen[snapshotID] {
 		return nil, nil, errors.New("quality-check result lineage contains a cycle")
 	}

@@ -23,6 +23,17 @@ func AttachRegisteredTranslationPackagesReadonly(root string, catalog *i18n.Cata
 	})
 }
 
+// Bundle construction is a readonly data phase, like bridge construction.
+// Every original source gate still runs; the existing owner shares its source
+// projection and closes all fresh byte/head/directory guards before returning.
+func withReadonlyTranslationInputs(root string, c *i18n.Catalog, work func(*i18n.Catalog) error) error {
+	return withReadonlyStructuredValidation(root, func(v *structuredSuccessorValidation) error {
+		v.sharedSourceObservation, v.currentSourcePhase = true, true
+		defer func() { v.sharedSourceObservation, v.currentSourcePhase = false, false }()
+		return work(bridgeRepresentationCatalog(c, v, root))
+	})
+}
+
 func (v *structuredSuccessorValidation) registrationAdoption(root string, ref Reference, kind string, out any, build func() (any, error)) error {
 	if root != v.guard.root || !v.readonlyOwner || !v.registrationReuse {
 		return fmt.Errorf("readonly registration owner required")

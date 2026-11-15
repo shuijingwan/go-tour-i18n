@@ -47,11 +47,14 @@ type ConditionalPage struct {
 }
 
 type Catalog struct {
-	DerivedTransportCodecReader DerivedTransportCodecReader        `json:"-"`
-	BridgeResolver              SameUnitBridgeResolver             `json:"-"`
-	BridgeConstructionContext   SameUnitBridgeConstructionContext  `json:"-"`
-	PreviewFailureReader        PreviewFailureReader               `json:"-"`
-	ReplacementResolver         TranslationUnitReplacementResolver `json:"-"`
+	// ReadonlyInputContext owns shared source observations only until work
+	// returns through its fresh guard. It never publishes or retains a verdict.
+	ReadonlyInputContext        func(string, *Catalog, func(*Catalog) error) error `json:"-"`
+	DerivedTransportCodecReader DerivedTransportCodecReader                        `json:"-"`
+	BridgeResolver              SameUnitBridgeResolver                             `json:"-"`
+	BridgeConstructionContext   SameUnitBridgeConstructionContext                  `json:"-"`
+	PreviewFailureReader        PreviewFailureReader                               `json:"-"`
+	ReplacementResolver         TranslationUnitReplacementResolver                 `json:"-"`
 	// Reads independent Surface evidence only; never selects lifecycle policy.
 	SurfaceAuthorityReader  SurfaceAuthorityReader  `json:"-"`
 	HistoricalContextReader HistoricalContextReader `json:"-"`

@@ -630,7 +630,7 @@ func (s *machineSelection) snapshot(index int) QualityCheckSnapshotUnit {
 	u.RepresentationReconciliation = &s.ref
 	return u
 }
-func (s *machineSelection) validate(root string, c *Catalog) (*snapshotUnitRepositoryEvidence, error) {
+func (s *machineSelection) validate(root string, c *Catalog, inputs ...*reconciliationCurrentInputs) (*snapshotUnitRepositoryEvidence, error) {
 	current, err := readCompatibilityFile(root, glossaryReviewGlossaryPath(s.receipt.Options.Locale))
 	if err != nil {
 		return nil, err
@@ -638,7 +638,7 @@ func (s *machineSelection) validate(root string, c *Catalog) (*snapshotUnitRepos
 	if sum(current) == s.receipt.GlossarySHA256 {
 		return s.validateInWorld(root, c, false)
 	}
-	return s.validateCurrentAssessment(root, c)
+	return s.validateCurrentAssessment(root, c, inputs...)
 }
 
 func (s *machineSelection) validateInWorld(root string, c *Catalog, historical bool) (*snapshotUnitRepositoryEvidence, error) {
@@ -695,7 +695,7 @@ func machineSnapshotEvidence(root string, c *Catalog, locale string, u QualityCh
 // Historical readers reconstruct the receipt-bound glossary world. Current
 // readers retain the default current validation; neither world authorizes the
 // other, and each selection revalidates its exact machine artifacts.
-func machineSnapshotEvidenceInWorld(root string, c *Catalog, locale string, u QualityCheckSnapshotUnit, contexts map[string]*machineSelection, historical bool) (*snapshotUnitRepositoryEvidence, *machineSelection, error) {
+func machineSnapshotEvidenceInWorld(root string, c *Catalog, locale string, u QualityCheckSnapshotUnit, contexts map[string]*machineSelection, historical bool, inputs ...*reconciliationCurrentInputs) (*snapshotUnitRepositoryEvidence, *machineSelection, error) {
 	ref := u.RepresentationReconciliation
 	if ref == nil {
 		return nil, nil, fmt.Errorf("explicit reconciliation reference required")
@@ -741,7 +741,7 @@ func machineSnapshotEvidenceInWorld(root string, c *Catalog, locale string, u Qu
 	if historical {
 		e, err = selected.validateInWorld(root, c, true)
 	} else {
-		e, err = selected.validate(root, c)
+		e, err = selected.validate(root, c, inputs...)
 	}
 	return e, selected, err
 }
@@ -777,7 +777,7 @@ func (e *qualityCheckEvaluation) machinePredecessorEvaluation(s *QualityCheckSna
 		if u.RepresentationReconciliation == nil {
 			continue
 		}
-		_, selected, err := machineSnapshotEvidenceInWorld(e.root, e.catalog, e.locale, u, e.machineEvidence, e.originalOnly || e.compatibility.historicalSHA != "")
+		_, selected, err := machineSnapshotEvidenceInWorld(e.root, e.catalog, e.locale, u, e.machineEvidence, e.originalOnly || e.compatibility.historicalSHA != "", e.reconciliationInputs)
 		if err != nil {
 			return nil, err
 		}
@@ -809,7 +809,7 @@ func (e *qualityCheckEvaluation) machinePredecessorEvaluation(s *QualityCheckSna
 	return e, nil
 }
 func (e *qualityCheckEvaluation) machineCarry(u QualityCheckSnapshotUnit, previous string, inherited map[string]effectiveQualityCheckResult) (effectiveQualityCheckResult, bool, error) {
-	_, s, err := machineSnapshotEvidence(e.root, e.catalog, e.locale, u, e.machineEvidence)
+	_, s, err := machineSnapshotEvidenceInWorld(e.root, e.catalog, e.locale, u, e.machineEvidence, false, e.reconciliationInputs)
 	if err != nil {
 		return effectiveQualityCheckResult{}, false, err
 	}

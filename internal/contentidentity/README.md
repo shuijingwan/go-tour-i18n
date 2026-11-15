@@ -70,10 +70,17 @@ L2 只接受私有目录与普通文件；使用 os.Root 限制路径访问。�
 写入使用私有随机临时文件、完整写入与 fsync、atomic rename，并尝试同步目录。
 所有缓存写入错误均被忽略；并发 writer 可以重复计算同一个 key。未发布的临时文件
 不会被读取。L1 仍有原有内存预算；缓存不保存对调用者可变 buffer 的引用。
-磁盘写入还有 best-effort 准入预算（256 MiB / 512 entries），不引入 LRU 或跨命令锁；
-并发写入可以重叠，满额或无法检查时直接放弃写入。
+磁盘写入还有 best-effort 准入预算（1 GiB / 2048 entries）。正常情况下直接准入；
+byte/entry pressure 下，最多一轮 eviction，候选扫描至多 2049 个目录项，只从其它 executable implementation
+中选择私有、普通、完整且 version/key/length/payload SHA 校验通过的 cache entries，
+删除足够空间后再做一次同样有界的目录读取、核对准入预算。current implementation entries 不参与 eviction；
+malformed、symlink、unsafe permission 或 non-regular entry 不被当作可清理的旧结果。
+不使用 mtime/LRU，不引入后台服务或跨命令锁；并发 writer 可以重复计算并重叠预算。
+目录过大、并发 replacement/删除、eviction I/O failure 或重查后仍满额时，可直接放弃写入。
+current implementation 自身满额时同样允许 miss/skip-write，无需删除它的 entries 来保证 correctness。
 
-可以随时删除整个缓存目录。删除、不可写或损坏只会使计算变慢，不能提供或撤销正式
+可以随时删除整个缓存目录。eviction 不是 authority mutation；删除、eviction failure、
+不可写或损坏只会影响性能，继续 canonical compute，不能提供或撤销正式
 authority。缓存完整性校验不是正式 evidence 或签名，也不代替正式 source/hash 检查。
 
 ## 定向验证

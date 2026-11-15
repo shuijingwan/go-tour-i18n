@@ -58,6 +58,7 @@ func (v *closureValidation) resolveBridgeReconstruction(root string, c *i18n.Cat
 	input.DerivedTransportCodecReader = nil
 	input.BridgeResolver = nil
 	input.BridgeConstructionContext = nil
+	input.ReadonlyInputContext = nil
 	input.ReplacementResolver, input.SurfaceAuthorityReader, input.HistoricalContextReader, input.PreviewFailureReader = nil, nil, nil, nil
 	key := bridgeReconstructionKey{Reference{Path: ref.Path, SHA256: ref.SHA256}, mode, c.DerivedTransportCodecReader != nil}
 	for _, cached := range v.bridgeReconstructions[key] {

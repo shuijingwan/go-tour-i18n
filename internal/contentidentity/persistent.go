@@ -1,6 +1,7 @@
 package contentidentity
 
 import (
+	"bufio"
 	"bytes"
 	"crypto/rand"
 	"crypto/sha256"
@@ -9,6 +10,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // This is an acceleration store, never repository authority. It is deliberately
@@ -16,8 +18,8 @@ import (
 // callers must supply their complete, freshly observed semantic input bytes.
 const deterministicCacheVersion = "go-tour/deterministic-transform/v1"
 const persistentResultLimit = 16 << 20
-const persistentStoreLimit = 256 << 20
-const persistentEntryLimit = 512
+const persistentStoreLimit = 1024 << 20
+const persistentEntryLimit = 2048
 
 type deterministicStore struct {
 	directory, implementation string
@@ -137,7 +139,7 @@ func (s *deterministicStore) save(key string, output []byte) {
 	}
 	defer r.Close()
 	b := encodeDeterministicEntry(deterministicEntry{Version: deterministicCacheVersion, Implementation: s.implementation, Key: key, OutputSHA256: exactSHA256(output), Output: output})
-	if !persistentAdmission(r, key+".json", len(b)) {
+	if !persistentAdmission(r, key+".json", len(b), s.implementation) {
 		return
 	}
 	var random [16]byte
@@ -170,41 +172,116 @@ func (s *deterministicStore) save(key string, output []byte) {
 }
 
 // A disposable acceleration store must not grow indefinitely across builds.
-// This is a best-effort admission budget, not an eviction/locking subsystem:
-// concurrent writers may overlap, and any inability to inspect storage simply
-// declines the write. Full storage remains a cache miss, never a command error.
-func persistentAdmission(root *os.Root, name string, cost int) bool {
+// This is a best-effort budget, not a lock: concurrent writers may overlap.
+// Under pressure, reclaim only validated old-executable entries in one bounded
+// scan, then freshly check admission. Failure only declines the cache write.
+func persistentAdmission(root *os.Root, name string, cost int, implementation string) bool {
+	entries, count, total, ok := persistentInventory(root, name, cost)
+	if !ok {
+		return false
+	}
+	if count <= persistentEntryLimit && total <= persistentStoreLimit {
+		return true
+	}
+	for _, entry := range entries {
+		if entry.Name() == name {
+			continue
+		}
+		size, err := evictStalePersistentEntry(root, entry.Name(), implementation, root.Remove)
+		if err != nil {
+			return false
+		}
+		if size == 0 {
+			continue
+		}
+		count--
+		total -= size
+		if count <= persistentEntryLimit && total <= persistentStoreLimit {
+			break
+		}
+	}
+	// The bounded inventory may have seen only a prefix of an overfull store;
+	// concurrent writers/removers can also change it. Never trust subtraction
+	// as admission proof, or keep rescanning/deleting without a bound.
+	_, count, total, ok = persistentInventory(root, name, cost)
+	return ok && count <= persistentEntryLimit && total <= persistentStoreLimit
+}
+
+func persistentInventory(root *os.Root, name string, cost int) ([]os.DirEntry, int, int64, bool) {
+	if cost < 0 || int64(cost) > persistentStoreLimit {
+		return nil, 0, 0, false
+	}
 	f, err := root.Open(".")
 	if err != nil {
-		return false
+		return nil, 0, 0, false
 	}
 	entries, err := f.ReadDir(persistentEntryLimit + 1)
 	_ = f.Close()
-	if err != nil && err != io.EOF || len(entries) > persistentEntryLimit {
-		return false
-	}
-	if len(entries) == persistentEntryLimit {
-		replacing := false
-		for _, e := range entries {
-			replacing = replacing || e.Name() == name
-		}
-		if !replacing {
-			return false
-		}
+	if err != nil && err != io.EOF {
+		return nil, 0, 0, false
 	}
 	total := int64(cost)
+	count := 1 // The proposed entry replaces name, or occupies one new slot.
 	for _, e := range entries {
 		if e.Name() == name {
 			continue
 		}
 		st, err := e.Info()
 		if err != nil || !st.Mode().IsRegular() {
-			return false
+			return nil, 0, 0, false
 		}
+		count++
 		total += st.Size()
-		if total > persistentStoreLimit {
-			return false
-		}
 	}
-	return total <= persistentStoreLimit
+	return entries, count, total, true
+}
+
+// Only disposable, private, complete entries from another executable qualify.
+// Inspect the bounded header first, so a full current namespace never requires
+// reading its payloads. The removal callback is the confined Root.Remove in
+// production; tests can exercise a deterministic deletion failure.
+func evictStalePersistentEntry(root *os.Root, name, implementation string, remove func(string) error) (int64, error) {
+	key, suffix := strings.CutSuffix(name, ".json")
+	decoded, err := hex.DecodeString(key)
+	if !suffix || err != nil || len(decoded) != sha256.Size || hex.EncodeToString(decoded) != key {
+		return 0, nil
+	}
+	st, err := root.Lstat(name)
+	if err != nil || !st.Mode().IsRegular() || st.Mode().Perm()&0077 != 0 || st.Size() > persistentResultLimit+1025 {
+		return 0, nil
+	}
+	f, err := root.Open(name)
+	if err != nil {
+		return 0, err
+	}
+	defer f.Close()
+	opened, err := f.Stat()
+	if err != nil || !os.SameFile(st, opened) || opened.Size() != st.Size() {
+		return 0, nil
+	}
+	reader := bufio.NewReaderSize(io.LimitReader(f, persistentResultLimit+1026), 1025)
+	header, err := reader.ReadSlice('\n')
+	var e deterministicEntry
+	if err != nil || len(header) > 1025 || strictJSONDecode(header[:len(header)-1], &e) != nil ||
+		e.Version != deterministicCacheVersion || e.Key != key || e.Implementation == "" || e.Implementation == implementation || e.Bytes < 0 || e.Bytes > persistentResultLimit {
+		return 0, nil
+	}
+	payload, err := io.ReadAll(reader)
+	if err != nil {
+		return 0, err
+	}
+	if len(payload) != e.Bytes || e.OutputSHA256 != exactSHA256(payload) {
+		return 0, nil
+	}
+	if err := f.Close(); err != nil {
+		return 0, err
+	}
+	live, err := root.Lstat(name)
+	if err != nil || !os.SameFile(st, live) || live.Size() != st.Size() || live.Mode() != st.Mode() {
+		return 0, nil
+	}
+	if err := remove(name); err != nil {
+		return 0, err
+	}
+	return st.Size(), nil
 }

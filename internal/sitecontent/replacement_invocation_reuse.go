@@ -32,6 +32,7 @@ func AttachPageReplacementInvocation(root string, c *i18n.Catalog) {
 
 func (v *closureValidation) attachReplacementReuse(c *i18n.Catalog) {
 	if !v.disabled {
+		c.ReadonlyInputContext = withReadonlyTranslationInputs
 		c.ReplacementResolver = v.resolvePageReplacement
 		c.BridgeResolver = v.resolveBridgeReconstruction
 		c.BridgeConstructionContext = withBridgeConstructionEnvironment
@@ -79,6 +80,7 @@ func (v *closureValidation) resolvePageReplacement(root string, c *i18n.Catalog,
 	input.DerivedTransportCodecReader = nil
 	input.BridgeResolver = nil
 	input.BridgeConstructionContext = nil
+	input.ReadonlyInputContext = nil
 	input.ReplacementResolver, input.SurfaceAuthorityReader, input.HistoricalContextReader, input.PreviewFailureReader = nil, nil, nil, nil
 	key := Reference{Path: ref.Path, SHA256: ref.SHA256}
 	for _, cached := range v.reconciliations[key] {
@@ -112,6 +114,7 @@ func (v *closureValidation) resolvePageReplacement(root string, c *i18n.Catalog,
 		h.DerivedTransportCodecReader = nil
 		h.BridgeResolver = nil
 		h.BridgeConstructionContext = nil
+		h.ReadonlyInputContext = nil
 		h.ReplacementResolver, h.SurfaceAuthorityReader, h.HistoricalContextReader, h.PreviewFailureReader = nil, nil, nil, nil
 		v.reconciliations[key] = append(v.reconciliations[key], cachedPageReplacement{cloneReplacementValue(reflect.ValueOf(&input)).Interface().(*i18n.Catalog), private, c.DerivedTransportCodecReader != nil})
 	}
@@ -123,6 +126,7 @@ func restoreReplacementReaders(r *i18n.TranslationUnitReplacementResolution, c *
 	h.DerivedTransportCodecReader = c.DerivedTransportCodecReader
 	h.BridgeResolver = c.BridgeResolver
 	h.BridgeConstructionContext = c.BridgeConstructionContext
+	h.ReadonlyInputContext = c.ReadonlyInputContext
 	h.ReplacementResolver, h.SurfaceAuthorityReader, h.HistoricalContextReader, h.PreviewFailureReader = c.ReplacementResolver, c.SurfaceAuthorityReader, c.HistoricalContextReader, c.PreviewFailureReader
 	return r
 }

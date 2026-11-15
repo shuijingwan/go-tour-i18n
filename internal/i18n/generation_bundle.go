@@ -137,6 +137,17 @@ type generationContext struct {
 }
 
 func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, options GenerationBundleOptions) ([]byte, GenerationBundleManifest, error) {
+	var data []byte
+	var manifest GenerationBundleManifest
+	err := withReadonlyGenerationInputs(root, catalog, func(scoped *Catalog) error {
+		var err error
+		data, manifest, err = exportTranslationUnitGenerationBundle(root, scoped, options)
+		return err
+	})
+	return data, manifest, err
+}
+
+func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, options GenerationBundleOptions) ([]byte, GenerationBundleManifest, error) {
 	if _, _, err := LoadLanguageAuditPolicy(root, options.Locale, nil); err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
@@ -157,7 +168,14 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	if err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
-	selection, err := generationApprovedIntervalSelection(root, catalog, manifest, options)
+	var recoveryEvaluation *recoveryInvocationEvaluation
+	if manifest.TransportRecovery != nil && options.ApprovedIntervalSelection == "" {
+		recoveryEvaluation, err = prepareRecoveryInvocationEvaluation(root, catalog, manifest)
+		if err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+	}
+	selection, err := generationApprovedIntervalSelectionInRecovery(root, catalog, manifest, options, recoveryEvaluation)
 	if err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
@@ -317,7 +335,7 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 		entries = append(entries, revisionInputs...)
 	}
 	if manifest.TransportRecovery != nil {
-		entries, err = recoveryGenerationInputs(root, catalog, manifest, entries)
+		entries, err = recoveryGenerationInputsFromAuthority(root, catalog, manifest, entries, recoveryEvaluation.authority, recoveryEvaluation.members)
 		if err != nil {
 			return nil, GenerationBundleManifest{}, err
 		}
@@ -497,6 +515,11 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 		b, err := readCompatibilityFile(root, options.ApprovedIntervalSelection)
 		if err != nil || !bytes.Equal(b, selection.bytes) {
 			return nil, GenerationBundleManifest{}, fmt.Errorf("approved interval selection changed during export")
+		}
+	}
+	if recoveryEvaluation != nil {
+		if err := recoveryEvaluation.check(root, catalog, manifest); err != nil {
+			return nil, GenerationBundleManifest{}, err
 		}
 	}
 	return bundle, manifestOut, nil

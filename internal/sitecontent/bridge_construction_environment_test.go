@@ -244,6 +244,70 @@ func TestBridgeCurrentSourceObservationOwner(t *testing.T) {
 	}
 }
 
+func TestReadonlyGenerationSourceObservationOwner(t *testing.T) {
+	root, _, _, _, _ := historicalGlobalSuccessorFixture(t)
+	corpus, err := readRegular(root, i18n.GlossaryCorpusPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := AdoptCorpusProjection(root, digest(corpus), true); err != nil {
+		t.Fatal(err)
+	}
+	a, _, _, _ := bridgeGraphInputs(t)
+	original := adoptedPageAdapter{PageAdapter: a, root: root}
+	c := &i18n.Catalog{Adapted: []i18n.AdaptedTranslationUnit{{Adapter: original}}}
+	want, tokens, err := original.ProtectedInput(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var previous *structuredSuccessorValidation
+	for i := 0; i < 2; i++ {
+		err := withReadonlyTranslationInputs(root, c, func(scoped *i18n.Catalog) error {
+			page := scoped.Adapted[0].Adapter.(observedBridgePage)
+			if page.proof == previous {
+				t.Fatal("source proof crossed invocations")
+			}
+			previous = page.proof
+			page.proof.historicalMetrics = map[string]int{}
+			for j := 0; j < 13; j++ {
+				got, protected, err := page.ProtectedInput(nil)
+				if err != nil || got != want || !reflect.DeepEqual(tokens, protected) {
+					t.Fatal("batch source bytes changed", err)
+				}
+			}
+			if page.proof.historicalMetrics["current-source-projection-build"] != 1 {
+				t.Fatal("whole source graph reconstructed per Unit", page.proof.historicalMetrics)
+			}
+			return nil
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if previous.readonlyOwner || previous.sharedSourceObservation {
+			t.Fatal("readonly phase remained open")
+		}
+	}
+	path := "_content/article.tmpl"
+	before, err := readRegular(root, path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer writeFixture(t, root, path, before)
+	err = withReadonlyTranslationInputs(root, c, func(scoped *i18n.Catalog) error {
+		if _, _, err := scoped.Adapted[0].Adapter.ProtectedInput(nil); err != nil {
+			return err
+		}
+		writeFixture(t, root, path, append(bytes.Clone(before), 'x'))
+		return nil
+	})
+	if err == nil {
+		t.Fatal("late source drift escaped final readonly guard")
+	}
+	if _, ok := c.Adapted[0].Adapter.(adoptedPageAdapter); !ok {
+		t.Fatal("caller Catalog mutated")
+	}
+}
+
 func TestBridgeRepresentationEnvironmentCodecFallback(t *testing.T) {
 	a, p, raw, reviewed := bridgeGraphInputs(t)
 	input := struct {
