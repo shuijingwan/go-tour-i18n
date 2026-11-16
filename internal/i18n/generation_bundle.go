@@ -9,6 +9,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 	"unicode/utf8"
@@ -254,6 +255,8 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	selected := manifest.Units
 	var whitespaceInputs []generationBundleInput
 	var checkWhitespace func() error
+	var retryPredecessor []generationBundleInput
+	var checkRetryPredecessor func() error
 	var retryEvidence []struct {
 		bundle, repository string
 		data               []byte
@@ -340,6 +343,26 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 				}
 				return nil
 			}
+		} else {
+			retryPredecessor, err = ordinaryRetryPredecessorInputs(root, manifest, *record, validation)
+			if err != nil {
+				return nil, GenerationBundleManifest{}, err
+			}
+			if len(retryPredecessor) > 0 {
+				checkRetryPredecessor = func() error {
+					for path, want := range map[string][]byte{validationRepo: validationData, resultRepo: resultData} {
+						fresh, err := readCompatibilityFile(root, path)
+						if err != nil || !bytes.Equal(fresh, want) {
+							return fmt.Errorf("ordinary retry validation/result changed during export")
+						}
+					}
+					fresh, err := ordinaryRetryPredecessorInputs(root, manifest, *record, validation)
+					if err != nil || !reflect.DeepEqual(fresh, retryPredecessor) {
+						return fmt.Errorf("ordinary retry predecessor changed during export: %v", err)
+					}
+					return nil
+				}
+			}
 		}
 		retryEvidence = append(retryEvidence,
 			struct {
@@ -356,6 +379,7 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	type entry = generationBundleInput
 	entries := []entry{{"formal/manifest.json", manifestRepo, manifestData}}
 	entries = append(entries, whitespaceInputs...)
+	entries = append(entries, retryPredecessor...)
 	if originTaskKind == "translation-unit-revision" {
 		revisionInputs, err := revisionGenerationInputsCore(root, catalog, options.Locale, manifest.Units, nil, true, selection)
 		if err != nil {
@@ -447,6 +471,9 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 		if taskKind == "translation-unit-retry" {
 			context.Instruction += fmt.Sprintf(" This is machine retry attempt %d for only the selected restore_failed/validation_failed Unit; retain the original exact revision semantics and finding closure contract.", attempt)
 		}
+	}
+	if len(retryPredecessor) > 0 {
+		context.Instruction += " Ordinary retry editing baseline: ONLY " + retryPredecessor[0].path + " is the frozen current previous-attempt raw response to edit; it overrides every original revision editor/template instruction above. Make the smallest locally complete successor edit for the current validation failure, retaining prior corrections and the original semantic task, revision finding closure and authorized region/slot bounds. formal/protected-candidates remains the original reviewed revision reference, not the current retry editing baseline; never revert to that older template. Preserve the supplied protected token semantics exactly and uniquely; do not rebuild token mapping. The predecessor and its import evidence are not language approval; normal restore/validation and independent QC remain required."
 	}
 	if len(whitespaceInputs) > 0 {
 		context.Instruction += " Protected structural-whitespace attempt codec: ONLY formal/whitespace-attempt/response.article is the output baseline for this Unit; it overrides all ordinary revision templates. All language, code, link/API/directive/literal and structural bytes are opaque. Preserve every WS1 boundary token exactly/uniquely and in order; delete only the exposed trailing ASCII whitespace. Do not write, relocate or regenerate prose, remap ordinary tokens, edit formal inputs, or treat this failed baseline/codec as language approval. Original raw/candidate/validation remain immutable. Normal restore, artifact hygiene, current validation and Independent re-QC remain required."
@@ -562,7 +589,47 @@ func exportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 			return nil, GenerationBundleManifest{}, err
 		}
 	}
+	if checkRetryPredecessor != nil {
+		if err := checkRetryPredecessor(); err != nil {
+			return nil, GenerationBundleManifest{}, err
+		}
+	}
 	return bundle, manifestOut, nil
+}
+
+// Freeze an imported ordinary response, never derive it from the reviewed
+// revision template. The existing codec invocation reader already proves the
+// exact batch/input/attempt, import receipt/archive and output hash bindings.
+func ordinaryRetryPredecessorInputs(root string, m *RetranslationBatchManifest, r RetranslationBatchUnit, v *RetranslationValidation) ([]generationBundleInput, error) {
+	dir := filepath.Join(root, "data/retranslation-runs", m.Locale, m.BatchID)
+	// Preserve the existing manual/legacy initial-response retry contract.
+	// Multi-attempt Generation requires an exact imported predecessor.
+	if v.Attempt == 1 {
+		_, err := os.Lstat(generationImportReceiptPath(dir, GenerationBundleManifest{Attempt: 1}))
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		if err != nil {
+			return nil, err
+		}
+	}
+	rawRepo := filepath.ToSlash(filepath.Join("data/retranslation-runs", m.Locale, m.BatchID, v.RawResponsePath))
+	raw, err := readCompatibilityFile(root, rawRepo)
+	if err != nil {
+		return nil, fmt.Errorf("ordinary retry predecessor raw: %w", err)
+	}
+	_, receipt, _, err := whitespaceInvocation(root, m, r, v.Attempt, v.RawResponsePath, raw)
+	if err != nil {
+		return nil, fmt.Errorf("ordinary retry predecessor import: %w", err)
+	}
+	importData, err := readCompatibilityFile(root, receipt.Path)
+	if err != nil || sum(importData) != receipt.SHA256 {
+		return nil, fmt.Errorf("ordinary retry predecessor import changed")
+	}
+	return []generationBundleInput{
+		{"formal/retry/predecessor-response" + filepath.Ext(r.InputPath), rawRepo, raw},
+		{"formal/retry/predecessor-import.json", receipt.Path, importData},
+	}, nil
 }
 
 func writeTranslationUnitGenerationBundle(manifest []byte, entries []TransportBundleEntry) ([]byte, error) {

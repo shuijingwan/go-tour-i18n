@@ -235,3 +235,217 @@ func TestRetryGenerationBundleRejectsTargetDriftAndTampering(t *testing.T) {
 		})
 	}
 }
+
+// Both attempts are formally imported. Attempt 2 fixes one ordinary-text line
+// while another remains invalid, so retry must not return to the QC template.
+func ordinaryRetryPredecessorFixture(t *testing.T) (string, *Catalog, GenerationBundleOptions) {
+	t.Helper()
+	root, c, options := revisionGenerationFixture(t)
+	bundle, m, err := ExportTranslationUnitGenerationBundle(root, c, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, files, err := readGenerationBundle(bundle)
+	if err != nil {
+		t.Fatal(err)
+	}
+	dir := t.TempDir()
+	for i, out := range m.ExpectedOutputs {
+		data := files["formal/protected-candidates/"+filepath.Base(out.BundlePath)]
+		if i == 0 {
+			options.UnitID = out.UnitID
+			data = []byte(appendBeforeRetranslationArtifactEOF(string(data), "\n第一处修复。  \n第二处修复。  "))
+		}
+		if err := os.WriteFile(filepath.Join(dir, filepath.Base(out.BundlePath)), data, 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, err := ImportGenerationOutputDirectory(root, c, bundle, "codex", FormalGenerationModel, dir); err != nil {
+		t.Fatal(err)
+	}
+	result, err := ProcessRetranslationBatch(root, c, RetranslationProcessOptions{Locale: options.Locale, BatchID: options.BatchID})
+	if err != nil || result.ValidationFailed != 1 || result.ValidationPassed != 1 || !strings.HasPrefix(result.Units[0].Error, "candidate has trailing whitespace at line ") {
+		t.Fatal("initial failure fixture", result, err)
+	}
+	retry, m, err := ExportTranslationUnitGenerationBundle(root, c, options)
+	if err != nil || m.Attempt != 2 {
+		t.Fatal("attempt 2 export", m, err)
+	}
+	dir = t.TempDir()
+	// Read the formal raw rather than assuming the new member exists: this
+	// fixture also reproduces the missing-baseline bug in the old exporter.
+	rawPath := filepath.Join(root, "data/retranslation-runs", options.Locale, options.BatchID, "raw-responses", filepath.Base(m.ExpectedOutputs[0].BundlePath))
+	raw, err := os.ReadFile(rawPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data := bytes.Replace(raw, []byte("第一处修复。  \n"), []byte("第一处修复。\n"), 1)
+	if bytes.Equal(data, raw) {
+		t.Fatal("fixture did not correct the first line")
+	}
+	if err := os.WriteFile(filepath.Join(dir, filepath.Base(m.ExpectedOutputs[0].BundlePath)), data, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ImportGenerationOutputDirectory(root, c, retry, "codex", FormalGenerationModel, dir); err != nil {
+		t.Fatal(err)
+	}
+	result, err = ProcessRetranslationRetry(root, c, RetranslationRetryOptions{Locale: options.Locale, BatchID: options.BatchID, UnitID: options.UnitID})
+	if err != nil || result.ValidationFailed != 1 || result.ValidationPassed != 1 || result.RetryAttempt != 2 || !strings.HasPrefix(result.Units[0].Error, "candidate has trailing whitespace at line ") {
+		t.Fatal("attempt 2 failure fixture", result, err)
+	}
+	return root, c, options
+}
+
+func TestOrdinaryRetryGenerationBundleCurrentPredecessor(t *testing.T) {
+	root, c, options := ordinaryRetryPredecessorFixture(t)
+	bundle, m, err := ExportTranslationUnitGenerationBundle(root, c, options)
+	if err != nil || m.Attempt != 3 || m.TaskKind != "translation-unit-retry" || len(m.ExpectedOutputs) != 1 {
+		t.Fatal(m, err)
+	}
+	_, files, err := readGenerationBundle(bundle)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var v RetranslationValidation
+	if err := json.Unmarshal(files["formal/retry/current-validation.json"], &v); err != nil || v.Attempt != 2 || v.Status != "validation_failed" {
+		t.Fatal(v, err)
+	}
+	rawRepo := filepath.ToSlash(filepath.Join("data/retranslation-runs", options.Locale, options.BatchID, v.RawResponsePath))
+	want, err := readCompatibilityFile(root, rawRepo)
+	baseline := files["formal/retry/predecessor-response.article"]
+	if err != nil || !bytes.Equal(baseline, want) || !bytes.Contains(baseline, []byte("第一处修复。\n第二处修复。  \n")) {
+		t.Fatal("current imported correction was lost", err)
+	}
+	name := filepath.Base(m.ExpectedOutputs[0].BundlePath)
+	if bytes.Equal(baseline, files["formal/protected-candidates/"+name]) {
+		t.Fatal("fixture failed to distinguish current raw from original revision baseline")
+	}
+	found := false
+	for _, f := range m.Files {
+		if f.BundlePath == "formal/retry/predecessor-response.article" {
+			found = f == NewTransportBundleFile(f.BundlePath, rawRepo, want)
+		}
+	}
+	if !found || len(files["formal/retry/predecessor-import.json"]) == 0 {
+		t.Fatal("current predecessor lacks exact inventory/provenance binding")
+	}
+	var context generationContext
+	if err := json.Unmarshal(files["generation-context.json"], &context); err != nil ||
+		!strings.Contains(context.Instruction, "ONLY formal/retry/predecessor-response.article") ||
+		!strings.Contains(context.Instruction, "never revert to that older template") ||
+		!strings.Contains(context.Instruction, "not language approval") {
+		t.Fatal("retry baseline precedence is ambiguous", context, err)
+	}
+	assertRevisionCandidates(t, root, c, options, bundle)
+	if _, codec := files[attemptWhitespaceMember]; codec {
+		t.Fatal("ordinary Generation-owned whitespace acquired codec authority")
+	}
+	codecOptions := options
+	codecOptions.ProtectedWhitespaceRepair = true
+	if _, _, err := ExportTranslationUnitGenerationBundle(root, c, codecOptions); err == nil {
+		t.Fatal("ordinary whitespace admitted as protected-only codec repair")
+	}
+	if _, err := VerifyCurrentTranslationUnitGenerationBundle(root, c, bundle); err != nil {
+		t.Fatal(err)
+	}
+	again, _, err := ExportTranslationUnitGenerationBundle(root, c, options)
+	if err != nil || !bytes.Equal(bundle, again) {
+		t.Fatal("same-input export is not deterministic", err)
+	}
+	// Complete only the remaining correction from the new baseline. Existing
+	// import/process semantics must accept it without regressing the first fix.
+	dir := t.TempDir()
+	fixed := bytes.Replace(baseline, []byte("第二处修复。  \n"), []byte("第二处修复。\n"), 1)
+	if err := os.WriteFile(filepath.Join(dir, name), fixed, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ImportGenerationOutputDirectory(root, c, bundle, "codex", FormalGenerationModel, dir); err != nil {
+		t.Fatal(err)
+	}
+	result, err := ProcessRetranslationRetry(root, c, RetranslationRetryOptions{Locale: options.Locale, BatchID: options.BatchID, UnitID: options.UnitID})
+	if err != nil || result.ValidationPassed != 2 || result.RetryAttempt != 3 {
+		t.Fatal("minimal successor failed existing validation", result, err)
+	}
+}
+
+func TestOrdinaryRetryGenerationBundlePredecessorDrift(t *testing.T) {
+	for _, kind := range []string{"raw-change", "raw-delete", "validation-attempt", "validation-path", "import-delete", "import-change", "archive-delete", "bundle-change", "bundle-delete"} {
+		t.Run(kind, func(t *testing.T) {
+			root, c, options := ordinaryRetryPredecessorFixture(t)
+			bundle, m, err := ExportTranslationUnitGenerationBundle(root, c, options)
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, files, err := readGenerationBundle(bundle)
+			if err != nil {
+				t.Fatal(err)
+			}
+			member := "formal/retry/predecessor-response.article"
+			if strings.HasPrefix(kind, "bundle-") {
+				// Re-seal inventory and identity, not merely corrupt ZIP bytes.
+				if kind == "bundle-delete" {
+					delete(files, member)
+				} else {
+					files[member] = append([]byte("forged\n"), files[member]...)
+				}
+				m.Files = nil
+				var identity strings.Builder
+				var entries []TransportBundleEntry
+				original, _, _ := readGenerationBundle(bundle)
+				for _, f := range original.Files {
+					if data, ok := files[f.BundlePath]; ok {
+						f = NewTransportBundleFile(f.BundlePath, f.RepositoryPath, data)
+						m.Files = append(m.Files, f)
+						entries = append(entries, TransportBundleEntry{Path: f.BundlePath, Data: data})
+						identity.WriteString(f.BundlePath + "\x00" + f.SHA256 + "\x00")
+					}
+				}
+				m.InputIdentitySHA256 = sum([]byte(identity.String()))
+				bundle, err = writeTranslationUnitGenerationBundle(mustJSON(m), entries)
+			} else {
+				var v RetranslationValidation
+				if err := json.Unmarshal(files["formal/retry/current-validation.json"], &v); err != nil {
+					t.Fatal(err)
+				}
+				paths := map[string]string{}
+				for _, f := range m.Files {
+					paths[f.BundlePath] = filepath.Join(root, filepath.FromSlash(f.RepositoryPath))
+				}
+				switch kind {
+				case "raw-change":
+					err = os.WriteFile(paths[member], append([]byte("changed\n"), files[member]...), 0644)
+				case "raw-delete":
+					err = os.Remove(paths[member])
+				case "validation-attempt", "validation-path":
+					if kind == "validation-attempt" {
+						v.Attempt++
+					} else {
+						v.RawResponsePath = "raw-responses/" + filepath.Base(m.ExpectedOutputs[0].BundlePath)
+					}
+					err = os.WriteFile(paths["formal/retry/current-validation.json"], mustJSON(v), 0644)
+				case "import-delete":
+					err = os.Remove(paths["formal/retry/predecessor-import.json"])
+				case "import-change":
+					err = os.WriteFile(paths["formal/retry/predecessor-import.json"], []byte("{}\n"), 0644)
+				case "archive-delete":
+					var receipt GenerationResultBundleManifest
+					if err := json.Unmarshal(files["formal/retry/predecessor-import.json"], &receipt); err != nil {
+						t.Fatal(err)
+					}
+					err = os.Remove(filepath.Join(root, importedGenerationArchive(options.Locale, receipt.GenerationBundleSHA256)))
+				}
+				if err == nil {
+					if _, _, err := ExportTranslationUnitGenerationBundle(root, c, options); err == nil {
+						t.Fatal("invalid/missing predecessor exported")
+					}
+				}
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := VerifyCurrentTranslationUnitGenerationBundle(root, c, bundle); err == nil {
+				t.Fatal("stale/tampered predecessor remained CURRENT")
+			}
+		})
+	}
+}
