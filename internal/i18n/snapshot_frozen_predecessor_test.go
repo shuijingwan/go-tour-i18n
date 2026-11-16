@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 	"testing"
@@ -30,13 +31,23 @@ func (a snapshotFixtureInverse) Validate([]byte, *Glossary) error {
 // This tests only the nested decoder boundary, using a synthetic sealed
 // archive. Full Snapshot admission/fresh construction is separately exercised
 // by TestApprovedIntervalBundleLifecycle with the real source-owned Page codec.
-func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalog, g *Glossary, manifest *RetranslationBatchManifest, initial GenerationBundleManifest, original map[string][]byte) {
+func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalog, g *Glossary, manifest *RetranslationBatchManifest, initial GenerationBundleManifest, original map[string][]byte, readers ...*Catalog) {
 	t.Helper()
+	materializeSnapshotSources(t, root, c)
+	options := QualityCheckSnapshotOptions{Locale: manifest.Locale, SnapshotID: "nested-approved-predecessor"}
+	if len(c.TranslationScope) > 0 {
+		options.ContentPackage = c.TranslationPackages[0].ID
+	}
+	snapshot, snapshotPath, err := CreateQualityCheckCandidateSnapshot(root, c, options)
+	if err != nil {
+		t.Fatal(err)
+	}
 	dir := filepath.Join(root, "data/retranslation-runs", manifest.Locale, manifest.BatchID)
 	m := *manifest
 	m.Units = append([]RetranslationBatchUnit(nil), manifest.Units...)
 	for i := range m.Units {
 		m.Units[i].RevisionFeedbackSource = CurrentValidationRevisionFeedback
+		m.Units[i].PreviousSnapshotID = snapshot.SnapshotID
 	}
 	mb, err := os.ReadFile(filepath.Join(dir, "manifest.json"))
 	if err != nil {
@@ -150,7 +161,10 @@ func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalo
 	if err != nil {
 		t.Fatal(err)
 	}
-	current.DerivedTransportCodecReader = func(_ TranslationUnitAdapter, b, inventory []byte) (any, any, TranslationUnitAdapter, error) {
+	current.DerivedTransportCodecReader = func(a TranslationUnitAdapter, b, inventory []byte) (any, any, TranslationUnitAdapter, error) {
+		if !reflect.DeepEqual(a, u.Adapter) {
+			return nil, nil, nil, fmt.Errorf("frozen approved inverse requires its original source owner")
+		}
 		var p codec
 		var children []child
 		if err := json.Unmarshal(b, &p); err != nil {
@@ -163,6 +177,11 @@ func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalo
 			return nil, nil, nil, fmt.Errorf("unknown fixture inverse")
 		}
 		return p, children, snapshotFixtureInverse{ordinary}, nil
+	}
+	if len(readers) > 0 {
+		reader := *readers[0]
+		reader.DerivedTransportCodecReader = current.DerivedTransportCodecReader
+		current = reader
 	}
 	observed := map[string]string{}
 	outputs, check, err := snapshotFrozenPredecessorOutputs(root, dir, &current, g, &m, observed)
@@ -194,6 +213,40 @@ func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalo
 	}
 	if len(observed) == 0 {
 		t.Fatal("ancestor observations were not bound into Snapshot commit recheck")
+	}
+	if len(readers) > 0 {
+		for _, mode := range []string{"missing-snapshot", "wrong-frozen-authority", "wrong-frozen-order"} {
+			t.Run(mode, func(t *testing.T) {
+				bad := current
+				bad.HistoricalTranslationPackages = append([]TranslationPackageDescriptor(nil), current.HistoricalTranslationPackages...)
+				if mode == "missing-snapshot" {
+					b, err := os.ReadFile(filepath.Join(root, snapshotPath))
+					if err != nil {
+						t.Fatal(err)
+					}
+					if err := os.Remove(filepath.Join(root, snapshotPath)); err != nil {
+						t.Fatal(err)
+					}
+					defer writeSnapshotSource(t, root, snapshotPath, b)
+				} else {
+					for i, d := range bad.HistoricalTranslationPackages {
+						if d.ID != snapshot.ContentPackage.ID || d.AuthoritySHA256 != snapshot.ContentPackage.AuthoritySHA256 {
+							continue
+						}
+						if mode == "wrong-frozen-authority" {
+							bad.HistoricalTranslationPackages[i].AuthoritySHA256 = sum([]byte("unrelated same-name authority"))
+						} else {
+							d.Units = append([]AdaptedTranslationUnit(nil), d.Units...)
+							d.Units[0], d.Units[1] = d.Units[1], d.Units[0]
+							bad.HistoricalTranslationPackages[i] = d
+						}
+					}
+				}
+				if _, _, err := snapshotFrozenPredecessorOutputs(root, dir, &bad, g, &m, map[string]string{}); err == nil {
+					t.Fatal("invalid frozen package substituted during approved-PASS reconstruction")
+				}
+			})
+		}
 	}
 	bad := append(bytes.Clone(raw), 'x')
 	if err := os.WriteFile(filepath.Join(dir, v.RawResponsePath), bad, 0644); err != nil {

@@ -1,10 +1,88 @@
 package i18n
 
 import (
+	"os"
 	"path/filepath"
 	"reflect"
 	"testing"
 )
+
+// The historical member owns candidate evidence under an older adapter type.
+// Its frozen decoder is still the full Snapshot's source-owned representation.
+type snapshotMemberCardAdapter struct{ futureCardAdapter }
+
+func TestSnapshotApprovedPredecessorReconstructionAfterMembershipSuccessor(t *testing.T) {
+	root, c, ids := futureContentFixture(t)
+	c.TranslationPackages[0].AuthoritySHA256 = sum([]byte("complete membership successor"))
+	for i := range c.TranslationPackages[0].Units {
+		c.TranslationPackages[0].Units[i].WorkingSet = "complete-fixture-batch"
+		c.TranslationPackages[0].Units[i].WorkingSetLimit = MaxRetranslationExportLimit
+		c.Adapted[i] = c.TranslationPackages[0].Units[i]
+	}
+	copyBundleAuthority(t, root, translationUnitGenerationAuthorityPaths)
+	e, err := ExportRetranslationBatch(root, c, RetranslationExportOptions{Locale: "zh-CN", Generator: RetranslationGeneratorChatGPT, UnitIDs: ids})
+	if err != nil {
+		t.Fatal(err)
+	}
+	bundle, initial, err := ExportTranslationUnitGenerationBundle(root, c, GenerationBundleOptions{Locale: "zh-CN", BatchID: e.BatchID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, files, err := readGenerationBundle(bundle)
+	if err != nil {
+		t.Fatal(err)
+	}
+	outputs := map[string][]byte{}
+	for _, out := range initial.ExpectedOutputs {
+		outputs[out.UnitID] = files["formal/inputs/"+filepath.Base(out.BundlePath)]
+	}
+	futureImport(t, root, c, bundle, outputs)
+	if result, err := ProcessRetranslationBatch(root, c, RetranslationProcessOptions{Locale: "zh-CN", BatchID: e.BatchID}); err != nil || result.ValidationPassed != len(ids) {
+		t.Fatal(result, err)
+	}
+	full := c.TranslationPackages[0]
+	child, sibling := full, full
+	child.AuthoritySHA256 = sum([]byte("historical smaller member"))
+	child.Units = append([]AdaptedTranslationUnit(nil), full.Units[:1]...)
+	child.Units[0].Adapter = snapshotMemberCardAdapter{child.Units[0].Adapter.(futureCardAdapter)}
+	sibling.ID, sibling.AuthoritySHA256, sibling.Units = "membership-sibling", sum([]byte("membership sibling")), full.Units[1:]
+	declaration := TranslationPackageMembership{Predecessors: []TranslationPackagePredecessor{{child.ID, child.AuthoritySHA256}, {sibling.ID, sibling.AuthoritySHA256}}}
+	path := "fixtures/approved-predecessor-membership.json"
+	data := mustJSON(declaration)
+	writeSnapshotSource(t, root, path, data)
+	declaration.References = []GlossaryArchiveReference{{path, sum(data)}}
+	c.TranslationPackages[0].Membership = &declaration
+	c.HistoricalTranslationPackages = append(c.HistoricalTranslationPackages, full, child, sibling)
+	members, guard, err := snapshotMembershipCatalogs(root, c)
+	if err != nil || len(members[ids[0]].TranslationScope) != 1 || len(c.TranslationScope) != 3 {
+		t.Fatal("invalid successor/member fixture", err)
+	}
+	manifest, err := readRetranslationProcessManifest(filepath.Join(root, e.BatchPath), "zh-CN", e.BatchID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Exercise the actual nested decoder reader used by approved-PASS admission,
+	// not merely its catalog-selection helper. The sealed archive fixture binds
+	// a complete passed invocation and supplies only a typed frozen inverse.
+	checkSnapshotFrozenApprovedPredecessor(t, root, c, g, manifest, initial, files, members[ids[0]])
+	if len(c.TranslationScope) != 3 || len(members[ids[0]].TranslationScope) != 1 {
+		t.Fatal("reconstruction changed current/member caller scopes")
+	}
+	writeSnapshotSource(t, root, path, append(append([]byte(nil), data...), '\n'))
+	if err := guard(); err == nil {
+		t.Fatal("tampered membership dependency accepted")
+	}
+	if _, _, err := snapshotMembershipCatalogs(root, c); err == nil {
+		t.Fatal("tampered membership projection accepted")
+	}
+	if _, err := os.Stat(filepath.Join(root, "data/quality-check-snapshots/zh-CN/nested-approved-predecessor/manifest.json")); err != nil {
+		t.Fatal("frozen complete Snapshot lost", err)
+	}
+}
 
 func TestSnapshotRevisionCatalogUsesExactFrozenAuthority(t *testing.T) {
 	root, current, _ := packageSnapshotFixture(t)

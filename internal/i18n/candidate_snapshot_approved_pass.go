@@ -583,6 +583,19 @@ func snapshotFrozenPredecessorOutputs(root, dir string, c *Catalog, g *Glossary,
 	if m.TransportRecovery != nil {
 		return prepareProcessOutputContext(dir, c, g, m)
 	}
+	// Candidate evidence may belong to a membership child, but this nested
+	// revision's decoder/invocation belongs to its exact frozen Snapshot package.
+	for _, record := range m.Units {
+		if record.RevisionFeedbackSource != CurrentValidationRevisionFeedback && record.RepresentationBridge == nil {
+			continue
+		}
+		var err error
+		c, err = snapshotRevisionEvidenceCatalog(root, c, m.Locale, selectedRetranslationUnit{manifest: record}, c)
+		if err != nil {
+			return nil, nil, err
+		}
+		break
+	}
 	selection, files, err := importedApprovedIntervalSelection(root, c, m)
 	if err != nil || selection == nil {
 		if err != nil {
