@@ -70,7 +70,16 @@ func (a PageAdapter) InspectStructuralWhitespace(raw []byte) ([]i18n.StructuralW
 	for typ := z.Next(); typ != html.ErrorToken; typ = z.Next() {
 		if typ == html.StartTagToken || typ == html.SelfClosingTagToken {
 			for _, attr := range z.Token().Attr {
-				styled = styled || attr.Key == "style" || attr.Key == "xml:space"
+				switch attr.Key {
+				case "xml:space":
+					styled = true
+				case "style":
+					// Unrelated presentation declarations do not preserve whitespace.
+					// Conservatively reject the white-space family and CSS escapes
+					// or comments that could obscure a property; do not parse CSS.
+					styled = styled || strings.Contains(strings.ToLower(attr.Val), "white-space") ||
+						strings.Contains(attr.Val, "\\") || strings.Contains(attr.Val, "/*")
+				}
 			}
 		}
 	}

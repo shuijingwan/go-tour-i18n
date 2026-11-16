@@ -77,6 +77,77 @@ func TestStructuralWhitespaceSourceProof(t *testing.T) {
 	}
 }
 
+func TestStructuralWhitespaceInlineStyleClassification(t *testing.T) {
+	for _, tc := range []struct {
+		name, attr string
+		blocked    bool
+	}{
+		{"unstyled", "", false},
+		{"width", `style="width: 100%"`, false},
+		{"presentation", `style="height: 100px; color: red; display: block; margin: auto"`, false},
+		{"white-space", `style="white-space: pre"`, true},
+		{"white-space-family", `style="white-space-collapse: preserve"`, true},
+		{"mixed-case", `style="width: 100%; WHITE-SPACE : pre-wrap"`, true},
+		{"escaped-property", `style="white\2d space: pre"`, true},
+		{"commented-property", `style="white-/**/space: pre"`, true},
+		{"xml-space", `xml:space="preserve"`, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// An unrelated image precedes the list; only a list-item soft-wrap
+			// atom is moved, matching the blank indentation failure class.
+			source := "# Fixture\n\n<img " + tc.attr + " width=\"2110\" src=\"image.png\">\n\n" +
+				"- [Contribute new](/s/new) and\n  [update existing](/s/update) information about\n  public vulnerabilities for packages that you maintain\n" +
+				"- [Take this survey](/s/survey) to share your\n  experience using the tool\n"
+			a, raw := whitespacePageFixture(t, source, "_content/doc/whitespace.md")
+			before := bytes.Clone(raw)
+			repairs, identity, err := a.InspectStructuralWhitespace(raw)
+			if !bytes.Equal(raw, before) || string(a.Source) != source {
+				t.Fatal("inspection changed source or historical raw")
+			}
+			if tc.blocked {
+				if err == nil || !strings.Contains(err.Error(), "not proved prose formatting") {
+					t.Fatal("whitespace-affecting HTML accepted", repairs, err)
+				}
+				return
+			}
+			if err != nil || identity == "" || len(repairs) != 1 {
+				t.Fatal(repairs, identity, err)
+			}
+			r := repairs[0]
+			if !r.OpaqueLine || r.Whitespace != "  " || r.End-r.Start != 2 || len(r.Origins) != 1 {
+				t.Fatal("repair is not indentation-only", r)
+			}
+			o := r.Origins[0]
+			if o.TokenStart != 1 || o.TokenEnd != 3 || !strings.Contains(o.Owner, "#markdown/list-item:") {
+				t.Fatal("repair escaped list-item indentation", o)
+			}
+			found := false
+			for _, token := range a.Document.Units[0].Protected {
+				if token.Token == o.Token {
+					found = true
+					if token.Raw != "\n  " {
+						t.Fatal("unexpected formatting token", token)
+					}
+				}
+			}
+			if !found {
+				t.Fatal("repair has no source token")
+			}
+			candidate, err := a.Restore(string(raw))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if r.Start < 1 || string(candidate[r.Start-1:r.End+1]) != "\n  \n" {
+				t.Fatal("LF is not outside the editable range", r)
+			}
+			fixed := append(bytes.Clone(candidate[:r.Start]), candidate[r.End:]...)
+			if !bytes.Equal(fixed, bytes.Replace(candidate, []byte("\n  \n"), []byte("\n\n"), 1)) {
+				t.Fatal("repair changed bytes beyond the two spaces")
+			}
+		})
+	}
+}
+
 func TestStructuralWhitespaceRejectsOpaqueOrStyledBytes(t *testing.T) {
 	for _, source := range []struct{ path, text string }{
 		{"_content/doc/code.md", "# Fixture\n\nText.\n\n```go\nvar s = `first\n  \nlast`\n```\n"},
