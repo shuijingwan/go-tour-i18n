@@ -221,7 +221,7 @@ func prepareSnapshotRevisionOutputs(root string, c *Catalog, locale string, g *G
 			}
 			continue
 		}
-		projections, check, err := prepareSnapshotOutputContext(choice.batchDir, evidenceCatalog, g, m, latest.selectedByID)
+		projections, check, err := prepareSnapshotOutputContext(choice.batchDir, c, evidenceCatalog, g, m, latest.selectedByID)
 		if err != nil {
 			return nil, nil, err
 		}

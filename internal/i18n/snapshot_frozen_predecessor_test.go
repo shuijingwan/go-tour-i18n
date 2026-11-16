@@ -181,10 +181,19 @@ func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalo
 	if len(readers) > 0 {
 		reader := *readers[0]
 		reader.DerivedTransportCodecReader = current.DerivedTransportCodecReader
-		current = reader
+		readers = []*Catalog{&reader}
+	}
+	evidence := &current
+	if len(readers) > 0 {
+		evidence = readers[0]
+		// Reproduce the lost-current boundary. This member deliberately cannot
+		// discover the complete frozen package without the separate current input.
+		if _, _, err := snapshotFrozenPredecessorOutputs(root, dir, evidence, evidence, g, &m, map[string]string{}); err == nil {
+			t.Fatal("lost full current catalog was silently recovered from member registry")
+		}
 	}
 	observed := map[string]string{}
-	outputs, check, err := snapshotFrozenPredecessorOutputs(root, dir, &current, g, &m, observed)
+	outputs, check, err := snapshotFrozenPredecessorOutputs(root, dir, &current, evidence, g, &m, observed)
 	if err != nil {
 		t.Fatal("nested historical decoder must not require ordinary current-proof equality", err)
 	}
@@ -218,6 +227,7 @@ func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalo
 		for _, mode := range []string{"missing-snapshot", "wrong-frozen-authority", "wrong-frozen-order"} {
 			t.Run(mode, func(t *testing.T) {
 				bad := current
+				bad.TranslationPackages = append([]TranslationPackageDescriptor(nil), current.TranslationPackages...)
 				bad.HistoricalTranslationPackages = append([]TranslationPackageDescriptor(nil), current.HistoricalTranslationPackages...)
 				if mode == "missing-snapshot" {
 					b, err := os.ReadFile(filepath.Join(root, snapshotPath))
@@ -229,20 +239,22 @@ func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalo
 					}
 					defer writeSnapshotSource(t, root, snapshotPath, b)
 				} else {
-					for i, d := range bad.HistoricalTranslationPackages {
-						if d.ID != snapshot.ContentPackage.ID || d.AuthoritySHA256 != snapshot.ContentPackage.AuthoritySHA256 {
-							continue
-						}
-						if mode == "wrong-frozen-authority" {
-							bad.HistoricalTranslationPackages[i].AuthoritySHA256 = sum([]byte("unrelated same-name authority"))
-						} else {
-							d.Units = append([]AdaptedTranslationUnit(nil), d.Units...)
-							d.Units[0], d.Units[1] = d.Units[1], d.Units[0]
-							bad.HistoricalTranslationPackages[i] = d
+					for _, descriptors := range [][]TranslationPackageDescriptor{bad.TranslationPackages, bad.HistoricalTranslationPackages} {
+						for i, d := range descriptors {
+							if d.ID != snapshot.ContentPackage.ID || d.AuthoritySHA256 != snapshot.ContentPackage.AuthoritySHA256 {
+								continue
+							}
+							if mode == "wrong-frozen-authority" {
+								descriptors[i].AuthoritySHA256 = sum([]byte("unrelated same-name authority"))
+							} else {
+								d.Units = append([]AdaptedTranslationUnit(nil), d.Units...)
+								d.Units[0], d.Units[1] = d.Units[1], d.Units[0]
+								descriptors[i] = d
+							}
 						}
 					}
 				}
-				if _, _, err := snapshotFrozenPredecessorOutputs(root, dir, &bad, g, &m, map[string]string{}); err == nil {
+				if _, _, err := snapshotFrozenPredecessorOutputs(root, dir, &bad, evidence, g, &m, map[string]string{}); err == nil {
 					t.Fatal("invalid frozen package substituted during approved-PASS reconstruction")
 				}
 			})
@@ -260,7 +272,7 @@ func checkSnapshotFrozenApprovedPredecessor(t *testing.T, root string, c *Catalo
 	if err := check(); err == nil {
 		t.Fatal("frozen predecessor mutation passed commit recheck")
 	}
-	if _, _, err := snapshotFrozenPredecessorOutputs(root, dir, &current, g, &m, map[string]string{}); err == nil {
+	if _, _, err := snapshotFrozenPredecessorOutputs(root, dir, &current, evidence, g, &m, map[string]string{}); err == nil {
 		t.Fatal("tampered imported ancestor output accepted")
 	}
 }

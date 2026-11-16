@@ -296,7 +296,7 @@ func snapshotCanonicalHistoricalJSON(value any, data []byte) error {
 	return nil
 }
 
-func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *RetranslationBatchManifest, selected map[string]selectedRetranslationUnit) (*snapshotApprovedPass, error) {
+func prepareSnapshotApprovedPass(root string, current, c *Catalog, g *Glossary, m *RetranslationBatchManifest, selected map[string]selectedRetranslationUnit) (*snapshotApprovedPass, error) {
 	if m.TransportRecovery != nil {
 		return nil, nil
 	} // Existing recovery authority/currentness remains strict.
@@ -332,7 +332,7 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 	if strictErr != nil {
 		outputs = map[string]protectedTranslation{}
 		predecessorOutput := func(dir string, catalog *Catalog, glossary *Glossary, manifest *RetranslationBatchManifest) (map[string]protectedTranslation, func() error, error) {
-			return snapshotFrozenPredecessorOutputs(root, dir, catalog, glossary, manifest, observed)
+			return snapshotFrozenPredecessorOutputs(root, dir, current, catalog, glossary, manifest, observed)
 		}
 		inputs, err = revisionGenerationInputsAtPredecessor(root, c, m.Locale, m.Units, []map[string]protectedTranslation{outputs}, false, predecessorOutput, selection)
 		if err != nil {
@@ -579,7 +579,7 @@ func prepareSnapshotApprovedPass(root string, c *Catalog, g *Glossary, m *Retran
 // the selected batch still reconstructs its own current proof and passes the
 // full historical-PASS/equivalence/current-validator checks above. No recursion
 // through process or Snapshot selection is used for an approved ancestor.
-func snapshotFrozenPredecessorOutputs(root, dir string, c *Catalog, g *Glossary, m *RetranslationBatchManifest, observed map[string]string) (map[string]protectedTranslation, func() error, error) {
+func snapshotFrozenPredecessorOutputs(root, dir string, current, c *Catalog, g *Glossary, m *RetranslationBatchManifest, observed map[string]string) (map[string]protectedTranslation, func() error, error) {
 	if m.TransportRecovery != nil {
 		return prepareProcessOutputContext(dir, c, g, m)
 	}
@@ -590,7 +590,7 @@ func snapshotFrozenPredecessorOutputs(root, dir string, c *Catalog, g *Glossary,
 			continue
 		}
 		var err error
-		c, err = snapshotRevisionEvidenceCatalog(root, c, m.Locale, selectedRetranslationUnit{manifest: record}, c)
+		c, err = snapshotRevisionEvidenceCatalog(root, current, m.Locale, selectedRetranslationUnit{manifest: record}, c)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -739,17 +739,38 @@ func snapshotFrozenPredecessorOutputs(root, dir string, c *Catalog, g *Glossary,
 	}, nil
 }
 
-func prepareSnapshotOutputContext(batchDir string, c *Catalog, g *Glossary, m *RetranslationBatchManifest, selected map[string]selectedRetranslationUnit) (map[string]protectedTranslation, func() error, error) {
+func prepareSnapshotOutputContext(batchDir string, current, c *Catalog, g *Glossary, m *RetranslationBatchManifest, selected map[string]selectedRetranslationUnit) (map[string]protectedTranslation, func() error, error) {
 	root := filepath.Clean(filepath.Join(batchDir, "../../../.."))
-	state, err := prepareSnapshotApprovedPass(root, c, g, m, selected)
+	// Resolve invocation scope from the full current inventory, while retaining
+	// the member catalog as fallback for ordinary historical candidate evidence.
+	resolve := func() (*Catalog, error) {
+		if m.TransportRecovery != nil {
+			return c, nil
+		}
+		for _, record := range m.Units {
+			if record.RevisionFeedbackSource == CurrentValidationRevisionFeedback || record.RepresentationBridge != nil {
+				return snapshotRevisionEvidenceCatalog(root, current, m.Locale, selectedRetranslationUnit{manifest: record}, c)
+			}
+		}
+		return c, nil
+	}
+	evidence, err := resolve()
+	if err != nil {
+		return nil, nil, err
+	}
+	state, err := prepareSnapshotApprovedPass(root, current, evidence, g, m, selected)
 	if err != nil {
 		return nil, nil, err
 	}
 	if state == nil {
-		return prepareProcessOutputContext(batchDir, c, g, m)
+		return prepareProcessOutputContext(batchDir, evidence, g, m)
 	}
 	return state.outputs, func() error {
-		fresh, err := prepareSnapshotApprovedPass(root, c, g, m, selected)
+		evidence, err := resolve()
+		if err != nil {
+			return err
+		}
+		fresh, err := prepareSnapshotApprovedPass(root, current, evidence, g, m, selected)
 		if err != nil || fresh == nil || !reflect.DeepEqual(state.inputs, fresh.inputs) || !reflect.DeepEqual(state.observed, fresh.observed) {
 			return fmt.Errorf("Snapshot historical PASS admission changed before commit: %v", err)
 		}
@@ -766,7 +787,7 @@ func verifySnapshotRevisionInvocation(root string, c *Catalog, locale string, ch
 	if err != nil {
 		return nil, err
 	}
-	state, err := prepareSnapshotApprovedPass(root, c, g, m, selected)
+	state, err := prepareSnapshotApprovedPass(root, c, c, g, m, selected)
 	if err != nil {
 		return nil, err
 	}

@@ -79,7 +79,7 @@ func (a validationReopenAdapter) CommentRevisionBodies(candidate []byte) ([]Comm
 	return out, nil
 }
 
-func currentValidationFixture(t *testing.T) (string, *Catalog, CurrentValidationReopenOptions, []string) {
+func currentValidationFixture(t *testing.T, explicitPackage ...bool) (string, *Catalog, CurrentValidationReopenOptions, []string) {
 	t.Helper()
 	root, _, _ := futureContentFixture(t)
 	copyBundleAuthority(t, root, currentValidationReopenDependencies)
@@ -136,7 +136,13 @@ func currentValidationFixture(t *testing.T) (string, *Catalog, CurrentValidation
 		t.Fatal(result, err)
 	}
 	const snapshot = "current-validation-predecessor"
-	futureSnapshot(t, root, c, snapshot)
+	if len(explicitPackage) > 0 && explicitPackage[0] {
+		if _, _, err := CreateQualityCheckCandidateSnapshot(root, c, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: snapshot, ContentPackage: d.ID}); err != nil {
+			t.Fatal(err)
+		}
+	} else {
+		futureSnapshot(t, root, c, snapshot)
+	}
 	futureRecord(t, root, c, snapshot, "", "A", "", ids)
 	if _, _, err := FinalizeQualityCheck(root, c, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: snapshot}); err != nil {
 		t.Fatal(err)

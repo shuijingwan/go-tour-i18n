@@ -128,9 +128,9 @@ func TestCurrentValidationProcessProfileFixture(t *testing.T) {
 	t.Logf("wall=%.3fs cpu=%.3fs counts=%+v", wall, cpuElapsed, counts)
 }
 
-func importedCommentProcessFixture(t *testing.T) (string, *Catalog, CurrentValidationReopenOptions, *RetranslationExportResult) {
+func importedCommentProcessFixture(t *testing.T, explicitPackage ...bool) (string, *Catalog, CurrentValidationReopenOptions, *RetranslationExportResult) {
 	t.Helper()
-	root, c, o, ids := currentValidationFixture(t)
+	root, c, o, ids := currentValidationFixture(t, explicitPackage...)
 	r, _, err := RecordQualityCheckSurfaceReopen(root, c, QualityCheckSurfaceReopenOptions{AuthoritySource: CurrentValidationAuthority, Locale: o.Locale, ReopenID: o.ReopenID, PreviousSnapshotID: o.PreviousSnapshotID, CurrentValidation: &o})
 	if err != nil {
 		t.Fatal(err)

@@ -57,6 +57,9 @@ func TestSnapshotApprovedPredecessorReconstructionAfterMembershipSuccessor(t *te
 	if err != nil || len(members[ids[0]].TranslationScope) != 1 || len(c.TranslationScope) != 3 {
 		t.Fatal("invalid successor/member fixture", err)
 	}
+	// Production may hand the nested reader a member-only inventory. Do not let
+	// the test recover current authority accidentally from its historical list.
+	members[ids[0]].HistoricalTranslationPackages = nil
 	manifest, err := readRetranslationProcessManifest(filepath.Join(root, e.BatchPath), "zh-CN", e.BatchID)
 	if err != nil {
 		t.Fatal(err)

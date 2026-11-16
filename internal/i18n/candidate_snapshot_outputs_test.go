@@ -4,8 +4,121 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 )
+
+func TestSnapshotOutputContextPreservesFullCurrentAndMemberCatalogs(t *testing.T) {
+	root, current, o, e := importedCommentProcessFixture(t, true)
+	if result, err := ProcessRetranslationBatch(root, current, RetranslationProcessOptions{Locale: o.Locale, BatchID: e.BatchID}); err != nil || result.ValidationPassed != 9 {
+		t.Fatal(result, err)
+	}
+	full := current.TranslationPackages[0]
+	child, sibling := full, full
+	child.AuthoritySHA256 = sum([]byte("smaller historical member"))
+	child.Units = full.Units[:len(full.Units)-2]
+	sibling.ID, sibling.AuthoritySHA256, sibling.Units = "member-addition", sum([]byte("independent member")), full.Units[len(full.Units)-2:]
+	declaration := TranslationPackageMembership{Predecessors: []TranslationPackagePredecessor{{child.ID, child.AuthoritySHA256}, {sibling.ID, sibling.AuthoritySHA256}}}
+	path := "fixtures/output-context-membership.json"
+	data := mustJSON(declaration)
+	writeSnapshotSource(t, root, path, data)
+	declaration.References = []GlossaryArchiveReference{{path, sum(data)}}
+	current.TranslationPackages[0].Membership = &declaration
+	current.HistoricalTranslationPackages = append(current.HistoricalTranslationPackages, full, child, sibling)
+	members, _, err := snapshotMembershipCatalogs(root, current)
+	if err != nil {
+		t.Fatal(err)
+	}
+	dir := filepath.Join(root, e.BatchPath)
+	m, err := readRetranslationProcessManifest(dir, o.Locale, e.BatchID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	evidence := members[m.Units[0].UnitID]
+	evidence.HistoricalTranslationPackages = nil
+	g, err := LoadGlossary(root, o.Locale)
+	if err != nil {
+		t.Fatal(err)
+	}
+	latest, err := selectLatestRetranslationUnits(root, current, o.Locale)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Reproduce the production boundary losing its current argument. The child
+	// cannot discover the frozen complete package from any hidden registry.
+	if _, _, err := prepareSnapshotOutputContext(dir, evidence, evidence, g, m, latest.selectedByID); err == nil {
+		t.Fatal("member catalog masqueraded as full current authority")
+	}
+	outputs, check, err := prepareSnapshotOutputContext(dir, current, evidence, g, m, latest.selectedByID)
+	if err != nil || len(outputs) != len(m.Units) {
+		t.Fatal("production output context lost full current catalog", err)
+	}
+	for _, record := range m.Units {
+		raw, err := os.ReadFile(filepath.Join(dir, "raw-responses", filepath.Base(record.InputPath)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		text, failed := outputs[record.UnitID].restore(string(raw))
+		want, err := os.ReadFile(filepath.Join(dir, "candidates", filepath.Base(record.InputPath)))
+		if err != nil || len(failed) != 0 || !bytes.Equal(canonicalizeRetranslationArtifactEOF([]byte(text)), want) {
+			t.Fatal("frozen decoder lost exact candidate bytes", failed, err)
+		}
+	}
+	if err := check(); err != nil {
+		t.Fatal(err)
+	}
+	frozen, err := snapshotRevisionEvidenceCatalog(root, current, o.Locale, latest.selectedByID[m.Units[0].UnitID], evidence)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, identity, _, ordered, err := translationAuthorizationScope(frozen)
+	if err != nil || identity != full.AuthoritySHA256 || len(ordered) != len(full.Units) || !reflect.DeepEqual(frozen.TranslationScope, current.TranslationScope) {
+		t.Fatal("PackageIdentity/OrderedScope differ from complete frozen package", err)
+	}
+	if len(evidence.TranslationScope) != len(child.Units) || evidence.TranslationPackages[0].AuthoritySHA256 != child.AuthoritySHA256 {
+		t.Fatal("decoder lookup replaced historical member authority")
+	}
+	for _, mode := range []string{"missing-snapshot", "wrong-frozen-authority", "wrong-order"} {
+		t.Run(mode, func(t *testing.T) {
+			bad := *current
+			bad.TranslationPackages = append([]TranslationPackageDescriptor(nil), current.TranslationPackages...)
+			bad.HistoricalTranslationPackages = append([]TranslationPackageDescriptor(nil), current.HistoricalTranslationPackages...)
+			if mode == "missing-snapshot" {
+				p := qualityCheckSnapshotManifestPath(root, o.Locale, o.PreviousSnapshotID)
+				saved, err := os.ReadFile(p)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := os.Remove(p); err != nil {
+					t.Fatal(err)
+				}
+				defer func() {
+					if err := os.WriteFile(p, saved, 0644); err != nil {
+						t.Error(err)
+					}
+				}()
+			} else {
+				for _, descriptors := range [][]TranslationPackageDescriptor{bad.TranslationPackages, bad.HistoricalTranslationPackages} {
+					for i, d := range descriptors {
+						if d.ID != full.ID || d.AuthoritySHA256 != full.AuthoritySHA256 {
+							continue
+						}
+						if mode == "wrong-frozen-authority" {
+							descriptors[i].AuthoritySHA256 = sum([]byte("unrelated same-name authority"))
+						} else {
+							d.Units = append([]AdaptedTranslationUnit(nil), d.Units...)
+							d.Units[0], d.Units[1] = d.Units[1], d.Units[0]
+							descriptors[i] = d
+						}
+					}
+				}
+			}
+			if _, _, err := prepareSnapshotOutputContext(dir, &bad, evidence, g, m, latest.selectedByID); err == nil {
+				t.Fatal("wrong frozen package accepted at production output boundary")
+			}
+		})
+	}
+}
 
 func TestCurrentValidationSnapshotCommitChecks(t *testing.T) {
 	root, c, o, e := importedCommentProcessFixture(t)
