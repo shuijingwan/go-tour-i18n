@@ -291,14 +291,12 @@ func verifySuccessorFinalization(root, locale, snapshotID string, catalog *Catal
 			return nil, err
 		}
 	}
-	t, err := time.Parse(time.RFC3339Nano, f.FinalizedAt)
-	if err != nil {
+	if _, err := time.Parse(time.RFC3339Nano, f.FinalizedAt); err != nil {
 		return nil, err
 	}
-	evaluation := newQualityCheckEvaluation(root, locale, catalog)
-	evaluation.originalOnly = true
-	// Rebuild the event in its immutable glossary world, never in the latest
-	// glossary. The returned compatibility world is confined to TU history.
+	// Retain the event's frozen compatibility world for its downstream TU
+	// readers. Original A integrity is verified separately below; replaying QC
+	// scope would lose carry admitted by sealed endpoint re-attestation.
 	historical := PrepareGlossaryCompatibility(root, locale, catalog)
 	historical.disableSuccessor = true
 	historical.tuOnly = true
@@ -334,12 +332,11 @@ func verifySuccessorFinalization(root, locale, snapshotID string, catalog *Catal
 		}
 	}
 	historical.historicalSHA = f.GlossarySHA256
-	evaluation.compatibility = historical
-	want, err := buildQualityCheckFinalizationWithEvaluation(evaluation, snapshotID, func() time.Time { return t }, f.PreviousSnapshotID)
+	proof, err := VerifyHistoricalQualityCheckFinalization(root, locale, snapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}
-	if !reflect.DeepEqual(&f, want) {
+	if !reflect.DeepEqual(&f, &proof.Finalization) {
 		return nil, fmt.Errorf("historical finalized A-only judgment mismatch")
 	}
 	*p = *historical
