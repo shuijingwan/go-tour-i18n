@@ -16,6 +16,41 @@ import (
 
 const compatibilityFixtureGlossary = "locale: zh-CN\nmandatory:\n  Go: Go\nkeep:\n  - Go\n  - gofmt\n"
 
+func TestGlossaryCompatibilityTUSuccessorCatalog(t *testing.T) {
+	root, catalog, _ := historicalRecoveryFixture(t, func(c *Catalog) {
+		// This wiring regression needs no residual English prose from the
+		// semantic-impact fixture's Transaction/gofmt source example.
+		c.Pages[0].Source = []byte("* Page\n\nUse `Go` on this page.\n")
+		c.Pages[0].SourceSHA256 = sum(c.Pages[0].Source)
+	})
+	e, _, err := RecoverHistoricalPromotion(root, catalog, "zh-CN", "qc-002", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	oldSHA := readSnapshotGlossarySHA(t, root, "qc-001")
+	p := PrepareGlossaryCompatibility(root, "zh-CN", catalog)
+	if direct := p.resolve(oldSHA, e.GlossarySHA, "tu:lesson/1"); direct.Status == "exact" || direct.Status == "compatible" {
+		t.Fatal("fixture did not require TU successor fallback", direct)
+	}
+	result := p.Resolve(oldSHA, e.GlossarySHA, "tu:lesson/1")
+	if result.Status != "compatible" || !p.successorChecked || p.successorCompatibility == nil {
+		t.Fatal("verified successor fallback lacks current Catalog", result)
+	}
+	for _, invalid := range []*Catalog{nil, {}} {
+		if proof, err := findCurrentTargetSuccessor(root, "zh-CN", invalid); err == nil || proof != nil {
+			t.Fatal("invalid Catalog authorized target successor", err)
+		}
+		result := ResolveGlossaryCompatibility(root, "zh-CN", oldSHA, e.GlossarySHA, "tu:lesson/1", invalid)
+		if result.Status != "stale evidence" && result.Status != "missing evidence" && result.Status != "affected" {
+			t.Fatal("invalid Catalog produced an accepting or unknown status", result)
+		}
+	}
+	writeSnapshotSource(t, root, e.Units[0].CanonicalPath, []byte("* changed canonical target\n"))
+	if result := ResolveGlossaryCompatibility(root, "zh-CN", oldSHA, e.GlossarySHA, "tu:lesson/1", catalog); result.Status == "exact" || result.Status == "compatible" {
+		t.Fatal("successor target verification bypassed", result)
+	}
+}
+
 func compatibilityFixture(t *testing.T, configure ...func(*Catalog)) (string, *Catalog, string) {
 	t.Helper()
 	root := t.TempDir()

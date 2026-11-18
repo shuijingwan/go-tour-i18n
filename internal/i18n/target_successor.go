@@ -671,6 +671,9 @@ func verifyTargetSuccessor(root, path string, catalog *Catalog, course ...[]byte
 }
 
 func findCurrentTargetSuccessor(root, locale string, catalog *Catalog, course ...[]byte) (*targetSuccessorProof, error) {
+	if catalog == nil {
+		return nil, fmt.Errorf("current Catalog required for target successor verification")
+	}
 	if err := CheckPromotionTransactionState(root, locale); err != nil {
 		return nil, err
 	}

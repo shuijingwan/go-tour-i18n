@@ -98,17 +98,21 @@ func glossaryCompatibilityCommand(root string, args []string) error {
 	if err := i18n.ValidateLocaleName(*locale); err != nil {
 		return err
 	}
+	if args[0] == "check" && (*evidence == "" || filepath.IsAbs(*evidence) || strings.Contains(*evidence, "\\")) {
+		return fmt.Errorf("--evidence requires a repository path")
+	}
+	catalog, err := glossaryCompatibilityCatalog(root)
+	if err != nil {
+		return err
+	}
 	if args[0] == "check" {
-		if *evidence == "" || filepath.IsAbs(*evidence) || strings.Contains(*evidence, "\\") {
-			return fmt.Errorf("--evidence requires a repository path")
-		}
-		if err := i18n.CheckGlossaryCompatibilityEvidence(root, *locale, *evidence, nil); err != nil {
+		if err := i18n.CheckGlossaryCompatibilityEvidence(root, *locale, *evidence, catalog); err != nil {
 			return err
 		}
 		return write(map[string]string{"status": "CURRENT", "evidence": *evidence})
 	}
 	if args[0] == "assess" {
-		e, path, err := i18n.AssessGlossaryCompatibility(root, *locale, *old, nil)
+		e, path, err := i18n.AssessGlossaryCompatibility(root, *locale, *old, catalog)
 		if err != nil {
 			return err
 		}
@@ -118,7 +122,30 @@ func glossaryCompatibilityCommand(root string, args []string) error {
 		}{path, e})
 	}
 	if args[0] == "status" {
-		return write(i18n.GlossaryCompatibilityStatus(root, *locale, *old, *scope, nil))
+		return write(i18n.GlossaryCompatibilityStatus(root, *locale, *old, *scope, catalog))
 	}
 	return fmt.Errorf("unknown glossary-compatibility command %q", args[0])
+}
+
+// These commands need the same current source lock and registered adapters for
+// both the ordinary context inventory and the verified TU successor fallback.
+func glossaryCompatibilityCatalog(root string) (*i18n.Catalog, error) {
+	current, err := i18n.BuildSourceCatalog(root)
+	if err != nil {
+		return nil, err
+	}
+	if err := i18n.CheckCatalogFiles(root, current); err != nil {
+		return nil, err
+	}
+	catalog, err := i18n.ReadCatalog(root)
+	if err != nil {
+		return nil, err
+	}
+	if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
+		return nil, err
+	}
+	if err := sitecontent.AttachRegisteredTranslationPackagesReadonly(root, catalog); err != nil {
+		return nil, err
+	}
+	return catalog, nil
 }
