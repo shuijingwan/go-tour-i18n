@@ -148,9 +148,9 @@ func writePromotionStatusForLocale(t *testing.T, root, locale string, catalog *C
 	if err := os.MkdirAll(filepath.Join(localeDir, "candidates"), 0755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(localeDir, "locale.json"), []byte(`{"locale":"`+locale+`","phase":"scaffold","translation_unit":"present.Section"}`), 0644); err != nil {
-		t.Fatal(err)
-	}
+	// Preserve the explicit policy installed by the process fixture; writing
+	// status must not replace initialized locale metadata with bare scaffolding.
+	ensureTestCurrentLocaleAuthority(t, root, locale, testLanguageAuditAuthority(locale, "Han", map[string]string{".": "。"}))
 	statuses := make([]Status, 0, len(catalog.Pages))
 	for _, page := range catalog.Pages {
 		path := ""
