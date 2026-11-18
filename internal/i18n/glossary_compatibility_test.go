@@ -56,7 +56,9 @@ func compatibilityFixture(t *testing.T, configure ...func(*Catalog)) (string, *C
 	root := t.TempDir()
 	copyBundleAuthority(t, root, []string{"locales/zh-CN/locale.json"})
 	catalog := retranslationTestCatalog(3)
-	catalog.Pages[0].Source = []byte("* Page\n\nUse `Go` on this page. Transaction data. Run gofmt afterward.\n")
+	// Keep both impact terms, using sentences fully translated by the shared
+	// synthetic promotion helper (including their target punctuation).
+	catalog.Pages[0].Source = []byte("* Page\n\nUse `Go` on this page. Use Transaction on this page. Use gofmt on this page.\n")
 	catalog.Pages[0].SourceSHA256 = sum(catalog.Pages[0].Source)
 	for _, configure := range configure {
 		configure(catalog)
@@ -67,6 +69,24 @@ func compatibilityFixture(t *testing.T, configure ...func(*Catalog)) (string, *C
 	}
 	recordSyntheticUnifiedReview(t, root, "original-unified")
 	addProcessedPromotionBatch(t, root, catalog, "codex-zh-CN-001", []string{"lesson/1", "lesson/2", "lesson/3"})
+	batchDir := filepath.Join(root, "data/retranslation-runs/zh-CN/codex-zh-CN-001")
+	resultBytes, err := os.ReadFile(filepath.Join(batchDir, "result.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var processed RetranslationProcessResult
+	if err := json.Unmarshal(resultBytes, &processed); err != nil {
+		t.Fatal(err)
+	}
+	for _, unit := range processed.Units {
+		if unit.Status != "passed" {
+			validation, readErr := os.ReadFile(filepath.Join(batchDir, unit.ValidationPath))
+			t.Fatalf("compatibility fixture %s: result=%s error=%s; validation=%s read_error=%v", unit.UnitID, unit.Status, unit.Error, validation, readErr)
+		}
+	}
+	if processed.ValidationPassed != 3 || len(processed.Units) != 3 {
+		t.Fatal("compatibility fixture requires three genuinely passed candidates", processed)
+	}
 	materializeSnapshotSources(t, root, catalog)
 	article, _ := os.ReadFile(filepath.Join(root, "_content/tour/lesson.article"))
 	writeSnapshotSource(t, root, "_content/tour/lesson.article", append([]byte("Lesson\nLanguage introduction\n\n"), article...))

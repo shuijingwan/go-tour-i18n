@@ -429,3 +429,13 @@ Evidence：`/tmp/manifest-exact-path-dedupe-20261024/`；停止点：`before-str
 - 暂缓原因：维护者明确要求本轮只迁移共享 fixture authority；policy migration 后仍存在的 exact-source-carry semantic failure 另行独立 diagnosis，不修改 production contract、不 mock validator、不修改真实翻译。
 - 当前状态：`open`
 - 后续处理/核销证据：原断言与候选保持，真实 source/glossary 只复制至 `t.TempDir()` 后调用同一 production validator。逐 test 的完整原始错误及 locator 见 `/tmp/language-audit-systematic-migration-i8fm8vbd/code-comment-blockers.log`，完整指定 pattern 结果见同目录 `recovery-pass5.log`；后续须独立判断测试意图与 current completeness contract，不能通过 bypass 将其改为 PASS。
+
+### DI-20261118-001：Historical Surface package 重建保留当前 glossary attention identity
+
+- ID：`DI-20261118-001`
+- 发现日期：`2026-11-18`
+- 发现阶段/场景：current-validator compatibility fixture 修复后的 `TestGlossaryCompatibilityHistoricalSurfaceCannotApproveModifiedOtherText`；仅在 TempDir 中诊断。
+- 问题描述：fixture candidate 已通过 validation，`AssessGlossaryCompatibility` 已成功，之后 `RequireCurrentLocaleSurfaceReviewAByReviewID` 拒绝原 historical closure。补齐 synthetic Surface transport machine authority 后，test-only overlay 证明 `HistoricalTourSurfacePackage` 重建 bytes 与原 package 只有 `/language_attention/glossary/sha256` 不同：该字段仍绑定当前 glossary SHA，原 closure 绑定旧 SHA。未据此修改 production reader 或原断言。
+- 暂缓原因：Maintainer Complexity Reassessment 确认这是独立 derived Surface consumer 问题；`AssessGlossaryCompatibility` 不调用上述 Surface readers，不属于当前 assess/reassessment gate。只有后续成为 activation / Production 的真实 blocker 时，才单独重评估；本次撤销额外 Surface fixture authority-copy hunk，不 skip、xfail 或删除测试。
+- 当前状态：`open`
+- 后续处理/核销证据：诊断日志 `/tmp/glossary-fixture-surface-diagnostic-u0eh1y9w/result.log`，其中 current export 与 historical reconstruction 均无直接 error，field diff 仅上述 SHA；原 targeted suite 日志 `/tmp/glossary-fixture-repair-5jnktd40/internal-final.log`。这些临时日志仅为 diagnosis evidence，不是新的 persistent authority。当前保持 open，不执行真实 Surface/lifecycle 命令。
